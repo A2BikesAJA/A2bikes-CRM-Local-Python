@@ -1,0 +1,23 @@
+/*
+ * Page template for the "Compare the SP" decision landing page.
+ * Assign this template to a Shopify page with the handle "sp-compare"
+ * (Online Store → Pages → Add page → Theme template: page.sp-compare).
+ *
+ * Only the hero image is pre-set (it already exists in Files). Every other
+ * setting falls back to the section's schema defaults and can be edited in
+ * the theme editor (Customize) — copy, build specs, prices, financing,
+ * reviews, FAQ, and the remaining images.
+ */
+{
+  "sections": {
+    "main": {
+      "type": "sp-compare",
+      "settings": {
+        "hero_image": "shopify://shop_images/DSCF9443-Edit-Edit.jpg"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
