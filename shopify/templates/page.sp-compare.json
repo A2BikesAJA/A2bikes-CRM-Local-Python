@@ -1,5 +1,6 @@
 /*
- * Page template for "Compare the SP" — now built from individual, reorderable
+ * Page template for "Compare the SP" — prices wired to live product data.
+ * Built from individual, reorderable
  * sections (Hero, Trust strip, Decision filter, Comparison table, Every SP,
  * Financing, Sizing, Reviews, FAQ, Final CTA). Repeating items inside each
  * section (builds, FAQs, cards, athletes…) are blocks you can add / remove /
