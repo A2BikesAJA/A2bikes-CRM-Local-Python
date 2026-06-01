@@ -25,7 +25,11 @@
 
         {%- for block in section.blocks -%}
           {%- liquid
-            assign prod = all_products[block.settings.product_handle]
+            assign phandle = block.settings.product_handle
+            if phandle == blank and block.settings.link contains '/products/'
+              assign phandle = block.settings.link | split: '/products/' | last | split: '?' | first | split: '#' | first | split: '/' | first
+            endif
+            assign prod = all_products[phandle]
             assign blink = block.settings.link | default: '/collections/sp'
             if block.settings.link == blank and prod.id and prod.url
               assign blink = prod.url
