@@ -1,23 +1,103 @@
 /*
- * Page template for the "Compare the SP" decision landing page.
- * Assign this template to a Shopify page with the handle "sp-compare"
- * (Online Store → Pages → Add page → Theme template: page.sp-compare).
- *
- * Only the hero image is pre-set (it already exists in Files). Every other
- * setting falls back to the section's schema defaults and can be edited in
- * the theme editor (Customize) — copy, build specs, prices, financing,
- * reviews, FAQ, and the remaining images.
+ * Page template for "Compare the SP" — now built from individual, reorderable
+ * sections (Hero, Trust strip, Decision filter, Comparison table, Every SP,
+ * Financing, Sizing, Reviews, FAQ, Final CTA). Repeating items inside each
+ * section (builds, FAQs, cards, athletes…) are blocks you can add / remove /
+ * reorder in the theme editor. Assign this template to a page (suffix
+ * "sp-compare").
  */
 {
   "sections": {
-    "main": {
-      "type": "sp-compare",
+    "hero": {
+      "type": "spc-hero",
       "settings": {
-        "hero_image": "shopify://shop_images/DSCF9443-Edit-Edit.jpg"
+        "hero_image": "shopify://shop_images/DSCF9443-Edit-Edit.jpg",
+        "hero_eyebrow": "Choose your build",
+        "hero_heading": "Which SP is right for you?",
+        "hero_sub": "Same race-tested carbon frame. Same <strong>SAGS</strong> adjustability. Four ways to ride it."
       }
+    },
+    "trust": {
+      "type": "spc-trust",
+      "blocks": {
+        "t1": { "type": "trust_item", "settings": { "icon": "star", "text": "<strong>5× winner</strong> — Triathlete Magazine \"Best Beginner Tri Bike\"" } },
+        "t2": { "type": "trust_item", "settings": { "icon": "clock", "text": "Designed by <strong>Kevin Quan</strong>, former Cervélo P-Series engineer" } },
+        "t3": { "type": "trust_item", "settings": { "icon": "shield", "text": "<strong>Lifetime frame warranty</strong> + free crash replacement" } },
+        "t4": { "type": "trust_item", "settings": { "icon": "home", "text": "<strong>7-day home demo</strong> — pay only if you keep it" } }
+      },
+      "block_order": ["t1", "t2", "t3", "t4"]
+    },
+    "filter": {
+      "type": "spc-filter",
+      "blocks": {
+        "p1": { "type": "pill", "settings": { "kicker": "Best price", "label": "Get racing for less", "build": "Points to the SP 105", "recommends": "105", "filter": "price" } },
+        "p2": { "type": "pill", "settings": { "kicker": "Performance for the money", "label": "The sweet spot", "build": "Points to the SP Force AXS", "recommends": "force", "filter": "performance" } },
+        "p3": { "type": "pill", "settings": { "kicker": "Best of everything", "label": "No compromises", "build": "Points to the SP Red AXS", "recommends": "red", "filter": "premium" } }
+      },
+      "block_order": ["p1", "p2", "p3"]
+    },
+    "compare": {
+      "type": "spc-compare",
+      "blocks": {
+        "b1": { "type": "build", "settings": { "name": "SP — Shimano 105", "short": "105", "key": "105", "pos": "For your first carbon tri bike", "price": "$3,115", "groupset": "Shimano 105 R7100, 12-speed mechanical", "shifting": "Mechanical", "drivetrain": "12-speed · 11–34 cassette", "wheels": "Vision Team 30 alloy", "brakes": "Mechanical disc", "bestfor": "First-time carbon tri bike. Proven mechanical reliability.", "affirm": "$260", "link": "/products/sp-shimano-105" } },
+        "b2": { "type": "build", "settings": { "name": "SP — SRAM Rival AXS", "short": "Rival AXS", "key": "rival", "pos": "For value-minded racers", "price": "$5,795", "groupset": "SRAM Rival AXS, 12-speed wireless electronic", "shifting": "Electronic", "drivetrain": "12-speed · 10–36 cassette", "wheels": "Vision Team 30 alloy, tubeless-ready", "brakes": "Hydraulic disc", "bestfor": "Electronic shifting at the lowest price. Race-ready for serious age groupers.", "affirm": "$483", "link": "/products/sp-sram-rival-1" } },
+        "b3": { "type": "build", "settings": { "name": "SP — SRAM Force AXS", "short": "Force AXS", "key": "force", "pos": "For competitive racing", "price": "$7,273", "groupset": "SRAM Force AXS, 12-speed wireless electronic", "shifting": "Electronic", "drivetrain": "12-speed · 10–36 cassette", "wheels": "Zipp 404 carbon — free upgrade", "brakes": "Hydraulic disc", "bestfor": "Competitive racing without the top-tier price. The performance sweet spot.", "affirm": "$606", "link": "/products/sp-sram-force" } },
+        "b4": { "type": "build", "settings": { "name": "SP — SRAM Red AXS", "short": "Red AXS", "key": "red", "pos": "For the podium", "price": "$8,971", "groupset": "SRAM Red AXS, 12-speed wireless electronic", "shifting": "Electronic", "drivetrain": "12-speed · 10–36 cassette", "wheels": "Zipp 808 carbon", "brakes": "Hydraulic disc · Paceline rotors", "bestfor": "Top-tier components. Built for athletes targeting Kona qualification.", "affirm": "$748", "link": "/products/sp-sram-red-axs" } }
+      },
+      "block_order": ["b1", "b2", "b3", "b4"]
+    },
+    "same": {
+      "type": "spc-same",
+      "blocks": {
+        "s1": { "type": "same_card", "settings": { "icon": "frame", "title": "1,250g T700 carbon frame", "body": "<strong>Hand-laid Toray T700 carbon</strong> — the same material used in pro tri bikes costing $10K+. Designed by Kevin Quan, the engineer behind the Cervélo P-Series." } },
+        "s2": { "type": "same_card", "settings": { "icon": "sliders", "title": "SAGS adjustable cockpit", "body": "The most adjustable triathlon cockpit available — 140mm of fore/aft range fits riders short to tall without giving up aero position. <strong>Free size exchanges</strong> if you need to swap." } },
+        "s3": { "type": "same_card", "settings": { "icon": "shield", "title": "Lifetime frame warranty", "body": "Lifetime coverage on the frame, honored <strong>directly by us</strong> — never routed through a dealer. Free crash replacement if you damage your frame in an accident." } },
+        "s4": { "type": "same_card", "settings": { "icon": "box", "title": "Ships 92% assembled", "body": "Most riders ride within the hour. <strong>The real work is the seatpost, cockpit, and brake dial-in</strong> — a video guide walks you through it. Prefer to skip it? A local shop finishes the build for $50–150." } }
+      },
+      "block_order": ["s1", "s2", "s3", "s4"]
+    },
+    "financing": {
+      "type": "spc-financing",
+      "blocks": {
+        "f1": { "type": "financing_card", "settings": { "wordmark": "affirm", "heading": "From <strong>$260/mo</strong> at 0% APR", "body": "Split your bike over 12 months at 0% APR on the SP 105. No fees, no surprises. Pre-qualify in 30 seconds — it won't affect your credit score.", "link_label": "Calculate my monthly payment", "link": "/pages/affirm", "provider": "affirm" } },
+        "f2": { "type": "financing_card", "settings": { "wordmark": "truemed.", "heading": "Save up to 30% with <strong>HSA / FSA</strong>", "body": "Use pre-tax HSA or FSA dollars toward your bike. Triathlon bikes qualify as eligible health expenses with Truemed certification — effective savings of 25–40% depending on your tax bracket.", "link_label": "See if I qualify", "link": "/pages/truemed", "provider": "truemed" } },
+        "f3": { "type": "financing_card", "settings": { "wordmark": "GovX", "heading": "<strong>10% off</strong> for service & educators", "body": "Active military, veterans, first responders, and teachers receive 10% off through GovX verification. Verify once and the discount applies at checkout.", "link_label": "Verify and save", "link": "/pages/govx", "provider": "govx" } }
+      },
+      "block_order": ["f1", "f2", "f3"]
+    },
+    "sizing": {
+      "type": "spc-sizing",
+      "settings": {}
+    },
+    "reviews": {
+      "type": "spc-reviews",
+      "blocks": {
+        "r1": { "type": "review", "settings": { "quote": "My first carbon bike and I was nervous about the assembly. The seatpost and cockpit took me about 40 minutes with the video. Riding it the same afternoon.", "name": "Marcus T.", "sub": "SP 105 owner" } },
+        "r2": { "type": "review", "settings": { "quote": "I'm 6'4″ with a long torso and have never found a stock tri bike that fit. The SAGS cockpit dialed me in perfectly. Force AXS shifting is flawless.", "name": "Dana R.", "sub": "SP Force AXS owner" } },
+        "r3": { "type": "review", "settings": { "quote": "Quoted over $11K for a comparable superbike elsewhere. The Red AXS build came in thousands less and the support has been genuinely excellent.", "name": "Priya S.", "sub": "SP Red AXS owner" } },
+        "a1": { "type": "athlete", "settings": { "quote": "The SP let me hold an aero position I could actually sustain. I came off the bike with legs left to run.", "name": "Kinley Bollinger", "race": "1st Overall — Ironman 70.3 Puerto Rico, March 2026 · 4:40:39" } },
+        "a2": { "type": "athlete", "settings": { "quote": "[Real athlete quote — replace before launch. Use a verified A2 Racing Team member with permission.]", "name": "[Athlete name]", "race": "[Race & result]" } },
+        "a3": { "type": "athlete", "settings": { "quote": "[Real athlete quote — replace before launch. Use a verified A2 Racing Team member with permission.]", "name": "[Athlete name]", "race": "[Race & result]" } }
+      },
+      "block_order": ["r1", "r2", "r3", "a1", "a2", "a3"]
+    },
+    "faq": {
+      "type": "spc-faq",
+      "blocks": {
+        "q1": { "type": "faq", "settings": { "question": "How does the SP compare to a Cervélo P-Series?", "answer": "<p>Kevin Quan designed both. The SP is the direct-to-consumer evolution of that design philosophy at a lower price point. Cervélo has more brand prestige and a dealer network; we have direct support and free crash replacement. For most athletes, the SP delivers the same race-day performance at a fraction of the cost. <a href=\"/pages/a2-vs-competitors\">Full comparison →</a></p>" } },
+        "q2": { "type": "faq", "settings": { "question": "What if it doesn't fit when it arrives?", "answer": "<p>We offer free size exchanges with no time limit on the offer — if the frame size isn't right, we'll get you the correct one. Between the sizing tool, the quiz, and the SAGS cockpit's 140mm of adjustability, most riders dial in their fit on the first try.</p>" } },
+        "q3": { "type": "faq", "settings": { "question": "Do I really need to assemble it myself?", "answer": "<p>The bike arrives 92% assembled. You'll install the seatpost, attach the cockpit, and adjust the brakes — the headset and stem are the fiddly parts, so take your time with the torque wrench in the box. Most riders finish in under an hour with the included video guide. If you'd rather skip the work, most local bike shops will do the final assembly for $50–150.</p>" } },
+        "q4": { "type": "faq", "settings": { "question": "What's the 7-day home demo?", "answer": "<p>At checkout we place a temporary authorization hold on your card — we don't charge you. Your demo starts when the bike arrives. Ride it for a week, and if it's not right, send it back and pay nothing. You're only charged at the end of the demo period if you keep it.</p>" } },
+        "q5": { "type": "faq", "settings": { "question": "Can I upgrade the wheels later?", "answer": "<p>Yes. The SP accepts standard 12-speed wheelsets, so many owners add deeper aero wheels for race day. The Force AXS already ships with Zipp 404s and the Red AXS with Zipp 808s; the 105 and Rival are easy to upgrade when you're ready.</p>" } },
+        "q6": { "type": "faq", "settings": { "question": "How long does shipping take?", "answer": "<p>Standard ground shipping is $99 and typically takes 3–5 business days from order to arrival within the continental US. You'll get tracking as soon as your build ships.</p>" } },
+        "q7": { "type": "faq", "settings": { "question": "What if I crash and damage the frame?", "answer": "<p>Any SP frame purchased directly from A2 is covered by our Crash Replacement Policy: if you damage it in an accident, we replace the frame at no additional cost. Contact our support team to file a claim and we'll walk you through it.</p>" } }
+      },
+      "block_order": ["q1", "q2", "q3", "q4", "q5", "q6", "q7"]
+    },
+    "final": {
+      "type": "spc-final",
+      "settings": {}
     }
   },
-  "order": [
-    "main"
-  ]
+  "order": ["hero", "trust", "filter", "compare", "same", "financing", "sizing", "reviews", "faq", "final"]
 }

@@ -1,0 +1,54 @@
+{% render 'spc-assets' %}
+<div class="spc">
+  <section class="spc-sec spc-faq">
+    <div class="spc-wrap">
+      <div class="spc-head spc-head--center spc-reveal">
+        <p class="spc-eyebrow">{{ section.settings.eyebrow }}</p>
+        <h2 class="spc-h2">{{ section.settings.heading }}</h2>
+      </div>
+      <div class="spc-faq-list spc-reveal">
+        {%- for block in section.blocks -%}
+          <div class="spc-faq-item" {{ block.shopify_attributes }}>
+            <button class="spc-faq-q" aria-expanded="false">{{ block.settings.question }}<span class="spc-faq-q__icon" aria-hidden="true"></span></button>
+            <div class="spc-faq-a"><div class="spc-faq-a__inner">{{ block.settings.answer }}</div></div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+</div>
+{% schema %}
+{
+  "name": "SP · FAQ",
+  "tag": "section",
+  "max_blocks": 12,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Before you decide" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Common questions" }
+  ],
+  "blocks": [
+    {
+      "type": "faq",
+      "name": "Question",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Question", "default": "How does the SP compare to a Cervélo P-Series?" },
+        { "type": "richtext", "id": "answer", "label": "Answer", "default": "<p>Kevin Quan designed both. The SP is the direct-to-consumer evolution of that design philosophy at a lower price point.</p>" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SP · FAQ",
+      "blocks": [
+        { "type": "faq", "settings": { "question": "How does the SP compare to a Cervélo P-Series?", "answer": "<p>Kevin Quan designed both. The SP is the direct-to-consumer evolution of that design philosophy at a lower price point. Cervélo has more brand prestige and a dealer network; we have direct support and free crash replacement. For most athletes, the SP delivers the same race-day performance at a fraction of the cost. <a href=\"/pages/a2-vs-competitors\">Full comparison →</a></p>" } },
+        { "type": "faq", "settings": { "question": "What if it doesn't fit when it arrives?", "answer": "<p>We offer free size exchanges with no time limit on the offer — if the frame size isn't right, we'll get you the correct one. Between the sizing tool, the quiz, and the SAGS cockpit's 140mm of adjustability, most riders dial in their fit on the first try.</p>" } },
+        { "type": "faq", "settings": { "question": "Do I really need to assemble it myself?", "answer": "<p>The bike arrives 92% assembled. You'll install the seatpost, attach the cockpit, and adjust the brakes — the headset and stem are the fiddly parts, so take your time with the torque wrench in the box. Most riders finish in under an hour with the included video guide. If you'd rather skip the work, most local bike shops will do the final assembly for $50–150.</p>" } },
+        { "type": "faq", "settings": { "question": "What's the 7-day home demo?", "answer": "<p>At checkout we place a temporary authorization hold on your card — we don't charge you. Your demo starts when the bike arrives. Ride it for a week, and if it's not right, send it back and pay nothing. You're only charged at the end of the demo period if you keep it.</p>" } },
+        { "type": "faq", "settings": { "question": "Can I upgrade the wheels later?", "answer": "<p>Yes. The SP accepts standard 12-speed wheelsets, so many owners add deeper aero wheels for race day. The Force AXS already ships with Zipp 404s and the Red AXS with Zipp 808s; the 105 and Rival are easy to upgrade when you're ready.</p>" } },
+        { "type": "faq", "settings": { "question": "How long does shipping take?", "answer": "<p>Standard ground shipping is $99 and typically takes 3–5 business days from order to arrival within the continental US. You'll get tracking as soon as your build ships.</p>" } },
+        { "type": "faq", "settings": { "question": "What if I crash and damage the frame?", "answer": "<p>Any SP frame purchased directly from A2 is covered by our Crash Replacement Policy: if you damage it in an accident, we replace the frame at no additional cost. Contact our support team to file a claim and we'll walk you through it.</p>" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
