@@ -1,0 +1,41 @@
+{% render 'wa-assets' %}
+<div class="whya2">
+  <section id="wa-capture" class="wa-sec wa-sec--dark wa-capture">
+    <div class="wa-wrap">
+      <div class="wa-capture-inner reveal">
+        <p class="wa-eyebrow">{{ section.settings.eyebrow }}</p>
+        <h2 class="wa-h2">{{ section.settings.heading }}</h2>
+        <p class="wa-lede">{{ section.settings.sub }}</p>
+
+        {%- if section.settings.klaviyo_form_id != blank -%}
+          <div class="klaviyo-form-{{ section.settings.klaviyo_form_id }}"></div>
+        {%- else -%}
+          <form class="wa-form" novalidate>
+            <input type="email" name="email" placeholder="you@email.com" aria-label="Email address" required>
+            <button type="submit" class="wa-btn wa-btn--primary">Send me the guide</button>
+          </form>
+          <div class="wa-form-success">Check your inbox — your sizing guide is on the way. ✓</div>
+          {%- if request.design_mode -%}
+            <p class="wa-hint">Tip: paste your Klaviyo form ID into this section's settings to replace this placeholder form. Make sure the Klaviyo onsite script is loaded in theme.liquid.</p>
+          {%- endif -%}
+        {%- endif -%}
+
+        <p class="wa-trust">{{ section.settings.trust }}</p>
+      </div>
+    </div>
+  </section>
+</div>
+{% schema %}
+{
+  "name": "Why A2 · Email capture",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Free sizing guide" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Sizing a triathlon bike is harder than it should be." },
+    { "type": "textarea", "id": "sub", "label": "Subhead", "default": "Get our free guide and we'll help you dial in the right frame size, fit, and setup — before you ever click buy." },
+    { "type": "text", "id": "klaviyo_form_id", "label": "Klaviyo form ID (e.g. Wq8aBc) — blank shows placeholder" },
+    { "type": "text", "id": "trust", "label": "Trust line", "default": "No spam. Unsubscribe anytime." }
+  ],
+  "presets": [{ "name": "Why A2 · Email capture" }]
+}
+{% endschema %}

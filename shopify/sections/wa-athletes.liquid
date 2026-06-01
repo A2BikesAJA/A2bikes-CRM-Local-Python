@@ -1,0 +1,57 @@
+{% render 'wa-assets' %}
+<div class="whya2">
+  <section class="wa-sec wa-sec--paper2">
+    <div class="wa-wrap">
+      <div class="wa-head reveal">
+        <p class="wa-eyebrow">{{ section.settings.eyebrow }}</p>
+        <h2 class="wa-h2">{{ section.settings.heading }}</h2>
+      </div>
+      <div class="wa-ath">
+        {%- for block in section.blocks -%}
+          {%- assign dly = forloop.index0 | at_most: 3 -%}
+          <article class="wa-ath-card reveal{% if dly > 0 %} d{{ dly }}{% endif %}" {{ block.shopify_attributes }}>
+            <div class="wa-ath-photo{% unless block.settings.image %} wa-ph wa-ph--light{% endunless %}"{% if block.settings.image %} style="background-image:url({{ block.settings.image | image_url: width: 900 }})"{% else %} data-label="Athlete photo — set in theme editor"{% endif %}></div>
+            <div class="wa-ath-body">
+              <blockquote>{{ block.settings.quote }}</blockquote>
+              <div class="wa-ath-name">{{ block.settings.name }}</div>
+              <div class="wa-ath-race">{{ block.settings.race }}</div>
+            </div>
+          </article>
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+</div>
+{% schema %}
+{
+  "name": "Why A2 · Athletes",
+  "tag": "section",
+  "max_blocks": 6,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Race proven" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Ridden by the A2 Racing Team" }
+  ],
+  "blocks": [
+    {
+      "type": "athlete",
+      "name": "Athlete",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Photo" },
+        { "type": "textarea", "id": "quote", "label": "Quote", "default": "[Athlete quote]" },
+        { "type": "text", "id": "name", "label": "Name", "default": "[Athlete name]" },
+        { "type": "text", "id": "race", "label": "Race / achievement", "default": "[Race / achievement]" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Why A2 · Athletes",
+      "blocks": [
+        { "type": "athlete", "settings": { "quote": "[Add Kinley's quote here]", "name": "Kinley Bollinger", "race": "1st Overall — Ironman 70.3 Puerto Rico · 4:40:39" } },
+        { "type": "athlete", "settings": { "quote": "[Athlete quote]", "name": "[Athlete name]", "race": "[Race / achievement]" } },
+        { "type": "athlete", "settings": { "quote": "[Athlete quote]", "name": "[Athlete name]", "race": "[Race / achievement]" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
