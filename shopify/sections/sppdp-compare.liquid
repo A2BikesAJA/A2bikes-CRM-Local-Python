@@ -1,0 +1,90 @@
+{%- comment -%} SP-105 PDP — honest comparison vs. comparable entry tri bikes. Competitor prices are placeholder MSRP; verify current pricing before publish and keep the framing honest. {%- endcomment -%}
+{% render 'sppdp-assets' %}
+<div class="sppdp">
+  <section class="pdp-section" id="sppdp-compare">
+    <div class="pdp-wrap">
+      <div class="pdp-section__head">
+        <span class="pdp-section__kicker">{{ section.settings.kicker }}</span>
+        <h2 class="pdp-section__title">{{ section.settings.heading }}</h2>
+      </div>
+      {% if section.settings.note != blank %}<p class="compare-note">{{ section.settings.note }}</p>{% endif %}
+      <div class="ctable-scroll">
+        <table class="ctable">
+          <colgroup><col><col class="col-a2"><col><col></colgroup>
+          <thead>
+            <tr>
+              <th class="rowlabel"></th>
+              <th class="is-a2">{% if section.settings.pick_label != blank %}<span class="pick">{{ section.settings.pick_label }}</span>{% endif %}<div class="brand-cell">{{ section.settings.col_a2_name }}<div class="sub">{{ section.settings.col_a2_sub }}</div></div></th>
+              <th><div class="brand-cell">{{ section.settings.col1_name }}<div class="sub">{{ section.settings.col1_sub }}</div></div></th>
+              <th><div class="brand-cell">{{ section.settings.col2_name }}<div class="sub">{{ section.settings.col2_sub }}</div></div></th>
+            </tr>
+          </thead>
+          <tbody>
+            {%- for block in section.blocks -%}
+              {%- assign st = block.settings.a2_style -%}
+              <tr {{ block.shopify_attributes }}>
+                <td class="rowlabel">{{ block.settings.label }}</td>
+                <td class="is-a2{% if st == 'muted' %} muted{% endif %}">{% if st == 'bold' %}<b>{{ block.settings.a2 }}</b>{% elsif st == 'yes' %}<span class="yes">{{ block.settings.a2 }}</span>{% else %}{{ block.settings.a2 }}{% endif %}</td>
+                <td>{{ block.settings.comp1 }}</td>
+                <td>{{ block.settings.comp2 }}</td>
+              </tr>
+            {%- endfor -%}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</div>
+{% schema %}
+{
+  "name": "SP-105 PDP · Compare",
+  "tag": "section",
+  "max_blocks": 14,
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "Honest comparison" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "SP-105 vs. comparable entry tri bikes" },
+    { "type": "textarea", "id": "note", "label": "Intro note", "default": "We're a younger brand, so it's fair to ask how we stack up. Here's a straight comparison against the entry 105 builds from two established names — prices are current MSRP for the closest equivalent build. Where they beat us, we say so." },
+    { "type": "header", "content": "Columns" },
+    { "type": "text", "id": "pick_label", "label": "A2 pick pill", "default": "Best value" },
+    { "type": "text", "id": "col_a2_name", "label": "A2 column name", "default": "A2 SP — 105" },
+    { "type": "text", "id": "col_a2_sub", "label": "A2 column sub", "default": "This bike" },
+    { "type": "text", "id": "col1_name", "label": "Competitor 1 name", "default": "Cervélo P-Series" },
+    { "type": "text", "id": "col1_sub", "label": "Competitor 1 sub", "default": "105 build" },
+    { "type": "text", "id": "col2_name", "label": "Competitor 2 name", "default": "Quintana Roo" },
+    { "type": "text", "id": "col2_sub", "label": "Competitor 2 sub", "default": "entry tri build" }
+  ],
+  "blocks": [
+    {
+      "type": "row",
+      "name": "Row",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Row label", "default": "Spec" },
+        { "type": "text", "id": "a2", "label": "A2 SP-105 value", "default": "—" },
+        { "type": "select", "id": "a2_style", "label": "A2 value style", "options": [
+          { "value": "normal", "label": "Normal" },
+          { "value": "bold", "label": "Bold" },
+          { "value": "yes", "label": "Green (advantage)" },
+          { "value": "muted", "label": "Muted (where they win)" }
+        ], "default": "normal" },
+        { "type": "text", "id": "comp1", "label": "Competitor 1 value", "default": "—" },
+        { "type": "text", "id": "comp2", "label": "Competitor 2 value", "default": "—" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SP-105 PDP · Compare",
+      "blocks": [
+        { "type": "row", "settings": { "label": "Price", "a2": "$3,270", "a2_style": "bold", "comp1": "~$4,600", "comp2": "~$3,900" } },
+        { "type": "row", "settings": { "label": "Frame", "a2": "Toray T700 carbon, 1,250g", "a2_style": "normal", "comp1": "Carbon", "comp2": "Carbon" } },
+        { "type": "row", "settings": { "label": "Groupset", "a2": "Shimano 105 R7100, 12-spd", "a2_style": "normal", "comp1": "Shimano 105 mechanical", "comp2": "Shimano 105 mechanical" } },
+        { "type": "row", "settings": { "label": "Fit adjustability", "a2": "SAGS cockpit — 140mm range", "a2_style": "normal", "comp1": "Stem swaps needed", "comp2": "Stem swaps needed" } },
+        { "type": "row", "settings": { "label": "Fit support", "a2": "Free remote fitter", "a2_style": "yes", "comp1": "Via dealer (varies)", "comp2": "Via dealer (varies)" } },
+        { "type": "row", "settings": { "label": "Frame warranty", "a2": "Lifetime + crash replacement", "a2_style": "yes", "comp1": "Limited / years", "comp2": "Limited / years" } },
+        { "type": "row", "settings": { "label": "Where you buy", "a2": "Direct — 7-day home demo", "a2_style": "normal", "comp1": "Local dealer", "comp2": "Local dealer" } },
+        { "type": "row", "settings": { "label": "Where they win", "a2": "Newer brand, fewer shops", "a2_style": "muted", "comp1": "Established name & dealer network", "comp2": "Strong tri-specific fit reputation" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
