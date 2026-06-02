@@ -128,6 +128,24 @@
         <p class="buybox__subtitle">{{ section.settings.subtitle | default: product.type }}</p>
       </div>
 
+      {%- assign sp_collection = collections[section.settings.build_collection] -%}
+      {%- if sp_collection != blank and sp_collection.products.size > 1 -%}
+      <div class="build-switch">
+        <div class="optgroup__label"><span class="lbl">{{ section.settings.build_label }}</span></div>
+        <div class="build-pills">
+          {%- assign builds = sp_collection.products | sort: 'price' -%}
+          {%- for bp in builds -%}
+            {%- assign blabel = bp.metafields.custom.siblings_color.value | default: bp.title -%}
+            {%- if bp.handle == product.handle -%}
+              <span class="build-pill is-active" aria-current="true">{{ blabel }}</span>
+            {%- else -%}
+              <a class="build-pill" href="{{ bp.url }}">{{ blabel }}</a>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+      {%- endif -%}
+
       <div class="ratingline">
         <span class="stars">{{ section.settings.rating_stars }}</span>
         <span><b>{{ rating_value }}</b></span>
@@ -234,6 +252,11 @@
     #sppdp-pdp-{{ section.id }} .is-unavailable{ opacity:.45; }
     #sppdp-pdp-{{ section.id }} .size-pill.is-unavailable{ text-decoration:line-through; border-style:dashed; }
     #sppdp-pdp-{{ section.id }} .affirm-app{ margin-top:2px; }
+    #sppdp-pdp-{{ section.id }} .build-switch{ display:flex; flex-direction:column; gap:9px; margin-top:14px; }
+    #sppdp-pdp-{{ section.id }} .build-pills{ display:flex; gap:8px; flex-wrap:wrap; }
+    #sppdp-pdp-{{ section.id }} .build-pill{ display:inline-flex; align-items:center; min-height:42px; padding:0 14px; border:1.5px solid var(--line); border-radius:8px; font-size:.9rem; font-weight:600; color:var(--ink); text-decoration:none; transition:border-color .15s, background .15s, color .15s; }
+    #sppdp-pdp-{{ section.id }} a.build-pill:hover{ border-color:var(--ink); }
+    #sppdp-pdp-{{ section.id }} .build-pill.is-active{ background:var(--ink); border-color:var(--ink); color:#fff; }
   </style>
   <script>
   (function(){
@@ -336,6 +359,9 @@
     { "type": "text", "id": "bc_home", "label": "Home label", "default": "Home" },
     { "type": "text", "id": "bc_col", "label": "Collection label", "default": "Triathlon — SP" },
     { "type": "url", "id": "bc_col_url", "label": "Collection link" },
+    { "type": "header", "content": "Build switcher (groupset)" },
+    { "type": "text", "id": "build_collection", "label": "Collection of SP builds (handle)", "info": "Every product in this collection becomes a switchable build pill; the current product is highlighted. Leave blank to hide.", "default": "sp" },
+    { "type": "text", "id": "build_label", "label": "Switcher label", "default": "Groupset" },
     { "type": "header", "content": "Title & rating" },
     { "type": "text", "id": "kicker", "label": "Kicker", "default": "SP Triathlon · Entry build" },
     { "type": "text", "id": "subtitle", "label": "Subtitle (defaults to product type)", "default": "Carbon triathlon & time-trial bike" },
