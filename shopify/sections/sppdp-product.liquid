@@ -61,6 +61,7 @@
         {% if cur_color != blank %}<span class="stage__badge" data-stage-badge>{{ cur_color }}</span>{% endif %}
         {% if product.featured_media %}<img data-stage-img src="{{ product.featured_media.preview_image | image_url: width: 1280 }}" alt="{{ product.featured_media.alt | default: product.title | escape }}">{% else %}<div class="ph" data-stage-img>{{ product.title }}</div>{% endif %}
         {%- if section.settings.show_hotspots -%}
+          <div class="sppdp-hotspots" data-hotspots>
           {%- for n in (1..3) -%}
             {%- assign k_lbl = 'hotspot_' | append: n | append: '_label' -%}
             {%- assign lbl = section.settings[k_lbl] -%}
@@ -70,6 +71,7 @@
               <span class="hotspot" style="left:{{ section.settings[k_x] }}%;top:{{ section.settings[k_y] }}%">{{ n }}<span class="hotspot__label">{{ lbl }}</span></span>
             {%- endif -%}
           {%- endfor -%}
+          </div>
         {%- endif -%}
       </div>
       <p class="gallery__caption" data-stage-cap><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg>{{ section.settings.gallery_caption }}</p>
@@ -229,6 +231,13 @@
     var ctaPrefix = {{ section.settings.cta_prefix | json }};
     var colorPos = {{ color_pos | json }}, sizePos = {{ size_pos | json }};
     var form = R.querySelector('[data-product-form]');
+    // Hotspots annotate one specific image — show them only when the stage is
+    // on that image, hide them when the shopper browses to other photos.
+    var stageEl = R.querySelector('[data-stage-img]');
+    var hotspotsEl = R.querySelector('[data-hotspots]');
+    var primarySrc = (stageEl && stageEl.tagName === 'IMG') ? stageEl.getAttribute('src') : null;
+    function toggleHotspots(){ if(hotspotsEl && stageEl){ hotspotsEl.style.display = (stageEl.getAttribute('src') === primarySrc) ? '' : 'none'; } }
+    if(stageEl && hotspotsEl && stageEl.tagName === 'IMG'){ new MutationObserver(toggleHotspots).observe(stageEl, {attributes:true, attributeFilter:['src']}); }
     function money(c){ return '$' + (c/100).toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0}); }
     var groups = {};
     R.querySelectorAll('[data-opt]').forEach(function(b){ var o=b.getAttribute('data-opt'); (groups[o]=groups[o]||[]).push(b); });
