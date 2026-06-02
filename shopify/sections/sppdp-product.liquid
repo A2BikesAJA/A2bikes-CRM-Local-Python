@@ -158,14 +158,13 @@
               <div class="swatches">
                 {%- for value in option.values -%}
                   {%- assign vd = value | downcase -%}
-                  {%- case vd -%}
-                    {%- when 'matte black' -%}{%- assign grad = 'linear-gradient(150deg,#2A2C30 0%,#0E0F11 100%)' -%}
-                    {%- when 'matte black and silver' -%}{%- assign grad = 'linear-gradient(150deg,#43454A 0%,#9DA1A6 100%)' -%}
-                    {%- when 'glossy red' -%}{%- assign grad = 'linear-gradient(150deg,#E5322B 0%,#A01913 100%)' -%}
-                    {%- when 'oswego blue' -%}{%- assign grad = 'linear-gradient(150deg,#3A6076 0%,#1A3142 100%)' -%}
-                    {%- when 'summit grey' -%}{%- assign grad = 'linear-gradient(150deg,#A6ACB1 0%,#6C7176 100%)' -%}
-                    {%- else -%}{%- assign grad = 'linear-gradient(150deg,#6A6F75 0%,#3A3C40 100%)' -%}
-                  {%- endcase -%}
+                  {%- assign grad = 'linear-gradient(150deg,#6A6F75 0%,#3A3C40 100%)' -%}
+                  {%- if vd contains 'red' -%}{%- assign grad = 'linear-gradient(150deg,#E5322B 0%,#A01913 100%)' -%}
+                  {%- elsif vd contains 'silver' -%}{%- assign grad = 'linear-gradient(150deg,#C9CDD2 0%,#33363B 100%)' -%}
+                  {%- elsif vd contains 'blue' -%}{%- assign grad = 'linear-gradient(150deg,#3A6076 0%,#1A3142 100%)' -%}
+                  {%- elsif vd contains 'grey' or vd contains 'gray' -%}{%- assign grad = 'linear-gradient(150deg,#A6ACB1 0%,#6C7176 100%)' -%}
+                  {%- elsif vd contains 'black' -%}{%- assign grad = 'linear-gradient(150deg,#2A2C30 0%,#0E0F11 100%)' -%}
+                  {%- endif -%}
                   <button type="button" class="swatch" data-opt="{{ option.position }}" data-value="{{ value | escape }}" aria-pressed="{% if value == option.selected_value %}true{% else %}false{% endif %}"><span class="swatch__chip" style="background:{{ grad }}"></span><span class="swatch__name">{{ value }}</span></button>
                 {%- endfor -%}
               </div>
