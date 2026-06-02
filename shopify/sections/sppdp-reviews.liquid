@@ -7,12 +7,18 @@
         <span class="pdp-section__kicker">{{ section.settings.kicker }}</span>
         <h2 class="pdp-section__title">{{ section.settings.heading }}</h2>
       </div>
+      {%- if section.settings.show_summary -%}
       <div class="reviews-top">
         <div class="reviews-score"><span class="n">{{ section.settings.score }}</span><span class="stars">{{ section.settings.stars }}</span><span class="of">/ 5</span></div>
         <div class="reviews-meta"><b>{{ section.settings.count }}</b> verified reviews · <b>{{ section.settings.recommend }}</b> would recommend to a training partner</div>
       </div>
+      {%- endif -%}
+      {%- assign review_count = 0 -%}
+      {%- for block in section.blocks -%}{% if block.type == 'review' %}{% assign review_count = review_count | plus: 1 %}{% endif %}{%- endfor -%}
+      {%- if review_count > 0 -%}
       <div class="review-grid">
         {%- for block in section.blocks -%}
+          {%- if block.type != 'review' -%}{%- continue -%}{%- endif -%}
           <article class="review-card" {{ block.shopify_attributes }}>
             <div class="stars">{{ block.settings.stars }}</div>
             {% if block.settings.result != blank %}<span class="result-tag"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V3h12v6a6 6 0 0 1-12 0zM4 6h2M18 6h2M9 21h6M12 15v6"/></svg>{{ block.settings.result }}</span>{% endif %}
@@ -24,6 +30,10 @@
           </article>
         {%- endfor -%}
       </div>
+      {%- endif -%}
+      {%- for block in section.blocks -%}
+        {%- if block.type == '@app' -%}<div class="sppdp-app">{% render block %}</div>{%- endif -%}
+      {%- endfor -%}
     </div>
   </section>
 </div>
@@ -38,7 +48,8 @@
     { "type": "text", "id": "score", "label": "Aggregate score", "default": "4.8" },
     { "type": "text", "id": "stars", "label": "Stars", "default": "★★★★★" },
     { "type": "text", "id": "count", "label": "Review count", "default": "96" },
-    { "type": "text", "id": "recommend", "label": "Recommend %", "default": "97%" }
+    { "type": "text", "id": "recommend", "label": "Recommend %", "default": "97%" },
+    { "type": "checkbox", "id": "show_summary", "label": "Show built-in summary (score / count)", "info": "Turn off if your review app shows its own summary.", "default": true }
   ],
   "blocks": [
     {
@@ -52,7 +63,8 @@
         { "type": "text", "id": "context", "label": "Rider context", "default": "Age-grouper, Columbus OH" },
         { "type": "checkbox", "id": "verified", "label": "Verified badge", "default": true }
       ]
-    }
+    },
+    { "type": "@app" }
   ],
   "presets": [
     {
