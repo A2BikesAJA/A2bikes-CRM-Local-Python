@@ -1,0 +1,371 @@
+{%- comment -%}
+  SP-105 PDP — REAL PRODUCT section. Renders on a product template and wires
+  to live product data: gallery from product.media, Color/Size/Wheelset from
+  the product's variants (live price + availability), real Add to Cart, and
+  price/Affirm that update on variant change. Editorial bits (hotspots,
+  education tiles, trust) stay as section settings/blocks. Shares the .sppdp
+  CSS/JS (gallery swap, accordion, sticky bar) via snippets/sppdp-assets.
+{%- endcomment -%}
+{% render 'sppdp-assets' %}
+{%- liquid
+  assign cur = product.selected_or_first_available_variant
+  assign months = section.settings.affirm_months
+  if months == 0
+    assign months = 12
+  endif
+  assign monthly = cur.price | divided_by: 100.0 | divided_by: months | round
+  assign rating_value = section.settings.rating_value
+  assign rmeta = product.metafields.reviews.rating.value
+  if rmeta != blank and rmeta.rating != blank
+    assign rating_value = rmeta.rating
+  endif
+  assign rating_count = section.settings.rating_count
+  assign rcount = product.metafields.reviews.rating_count
+  if rcount != blank and rcount != 0
+    assign rating_count = rcount
+  endif
+  assign color_pos = ''
+  assign size_pos = ''
+  for o in product.options_with_values
+    assign od = o.name | downcase
+    if od == 'color' or od == 'colour' or od == 'colorway'
+      assign color_pos = o.position
+      assign cur_color = o.selected_value
+    endif
+    if od == 'size'
+      assign size_pos = o.position
+    endif
+  endfor
+-%}
+<div class="sppdp" id="sppdp-pdp-{{ section.id }}">
+  <div class="pdp-wrap">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">{{ section.settings.bc_home }}</a><span class="sep">/</span>
+      <a href="{{ section.settings.bc_col_url | default: '/collections/sp' }}">{{ section.settings.bc_col }}</a><span class="sep">/</span>
+      <span class="here">{{ product.title }}</span>
+    </nav>
+  </div>
+
+  <main class="pdp-wrap pdp-main">
+    <!-- DESKTOP GALLERY (from product.media) -->
+    <section class="gallery" aria-label="Product gallery">
+      <div class="gallery__rail">
+        {%- for media in product.media limit: 6 -%}
+          <button class="thumb{% if forloop.first %} active{% endif %}" data-thumb data-cap="{{ media.alt | default: product.title | escape }}" data-img="{{ media.preview_image | image_url: width: 1280 }}">
+            <img src="{{ media.preview_image | image_url: width: 200 }}" alt="{{ media.alt | default: product.title | escape }}" loading="lazy">
+          </button>
+        {%- endfor -%}
+      </div>
+
+      <div class="stage">
+        {% if cur_color != blank %}<span class="stage__badge" data-stage-badge>{{ cur_color }}</span>{% endif %}
+        {% if product.featured_media %}<img data-stage-img src="{{ product.featured_media.preview_image | image_url: width: 1280 }}" alt="{{ product.featured_media.alt | default: product.title | escape }}">{% else %}<div class="ph" data-stage-img>{{ product.title }}</div>{% endif %}
+        {%- if section.settings.show_hotspots -%}
+          {%- for n in (1..3) -%}
+            {%- assign k_lbl = 'hotspot_' | append: n | append: '_label' -%}
+            {%- assign lbl = section.settings[k_lbl] -%}
+            {%- if lbl != blank -%}
+              {%- assign k_x = 'hotspot_' | append: n | append: '_x' -%}
+              {%- assign k_y = 'hotspot_' | append: n | append: '_y' -%}
+              <span class="hotspot" style="left:{{ section.settings[k_x] }}%;top:{{ section.settings[k_y] }}%">{{ n }}<span class="hotspot__label">{{ lbl }}</span></span>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+      <p class="gallery__caption" data-stage-cap><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg>{{ section.settings.gallery_caption }}</p>
+
+      <div class="edu-row">
+        {%- for n in (1..3) -%}
+          {%- assign k_t = 'edu_' | append: n | append: '_title' -%}
+          {%- assign et = section.settings[k_t] -%}
+          {%- if et != blank -%}
+            {%- assign k_i = 'edu_' | append: n | append: '_image' -%}
+            {%- assign k_d = 'edu_' | append: n | append: '_desc' -%}
+            {%- assign eimg = section.settings[k_i] -%}
+            <article class="edu-tile">
+              <div class="edu-tile__img">{% if eimg %}<img src="{{ eimg | image_url: width: 600 }}" alt="{{ et | escape }}" loading="lazy">{% else %}<div class="ph">{{ et }}</div>{% endif %}</div>
+              <div class="edu-tile__body">
+                <div class="edu-tile__title">{{ et }}</div>
+                <p class="edu-tile__desc">{{ section.settings[k_d] }}</p>
+              </div>
+            </article>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </section>
+
+    <!-- MOBILE SWIPE GALLERY -->
+    <section class="m-gallery" aria-label="Product gallery">
+      <div class="m-gallery__track" data-gallery-track>
+        {%- for media in product.media limit: 6 -%}
+          <div class="m-slide">
+            <img src="{{ media.preview_image | image_url: width: 900 }}" alt="{{ media.alt | default: product.title | escape }}" loading="lazy">
+            {% if media.alt != blank %}<div class="m-slide__cap">{{ media.alt }}</div>{% endif %}
+          </div>
+        {%- endfor -%}
+      </div>
+      <div class="m-gallery__dots">
+        {%- for media in product.media limit: 6 -%}
+          <span{% if forloop.first %} class="on"{% endif %} data-gallery-dot></span>
+        {%- endfor -%}
+      </div>
+    </section>
+
+    <!-- BUY BOX -->
+    <aside class="buybox" aria-label="Purchase options">
+      <div class="buybox__head">
+        <span class="buybox__kicker">{{ section.settings.kicker }}</span>
+        <h1 class="buybox__title">{{ product.title }}</h1>
+        <p class="buybox__subtitle">{{ section.settings.subtitle | default: product.type }}</p>
+      </div>
+
+      <div class="ratingline">
+        <span class="stars">{{ section.settings.rating_stars }}</span>
+        <span><b>{{ rating_value }}</b></span>
+        <a href="{{ section.settings.reviews_anchor | default: '#sppdp-reviews' }}">{% if rating_count != blank and rating_count != 0 %}{{ rating_count }} verified reviews{% else %}Read reviews{% endif %}</a>
+      </div>
+
+      <div class="price-block">
+        <div class="price-row">
+          <span class="price" data-price>{{ cur.price | money_without_trailing_zeros }}</span>
+          {% if cur.compare_at_price > cur.price %}<span class="price-note"><s data-compare>{{ cur.compare_at_price | money_without_trailing_zeros }}</s></span>{% endif %}
+          <span class="price-note">{{ section.settings.price_note }}</span>
+        </div>
+        <div class="affirm">
+          <span class="affirm__logo">affirm</span>
+          <span>As low as <b data-affirm>${{ monthly }}/mo</b> at {{ section.settings.affirm_apr }}</span>
+          <a href="{{ section.settings.affirm_url | default: '/pages/affirm' }}">Prequalify →</a>
+        </div>
+      </div>
+
+      <hr class="rule">
+
+      <form method="post" action="/cart/add" data-product-form>
+        <input type="hidden" name="id" value="{{ cur.id }}" data-variant-id>
+
+        {%- for option in product.options_with_values -%}
+          {%- assign odown = option.name | downcase -%}
+          <div class="optgroup">
+            <div class="optgroup__label">
+              <span class="lbl">{{ option.name }}</span>
+              {%- if odown == 'size' -%}
+                <a class="help-link" href="{{ section.settings.size_help_url | default: '#sppdp-specs' }}"><svg viewBox="0 0 24 24"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M12 12v9M12 12L4 7.5M12 12l8-4.5"/></svg>{{ section.settings.size_help_label }}</a>
+              {%- elsif odown == 'color' or odown == 'colour' or odown == 'colorway' -%}
+                <span class="val"><b data-swatch-name>{{ option.selected_value }}</b></span>
+              {%- endif -%}
+            </div>
+            {%- if odown == 'color' or odown == 'colour' or odown == 'colorway' -%}
+              <div class="swatches">
+                {%- for value in option.values -%}
+                  {%- assign vd = value | downcase -%}
+                  {%- case vd -%}
+                    {%- when 'matte black' -%}{%- assign grad = 'linear-gradient(150deg,#2A2C30 0%,#0E0F11 100%)' -%}
+                    {%- when 'matte black and silver' -%}{%- assign grad = 'linear-gradient(150deg,#43454A 0%,#9DA1A6 100%)' -%}
+                    {%- when 'glossy red' -%}{%- assign grad = 'linear-gradient(150deg,#E5322B 0%,#A01913 100%)' -%}
+                    {%- when 'oswego blue' -%}{%- assign grad = 'linear-gradient(150deg,#3A6076 0%,#1A3142 100%)' -%}
+                    {%- when 'summit grey' -%}{%- assign grad = 'linear-gradient(150deg,#A6ACB1 0%,#6C7176 100%)' -%}
+                    {%- else -%}{%- assign grad = 'linear-gradient(150deg,#6A6F75 0%,#3A3C40 100%)' -%}
+                  {%- endcase -%}
+                  <button type="button" class="swatch" data-opt="{{ option.position }}" data-value="{{ value | escape }}" aria-pressed="{% if value == option.selected_value %}true{% else %}false{% endif %}"><span class="swatch__chip" style="background:{{ grad }}"></span><span class="swatch__name">{{ value }}</span></button>
+                {%- endfor -%}
+              </div>
+            {%- else -%}
+              <div class="sizes">
+                {%- for value in option.values -%}
+                  <button type="button" class="size-pill" data-opt="{{ option.position }}" data-value="{{ value | escape }}" aria-pressed="{% if value == option.selected_value %}true{% else %}false{% endif %}">{{ value }}</button>
+                {%- endfor -%}
+              </div>
+              {%- if odown == 'size' -%}
+                <div class="optgroup__label"><span class="val" data-size-val>Selected: <b>{{ option.selected_value }}</b></span></div>
+              {%- endif -%}
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+
+        <div class="cta-stack" style="margin-top:6px">
+          <button type="submit" class="btn btn--primary btn-addcart" data-atc{% unless cur.available %} disabled{% endunless %}><span class="btn-label">{% if cur.available %}{{ section.settings.cta_prefix }}{{ cur.price | money_without_trailing_zeros }}{% else %}Sold out{% endif %}</span></button>
+          <div class="cta-sub">
+            <span class="demo"><svg viewBox="0 0 24 24"><path d="M3 12l2-7h14l2 7M5 12h14v5a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2z"/></svg>{{ section.settings.demo_note }}</span>
+            <a href="{{ section.settings.consult_url | default: '#' }}" data-buybox-end>{{ section.settings.consult_label }}</a>
+          </div>
+        </div>
+      </form>
+
+      {%- assign trust_count = 0 -%}
+      {%- for b in section.blocks -%}{% if b.type == 'trust' %}{% assign trust_count = trust_count | plus: 1 %}{% endif %}{%- endfor -%}
+      {%- if trust_count > 0 -%}
+      <div class="trust">
+        {%- for b in section.blocks -%}
+          {%- if b.type != 'trust' -%}{%- continue -%}{%- endif -%}
+          <div class="trust__item" {{ b.shopify_attributes }}>
+            {% render 'sppdp-icon', icon: b.settings.icon %}
+            <div><div class="t-title">{{ b.settings.title }}</div><div class="t-sub">{{ b.settings.sub }}</div></div>
+          </div>
+        {%- endfor -%}
+      </div>
+      {%- endif -%}
+    </aside>
+  </main>
+
+  {%- if section.settings.show_sticky -%}
+  <div class="sticky-buy" data-sticky-buy>
+    <div class="sticky-buy__info">
+      <div class="sticky-buy__name">{{ product.title }}{% if cur_color != blank %} · <span data-swatch-name>{{ cur_color }}</span>{% endif %}</div>
+      <div class="sticky-buy__price"><b data-price>{{ cur.price | money_without_trailing_zeros }}</b> · <span data-affirm>${{ monthly }}/mo</span></div>
+    </div>
+    <button type="button" class="btn btn--primary" data-atc{% unless cur.available %} disabled{% endunless %}><span class="btn-label">{% if cur.available %}Add to cart{% else %}Sold out{% endif %}</span></button>
+  </div>
+  {%- endif -%}
+
+  <script>
+  (function(){
+    var R = document.getElementById('sppdp-pdp-{{ section.id }}');
+    if(!R || R.dataset.vinit) return; R.dataset.vinit = '1';
+    var variants = {{ product.variants | json }};
+    var months = {{ months }};
+    var ctaPrefix = {{ section.settings.cta_prefix | json }};
+    var colorPos = {{ color_pos | json }}, sizePos = {{ size_pos | json }};
+    function money(c){ return '$' + (c/100).toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0}); }
+    var groups = {};
+    R.querySelectorAll('[data-opt]').forEach(function(b){ var o=b.getAttribute('data-opt'); (groups[o]=groups[o]||[]).push(b); });
+    var sel = {};
+    Object.keys(groups).forEach(function(o){
+      var on = groups[o].filter(function(b){return b.getAttribute('aria-pressed')==='true';})[0] || groups[o][0];
+      sel[o] = on.getAttribute('data-value');
+    });
+    function find(){
+      return variants.filter(function(v){
+        return (v.option1==null || String(v.option1)===sel['1'])
+            && (v.option2==null || String(v.option2)===sel['2'])
+            && (v.option3==null || String(v.option3)===sel['3']);
+      })[0];
+    }
+    function setAll(sel2, val){ R.querySelectorAll(sel2).forEach(function(el){ el.textContent = val; }); }
+    function update(){
+      var v = find();
+      var idIn = R.querySelector('[data-variant-id]');
+      var atcs = R.querySelectorAll('[data-atc]');
+      if(colorPos) setAll('[data-swatch-name]', sel[colorPos]);
+      if(sizePos){ var sv=R.querySelector('[data-size-val]'); if(sv) sv.innerHTML = 'Selected: <b>'+sel[sizePos]+'</b>'; }
+      var badge = R.querySelector('[data-stage-badge]'); if(badge && colorPos) badge.textContent = sel[colorPos];
+      if(!v){ atcs.forEach(function(b){ b.disabled=true; var l=b.querySelector('.btn-label'); if(l) l.textContent='Unavailable'; }); return; }
+      if(idIn) idIn.value = v.id;
+      setAll('[data-price]', money(v.price));
+      setAll('[data-affirm]', '$' + Math.round(v.price/100/months) + '/mo');
+      if(v.featured_image && v.featured_image.src){ var st=R.querySelector('[data-stage-img]'); if(st && st.tagName==='IMG'){ st.src = v.featured_image.src; } }
+      atcs.forEach(function(b){
+        var l=b.querySelector('.btn-label');
+        if(v.available){ b.disabled=false; if(l) l.textContent = b.classList.contains('btn-addcart') ? (ctaPrefix + money(v.price)) : 'Add to cart'; }
+        else { b.disabled=true; if(l) l.textContent='Sold out'; }
+      });
+    }
+    R.querySelectorAll('[data-opt]').forEach(function(b){
+      b.addEventListener('click', function(){
+        var o=b.getAttribute('data-opt');
+        groups[o].forEach(function(x){ x.setAttribute('aria-pressed','false'); });
+        b.setAttribute('aria-pressed','true');
+        sel[o]=b.getAttribute('data-value');
+        update();
+      });
+    });
+    var form = R.querySelector('[data-product-form]');
+    R.querySelectorAll('[data-atc]').forEach(function(btn){
+      btn.addEventListener('click', function(e){
+        var v=find(); if(!v || !v.available) return;
+        e.preventDefault();
+        var l=btn.querySelector('.btn-label'); var prev=l?l.textContent:'';
+        fetch('/cart/add.js',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:v.id,quantity:1})})
+          .then(function(r){ if(!r.ok) throw r; return r.json(); })
+          .then(function(){ if(l) l.textContent='Added to cart ✓';
+            R.querySelectorAll('[data-cart-count]').forEach(function(c){ c.textContent=(parseInt(c.textContent,10)||0)+1; });
+            setTimeout(function(){ if(l) l.textContent=prev; },1800); })
+          .catch(function(){ if(form){ form.submit(); } });
+      });
+    });
+    update();
+  })();
+  </script>
+</div>
+{% schema %}
+{
+  "name": "SP-105 PDP · Product",
+  "tag": "section",
+  "max_blocks": 8,
+  "settings": [
+    { "type": "header", "content": "Breadcrumb" },
+    { "type": "text", "id": "bc_home", "label": "Home label", "default": "Home" },
+    { "type": "text", "id": "bc_col", "label": "Collection label", "default": "Triathlon — SP" },
+    { "type": "url", "id": "bc_col_url", "label": "Collection link" },
+    { "type": "header", "content": "Title & rating" },
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "SP Triathlon · Entry build" },
+    { "type": "text", "id": "subtitle", "label": "Subtitle (defaults to product type)", "default": "Carbon triathlon & time-trial bike" },
+    { "type": "text", "id": "rating_stars", "label": "Stars", "default": "★★★★★" },
+    { "type": "text", "id": "rating_value", "label": "Rating value (falls back to reviews.rating metafield)", "default": "4.8" },
+    { "type": "text", "id": "rating_count", "label": "Review count (falls back to reviews.rating_count metafield)" },
+    { "type": "text", "id": "reviews_anchor", "label": "Reviews anchor", "default": "#sppdp-reviews" },
+    { "type": "header", "content": "Price & financing" },
+    { "type": "text", "id": "price_note", "label": "Price note", "default": "USD · ships free in the continental US" },
+    { "type": "range", "id": "affirm_months", "label": "Affirm months (monthly = price ÷ months)", "min": 6, "max": 48, "step": 6, "default": 12 },
+    { "type": "text", "id": "affirm_apr", "label": "Affirm APR text", "default": "0% APR" },
+    { "type": "url", "id": "affirm_url", "label": "Affirm prequalify link" },
+    { "type": "header", "content": "Gallery — caption & hotspots" },
+    { "type": "textarea", "id": "gallery_caption", "label": "Stage caption", "default": "Hover the numbered points to explore the frame tech." },
+    { "type": "checkbox", "id": "show_hotspots", "label": "Show annotation hotspots", "default": true },
+    { "type": "text", "id": "hotspot_1_label", "label": "Hotspot 1 label", "default": "Kammtail tube shapes — aero without UCI-only weirdness" },
+    { "type": "range", "id": "hotspot_1_x", "label": "Hotspot 1 — X %", "min": 0, "max": 100, "step": 1, "default": 34 },
+    { "type": "range", "id": "hotspot_1_y", "label": "Hotspot 1 — Y %", "min": 0, "max": 100, "step": 1, "default": 58 },
+    { "type": "text", "id": "hotspot_2_label", "label": "Hotspot 2 label", "default": "Fully internal cable + hose routing" },
+    { "type": "range", "id": "hotspot_2_x", "label": "Hotspot 2 — X %", "min": 0, "max": 100, "step": 1, "default": 60 },
+    { "type": "range", "id": "hotspot_2_y", "label": "Hotspot 2 — Y %", "min": 0, "max": 100, "step": 1, "default": 40 },
+    { "type": "text", "id": "hotspot_3_label", "label": "Hotspot 3 label", "default": "SAGS cockpit — 140mm of fit adjustment" },
+    { "type": "range", "id": "hotspot_3_x", "label": "Hotspot 3 — X %", "min": 0, "max": 100, "step": 1, "default": 78 },
+    { "type": "range", "id": "hotspot_3_y", "label": "Hotspot 3 — Y %", "min": 0, "max": 100, "step": 1, "default": 30 },
+    { "type": "header", "content": "Education detail tiles" },
+    { "type": "image_picker", "id": "edu_1_image", "label": "Tile 1 image" },
+    { "type": "text", "id": "edu_1_title", "label": "Tile 1 title", "default": "Toray T700 carbon" },
+    { "type": "textarea", "id": "edu_1_desc", "label": "Tile 1 text", "default": "Hand-laid layup — the same fiber class as superbikes costing 3× more." },
+    { "type": "image_picker", "id": "edu_2_image", "label": "Tile 2 image" },
+    { "type": "text", "id": "edu_2_title", "label": "Tile 2 title", "default": "SAGS adjustable cockpit" },
+    { "type": "textarea", "id": "edu_2_desc", "label": "Tile 2 text", "default": "140mm fore/aft pad range. Dial your aero fit without a new stem." },
+    { "type": "image_picker", "id": "edu_3_image", "label": "Tile 3 image" },
+    { "type": "text", "id": "edu_3_title", "label": "Tile 3 title", "default": "Race-day storage" },
+    { "type": "textarea", "id": "edu_3_desc", "label": "Tile 3 text", "default": "Down-tube and top-tube mounts for nutrition and tools, built in." },
+    { "type": "header", "content": "Size help & CTA" },
+    { "type": "text", "id": "size_help_label", "label": "Find-your-size link label", "default": "Find your size" },
+    { "type": "url", "id": "size_help_url", "label": "Find-your-size link" },
+    { "type": "text", "id": "cta_prefix", "label": "Add-to-cart label prefix", "default": "Add to cart — " },
+    { "type": "text", "id": "demo_note", "label": "Demo note", "default": "7-day home demo" },
+    { "type": "text", "id": "consult_label", "label": "Consult link label", "default": "Or book a free fit consult" },
+    { "type": "url", "id": "consult_url", "label": "Consult link" },
+    { "type": "header", "content": "Mobile" },
+    { "type": "checkbox", "id": "show_sticky", "label": "Show persistent mobile add-to-cart bar", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "trust",
+      "name": "Trust item",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icon", "options": [
+          { "value": "shield-check", "label": "Shield check" },
+          { "value": "bars", "label": "Bars" },
+          { "value": "sliders", "label": "Sliders" },
+          { "value": "warranty", "label": "Warranty" }
+        ], "default": "shield-check" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Trust point" },
+        { "type": "textarea", "id": "sub", "label": "Subtext" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SP-105 PDP · Product",
+      "blocks": [
+        { "type": "trust", "settings": { "icon": "shield-check", "title": "Designed by ex-Cervélo engineers", "sub": "Kevin Quan, who designed the Cervélo P-Series, drew this frame." } },
+        { "type": "trust", "settings": { "icon": "bars", "title": "Direct-to-consumer pricing", "sub": "No dealer markup. You pay for the bike, not the showroom." } },
+        { "type": "trust", "settings": { "icon": "sliders", "title": "Free fit support & size exchanges", "sub": "Talk to a real fitter before and after you buy. Wrong size? Swap it free." } },
+        { "type": "trust", "settings": { "icon": "warranty", "title": "Lifetime frame warranty + crash replacement", "sub": "Honored directly by us. Damage it in a crash and we replace the frame." } }
+      ]
+    }
+  ]
+}
+{% endschema %}
