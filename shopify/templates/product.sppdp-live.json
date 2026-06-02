@@ -15,9 +15,14 @@
         "t1": { "type": "trust", "settings": { "icon": "shield-check", "title": "Designed by ex-Cervélo engineers", "sub": "Kevin Quan, who designed the Cervélo P-Series, drew this frame." } },
         "t2": { "type": "trust", "settings": { "icon": "bars", "title": "Direct-to-consumer pricing", "sub": "No dealer markup. You pay for the bike, not the showroom." } },
         "t3": { "type": "trust", "settings": { "icon": "sliders", "title": "Free fit support & size exchanges", "sub": "Talk to a real fitter before and after you buy. Wrong size? Swap it free." } },
-        "t4": { "type": "trust", "settings": { "icon": "warranty", "title": "Lifetime frame warranty + crash replacement", "sub": "Honored directly by us. Damage it in a crash and we replace the frame." } }
+        "t4": { "type": "trust", "settings": { "icon": "warranty", "title": "Lifetime frame warranty + crash replacement", "sub": "Honored directly by us. Damage it in a crash and we replace the frame." } },
+        "h1": { "type": "hotspot", "settings": { "image_index": 1, "label": "Kammtail tube shapes — aero without UCI-only weirdness", "x": 34, "y": 58 } },
+        "h2": { "type": "hotspot", "settings": { "image_index": 1, "label": "Fully internal cable + hose routing", "x": 60, "y": 40 } },
+        "h3": { "type": "hotspot", "settings": { "image_index": 1, "label": "SAGS cockpit — 140mm of fit adjustment", "x": 78, "y": 30 } },
+        "h4": { "type": "hotspot", "settings": { "image_index": 2, "label": "TRP Spyre mechanical disc — flat-mount", "x": 32, "y": 66 } },
+        "h5": { "type": "hotspot", "settings": { "image_index": 2, "label": "12mm thru-axle", "x": 72, "y": 70 } }
       },
-      "block_order": ["t1", "t2", "t3", "t4"]
+      "block_order": ["t1", "t2", "t3", "t4", "h1", "h2", "h3", "h4", "h5"]
     },
     "reviews": {
       "type": "sppdp-reviews",
