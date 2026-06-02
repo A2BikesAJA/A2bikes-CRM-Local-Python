@@ -1,4 +1,4 @@
-{%- comment -%} Price + Affirm monthly pull live from each build's linked product (all_products[handle]). {%- endcomment -%}
+{%- comment -%} Price + Affirm monthly pull live from each build's linked product via all_products[handle]; when product_handle is blank the handle is derived from the product link. Manual price/affirm remain fallbacks. {%- endcomment -%}
 {% render 'spc-assets' %}
 <div class="spc">
   <section class="spc-sec spc-compare" id="spc-compare">
