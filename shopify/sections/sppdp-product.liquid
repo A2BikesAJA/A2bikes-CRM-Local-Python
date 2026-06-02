@@ -140,11 +140,16 @@
           {% if cur.compare_at_price > cur.price %}<span class="price-note"><s data-compare>{{ cur.compare_at_price | money_without_trailing_zeros }}</s></span>{% endif %}
           <span class="price-note">{{ section.settings.price_note }}</span>
         </div>
+        {%- if section.settings.show_affirm_line -%}
         <div class="affirm">
           <span class="affirm__logo">affirm</span>
           <span>As low as <b data-affirm>${{ monthly }}/mo</b> at {{ section.settings.affirm_apr }}</span>
           <a href="{{ section.settings.affirm_url | default: '/pages/affirm' }}">Prequalify →</a>
         </div>
+        {%- endif -%}
+        {%- for block in section.blocks -%}
+          {%- if block.type == '@app' -%}<div class="affirm-app" {{ block.shopify_attributes }}>{% render block %}</div>{%- endif -%}
+        {%- endfor -%}
       </div>
 
       <hr class="rule">
@@ -228,6 +233,7 @@
   <style>
     #sppdp-pdp-{{ section.id }} .is-unavailable{ opacity:.45; }
     #sppdp-pdp-{{ section.id }} .size-pill.is-unavailable{ text-decoration:line-through; border-style:dashed; }
+    #sppdp-pdp-{{ section.id }} .affirm-app{ margin-top:2px; }
   </style>
   <script>
   (function(){
@@ -341,7 +347,8 @@
     { "type": "text", "id": "price_note", "label": "Price note", "default": "USD · ships free in the continental US" },
     { "type": "range", "id": "affirm_months", "label": "Affirm months (monthly = price ÷ months)", "min": 6, "max": 48, "step": 6, "default": 12 },
     { "type": "text", "id": "affirm_apr", "label": "Affirm APR text", "default": "0% APR" },
-    { "type": "url", "id": "affirm_url", "label": "Affirm prequalify link" },
+    { "type": "url", "id": "affirm_url", "label": "Affirm prequalify link (static line)" },
+    { "type": "checkbox", "id": "show_affirm_line", "label": "Show built-in Affirm line", "info": "Turn off if you add the official Affirm app block (below) so you don't show both.", "default": true },
     { "type": "header", "content": "Gallery — caption & hotspots", "info": "Add 'Hotspot' blocks below; set each one's Photo number to place it on that gallery image. Hotspots show only when their photo is on the main stage." },
     { "type": "textarea", "id": "gallery_caption", "label": "Stage caption", "default": "Hover the numbered points to explore the frame tech." },
     { "type": "checkbox", "id": "show_hotspots", "label": "Show annotation hotspots", "default": true },
@@ -389,7 +396,8 @@
         { "type": "range", "id": "x", "label": "X position %", "min": 0, "max": 100, "step": 1, "default": 50 },
         { "type": "range", "id": "y", "label": "Y position %", "min": 0, "max": 100, "step": 1, "default": 50 }
       ]
-    }
+    },
+    { "type": "@app" }
   ],
   "presets": [
     {
