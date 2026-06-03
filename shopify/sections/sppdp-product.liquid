@@ -388,6 +388,12 @@
         update();
       });
     });
+    var wheelOpts = R.querySelectorAll('[data-wheel-upgrade]');
+    wheelOpts.forEach(function(w){
+      w.addEventListener('change', function(){
+        if(w.checked){ wheelOpts.forEach(function(o){ if(o!==w){ o.checked=false; } }); }
+      });
+    });
     R.querySelectorAll('[data-atc]').forEach(function(btn){
       btn.addEventListener('click', function(e){
         if(btn.disabled) return;
