@@ -1,9 +1,7 @@
 /*
- * Rogue — SRAM Rival AXS PDP template.
- * Built from the SP (sp-rival) blueprint: same 4 sppdp sections / order.
- * Per-build differences (kicker only) — components, price, groupset & complete
- * weight auto-fill from each product's sc_attributes + custom.siblings_color.
- * Shared Rogue content: frame-tech cards, hotspots, specs groups, compare, reviews.
+ * Rogue PDP template — Rogue All-Road · SRAM RED AXS build.
+ * Same sppdp layout as the Rogue lineup; components / price / groupset / weight
+ * auto-fill per build from sc_attributes + custom.siblings_color.
  */
 {
   "sections": {
@@ -70,12 +68,20 @@
           }
         }
       },
-      "block_order": ["t1", "t2", "t3", "t4", "h1", "h2", "h3"],
+      "block_order": [
+        "t1",
+        "t2",
+        "t3",
+        "t4",
+        "h1",
+        "h2",
+        "h3"
+      ],
       "settings": {
         "build_collection": "rogue",
         "bc_col": "Rogue",
         "bc_col_url": "/collections/rogue",
-        "kicker": "Rogue All-Road · SRAM Rival AXS build",
+        "kicker": "Rogue All-Road · SRAM RED AXS build",
         "subtitle": "Carbon all-road endurance bike",
         "edu_1_title": "Lightweight Carbon Fiber Frame",
         "edu_1_desc": "A hand-laid carbon frameset — light, stiff, and tuned for all-day comfort.",
@@ -122,7 +128,11 @@
           }
         }
       },
-      "block_order": ["r1", "r2", "r3"],
+      "block_order": [
+        "r1",
+        "r2",
+        "r3"
+      ],
       "settings": {
         "kicker": "Owner reviews · rider to rider",
         "heading": "What Rogue riders say",
@@ -136,7 +146,7 @@
           "type": "row",
           "settings": {
             "label": "Price",
-            "a2": "$3,999",
+            "a2": "$9,900",
             "a2_source": "price",
             "a2_style": "bold",
             "comp1": "Dealer MSRP",
@@ -157,7 +167,7 @@
           "type": "row",
           "settings": {
             "label": "Groupset",
-            "a2": "SRAM Rival AXS (wireless, 12-speed)",
+            "a2": "SRAM RED AXS (wireless, 12-speed)",
             "a2_source": "groupset",
             "a2_style": "normal",
             "comp1": "Comparable groupset",
@@ -215,7 +225,16 @@
           }
         }
       },
-      "block_order": ["c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8"],
+      "block_order": [
+        "c1",
+        "c2",
+        "c3",
+        "c4",
+        "c5",
+        "c6",
+        "c7",
+        "c8"
+      ],
       "settings": {
         "heading": "How the Rogue compares",
         "note": "We're a younger brand, so it's fair to ask how we stack up. Here's a straight look at the Rogue against comparable carbon all-road bikes. Competitor columns are placeholders — set the two brands you want to call out, and verify their prices, before publishing.",
@@ -266,11 +285,22 @@
           }
         }
       },
-      "block_order": ["g1", "g2", "g3", "g4", "g5"],
+      "block_order": [
+        "g1",
+        "g2",
+        "g3",
+        "g4",
+        "g5"
+      ],
       "settings": {
         "frame_weight": ""
       }
     }
   },
-  "order": ["main", "reviews", "compare", "specs"]
+  "order": [
+    "main",
+    "reviews",
+    "compare",
+    "specs"
+  ]
 }
