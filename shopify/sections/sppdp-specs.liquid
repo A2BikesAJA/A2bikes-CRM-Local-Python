@@ -1,5 +1,13 @@
-{%- comment -%} SP-105 PDP — quick specs + accordion. First accordion group opens by default (sp-pdp.js). Drive rows from metafields where possible in production. Each accordion row is one "Label | Value" line. {%- endcomment -%}
+{%- comment -%}
+  SP PDP — specs. The Groupset / Shifting / Weight tiles and the
+  "Drivetrain & components" group are generated PER BUILD from the product's
+  sc_attributes + custom.siblings_color metafields, so one template is correct
+  for every SP build. Manual "group" blocks add shared content (frame, wheels,
+  cockpit fit, geometry, assembly). First accordion group opens by default.
+{%- endcomment -%}
 {% render 'sppdp-assets' %}
+{%- assign mf = product.metafields.sc_attributes -%}
+{%- assign groupset = product.metafields.custom.siblings_color.value -%}
 <div class="sppdp">
   <section class="pdp-section pdp-section--paper" id="sppdp-specs">
     <div class="pdp-wrap specs">
@@ -8,10 +16,17 @@
         <h2 class="pdp-section__title">{{ section.settings.heading }}</h2>
       </div>
 
-      {%- assign has_quick = false -%}
+      {%- assign has_quick = section.settings.auto_specs -%}
       {%- for b in section.blocks -%}{% if b.type == 'quick' %}{% assign has_quick = true %}{% endif %}{%- endfor -%}
       {%- if has_quick -%}
       <div class="spec-quick">
+        {%- if section.settings.auto_specs -%}
+          {% if groupset != blank %}<div class="spec-quick__item"><div class="spec-quick__k">Groupset</div><div class="spec-quick__v">{{ groupset }}</div></div>{% endif %}
+          {%- assign elec = mf.electronic_shifting.value | strip -%}
+          {% if elec != blank %}<div class="spec-quick__item"><div class="spec-quick__k">Shifting</div><div class="spec-quick__v">{% if elec == 'Yes' %}Electronic{% else %}Mechanical{% endif %}</div></div>{% endif %}
+          {% if section.settings.frame_weight != blank %}<div class="spec-quick__item"><div class="spec-quick__k">Frame weight</div><div class="spec-quick__v">{{ section.settings.frame_weight }}</div></div>{% endif %}
+          {% if mf.weight != blank %}<div class="spec-quick__item"><div class="spec-quick__k">Complete weight</div><div class="spec-quick__v">{{ mf.weight }}</div></div>{% endif %}
+        {%- endif -%}
         {%- for b in section.blocks -%}
           {%- if b.type != 'quick' -%}{%- continue -%}{%- endif -%}
           <div class="spec-quick__item" {{ b.shopify_attributes }}><div class="spec-quick__k">{{ b.settings.k }}</div><div class="spec-quick__v">{{ b.settings.v }}</div></div>
@@ -20,6 +35,28 @@
       {%- endif -%}
 
       <div class="accordion">
+        {%- if section.settings.auto_specs -%}
+          {%- capture comp_rows -%}
+            {%- assign v = mf.shifters.value | strip -%}{% if v != blank %}<tr><td>Shifters</td><td>{{ v }}</td></tr>{% endif %}
+            {%- assign v = mf.front_derailleur.value | strip -%}{% if v != blank %}<tr><td>Front derailleur</td><td>{{ v }}</td></tr>{% endif %}
+            {%- assign v = mf.rear_derailleur.value | strip -%}{% if v != blank %}<tr><td>Rear derailleur</td><td>{{ v }}</td></tr>{% endif %}
+            {%- assign cr = mf.crank_.value | strip -%}{%- assign ct = mf.crank_tooth_count.value | strip -%}{% if cr != blank %}<tr><td>Crankset</td><td>{{ cr }}{% if ct != blank %} · {{ ct }}{% endif %}</td></tr>{% endif %}
+            {%- assign v = mf.cassette_.value | strip -%}{% if v != blank %}<tr><td>Cassette</td><td>{{ v }}</td></tr>{% endif %}
+            {%- assign v = mf.brakes.value | strip -%}{% if v != blank %}<tr><td>Brakes</td><td>{{ v }}</td></tr>{% endif %}
+            {%- assign v = mf.brake_rotors.value | strip -%}{% if v != blank %}<tr><td>Rotors</td><td>{{ v }}</td></tr>{% endif %}
+            {%- assign v = mf.bottom_bracket.value | strip -%}{% if v != blank %}<tr><td>Bottom bracket</td><td>{{ v }}</td></tr>{% endif %}
+            {%- assign v = mf.stem.value | strip -%}{% if v != blank %}<tr><td>Stem</td><td>{{ v }}</td></tr>{% endif %}
+            {%- assign v = mf.handlebars.value | strip -%}{% if v != blank %}<tr><td>Handlebars</td><td>{{ v }}</td></tr>{% endif %}
+            {%- assign v = mf.saddle.value | strip -%}{% if v != blank %}<tr><td>Saddle</td><td>{{ v }}</td></tr>{% endif %}
+          {%- endcapture -%}
+          {%- assign comp_check = comp_rows | strip -%}
+          {%- if comp_check != blank -%}
+          <div class="acc-item">
+            <button class="acc-q" aria-expanded="false">{{ section.settings.components_title }}<span class="acc-q__icon" aria-hidden="true"></span></button>
+            <div class="acc-a"><div class="acc-a__inner"><table class="spec-table">{{ comp_rows }}</table></div></div>
+          </div>
+          {%- endif -%}
+        {%- endif -%}
         {%- for b in section.blocks -%}
           {%- if b.type != 'group' -%}{%- continue -%}{%- endif -%}
           <div class="acc-item" {{ b.shopify_attributes }}>
@@ -46,15 +83,19 @@
   "max_blocks": 20,
   "settings": [
     { "type": "text", "id": "kicker", "label": "Kicker", "default": "Specs & details" },
-    { "type": "text", "id": "heading", "label": "Heading", "default": "Everything on the SP-105" }
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Everything on this build" },
+    { "type": "header", "content": "Auto components (per build)" },
+    { "type": "checkbox", "id": "auto_specs", "label": "Auto-generate components from product metafields", "info": "Builds the Groupset / Shifting / Weight tiles and a components group from the product's sc_attributes + custom.siblings_color metafields, so this template is correct on every SP build.", "default": true },
+    { "type": "text", "id": "components_title", "label": "Components group title", "default": "Drivetrain & components" },
+    { "type": "text", "id": "frame_weight", "label": "Frame weight tile (shared)", "default": "1,250 g" }
   ],
   "blocks": [
     {
       "type": "quick",
-      "name": "Quick-spec tile",
+      "name": "Quick-spec tile (manual)",
       "settings": [
-        { "type": "text", "id": "k", "label": "Label", "default": "Frame weight" },
-        { "type": "text", "id": "v", "label": "Value", "default": "1,250 g" }
+        { "type": "text", "id": "k", "label": "Label", "default": "Wheels" },
+        { "type": "text", "id": "v", "label": "Value", "default": "Vision Team 30" }
       ]
     },
     {
@@ -70,16 +111,11 @@
     {
       "name": "SP-105 PDP · Specs",
       "blocks": [
-        { "type": "quick", "settings": { "k": "Frame weight", "v": "1,250 g" } },
-        { "type": "quick", "settings": { "k": "Groupset", "v": "105 · 12-spd" } },
-        { "type": "quick", "settings": { "k": "Wheels", "v": "Vision Team 30" } },
-        { "type": "quick", "settings": { "k": "Complete weight", "v": "~9.1 kg" } },
-        { "type": "group", "settings": { "title": "Frame & fork", "rows": "Material | Hand-laid Toray T700 carbon fiber\nFrame weight | 1,250 g (size M, painted)\nTube profiles | Truncated-airfoil (kammtail) down tube, seat tube & fork\nRouting | Fully internal cable & hydraulic hose\nDesigner | Kevin Quan (former Cervélo P-Series engineer)" } },
-        { "type": "group", "settings": { "title": "Drivetrain", "rows": "Groupset | Shimano 105 R7100, 12-speed mechanical\nShifting | Bar-end shifters (TT/tri standard)\nCrankset | 52/36T mid-compact\nCassette | 11–34T, 12-speed\nBrakes | Shimano 105 hydraulic disc, flat-mount" } },
-        { "type": "group", "settings": { "title": "Wheels & tires", "rows": "Wheelset | Vision Team 30 alloy, tubeless-ready\nTires | Continental Ultra Sport III, 700×28c\nAxles | 12mm thru-axle, front & rear\nUpgrade path | Accepts standard 12-speed wheelsets — many owners add deep aero wheels for race day" } },
-        { "type": "group", "settings": { "title": "Cockpit & fit (SAGS)", "rows": "Aerobar | SAGS integrated cockpit, alloy extensions\nPad adjustment | 140mm fore/aft, 95mm stack range\nExtension shape | Ski-bend, tool-free angle adjust\nBase bar | Aero alloy, internally routed" } },
-        { "type": "group", "settings": { "title": "Geometry & sizing", "rows": "Sizes | XS · S · M · L · XL\nRider range | ~5'1\" to 6'4\" (155–193 cm)\nSize M fits | ~5'7\"–5'10\"\nSizing help | Free remote fit call + size calculator; free exchanges" } },
-        { "type": "group", "settings": { "title": "In the box & assembly", "rows": "Pre-assembly | Ships 92% assembled\nYou install | Seatpost, cockpit, and brake dial-in — the headset & stem are the fiddly parts, so take your time with the included torque wrench\nTypical setup time | Under an hour with the included video guide\nPrefer a shop? | Most local shops finish the build for $50–150" } }
+        { "type": "group", "settings": { "title": "Frame & fork", "rows": "Material | Hand-laid Toray T700 carbon fiber\nFrame weight | 1,250 g (size M, painted)\nTube profiles | Truncated-airfoil (kammtail) down tube, seat tube & fork\nRouting | Fully internal cable & hose\nDesigner | Kevin Quan (former Cervélo P-Series engineer)" } },
+        { "type": "group", "settings": { "title": "Wheels & tires", "rows": "Axles | 12mm thru-axle, front & rear\nUpgrade path | Accepts standard wheelsets — many owners add deep aero wheels for race day" } },
+        { "type": "group", "settings": { "title": "Cockpit & fit (SAGS)", "rows": "Aerobar | SAGS integrated cockpit\nPad adjustment | 140mm fore/aft, 95mm stack range\nExtension shape | Ski-bend, tool-free angle adjust" } },
+        { "type": "group", "settings": { "title": "Geometry & sizing", "rows": "Sizes | Small · Medium · Large · XL\nRider range | ~5'1\" to 6'4\" (155–193 cm)\nSizing help | Free remote fit call + size calculator; free exchanges" } },
+        { "type": "group", "settings": { "title": "In the box & assembly", "rows": "Pre-assembly | Ships 92% assembled\nYou install | Seatpost, cockpit, and brake dial-in — take your time with the included torque wrench\nTypical setup time | Under an hour with the included video guide\nPrefer a shop? | Most local shops finish the build for $50–150" } }
       ]
     }
   ]
