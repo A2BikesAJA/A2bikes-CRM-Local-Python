@@ -171,8 +171,9 @@
         {%- assign wheel_save = product.metafields.custom.wheel_upgrade.value -%}
         {%- assign wu_url = product.metafields.custom.wheel_upgrade_url.value -%}
         {%- assign wu_var = product.metafields.custom.wheel_upgrade_variant.value -%}
-        {%- assign wheel_save2 = product.metafields.custom.wheel_upgrade_2.value -%}
         {%- assign wu_var2 = product.metafields.custom.wheel_upgrade_variant_2.value -%}
+        {%- assign credit_cents = 0 -%}
+        {%- if product.metafields.custom.wheel_upgrade_credit.value != blank -%}{%- assign credit_cents = product.metafields.custom.wheel_upgrade_credit.value | times: 100 -%}{%- endif -%}
         {%- assign has_opt1 = false -%}{%- if wu_var != blank and wu_var.id -%}{%- assign has_opt1 = true -%}{%- endif -%}
         {%- assign has_opt2 = false -%}{%- if wu_var2 != blank and wu_var2.id -%}{%- assign has_opt2 = true -%}{%- endif -%}
         {%- if wheel_save != blank or has_opt1 or has_opt2 -%}
@@ -181,13 +182,13 @@
           <label class="wheel-upsell__opt">
             <input type="checkbox" data-wheel-upgrade value="{{ wu_var.id }}">
             <span class="wheel-upsell__txt">
-              <span class="wheel-upsell__title">Add {{ wu_var.product.title }} — <b>+{{ wu_var.price | money_without_trailing_zeros }}</b>{% if wheel_save != blank %} <span class="wheel-upsell__save">{{ wheel_save }}</span>{% endif %}</span>
+              <span class="wheel-upsell__title">Add {{ wu_var.product.title }} — <b>+{{ wu_var.price | minus: credit_cents | money_without_trailing_zeros }}</b>{% if credit_cents > 0 %} <span class="wheel-upsell__save">Save {{ credit_cents | money_without_trailing_zeros }}</span>{% endif %}</span>
             </span>
           </label>
           <label class="wheel-upsell__opt">
             <input type="checkbox" data-wheel-upgrade value="{{ wu_var2.id }}">
             <span class="wheel-upsell__txt">
-              <span class="wheel-upsell__title">Add {{ wu_var2.product.title }} — <b>+{{ wu_var2.price | money_without_trailing_zeros }}</b>{% if wheel_save2 != blank %} <span class="wheel-upsell__save">{{ wheel_save2 }}</span>{% endif %}</span>
+              <span class="wheel-upsell__title">Add {{ wu_var2.product.title }} — <b>+{{ wu_var2.price | minus: credit_cents | money_without_trailing_zeros }}</b>{% if credit_cents > 0 %} <span class="wheel-upsell__save">Save {{ credit_cents | money_without_trailing_zeros }}</span>{% endif %}</span>
             </span>
           </label>
           <span class="wheel-upsell__note">{{ section.settings.wheel_note }}</span>
@@ -197,7 +198,7 @@
           <label class="wheel-upsell__opt">
             <input type="checkbox" data-wheel-upgrade value="{{ wu_var.id }}">
             <span class="wheel-upsell__txt">
-              <span class="wheel-upsell__title">Add {{ wu_var.product.title }} — <b>+{{ wu_var.price | money_without_trailing_zeros }}</b>{% if wheel_save != blank %} <span class="wheel-upsell__save">{{ wheel_save }}</span>{% endif %}</span>
+              <span class="wheel-upsell__title">Add {{ wu_var.product.title }} — <b>+{{ wu_var.price | minus: credit_cents | money_without_trailing_zeros }}</b>{% if credit_cents > 0 %} <span class="wheel-upsell__save">Save {{ credit_cents | money_without_trailing_zeros }}</span>{% endif %}</span>
               <span class="wheel-upsell__note">{{ section.settings.wheel_note }}</span>
             </span>
           </label>
