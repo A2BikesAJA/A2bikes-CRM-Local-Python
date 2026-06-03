@@ -185,7 +185,7 @@
             <span class="wheel-upsell__ico"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="2.6"/><path d="M12 3.5v3M12 17.5v3M3.5 12h3M17.5 12h3M6.3 6.3l2.1 2.1M15.6 15.6l2.1 2.1M17.7 6.3l-2.1 2.1M8.4 15.6l-2.1 2.1"/></svg></span>
             <span class="wheel-upsell__txt">
               <span class="wheel-upsell__title">{{ wheel_save }}</span>
-              <span class="wheel-upsell__note">{{ section.settings.wheel_note }}{% if wu_url != blank %} <a href="{{ wu_url }}">Shop the wheels →</a>{% endif %}</span>
+              <span class="wheel-upsell__note">{{ section.settings.wheel_note }} <a href="{{ wu_url | default: '/collections/wheelsets-and-upgrades' }}">Shop the wheels →</a></span>
             </span>
           {%- endif -%}
         </div>
