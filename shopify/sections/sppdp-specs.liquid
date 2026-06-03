@@ -8,6 +8,7 @@
 {% render 'sppdp-assets' %}
 {%- assign mf = product.metafields.sc_attributes -%}
 {%- assign groupset = product.metafields.custom.siblings_color.value -%}
+{%- assign wheelset = product.metafields.custom.wheelset.value -%}
 <div class="sppdp">
   <section class="pdp-section pdp-section--paper" id="sppdp-specs">
     <div class="pdp-wrap specs">
@@ -26,6 +27,7 @@
           {% if elec != blank %}<div class="spec-quick__item"><div class="spec-quick__k">Shifting</div><div class="spec-quick__v">{% if elec == 'Yes' %}Electronic{% else %}Mechanical{% endif %}</div></div>{% endif %}
           {% if section.settings.frame_weight != blank %}<div class="spec-quick__item"><div class="spec-quick__k">Frame weight</div><div class="spec-quick__v">{{ section.settings.frame_weight }}</div></div>{% endif %}
           {% if mf.weight != blank %}<div class="spec-quick__item"><div class="spec-quick__k">Complete weight</div><div class="spec-quick__v">{{ mf.weight }}</div></div>{% endif %}
+          {% if wheelset != blank %}<div class="spec-quick__item"><div class="spec-quick__k">Wheels</div><div class="spec-quick__v">{{ wheelset }}</div></div>{% endif %}
         {%- endif -%}
         {%- for b in section.blocks -%}
           {%- if b.type != 'quick' -%}{%- continue -%}{%- endif -%}

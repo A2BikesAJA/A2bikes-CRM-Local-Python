@@ -168,6 +168,10 @@
         {%- for block in section.blocks -%}
           {%- if block.type == '@app' -%}<div class="affirm-app" {{ block.shopify_attributes }}>{% render block %}</div>{%- endif -%}
         {%- endfor -%}
+        {%- assign wheel_save = product.metafields.custom.wheel_upgrade.value -%}
+        {%- if wheel_save != blank -%}
+        <div class="wheel-save"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="2.6"/><path d="M12 3.5v3M12 17.5v3M3.5 12h3M17.5 12h3M6.3 6.3l2.1 2.1M15.6 15.6l2.1 2.1M17.7 6.3l-2.1 2.1M8.4 15.6l-2.1 2.1"/></svg><span>{{ wheel_save }}</span></div>
+        {%- endif -%}
       </div>
 
       <hr class="rule">
@@ -257,6 +261,8 @@
     #sppdp-pdp-{{ section.id }} .build-pill{ display:inline-flex; align-items:center; min-height:42px; padding:0 14px; border:1.5px solid var(--line); border-radius:8px; font-size:.9rem; font-weight:600; color:var(--ink); text-decoration:none; transition:border-color .15s, background .15s, color .15s; }
     #sppdp-pdp-{{ section.id }} a.build-pill:hover{ border-color:var(--ink); }
     #sppdp-pdp-{{ section.id }} .build-pill.is-active{ background:var(--ink); border-color:var(--ink); color:#fff; }
+    #sppdp-pdp-{{ section.id }} .wheel-save{ display:flex; align-items:center; gap:9px; margin-top:4px; padding:10px 13px; border:1px solid rgba(31,138,76,.3); background:rgba(31,138,76,.08); border-radius:9px; font-size:.88rem; font-weight:600; color:#1F8A4C; }
+    #sppdp-pdp-{{ section.id }} .wheel-save svg{ width:18px; height:18px; stroke:#1F8A4C; fill:none; stroke-width:1.8; flex:0 0 auto; }
   </style>
   <script>
   (function(){
