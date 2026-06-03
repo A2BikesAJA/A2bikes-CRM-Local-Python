@@ -1,0 +1,122 @@
+{%- comment -%}
+  Cart-page bundle upsell. Renders ONLY when a bike (a product in the SP /
+  Rogue / Triathlon Bikes collections, or a "bike" product type) is in the
+  cart, then features the accessory bundles from a collection with the
+  "Bundle and save" 30% pricing + one-click add. Keeps the bundle push off the
+  PDP. Shares the .sppdp design system via snippets/sppdp-assets.
+{%- endcomment -%}
+{% render 'sppdp-assets' %}
+{%- liquid
+  assign has_bike = false
+  assign bike_cols = section.settings.bike_collections | replace: ' ', '' | split: ','
+  assign cart_pids = ''
+  for item in cart.items
+    assign cart_pids = cart_pids | append: ',' | append: item.product.id | append: ','
+    assign pt = item.product.type | downcase
+    if pt contains 'bike'
+      assign has_bike = true
+    endif
+    for c in item.product.collections
+      if bike_cols contains c.handle
+        assign has_bike = true
+      endif
+    endfor
+  endfor
+  assign bundles = collections[section.settings.bundles_collection].products
+  assign mult = 100 | minus: section.settings.discount_pct | times: 0.01
+-%}
+{%- if has_bike and bundles.size > 0 -%}
+<div class="sppdp" id="cb-{{ section.id }}">
+  <section class="pdp-section">
+    <div class="pdp-wrap">
+      <div class="cb-head">
+        <span class="pdp-section__kicker">{{ section.settings.kicker }}</span>
+        <h2 class="pdp-section__title">{{ section.settings.heading }}</h2>
+        {% if section.settings.sub != blank %}<p class="cb-sub">{{ section.settings.sub }}</p>{% endif %}
+      </div>
+      <div class="cb-grid">
+        {%- assign shown = 0 -%}
+        {%- for b in bundles -%}
+          {%- assign pidkey = ',' | append: b.id | append: ',' -%}
+          {%- if cart_pids contains pidkey -%}{%- continue -%}{%- endif -%}
+          {%- if shown >= section.settings.max_bundles -%}{%- break -%}{%- endif -%}
+          {%- assign shown = shown | plus: 1 -%}
+          {%- assign v = b.selected_or_first_available_variant -%}
+          <article class="cb-card">
+            <a class="cb-card__img{% unless b.featured_image %} cb-ph{% endunless %}" href="{{ b.url }}"{% if b.featured_image %} style="background-image:url({{ b.featured_image | image_url: width: 640 }})"{% endif %}></a>
+            <div class="cb-card__body">
+              <a class="cb-card__title" href="{{ b.url }}">{{ b.title }}</a>
+              <div class="cb-card__price">
+                <span class="cb-now">{{ b.price | times: mult | money }}</span>
+                <s class="cb-was">{{ b.price | money }}</s>
+                <span class="cb-badge">{{ section.settings.discount_pct }}% off</span>
+              </div>
+              {%- if v.available -%}
+                <button type="button" class="btn btn--primary cb-add" data-bundle-add="{{ v.id }}">{{ section.settings.add_label }}</button>
+              {%- else -%}
+                <button type="button" class="btn btn--primary cb-add" disabled>Sold out</button>
+              {%- endif -%}
+            </div>
+          </article>
+        {%- endfor -%}
+      </div>
+      {% if section.settings.note != blank %}<p class="cb-note">{{ section.settings.note }}</p>{% endif %}
+    </div>
+  </section>
+
+  <style>
+    #cb-{{ section.id }} .cb-head{ max-width:680px; margin-bottom:clamp(20px,3vw,30px); }
+    #cb-{{ section.id }} .cb-sub{ color:var(--muted); font-size:1rem; margin-top:8px; line-height:1.5; }
+    #cb-{{ section.id }} .cb-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(12px,1.6vw,18px); }
+    #cb-{{ section.id }} .cb-card{ border:1px solid var(--line); border-radius:var(--r-card); overflow:hidden; background:var(--paper); display:flex; flex-direction:column; }
+    #cb-{{ section.id }} .cb-card__img{ display:block; aspect-ratio:16/10; background:var(--paper-2) center/cover no-repeat; }
+    #cb-{{ section.id }} .cb-card__body{ padding:14px 15px 16px; display:flex; flex-direction:column; gap:9px; flex:1; }
+    #cb-{{ section.id }} .cb-card__title{ font-size:.98rem; font-weight:700; letter-spacing:-0.01em; color:var(--ink); line-height:1.3; }
+    #cb-{{ section.id }} .cb-card__price{ display:flex; align-items:baseline; gap:8px; flex-wrap:wrap; margin-top:auto; }
+    #cb-{{ section.id }} .cb-now{ font-size:1.1rem; font-weight:700; letter-spacing:-0.02em; }
+    #cb-{{ section.id }} .cb-was{ font-size:.85rem; color:var(--muted); }
+    #cb-{{ section.id }} .cb-badge{ font-size:.66rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:#1F8A4C; background:rgba(31,138,76,.1); padding:3px 7px; border-radius:100px; }
+    #cb-{{ section.id }} .cb-add{ width:100%; padding-block:12px; font-size:.95rem; }
+    #cb-{{ section.id }} .cb-note{ font-size:.82rem; color:var(--muted); margin-top:16px; }
+    @media (max-width:760px){ #cb-{{ section.id }} .cb-grid{ grid-template-columns:1fr 1fr; gap:12px; } }
+    @media (max-width:460px){ #cb-{{ section.id }} .cb-grid{ grid-template-columns:1fr; } }
+  </style>
+  <script>
+  (function(){
+    var R = document.getElementById('cb-{{ section.id }}');
+    if(!R) return;
+    R.querySelectorAll('[data-bundle-add]').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var id = btn.getAttribute('data-bundle-add');
+        var prev = btn.textContent; btn.disabled = true; btn.textContent = 'Adding…';
+        fetch('/cart/add.js', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ items:[{ id: parseInt(id,10), quantity:1 }] }) })
+          .then(function(r){ if(!r.ok) throw r; return r.json(); })
+          .then(function(){ window.location.reload(); })
+          .catch(function(){ btn.disabled = false; btn.textContent = prev; });
+      });
+    });
+  })();
+  </script>
+</div>
+{%- endif -%}
+{% schema %}
+{
+  "name": "Cart · Build bundles",
+  "tag": "section",
+  "settings": [
+    { "type": "paragraph", "content": "Shows on the cart only when a bike is in the cart. Features bundles from the collection below with their bundle-discount pricing." },
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "Complete your build" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Your bike's sorted — don't line up race morning missing the essentials" },
+    { "type": "textarea", "id": "sub", "label": "Subtext", "default": "These bundles cover what every triathlete needs on course — hydration, storage, spares, safety. Pick your race distance and it's 30% off, added straight to your bike." },
+    { "type": "text", "id": "bundles_collection", "label": "Bundles collection (handle)", "default": "tri-bike-accessory-bundles" },
+    { "type": "range", "id": "max_bundles", "label": "Max bundles to show", "min": 2, "max": 8, "step": 1, "default": 3 },
+    { "type": "range", "id": "discount_pct", "label": "Bundle discount %", "min": 0, "max": 60, "step": 5, "default": 30 },
+    { "type": "text", "id": "add_label", "label": "Add button label", "default": "Add to my order" },
+    { "type": "textarea", "id": "note", "label": "Footnote", "default": "Your 30% bundle discount applies automatically at checkout when added to your bike." },
+    { "type": "text", "id": "bike_collections", "label": "Bike collection handles (comma-separated) used to detect a bike in cart", "default": "sp,rogue,triathlon-bikes" }
+  ],
+  "presets": [
+    { "name": "Cart · Build bundles" }
+  ]
+}
+{% endschema %}

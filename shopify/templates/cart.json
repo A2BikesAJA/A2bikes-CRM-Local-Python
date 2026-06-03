@@ -1,0 +1,17 @@
+/*
+ * Cart template — default main-cart section plus a "Build bundles" upsell that
+ * only renders when a bike is in the cart (sections/sp-cart-bundles.liquid).
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-cart",
+      "settings": {}
+    },
+    "build_bundles": {
+      "type": "sp-cart-bundles",
+      "settings": {}
+    }
+  },
+  "order": ["main", "build_bundles"]
+}
