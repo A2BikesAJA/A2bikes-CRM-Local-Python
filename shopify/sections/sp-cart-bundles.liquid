@@ -104,10 +104,15 @@
   "name": "Cart · Build bundles",
   "tag": "section",
   "settings": [
-    { "type": "text", "id": "heading", "label": "Heading", "default": "Complete your build" },
+    { "type": "header", "content": "Cart bundle upsell" },
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "Complete your build" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Your bike's sorted — don't line up race morning missing the essentials" },
+    { "type": "textarea", "id": "sub", "label": "Subtext", "default": "These bundles cover what every triathlete needs on course — hydration, storage, spares, safety. Pick your race distance and it's 30% off, added straight to your bike." },
     { "type": "text", "id": "bundles_collection", "label": "Bundles collection (handle)", "default": "tri-bike-accessory-bundles" },
     { "type": "range", "id": "max_bundles", "label": "Max bundles to show", "min": 2, "max": 8, "step": 1, "default": 3 },
     { "type": "range", "id": "discount_pct", "label": "Bundle discount %", "min": 0, "max": 60, "step": 5, "default": 30 },
+    { "type": "text", "id": "add_label", "label": "Add button label", "default": "Add to my order" },
+    { "type": "textarea", "id": "note", "label": "Footnote", "default": "Your 30% bundle discount applies automatically at checkout when added to your bike." },
     { "type": "text", "id": "bike_collections", "label": "Bike collections", "default": "sp,rogue,triathlon-bikes" }
   ],
   "presets": [
