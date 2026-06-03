@@ -44,7 +44,7 @@
           "type": "hotspot",
           "settings": {
             "image_index": 1,
-            "label": "Kammtail tube shapes — aero without UCI-only weirdness",
+            "label": "Hand-laid carbon frame — light & compliant",
             "x": 34,
             "y": 58
           }
@@ -62,7 +62,7 @@
           "type": "hotspot",
           "settings": {
             "image_index": 1,
-            "label": "SAGS cockpit — 140mm of fit adjustment",
+            "label": "Clearance for tires up to 35 mm",
             "x": 78,
             "y": 30
           }
@@ -82,7 +82,13 @@
         "bc_col": "Rogue",
         "bc_col_url": "/collections/rogue",
         "kicker": "Rogue All-Road · SRAM Rival AXS build",
-        "subtitle": "Carbon all-road endurance bike"
+        "subtitle": "Carbon all-road endurance bike",
+        "edu_1_title": "Hand-laid carbon — 950 g",
+        "edu_1_desc": "Light, stiff, and tuned for all-day comfort — the same fiber craftsmanship as bikes costing far more.",
+        "edu_2_title": "35 mm tire clearance",
+        "edu_2_desc": "Room for tires up to 35 mm — road-bike speed when you want it, gravel grip when the pavement ends.",
+        "edu_3_title": "One bike, every road",
+        "edu_3_desc": "Race day, mountain switchbacks, backroad gravel, or the daily commute — the Rogue adapts without missing a beat."
       }
     },
     "reviews": {
