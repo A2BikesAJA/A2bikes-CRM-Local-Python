@@ -22,8 +22,9 @@
       endif
     endfor
   endfor
-  assign bundles = collections[section.settings.bundles_collection].products
+  assign bundles = collections[section.settings.bundles_collection].products | sort: 'price'
   assign mult = 100 | minus: section.settings.discount_pct | times: 0.01
+  assign save_mult = section.settings.discount_pct | times: 0.01
 -%}
 {%- if has_bike and bundles.size > 0 -%}
 <div class="sppdp" id="cb-{{ section.id }}">
@@ -46,11 +47,13 @@
             <a class="cb-card__img{% unless b.featured_image %} cb-ph{% endunless %}" href="{{ b.url }}"{% if b.featured_image %} style="background-image:url({{ b.featured_image | image_url: width: 640 }})"{% endif %}></a>
             <div class="cb-card__body">
               <a class="cb-card__title" href="{{ b.url }}">{{ b.title }}</a>
+              {% if b.description != blank %}<p class="cb-desc">{{ b.description | strip_html | truncatewords: 16 }}</p>{% endif %}
               <div class="cb-card__price">
                 <span class="cb-now">{{ b.price | times: mult | money }}</span>
                 <s class="cb-was">{{ b.price | money }}</s>
                 <span class="cb-badge">{{ section.settings.discount_pct }}% off</span>
               </div>
+              <div class="cb-save">You save {{ b.price | times: save_mult | money }} bundling it with your bike</div>
               {%- if v.available -%}
                 <button type="button" class="btn btn--primary cb-add" data-bundle-add="{{ v.id }}">{{ section.settings.add_label }}</button>
               {%- else -%}
@@ -76,6 +79,8 @@
     #cb-{{ section.id }} .cb-now{ font-size:1.1rem; font-weight:700; letter-spacing:-0.02em; }
     #cb-{{ section.id }} .cb-was{ font-size:.85rem; color:var(--muted); }
     #cb-{{ section.id }} .cb-badge{ font-size:.66rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:#1F8A4C; background:rgba(31,138,76,.1); padding:3px 7px; border-radius:100px; }
+    #cb-{{ section.id }} .cb-desc{ font-size:.82rem; color:var(--muted); line-height:1.45; margin:0; }
+    #cb-{{ section.id }} .cb-save{ font-size:.82rem; font-weight:600; color:#1F8A4C; }
     #cb-{{ section.id }} .cb-add{ width:100%; padding-block:12px; font-size:.95rem; }
     #cb-{{ section.id }} .cb-note{ font-size:.82rem; color:var(--muted); margin-top:16px; }
     @media (max-width:760px){ #cb-{{ section.id }} .cb-grid{ grid-template-columns:1fr 1fr; gap:12px; } }
@@ -105,9 +110,9 @@
   "tag": "section",
   "settings": [
     { "type": "header", "content": "Cart bundle upsell" },
-    { "type": "text", "id": "kicker", "label": "Kicker", "default": "Complete your build" },
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "Race-day essentials" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "Your bike's sorted — don't line up race morning missing the essentials" },
-    { "type": "textarea", "id": "sub", "label": "Subtext", "default": "These bundles cover what every triathlete needs on course — hydration, storage, spares, safety. Pick your race distance and it's 30% off, added straight to your bike." },
+    { "type": "textarea", "id": "sub", "label": "Subtext", "default": "Each bundle is matched to your race distance — hydration, storage, spares and safety in one box. Add it with your bike and it's 30% off, far less than piecing it together later." },
     { "type": "text", "id": "bundles_collection", "label": "Bundles collection (handle)", "default": "tri-bike-accessory-bundles" },
     { "type": "range", "id": "max_bundles", "label": "Max bundles to show", "min": 2, "max": 8, "step": 1, "default": 3 },
     { "type": "range", "id": "discount_pct", "label": "Bundle discount %", "min": 0, "max": 60, "step": 5, "default": 30 },
