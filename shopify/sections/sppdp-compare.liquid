@@ -11,13 +11,14 @@
       {% if section.settings.note != blank %}<p class="compare-note">{{ section.settings.note }}</p>{% endif %}
       <div class="ctable-scroll">
         <table class="ctable">
-          <colgroup><col><col class="col-a2"><col><col></colgroup>
+          <colgroup><col><col class="col-a2"><col><col>{% if section.settings.col3_name != blank %}<col>{% endif %}</colgroup>
           <thead>
             <tr>
               <th class="rowlabel"></th>
               <th class="is-a2">{% if section.settings.pick_label != blank %}<span class="pick">{{ section.settings.pick_label }}</span>{% endif %}<div class="brand-cell">{{ section.settings.col_a2_name }}<div class="sub">{{ groupset | default: section.settings.col_a2_sub }}</div></div></th>
               <th><div class="brand-cell">{{ section.settings.col1_name }}<div class="sub">{{ section.settings.col1_sub }}</div></div></th>
               <th><div class="brand-cell">{{ section.settings.col2_name }}<div class="sub">{{ section.settings.col2_sub }}</div></div></th>
+              {%- if section.settings.col3_name != blank -%}<th><div class="brand-cell">{{ section.settings.col3_name }}<div class="sub">{{ section.settings.col3_sub }}</div></div></th>{%- endif -%}
             </tr>
           </thead>
           <tbody>
@@ -33,7 +34,7 @@
                 <td class="rowlabel">{{ block.settings.label }}</td>
                 <td class="is-a2{% if st == 'muted' %} muted{% endif %}">{% if st == 'bold' %}<b>{{ a2val }}</b>{% elsif st == 'yes' %}<span class="yes">{{ a2val }}</span>{% else %}{{ a2val }}{% endif %}</td>
                 <td>{{ block.settings.comp1 }}</td>
-                <td>{{ block.settings.comp2 }}</td>
+                <td>{{ block.settings.comp2 }}</td>{%- if section.settings.col3_name != blank -%}<td>{{ block.settings.comp3 }}</td>{%- endif -%}
               </tr>
             {%- endfor -%}
           </tbody>
@@ -58,7 +59,9 @@
     { "type": "text", "id": "col1_name", "label": "Competitor 1 name", "default": "Cervélo P-Series" },
     { "type": "text", "id": "col1_sub", "label": "Competitor 1 sub", "default": "105 build" },
     { "type": "text", "id": "col2_name", "label": "Competitor 2 name", "default": "Quintana Roo" },
-    { "type": "text", "id": "col2_sub", "label": "Competitor 2 sub", "default": "entry tri build" }
+    { "type": "text", "id": "col2_sub", "label": "Competitor 2 sub", "default": "entry tri build" },
+    { "type": "text", "id": "col3_name", "label": "Competitor 3 name (optional)" },
+    { "type": "text", "id": "col3_sub", "label": "Competitor 3 sub" }
   ],
   "blocks": [
     {
@@ -79,7 +82,8 @@
           { "value": "muted", "label": "Muted (where they win)" }
         ], "default": "normal" },
         { "type": "text", "id": "comp1", "label": "Competitor 1 value", "default": "—" },
-        { "type": "text", "id": "comp2", "label": "Competitor 2 value", "default": "—" }
+        { "type": "text", "id": "comp2", "label": "Competitor 2 value", "default": "—" },
+        { "type": "text", "id": "comp3", "label": "Competitor 3 value", "default": "—" }
       ]
     }
   ],

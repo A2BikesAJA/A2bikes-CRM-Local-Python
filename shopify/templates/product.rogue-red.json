@@ -1,7 +1,6 @@
 /*
  * Rogue PDP template — Rogue All-Road · SRAM RED AXS build.
- * Same sppdp layout as the Rogue lineup; components / price / groupset / weight
- * auto-fill per build from sc_attributes + custom.siblings_color.
+ * Shared sppdp layout; components/price/groupset/weight auto-fill per build.
  */
 {
   "sections": {
@@ -44,7 +43,7 @@
           "type": "hotspot",
           "settings": {
             "image_index": 1,
-            "label": "Hand-laid carbon frame — light & compliant",
+            "label": "Toray T700 carbon — 900 g frame",
             "x": 34,
             "y": 58
           }
@@ -84,9 +83,9 @@
         "kicker": "Rogue All-Road · SRAM RED AXS build",
         "subtitle": "Carbon all-road endurance bike",
         "edu_1_title": "Lightweight Carbon Fiber Frame",
-        "edu_1_desc": "A hand-laid carbon frameset — light, stiff, and tuned for all-day comfort.",
+        "edu_1_desc": "Hand-laid Toray T700 carbon at 900 g — light, stiff, and tuned for all-day comfort.",
         "edu_2_title": "Tri-Ready",
-        "edu_2_desc": "Versatile enough for triathlon — add aero extensions and a race-day fit, then ride it everywhere else.",
+        "edu_2_desc": "Tri-ready — add clip-on aero extensions for extra aerodynamic gains, plus SRAM Blips for extra shifting positions.",
         "edu_3_title": "Wide Tire Ability",
         "edu_3_desc": "Clearance for tires up to 35 mm — road-bike speed when you want it, gravel grip when the pavement ends."
       }
@@ -149,18 +148,20 @@
             "a2": "$9,900",
             "a2_source": "price",
             "a2_style": "bold",
-            "comp1": "Dealer MSRP",
-            "comp2": "Dealer MSRP"
+            "comp1": "—",
+            "comp2": "—",
+            "comp3": "—"
           }
         },
         "c2": {
           "type": "row",
           "settings": {
             "label": "Frame",
-            "a2": "Hand-laid carbon",
+            "a2": "Toray T700, 900 g",
             "a2_style": "normal",
             "comp1": "Carbon",
-            "comp2": "Carbon"
+            "comp2": "Carbon",
+            "comp3": "Carbon"
           }
         },
         "c3": {
@@ -170,8 +171,9 @@
             "a2": "SRAM RED AXS (wireless, 12-speed)",
             "a2_source": "groupset",
             "a2_style": "normal",
-            "comp1": "Comparable groupset",
-            "comp2": "Comparable groupset"
+            "comp1": "—",
+            "comp2": "—",
+            "comp3": "—"
           }
         },
         "c4": {
@@ -180,18 +182,20 @@
             "label": "Tire clearance",
             "a2": "Up to 35 mm",
             "a2_style": "yes",
-            "comp1": "Often 28–32 mm",
-            "comp2": "Often 28–32 mm"
+            "comp1": "Often less",
+            "comp2": "Often less",
+            "comp3": "Often less"
           }
         },
         "c5": {
           "type": "row",
           "settings": {
-            "label": "Tri-ready",
-            "a2": "Accepts aero extensions",
+            "label": "Built for",
+            "a2": "Race · gravel · commute",
             "a2_style": "yes",
-            "comp1": "Road only",
-            "comp2": "Road only"
+            "comp1": "Road",
+            "comp2": "Tri",
+            "comp3": "Road / tri"
           }
         },
         "c6": {
@@ -200,8 +204,9 @@
             "label": "Fit support",
             "a2": "Free remote fitter",
             "a2_style": "yes",
-            "comp1": "Via dealer (varies)",
-            "comp2": "Via dealer (varies)"
+            "comp1": "Varies",
+            "comp2": "Via dealer",
+            "comp3": "Varies"
           }
         },
         "c7": {
@@ -210,8 +215,9 @@
             "label": "Frame warranty",
             "a2": "Lifetime + crash replacement",
             "a2_style": "yes",
-            "comp1": "Limited / years",
-            "comp2": "Limited / years"
+            "comp1": "Limited",
+            "comp2": "Limited",
+            "comp3": "Limited"
           }
         },
         "c8": {
@@ -220,8 +226,9 @@
             "label": "Where you buy",
             "a2": "Direct — 7-day home demo",
             "a2_style": "normal",
-            "comp1": "Local dealer",
-            "comp2": "Local dealer"
+            "comp1": "Direct",
+            "comp2": "Dealer",
+            "comp3": "Direct"
           }
         }
       },
@@ -237,13 +244,16 @@
       ],
       "settings": {
         "heading": "How the Rogue compares",
-        "note": "We're a younger brand, so it's fair to ask how we stack up. Here's a straight look at the Rogue against comparable carbon all-road bikes. Competitor columns are placeholders — set the two brands you want to call out, and verify their prices, before publishing.",
+        "note": "We're a younger brand, so it's fair to ask how we stack up. Here's the Rogue against the Canyon, Quintana Roo Service Course, and Ventum NS1 — competitor prices and specs are placeholders, so verify them before publishing.",
+        "pick_label": "Best value",
         "col_a2_name": "A2 Rogue",
         "col_a2_sub": "This build",
-        "col1_name": "Comparable all-road",
-        "col1_sub": "carbon endurance",
-        "col2_name": "Other direct brand",
-        "col2_sub": "all-road build"
+        "col1_name": "Canyon",
+        "col1_sub": "all-road",
+        "col2_name": "Quintana Roo",
+        "col2_sub": "Service Course",
+        "col3_name": "Ventum",
+        "col3_sub": "NS1"
       }
     },
     "specs": {
@@ -253,7 +263,7 @@
           "type": "group",
           "settings": {
             "title": "Frame & fork",
-            "rows": "Material | Hand-laid carbon fiber\nDesigner | Kevin Quan Studios (designed the Cervélo P-Series)\nTire clearance | Up to 35 mm\nRouting | Fully internal cable & hose"
+            "rows": "Material | Hand-laid Toray T700 carbon fiber\nFrame weight | 900 g\nDesigner | Kevin Quan Studios (designed the Cervélo P-Series)\nTire clearance | Up to 35 mm\nRouting | Fully internal cable & hose"
           }
         },
         "g2": {
@@ -267,7 +277,7 @@
           "type": "group",
           "settings": {
             "title": "Cockpit & fit",
-            "rows": "Setup | Road cockpit — stem & bar listed in the components above\nTri-ready | Accepts clip-on aero extensions for a triathlon position\nFit help | Free remote fit call + size calculator; free exchanges"
+            "rows": "Setup | Road cockpit — stem & bar listed in the components above\nTri-ready | Add clip-on aero extensions for aero gains, plus SRAM Blips for extra shift positions\nFit help | Free remote fit call + size calculator; free exchanges"
           }
         },
         "g4": {
@@ -293,7 +303,7 @@
         "g5"
       ],
       "settings": {
-        "frame_weight": ""
+        "frame_weight": "900 g"
       }
     }
   },
