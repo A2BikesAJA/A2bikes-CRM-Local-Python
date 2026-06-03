@@ -169,8 +169,26 @@
           {%- if block.type == '@app' -%}<div class="affirm-app" {{ block.shopify_attributes }}>{% render block %}</div>{%- endif -%}
         {%- endfor -%}
         {%- assign wheel_save = product.metafields.custom.wheel_upgrade.value -%}
-        {%- if wheel_save != blank -%}
-        <div class="wheel-save"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="2.6"/><path d="M12 3.5v3M12 17.5v3M3.5 12h3M17.5 12h3M6.3 6.3l2.1 2.1M15.6 15.6l2.1 2.1M17.7 6.3l-2.1 2.1M8.4 15.6l-2.1 2.1"/></svg><span>{{ wheel_save }}</span></div>
+        {%- assign wu_url = product.metafields.custom.wheel_upgrade_url.value -%}
+        {%- assign wu_var = product.metafields.custom.wheel_upgrade_variant.value -%}
+        {%- if wheel_save != blank or wu_var != blank -%}
+        <div class="wheel-upsell">
+          {%- if wu_var != blank and wu_var.id -%}
+            <label class="wheel-upsell__opt">
+              <input type="checkbox" data-wheel-upgrade value="{{ wu_var.id }}">
+              <span class="wheel-upsell__txt">
+                <span class="wheel-upsell__title">Add {{ wu_var.product.title }} — <b>+{{ wu_var.price | money_without_trailing_zeros }}</b>{% if wheel_save != blank %} <span class="wheel-upsell__save">{{ wheel_save }}</span>{% endif %}</span>
+                <span class="wheel-upsell__note">{{ section.settings.wheel_note }}</span>
+              </span>
+            </label>
+          {%- else -%}
+            <span class="wheel-upsell__ico"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="2.6"/><path d="M12 3.5v3M12 17.5v3M3.5 12h3M17.5 12h3M6.3 6.3l2.1 2.1M15.6 15.6l2.1 2.1M17.7 6.3l-2.1 2.1M8.4 15.6l-2.1 2.1"/></svg></span>
+            <span class="wheel-upsell__txt">
+              <span class="wheel-upsell__title">{{ wheel_save }}</span>
+              <span class="wheel-upsell__note">{{ section.settings.wheel_note }}{% if wu_url != blank %} <a href="{{ wu_url }}">Shop the wheels →</a>{% endif %}</span>
+            </span>
+          {%- endif -%}
+        </div>
         {%- endif -%}
       </div>
 
@@ -261,8 +279,16 @@
     #sppdp-pdp-{{ section.id }} .build-pill{ display:inline-flex; align-items:center; min-height:42px; padding:0 14px; border:1.5px solid var(--line); border-radius:8px; font-size:.9rem; font-weight:600; color:var(--ink); text-decoration:none; transition:border-color .15s, background .15s, color .15s; }
     #sppdp-pdp-{{ section.id }} a.build-pill:hover{ border-color:var(--ink); }
     #sppdp-pdp-{{ section.id }} .build-pill.is-active{ background:var(--ink); border-color:var(--ink); color:#fff; }
-    #sppdp-pdp-{{ section.id }} .wheel-save{ display:flex; align-items:center; gap:9px; margin-top:4px; padding:10px 13px; border:1px solid rgba(31,138,76,.3); background:rgba(31,138,76,.08); border-radius:9px; font-size:.88rem; font-weight:600; color:#1F8A4C; }
-    #sppdp-pdp-{{ section.id }} .wheel-save svg{ width:18px; height:18px; stroke:#1F8A4C; fill:none; stroke-width:1.8; flex:0 0 auto; }
+    #sppdp-pdp-{{ section.id }} .wheel-upsell{ display:flex; align-items:flex-start; gap:10px; margin-top:6px; padding:12px 14px; border:1px solid rgba(31,138,76,.32); background:rgba(31,138,76,.07); border-radius:10px; }
+    #sppdp-pdp-{{ section.id }} .wheel-upsell__ico{ flex:0 0 auto; margin-top:1px; }
+    #sppdp-pdp-{{ section.id }} .wheel-upsell__ico svg{ width:20px; height:20px; stroke:#1F8A4C; fill:none; stroke-width:1.8; }
+    #sppdp-pdp-{{ section.id }} .wheel-upsell__opt{ display:flex; align-items:flex-start; gap:10px; cursor:pointer; width:100%; }
+    #sppdp-pdp-{{ section.id }} .wheel-upsell__opt input{ margin-top:3px; width:16px; height:16px; accent-color:#1F8A4C; flex:0 0 auto; }
+    #sppdp-pdp-{{ section.id }} .wheel-upsell__txt{ display:flex; flex-direction:column; gap:2px; }
+    #sppdp-pdp-{{ section.id }} .wheel-upsell__title{ font-size:.92rem; font-weight:700; color:var(--ink); letter-spacing:-0.01em; }
+    #sppdp-pdp-{{ section.id }} .wheel-upsell__save{ color:#1F8A4C; }
+    #sppdp-pdp-{{ section.id }} .wheel-upsell__note{ font-size:.8rem; color:var(--muted); line-height:1.4; }
+    #sppdp-pdp-{{ section.id }} .wheel-upsell__note a{ color:var(--accent); font-weight:600; white-space:nowrap; }
   </style>
   <script>
   (function(){
@@ -345,7 +371,10 @@
         var v=find(); if(!v || !v.available) return;
         e.preventDefault();
         var l=btn.querySelector('.btn-label'); if(l) l.textContent='Adding…';
-        fetch('/cart/add.js',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:v.id,quantity:1})})
+        var items=[{id:v.id, quantity:1}];
+        var wu=R.querySelector('[data-wheel-upgrade]');
+        if(wu && wu.checked && wu.value){ items.push({id: parseInt(wu.value,10), quantity:1}); }
+        fetch('/cart/add.js',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({items:items})})
           .then(function(r){ if(!r.ok) throw r; return r.json(); })
           .then(function(){ window.location.href='/cart'; })
           .catch(function(){ if(form){ form.submit(); } else { window.location.href='/cart'; } });
@@ -380,6 +409,7 @@
     { "type": "range", "id": "affirm_months", "label": "Affirm months (monthly = price ÷ months)", "min": 6, "max": 48, "step": 6, "default": 12 },
     { "type": "text", "id": "affirm_apr", "label": "Affirm APR text", "default": "0% APR" },
     { "type": "url", "id": "affirm_url", "label": "Affirm prequalify link (static line)" },
+    { "type": "text", "id": "wheel_note", "label": "Wheel-upgrade note", "info": "Shown under the wheel-upgrade savings. Set per-build savings in each product's 'PDP wheel-upgrade savings' metafield; for one-click bundling set 'PDP wheel-upgrade variant'.", "default": "Discount applied automatically when your bike & wheels are in your cart." },
     { "type": "checkbox", "id": "show_affirm_line", "label": "Show built-in Affirm line", "info": "Turn off if you add the official Affirm app block (below) so you don't show both.", "default": true },
     { "type": "header", "content": "Gallery — caption & hotspots", "info": "Add 'Hotspot' blocks below; set each one's Photo number to place it on that gallery image. Hotspots show only when their photo is on the main stage." },
     { "type": "textarea", "id": "gallery_caption", "label": "Stage caption", "default": "Hover the numbered points to explore the frame tech." },
