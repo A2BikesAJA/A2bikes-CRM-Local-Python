@@ -180,13 +180,13 @@
         {%- if has_opt1 and has_opt2 -%}
         <div class="wheel-upsell wheel-upsell--opts">
           <label class="wheel-upsell__opt">
-            <input type="checkbox" data-wheel-upgrade value="{{ wu_var.id }}">
+            <input type="checkbox" data-wheel-upgrade data-wheel-net="{{ wu_var.price | minus: credit_cents }}" value="{{ wu_var.id }}">
             <span class="wheel-upsell__txt">
               <span class="wheel-upsell__title">Add {{ wu_var.product.title }} — <b>+{{ wu_var.price | minus: credit_cents | money_without_trailing_zeros }}</b>{% if credit_cents > 0 %} <span class="wheel-upsell__save">Save {{ credit_cents | money_without_trailing_zeros }}</span>{% endif %}</span>
             </span>
           </label>
           <label class="wheel-upsell__opt">
-            <input type="checkbox" data-wheel-upgrade value="{{ wu_var2.id }}">
+            <input type="checkbox" data-wheel-upgrade data-wheel-net="{{ wu_var2.price | minus: credit_cents }}" value="{{ wu_var2.id }}">
             <span class="wheel-upsell__txt">
               <span class="wheel-upsell__title">Add {{ wu_var2.product.title }} — <b>+{{ wu_var2.price | minus: credit_cents | money_without_trailing_zeros }}</b>{% if credit_cents > 0 %} <span class="wheel-upsell__save">Save {{ credit_cents | money_without_trailing_zeros }}</span>{% endif %}</span>
             </span>
@@ -196,7 +196,7 @@
         {%- elsif has_opt1 -%}
         <div class="wheel-upsell">
           <label class="wheel-upsell__opt">
-            <input type="checkbox" data-wheel-upgrade value="{{ wu_var.id }}">
+            <input type="checkbox" data-wheel-upgrade data-wheel-net="{{ wu_var.price | minus: credit_cents }}" value="{{ wu_var.id }}">
             <span class="wheel-upsell__txt">
               <span class="wheel-upsell__title">Add {{ wu_var.product.title }} — <b>+{{ wu_var.price | minus: credit_cents | money_without_trailing_zeros }}</b>{% if credit_cents > 0 %} <span class="wheel-upsell__save">Save {{ credit_cents | money_without_trailing_zeros }}</span>{% endif %}</span>
               <span class="wheel-upsell__note">{{ section.settings.wheel_note }}</span>
@@ -355,6 +355,7 @@
     function find(){ return variants.filter(function(v){ return matches(v); })[0]; }
     function someAvailable(pos, val){ return variants.some(function(v){ return v.available && matches(v, pos, val); }); }
     function setAll(q, val){ R.querySelectorAll(q).forEach(function(el){ el.textContent = val; }); }
+    function wheelNet(){ var n=0; R.querySelectorAll('[data-wheel-upgrade]').forEach(function(w){ if(w.checked){ n += parseInt(w.getAttribute('data-wheel-net')||'0',10); } }); return n; }
     function markAvailability(){
       Object.keys(groups).forEach(function(o){
         groups[o].forEach(function(b){ b.classList.toggle('is-unavailable', !someAvailable(o, b.getAttribute('data-value'))); });
@@ -368,15 +369,16 @@
       var badge = R.querySelector('[data-stage-badge]'); if(badge && colorPos) badge.textContent = sel[colorPos];
       var idIn = R.querySelector('[data-variant-id]');
       var atcs = R.querySelectorAll('[data-atc]');
+      var wn = wheelNet();
       if(v){
         if(idIn) idIn.value = v.id;
-        setAll('[data-price]', money(v.price));
-        setAll('[data-affirm]', '$' + Math.round(v.price/100/months) + '/mo');
+        setAll('[data-price]', money(v.price + wn));
+        setAll('[data-affirm]', '$' + Math.round((v.price + wn)/100/months) + '/mo');
         if(v.featured_image && v.featured_image.src){ var st=R.querySelector('[data-stage-img]'); if(st && st.tagName==='IMG'){ st.src = v.featured_image.src; } }
       }
       atcs.forEach(function(b){
         var l=b.querySelector('.btn-label');
-        if(v && v.available){ b.disabled=false; if(l) l.textContent = b.classList.contains('btn-addcart') ? (ctaPrefix + money(v.price)) : 'Add to cart'; }
+        if(v && v.available){ b.disabled=false; if(l) l.textContent = b.classList.contains('btn-addcart') ? (ctaPrefix + money(v.price + wn)) : 'Add to cart'; }
         else { b.disabled=true; if(l) l.textContent = v ? 'Sold out' : 'Unavailable'; }
       });
     }
@@ -393,6 +395,7 @@
     wheelOpts.forEach(function(w){
       w.addEventListener('change', function(){
         if(w.checked){ wheelOpts.forEach(function(o){ if(o!==w){ o.checked=false; } }); }
+        update();
       });
     });
     R.querySelectorAll('[data-atc]').forEach(function(btn){
