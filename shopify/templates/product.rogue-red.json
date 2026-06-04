@@ -1,6 +1,6 @@
 /*
  * Rogue PDP template — Rogue All-Road · SRAM RED AXS build.
- * Shared sppdp layout; carbon wheel upgrade available; compare shown carbon-to-carbon.
+ * Shared sppdp layout; complete-bike price in compare; carbon wheel upgrade available.
  */
 {
   "sections": {
@@ -256,7 +256,7 @@
       ],
       "settings": {
         "heading": "How the Rogue compares",
-        "note": "We're a younger brand, so here's an honest, like-for-like look at this build vs the Canyon Aeroad, QR Service Course, and Ventum NS1 — matched on groupset and carbon wheels (Rogue shown with its carbon wheelset; US list, June 2026). Cells marked — are configurator-only competitor prices to confirm before publishing. Where they beat us, we say so.",
+        "note": "We're a younger brand, so here's an honest look at this build vs the Canyon Aeroad, QR Service Course, and Ventum NS1 (US list, June 2026). Prices are complete-bike; a carbon wheel upgrade is available on the Rogue, while competitors include their stock carbon wheels. Cells marked — are configurator-only competitor prices to confirm before publishing. Where they beat us, we say so.",
         "pick_label": "Best value",
         "col_a2_name": "A2 Rogue",
         "col_a2_sub": "This build",
