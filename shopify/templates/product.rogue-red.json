@@ -205,7 +205,7 @@
             "a2": "Free remote fitter",
             "a2_style": "yes",
             "comp1": "Online",
-            "comp2": "Via dealer",
+            "comp2": "Online",
             "comp3": "Direct"
           }
         },
@@ -227,7 +227,7 @@
             "a2": "Direct — 7-day home demo",
             "a2_style": "normal",
             "comp1": "Direct",
-            "comp2": "Dealer",
+            "comp2": "Direct",
             "comp3": "Direct"
           }
         }
