@@ -148,9 +148,9 @@
             "a2": "$5,000",
             "a2_source": "price",
             "a2_style": "bold",
-            "comp1": "from $5,099",
-            "comp2": "from $4,599",
-            "comp3": "from $5,499"
+            "comp1": "$6,199",
+            "comp2": "—",
+            "comp3": "$7,599"
           }
         },
         "c2": {
@@ -171,9 +171,9 @@
             "a2": "SRAM Force AXS (wireless, 12-speed)",
             "a2_source": "groupset",
             "a2_style": "normal",
-            "comp1": "105 Di2",
-            "comp2": "105 Di2",
-            "comp3": "Rival AXS"
+            "comp1": "Ultegra Di2",
+            "comp2": "Ultegra Di2",
+            "comp3": "Force AXS"
           }
         },
         "c4": {
@@ -244,12 +244,12 @@
       ],
       "settings": {
         "heading": "How the Rogue compares",
-        "note": "We're a younger brand, so here's an honest look at the Rogue against the entry electronic builds of three aero-road rivals (US list prices, June 2026). Where they beat us, we say so.",
+        "note": "We're a younger brand, so here's an honest, like-for-like look at this build vs the Canyon Aeroad, QR Service Course, and Ventum NS1 at a matching groupset level (US list prices, June 2026). Cells marked — are configurator-only competitor prices to confirm before publishing. Where they beat us, we say so.",
         "pick_label": "Best value",
         "col_a2_name": "A2 Rogue",
         "col_a2_sub": "This build",
         "col1_name": "Canyon Aeroad",
-        "col1_sub": "CF SLX 7",
+        "col1_sub": "aero road",
         "col2_name": "QR Service Course",
         "col2_sub": "aero road",
         "col3_name": "Ventum NS1",

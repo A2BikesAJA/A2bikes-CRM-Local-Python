@@ -190,8 +190,8 @@
             "a2": "$3,115",
             "a2_source": "price",
             "a2_style": "bold",
-            "comp1": "from $5,999",
-            "comp2": "from $4,049",
+            "comp1": "$8,999",
+            "comp2": "—",
             "comp3": "—"
           }
         },
@@ -214,8 +214,8 @@
             "a2": "Shimano 105",
             "a2_source": "groupset",
             "a2_style": "normal",
-            "comp1": "105 Di2",
-            "comp2": "105 (mech)",
+            "comp1": "Ultegra Di2",
+            "comp2": "Force AXS",
             "comp3": "—"
           }
         },
@@ -293,12 +293,12 @@
       "settings": {
         "kicker": "Honest comparison",
         "heading": "How this build compares",
-        "note": "We're a younger brand, so here's an honest look at this build against two established tri names — the Canyon Speedmax and Quintana Roo X-PR (entry builds, US list, June 2026). Where they beat us, we say so.",
+        "note": "We're a younger brand, so here's an honest, like-for-like look at this build vs the Canyon Speedmax and QR X-PR at a matching groupset level (US list prices, June 2026). Cells marked — are configurator-only competitor prices to confirm before publishing. Where they beat us, we say so.",
         "pick_label": "Best value",
         "col_a2_name": "A2 SP",
         "col_a2_sub": "This build",
         "col1_name": "Canyon Speedmax",
-        "col1_sub": "CF 7 Di2",
+        "col1_sub": "tri / TT",
         "col2_name": "QR X-PR",
         "col2_sub": "value tri",
         "col3_name": "",
