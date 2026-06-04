@@ -24,6 +24,7 @@ shopify/snippets/a2-cta.liquid              → snippets/a2-cta.liquid
 shopify/snippets/a2-financing-band.liquid   → snippets/a2-financing-band.liquid
 shopify/snippets/a2-email-capture.liquid    → snippets/a2-email-capture.liquid
 shopify/snippets/a2-build-overview.liquid   → snippets/a2-build-overview.liquid
+shopify/snippets/a2-fit-calculator.liquid   → snippets/a2-fit-calculator.liquid
 shopify/sections/a2-line-lp.liquid          → sections/a2-line-lp.liquid
 shopify/sections/a2-vs-competitor-lp.liquid → sections/a2-vs-competitor-lp.liquid
 shopify/sections/a2-financing-lp.liquid     → sections/a2-financing-lp.liquid
@@ -58,6 +59,20 @@ and the draft theme was **not** published.
 | **Hero image (+ mobile)** | Pages 1 & 4, *Hero* | add alt text in the same panel |
 | **Build-selector URL** | *Routing* | leave blank to use the fallback (below) |
 | **Fonts** | *Fonts* | optional — toggle "Use custom fonts" to apply a Shopify font; off uses the built-in technical display stack (recommend Archivo / Saira / Oswald for display) |
+
+### Fit Finder calculator (SP sizing block)
+The SP Performance page's "Find my size" block embeds A2's existing **Fit Finder**
+(`snippets/a2-fit-calculator.liquid`), enabled via the section setting
+**Show the A2 Fit Finder calculator**. The fit math is unchanged from A2's
+original calculator; only the styling was made responsive/scoped and Chart.js is
+lazy-loaded on first result.
+
+> ⚠️ The `fit_coords` (frame XS/S/M/L + stem) in the snippet are the **Speed
+> Phreak (2021)** numbers carried over from the original calculator. Confirm they
+> match the current SP geometry and size lineup before publishing — update only
+> the `fit_coords` object; the rest of the algorithm is geometry-agnostic.
+
+Rogue (and any other line) leaves this off and can use the Octane quiz instead.
 
 ### Affirm
 The band/cards render Affirm's on-page messaging element

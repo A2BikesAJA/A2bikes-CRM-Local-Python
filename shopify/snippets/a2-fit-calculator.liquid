@@ -1,0 +1,265 @@
+{%- comment -%}
+  A2 Bikes — Fit Finder (bike size calculator)
+  ----------------------------------------------------------------------------
+  Lifted from A2's existing Fit Finder (the canonical /pages/speed-phreak-fit-
+  calculator + the Speed Phreak PDP build). The FIT MATH IS UNCHANGED — same
+  fit_coords, same height/inseam -> Pad X/Y model, same nearest-combination
+  search. Only the presentation was adapted: scoped + responsive styles using
+  the landing-page theme tokens, and Chart.js is lazy-loaded on first result so
+  it never weighs down initial page load.
+
+  ⚠️ fit_coords below are the Speed Phreak (2021) frame + stem numbers. Confirm
+  they match the current SP geometry/sizes before publishing — update fit_coords
+  only (the rest of the algorithm is geometry-agnostic).
+{%- endcomment -%}
+
+{% raw %}
+<style>
+  .a2-fit-calc { margin-top: 8px; }
+  .a2-fit-calc .fitCalcButton {
+    background: var(--a2-accent); color: var(--a2-accent-fg);
+    font-family: var(--a2-font-display); text-transform: uppercase; letter-spacing: .04em;
+    padding: .8em 1.4em; border: 2px solid var(--a2-accent); border-radius: 999px;
+    cursor: pointer; transition: filter .12s ease;
+  }
+  .a2-fit-calc .fitCalcButton:hover { filter: brightness(1.06); }
+  .a2-fit-calc .fitCalcButton:focus-visible { outline: 3px solid var(--a2-accent-2); outline-offset: 2px; }
+  .a2-fit-calc h3 { font-family: var(--a2-font-display); margin: 0 0 .4em; }
+  .a2-fit-calc__intro { margin-bottom: 1em; }
+  .a2-fit-calc .fitCalc__div_fitKnown_buttons { display: flex; flex-wrap: wrap; gap: 14px; margin: 1em 0; }
+  .a2-fit-calc .fitCalc__forms { display: flex; flex-wrap: wrap; gap: 24px; }
+  .a2-fit-calc .fitCalc__form_pads,
+  .a2-fit-calc .fitCalc__form_body { display: flex; flex-direction: column; gap: 12px; }
+  .a2-fit-calc .fitCalc__row { display: flex; align-items: center; gap: 10px; }
+  .a2-fit-calc label { width: 120px; }
+  .a2-fit-calc input {
+    width: 120px; padding: .55em .7em; border-radius: 9px;
+    border: 1px solid var(--a2-border); background: var(--a2-bg); color: var(--a2-fg); font-size: 1rem;
+  }
+  .a2-fit-calc input:focus-visible { outline: 3px solid var(--a2-accent-2); outline-offset: 2px; }
+  .a2-fit-calc .fitCalc__div_fit_options { display: flex; flex-wrap: wrap; gap: 20px; margin-top: 1.5em; }
+  .a2-fit-calc .fitCalc__div_fitOption { flex: 1 1 220px; border: 1px solid var(--a2-border); border-radius: 12px; padding: 16px; }
+  .a2-fit-calc .fitCalc__div_fitOption:empty { display: none; }
+  .a2-fit-calc #padyxdisplaybox { margin-top: 1em; }
+  .a2-fit-calc .a2fc-chart-container { position: relative; width: 100%; max-width: 880px; margin-top: 1.5em; }
+  .a2-fit-calc canvas { max-width: 100%; }
+  @media (max-width: 600px) { .a2-fit-calc label { width: 90px; } }
+</style>
+
+<div class="a2-fit-calc" id="a2-fit-calc">
+  <div id="togglefit" style="display:block;">
+    <button class="fitCalcButton" type="button" onclick="toggleFit()">Find my size</button>
+  </div>
+
+  <div id="fitfinder" style="display:none;">
+    <h3>Fit Finder</h3>
+    <div id="fitPath" style="display:block;">
+      <p class="a2-fit-calc__intro">Do you already know your Pad X / Y?</p>
+      <div class="fitCalc__div_fitKnown_buttons">
+        <button class="fitCalcButton" type="button" onclick="beginFit(false)">No — use my measurements</button>
+        <button class="fitCalcButton" type="button" onclick="beginFit(true)">Yes — I know Pad X/Y</button>
+      </div>
+    </div>
+
+    <div class="fitCalc__forms">
+      <div id="enterPadXY" style="display:none;">
+        <form class="fitCalc__form_pads" onsubmit="return false;">
+          <div class="fitCalc__row"><label for="pady">Pad Y</label><input type="number" inputmode="numeric" id="pady"> mm</div>
+          <div class="fitCalc__row"><label for="padx">Pad Center X</label><input type="number" inputmode="numeric" id="padx"> mm</div>
+          <button class="fitCalcButton" type="button" onclick="buttonPress(true)">Find fit</button>
+        </form>
+      </div>
+      <div id="enterMeasurements" style="display:none;">
+        <form class="fitCalc__form_body" onsubmit="return false;">
+          <div class="fitCalc__row"><label for="fitCalc__input_height">Height</label><input type="number" inputmode="numeric" id="fitCalc__input_height"> mm</div>
+          <div class="fitCalc__row"><label for="fitCalc__input_inseam">Inseam</label><input type="number" inputmode="numeric" id="fitCalc__input_inseam"> mm</div>
+          <button class="fitCalcButton" type="button" onclick="buttonPress(false)">Find fit</button>
+        </form>
+      </div>
+      <div id="padyxdisplaybox"></div>
+    </div>
+
+    <div class="fitCalc__div_fit_options">
+      <div class="fitCalc__div_fitOption" id="op1div"><p id="op1p"></p></div>
+      <div class="fitCalc__div_fitOption"><p id="op2p"></p></div>
+      <div class="fitCalc__div_fitOption"><p id="op3p"></p></div>
+    </div>
+
+    <div id="chart"><div class="a2fc-chart-container"><canvas id="myChart"></canvas></div></div>
+  </div>
+</div>
+
+<script>
+if (!window.__a2fcInit) {
+  window.__a2fcInit = true;
+
+  // Lazy-load Chart.js only when a result is first computed (keeps the LP light).
+  function a2fcEnsureChart(cb) {
+    if (window.Chart) { cb(); return; }
+    if (window.__a2fcChartCbs) { window.__a2fcChartCbs.push(cb); return; }
+    window.__a2fcChartCbs = [cb];
+    var s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js';
+    s.async = true;
+    s.onload = function () { (window.__a2fcChartCbs || []).forEach(function (f) { f(); }); window.__a2fcChartCbs = []; };
+    document.head.appendChild(s);
+  }
+
+  function buttonPress(fitKnown) {
+    var fit;
+    if (fitKnown == true) {
+      if (document.getElementById("padx").value == "" || document.getElementById("pady").value == "") {
+        document.getElementById("op1p").innerHTML = "Please enter your pad X/Y.";
+        return;
+      } else if (/\D/.test(document.getElementById("padx").value) || /\D/.test(document.getElementById("pady").value)) {
+        document.getElementById("op1p").innerHTML = "Please only enter whole numbers for pad X/Y.";
+        return;
+      }
+      fit = {
+        userpadx: Number(document.getElementById("padx").value),
+        userpady: Number(document.getElementById("pady").value)
+      };
+    } else if (fitKnown == false) {
+      if (document.getElementById("fitCalc__input_height").value == "" || document.getElementById("fitCalc__input_inseam").value == "") {
+        document.getElementById("op1p").innerHTML = "Please enter your body measurements.";
+        return;
+      } else if (/\D/.test(document.getElementById("fitCalc__input_height").value) || /\D/.test(document.getElementById("fitCalc__input_inseam").value)) {
+        document.getElementById("op1p").innerHTML = "Please only enter whole numbers for body measurements.";
+        return;
+      }
+      var height = Number(document.getElementById("fitCalc__input_height").value),
+          inseam = Number(document.getElementById("fitCalc__input_inseam").value);
+      var saddle = 0.9 * inseam;
+      fit = {
+        userpadx: 0.29 * height + (0.42 - saddle / height) * 500,
+        userpady: 0.35 * height - (0.42 - saddle / height) * 400
+      };
+    }
+
+    fit = findCombinations(fit.userpadx, fit.userpady, fit_array);
+
+    document.getElementById("op1p").innerHTML = "<h3>Option 1</h3>" + stringCombination(fit.options[0]);
+    document.getElementById("op2p").innerHTML = "<h3>Option 2</h3>" + stringCombination(fit.options[1]);
+    document.getElementById("op3p").innerHTML = "<h3>Option 3</h3>" + stringCombination(fit.options[2]);
+    document.getElementById("padyxdisplaybox").innerHTML =
+      "<h4>Pad Y: " + String(Math.round(fit.userpady)) + "mm<br>Pad Center X: " + String(Math.round(fit.userpadx)) + "mm</h4>";
+
+    if (window.a2dl) { window.a2dl("fit_calculator_result", { recommended_frame: fit.options[0].frame }); }
+  }
+
+  function beginFit(fitKnown) {
+    if (fitKnown == true) { showMe("enterPadXY"); }
+    else if (fitKnown == false) { showMe("enterMeasurements"); }
+  }
+
+  function toggleFit() { showMe("togglefit"); showMe("fitfinder"); }
+
+  function showMe(showBox) {
+    var el = document.getElementById(showBox);
+    el.style.display = (el.style.display == "block") ? "none" : "block";
+  }
+
+  function showChart(fit) {
+    a2fcEnsureChart(function () {
+      var colors = { frame_l: "#fff68f", frame_m: "#6495ED", frame_s: "#7CFC00", frame_xs: "#ffa500" };
+      var fit_points = { XS: [], S: [], M: [], L: [] };
+      for (var i = fit_array.length - 1; i >= 0; i--) {
+        if (fit_array[i].frame == "XS") { fit_points["XS"].push({ x: fit_array[i].padx, y: fit_array[i].pady }); }
+        else if (fit_array[i].frame == "S") { fit_points["S"].push({ x: fit_array[i].padx, y: fit_array[i].pady }); }
+        else if (fit_array[i].frame == "M") { fit_points["M"].push({ x: fit_array[i].padx, y: fit_array[i].pady }); }
+        else if (fit_array[i].frame == "L") { fit_points["L"].push({ x: fit_array[i].padx, y: fit_array[i].pady }); }
+      }
+      var ctx = document.getElementById("myChart").getContext("2d");
+      new Chart(ctx, {
+        type: "scatter",
+        data: { datasets: [
+          { pointRadius: 6, pointBackgroundColor: "#111", backgroundColor: "#111", label: "Your fit point", showLine: false, data: [{ x: fit.userpadx, y: fit.userpady }] },
+          { pointRadius: 5, pointBackgroundColor: "blue", backgroundColor: "blue", label: "Option 1", showLine: false, data: [{ x: fit.options[0].padx, y: fit.options[0].pady }] },
+          { pointRadius: 5, pointBackgroundColor: "orange", backgroundColor: "orange", label: "Option 2", showLine: false, data: [{ x: fit.options[1].padx, y: fit.options[1].pady }] },
+          { pointRadius: 5, pointBackgroundColor: "red", backgroundColor: "red", label: "Option 3", showLine: false, data: [{ x: fit.options[2].padx, y: fit.options[2].pady }] },
+          { pointRadius: 2, pointBackgroundColor: colors.frame_xs, backgroundColor: colors.frame_xs, label: "Size XS", showLine: false, data: fit_points["XS"] },
+          { pointRadius: 2, pointBackgroundColor: colors.frame_s, backgroundColor: colors.frame_s, label: "Size S", showLine: false, data: fit_points["S"] },
+          { pointRadius: 2, pointBackgroundColor: colors.frame_m, backgroundColor: colors.frame_m, label: "Size M", showLine: false, data: fit_points["M"] },
+          { pointRadius: 2, pointBackgroundColor: colors.frame_l, backgroundColor: colors.frame_l, label: "Size L", showLine: false, data: fit_points["L"] }
+        ]},
+        options: {
+          legend: { display: true, position: "right" },
+          title: { display: true, text: "Fit Point Plot" },
+          scales: {
+            xAxes: [{ type: "linear", position: "bottom", scaleLabel: { display: true, labelString: "Pad Center X [mm]" } }],
+            yAxes: [{ scaleLabel: { display: true, labelString: "Pad Y [mm]" } }]
+          },
+          tooltips: { callbacks: { label: function (t, d) { var l = String(d.datasets[t.datasetIndex].label); return l + ": (" + t.xLabel + ", " + t.yLabel + ")"; } } }
+        }
+      });
+    });
+  }
+
+  // --- Fit geometry (Speed Phreak 2021 — confirm for current SP) -------------
+  var fit_coords = {
+    XS: [396.39, 456.95],
+    S: [412.4, 476.15],
+    M: [428.3, 495.25],
+    L: [444.2, 514.35],
+    stems: [[110.8, 13.9, "Speed Phreak 110x14mm"]]
+  };
+
+  var fit_array = [];
+  var frame_key = ["XS", "S", "M", "L"];
+  var ped_spacer_combo = [[0,0],[0,5],[0,10],[0,15],[0,20],[0,25],[0,30],[0,35],[0,40],[0,45],[0,50],[0,55],[0,60],[0,65],[0,70]];
+  var pad_positions = [-4, 4, 12, 20, 28];
+  var pad_height = 45;
+
+  for (var i = frame_key.length - 1; i >= 0; i--) {
+    for (var j = fit_coords["stems"].length - 1; j >= 0; j--) {
+      for (var k = ped_spacer_combo.length - 1; k >= 0; k--) {
+        for (var m = pad_positions.length - 1; m >= 0; m--) {
+          fit_array.push({
+            frame: frame_key[i],
+            stem: fit_coords["stems"][j][2],
+            pedSpacers: ped_spacer_combo[k][1],
+            pad: pad_positions[m],
+            padx: Math.round(fit_coords[frame_key[i]][0] + fit_coords["stems"][j][0] + pad_positions[m]),
+            pady: Math.round(fit_coords[frame_key[i]][1] + fit_coords["stems"][j][1] + ped_spacer_combo[k][1] + pad_height)
+          });
+        }
+      }
+    }
+  }
+
+  function findCombinations(padx, pady, fit_data) {
+    var combinations = fit_data;
+    var fit = { userpady: pady, userpadx: padx };
+    for (var i = combinations.length - 1; i >= 0; i--) {
+      combinations[i].error = ((combinations[i].padx - fit.userpadx) ** 2 + (combinations[i].pady - fit.userpady) ** 2) ** 0.5;
+    }
+    fit.options = [combinations[0], combinations[1], combinations[2]];
+    for (var i = combinations.length - 1; i >= 0; i--) {
+      if (combinations[i].error < fit.options[0].error) { fit.options[0] = combinations[i]; }
+    }
+    for (var i = combinations.length - 1; i >= 0; i--) {
+      if (combinations[i].error < fit.options[1].error && combinations[i].frame != fit.options[0].frame) { fit.options[1] = combinations[i]; }
+    }
+    for (var i = combinations.length - 1; i >= 0; i--) {
+      if (combinations[i].error < fit.options[2].error && combinations[i].frame != fit.options[0].frame && combinations[i].frame != fit.options[1].frame) { fit.options[2] = combinations[i]; }
+    }
+    fit.options.sort(function (a, b) { return a.pedSpacers - b.pedSpacers; });
+    fit.options[0].description = "Least pedestal spacer stack option.";
+    fit.options[1].description = "Most room for adjustment.";
+    fit.options[2].description = "Largest pedestal spacer stack option.";
+    fit.options.sort(function (a, b) { return a.error - b.error; });
+    fit.userpadx = Math.round(fit.userpadx * 10) / 10;
+    fit.userpady = Math.round(fit.userpady * 10) / 10;
+    showChart(fit);
+    return fit;
+  }
+
+  function stringCombination(combination) {
+    return "<b>Pad Y:</b> " + String(combination.pady) + "mm <br><b>Pad Center X:</b> " + String(combination.padx) +
+      "mm <br><b>Frame:</b> " + String(combination.frame) + " <br><b>Stem:</b> " + String(combination.stem) +
+      " <br><b>Pedestal spacers:</b> " + String(combination.pedSpacers) + "mm<br><b>Pad position:</b> " + String(combination.pad) +
+      "<br><b>Distance from desired point:</b> " + String(Math.round(combination.error)) + "mm<br>";
+  }
+}
+</script>
+{% endraw %}

@@ -159,22 +159,27 @@
     </div>
   {%- endif -%}
 
-  {%- comment -%} 6. SIZING REASSURANCE (Octane AI quiz) {%- endcomment -%}
+  {%- comment -%} 6. SIZING REASSURANCE (Fit Finder calculator / Octane AI quiz) {%- endcomment -%}
   <div class="a2-section a2-wrap">
     <div class="a2-sizing">
       <div>
         <h2 class="a2-h2">{{ section.settings.sizing_heading | default: 'Not sure of your size?' }}</h2>
         {%- if section.settings.sizing_text != blank -%}<p class="a2-lead">{{ section.settings.sizing_text }}</p>{%- endif -%}
       </div>
-      <div class="a2-cta-row">
-        <button type="button" class="a2-cta a2-cta--secondary"
-                data-a2-octane
-                data-a2-octane-url="{{ section.settings.octane_quiz_url }}"
-                data-a2-source="{{ lp_id }}-sizing">
-          {{ section.settings.octane_cta_label | default: 'Find my size' }}
-        </button>
-      </div>
+      {%- if section.settings.octane_quiz_url != blank -%}
+        <div class="a2-cta-row">
+          <button type="button" class="a2-cta a2-cta--secondary"
+                  data-a2-octane
+                  data-a2-octane-url="{{ section.settings.octane_quiz_url }}"
+                  data-a2-source="{{ lp_id }}-sizing">
+            {{ section.settings.octane_cta_label | default: 'Find my size' }}
+          </button>
+        </div>
+      {%- endif -%}
     </div>
+    {%- if section.settings.show_fit_calculator -%}
+      <div style="margin-top:20px">{% render 'a2-fit-calculator' %}</div>
+    {%- endif -%}
   </div>
 
   {%- comment -%} 7. EMAIL CAPTURE FALLBACK {%- endcomment -%}
@@ -261,6 +266,7 @@
     { "type": "textarea", "id": "sizing_text", "label": "Text", "default": "Answer a few quick questions and we'll recommend your fit in under a minute." },
     { "type": "url", "id": "octane_quiz_url", "label": "Octane AI quiz URL" },
     { "type": "text", "id": "octane_cta_label", "label": "Quiz button label", "default": "Find my size" },
+    { "type": "checkbox", "id": "show_fit_calculator", "label": "Show the A2 Fit Finder calculator", "default": false, "info": "Embeds the height/inseam → frame-size calculator (use on SP). Confirm fit_coords in snippets/a2-fit-calculator.liquid match current SP geometry before publishing." },
 
     { "type": "header", "content": "Email capture (Klaviyo)" },
     { "type": "text", "id": "email_heading", "label": "Heading", "default": "Not ready to buy? Get the SP Buyer's Guide." },

@@ -24,7 +24,10 @@
         "cta_label": "Build Your SP",
         "hero_alt": "A2 SP triathlon bike at speed",
         "financing_price": 3115,
-        "email_source": "SP Performance LP"
+        "email_source": "SP Performance LP",
+        "sizing_heading": "Not sure of your size?",
+        "sizing_text": "Use the A2 Fit Finder — enter your height and inseam and we'll recommend your frame size and cockpit setup.",
+        "show_fit_calculator": true
       }
     }
   },
