@@ -191,7 +191,7 @@
             "a2_source": "price",
             "a2_style": "bold",
             "comp1": "$11,499",
-            "comp2": "—",
+            "comp2": "$13,347",
             "comp3": "—"
           }
         },
@@ -215,7 +215,7 @@
             "a2_source": "groupset",
             "a2_style": "normal",
             "comp1": "Dura-Ace Di2",
-            "comp2": "no RED build",
+            "comp2": "Dura-Ace Di2",
             "comp3": "—"
           }
         },
@@ -275,7 +275,7 @@
             "a2_source": "manual",
             "a2_style": "muted",
             "comp1": "Integrated hydration & storage; established",
-            "comp2": "Made-to-order; onboard storage",
+            "comp2": "Internal hydration; flagship aero",
             "comp3": "—"
           }
         }
@@ -293,14 +293,14 @@
       "settings": {
         "kicker": "Honest comparison",
         "heading": "How this build compares",
-        "note": "We're a younger brand, so here's an honest, like-for-like look at this build vs the Canyon Speedmax and QR X-PR — matched on groupset and on a carbon wheelset where our build ships carbon (US list, June 2026). Where they beat us, we say so.",
+        "note": "We're a younger brand, so here's an honest, like-for-like look at this build vs the Canyon Speedmax and QR's flagship V-PRi (the value X-PR has no RED build) — matched on groupset and carbon wheels (US list, June 2026). Where they beat us, we say so.",
         "pick_label": "Best value",
         "col_a2_name": "A2 SP",
         "col_a2_sub": "This build",
         "col1_name": "Canyon Speedmax",
         "col1_sub": "tri / TT",
-        "col2_name": "QR X-PR",
-        "col2_sub": "value tri",
+        "col2_name": "QR V-PRi",
+        "col2_sub": "flagship tri",
         "col3_name": "",
         "col3_sub": ""
       }
