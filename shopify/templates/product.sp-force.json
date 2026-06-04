@@ -1,0 +1,379 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "sppdp-product",
+      "blocks": {
+        "affirm_pay_over_time_messaging_product_block_qbjW4P": {
+          "type": "shopify://apps/affirm-pay-over-time-messaging/blocks/product-block/6dce54be-130d-4d13-9636-1e8f611b3071",
+          "settings": {
+            "logo_align": "left",
+            "font_size": 16,
+            "logo_color": "blue",
+            "logo_type": "logo",
+            "public_api_key": "",
+            "price_selector": ""
+          }
+        },
+        "t1": {
+          "type": "trust",
+          "settings": {
+            "icon": "shield-check",
+            "title": "Designed by ex-Cervélo engineers",
+            "sub": "Kevin Quan, who designed the Cervélo P-Series, drew this frame."
+          }
+        },
+        "t2": {
+          "type": "trust",
+          "settings": {
+            "icon": "bars",
+            "title": "Direct-to-consumer pricing",
+            "sub": "No dealer markup. You pay for the bike, not the showroom."
+          }
+        },
+        "t3": {
+          "type": "trust",
+          "settings": {
+            "icon": "sliders",
+            "title": "Free fit support & size exchanges",
+            "sub": "Talk to a real fitter before and after you buy. Wrong size? Swap it free."
+          }
+        },
+        "t4": {
+          "type": "trust",
+          "settings": {
+            "icon": "warranty",
+            "title": "Lifetime frame warranty + crash replacement",
+            "sub": "Honored directly by us. Damage it in a crash and we replace the frame."
+          }
+        },
+        "h1": {
+          "type": "hotspot",
+          "settings": {
+            "image_index": 1,
+            "label": "Kammtail tube shapes — aero without UCI-only weirdness",
+            "x": 34,
+            "y": 58
+          }
+        },
+        "h2": {
+          "type": "hotspot",
+          "settings": {
+            "image_index": 1,
+            "label": "Fully internal cable + hose routing",
+            "x": 60,
+            "y": 40
+          }
+        },
+        "h3": {
+          "type": "hotspot",
+          "settings": {
+            "image_index": 1,
+            "label": "SAGS cockpit — 140mm of fit adjustment",
+            "x": 78,
+            "y": 30
+          }
+        }
+      },
+      "block_order": [
+        "affirm_pay_over_time_messaging_product_block_qbjW4P",
+        "t1",
+        "t2",
+        "t3",
+        "t4",
+        "h1",
+        "h2",
+        "h3"
+      ],
+      "settings": {
+        "bc_home": "Home",
+        "bc_col": "Triathlon — SP",
+        "bc_col_url": "",
+        "build_collection": "sp",
+        "build_label": "Groupset",
+        "kicker": "SP Triathlon · Entry build",
+        "subtitle": "Carbon triathlon & time-trial bike",
+        "rating_stars": "★★★★★",
+        "rating_value": "4.8",
+        "rating_count": "",
+        "reviews_anchor": "#sppdp-reviews",
+        "price_note": "USD · ships free in the continental US",
+        "affirm_months": 12,
+        "affirm_apr": "0% APR",
+        "affirm_url": "",
+        "wheel_note": "Discount applied automatically when your bike & wheels are in your cart.",
+        "show_affirm_line": false,
+        "gallery_caption": "Hover the numbered points to explore the frame tech.",
+        "show_hotspots": true,
+        "edu_1_title": "Toray T700 carbon",
+        "edu_1_desc": "Hand-laid layup — the same fiber class as superbikes costing 3× more.",
+        "edu_2_title": "SAGS adjustable cockpit",
+        "edu_2_desc": "140mm fore/aft pad range. Dial your aero fit without a new stem.",
+        "edu_3_title": "Race-day storage",
+        "edu_3_desc": "Down-tube and top-tube mounts for nutrition and tools, built in.",
+        "size_help_label": "Find your size",
+        "size_help_url": "",
+        "cta_prefix": "Add to cart —",
+        "demo_note": "7-day home demo",
+        "consult_label": "Or book a free fit consult",
+        "consult_url": "",
+        "show_sticky": true
+      }
+    },
+    "reviews": {
+      "type": "sppdp-reviews",
+      "blocks": {
+        "r1": {
+          "type": "review",
+          "settings": {
+            "stars": "★★★★★",
+            "result": "First 70.3 · 5:42",
+            "quote": "My first carbon tri bike. I'm not a pro — I just wanted to stop getting dropped on the bike leg. It fit out of the box once I used their sizing call, and I genuinely felt faster.",
+            "name": "Marcus T.",
+            "context": "Age-grouper, Columbus OH",
+            "verified": true
+          }
+        },
+        "r2": {
+          "type": "review",
+          "settings": {
+            "stars": "★★★★★",
+            "result": "3rd AG · Olympic",
+            "quote": "Honest take: assembly took me about an hour and the headset needed patience. But for the money there's nothing close. The SAGS cockpit let me get low without buying parts.",
+            "name": "Dana R.",
+            "context": "2nd season, Boulder CO",
+            "verified": true
+          }
+        },
+        "r3": {
+          "type": "review",
+          "settings": {
+            "stars": "★★★★☆",
+            "result": "New to tri",
+            "quote": "Shopped the Cervélo and QR at my local shop and walked out because of the price. Glad I waited. Just works, and support actually answered when I had a routing question.",
+            "name": "Priya S.",
+            "context": "Beginner, Austin TX",
+            "verified": true
+          }
+        }
+      },
+      "block_order": [
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "settings": {
+        "kicker": "Owner reviews · athlete to athlete",
+        "heading": "What SP-105 riders actually say",
+        "score": "4.8",
+        "stars": "★★★★★",
+        "count": "96",
+        "recommend": "97%",
+        "show_summary": true
+      }
+    },
+    "compare": {
+      "type": "sppdp-compare",
+      "blocks": {
+        "c1": {
+          "type": "row",
+          "settings": {
+            "label": "Price",
+            "a2": "$3,115",
+            "a2_source": "price",
+            "a2_style": "bold",
+            "comp1": "from $5,999",
+            "comp2": "from $4,049",
+            "comp3": "—"
+          }
+        },
+        "c2": {
+          "type": "row",
+          "settings": {
+            "label": "Frame",
+            "a2": "Toray T700 carbon, 1,250g",
+            "a2_source": "manual",
+            "a2_style": "normal",
+            "comp1": "Carbon (aero)",
+            "comp2": "Carbon (aero)",
+            "comp3": "—"
+          }
+        },
+        "c3": {
+          "type": "row",
+          "settings": {
+            "label": "Groupset",
+            "a2": "Shimano 105",
+            "a2_source": "groupset",
+            "a2_style": "normal",
+            "comp1": "105 Di2",
+            "comp2": "105 (mech)",
+            "comp3": "—"
+          }
+        },
+        "c4": {
+          "type": "row",
+          "settings": {
+            "label": "Fit adjustability",
+            "a2": "SAGS cockpit — 140mm range",
+            "a2_source": "manual",
+            "a2_style": "normal",
+            "comp1": "Adjustable aerobar",
+            "comp2": "Adjustable aerobar",
+            "comp3": "—"
+          }
+        },
+        "c5": {
+          "type": "row",
+          "settings": {
+            "label": "Fit support",
+            "a2": "Free remote fitter",
+            "a2_source": "manual",
+            "a2_style": "yes",
+            "comp1": "Online",
+            "comp2": "Dealer / made-to-order",
+            "comp3": "—"
+          }
+        },
+        "c6": {
+          "type": "row",
+          "settings": {
+            "label": "Frame warranty",
+            "a2": "Lifetime + crash replacement",
+            "a2_source": "manual",
+            "a2_style": "yes",
+            "comp1": "6-year",
+            "comp2": "Limited",
+            "comp3": "—"
+          }
+        },
+        "c7": {
+          "type": "row",
+          "settings": {
+            "label": "Where you buy",
+            "a2": "Direct — 7-day home demo",
+            "a2_source": "manual",
+            "a2_style": "normal",
+            "comp1": "Direct",
+            "comp2": "Made-to-order (~2 wk)",
+            "comp3": "—"
+          }
+        },
+        "c8": {
+          "type": "row",
+          "settings": {
+            "label": "Where they win",
+            "a2": "Newer brand, fewer shops",
+            "a2_source": "manual",
+            "a2_style": "muted",
+            "comp1": "Integrated hydration & storage; established",
+            "comp2": "Made-to-order; onboard storage",
+            "comp3": "—"
+          }
+        }
+      },
+      "block_order": [
+        "c1",
+        "c2",
+        "c3",
+        "c4",
+        "c5",
+        "c6",
+        "c7",
+        "c8"
+      ],
+      "settings": {
+        "kicker": "Honest comparison",
+        "heading": "How this build compares",
+        "note": "We're a younger brand, so here's an honest look at this build against two established tri names — the Canyon Speedmax and Quintana Roo X-PR (entry builds, US list, June 2026). Where they beat us, we say so.",
+        "pick_label": "Best value",
+        "col_a2_name": "A2 SP",
+        "col_a2_sub": "This build",
+        "col1_name": "Canyon Speedmax",
+        "col1_sub": "CF 7 Di2",
+        "col2_name": "QR X-PR",
+        "col2_sub": "value tri",
+        "col3_name": "",
+        "col3_sub": ""
+      }
+    },
+    "specs": {
+      "type": "sppdp-specs",
+      "blocks": {
+        "g1": {
+          "type": "group",
+          "settings": {
+            "title": "Frame & fork",
+            "rows": "Material | Hand-laid Toray T700 carbon fiber\nFrame weight | 1,250 g (size M, painted)\nTube profiles | Truncated-airfoil (kammtail) down tube, seat tube & fork\nRouting | Fully internal cable & hose\nDesigner | Kevin Quan (former Cervélo P-Series engineer)"
+          }
+        },
+        "g2": {
+          "type": "group",
+          "settings": {
+            "title": "Wheels & tires",
+            "rows": "Axles | 12mm thru-axle, front & rear\nUpgrade path | Accepts standard wheelsets — many owners add deep aero wheels for race day"
+          }
+        },
+        "g3": {
+          "type": "group",
+          "settings": {
+            "title": "Cockpit & fit (SAGS)",
+            "rows": "Aerobar | SAGS integrated cockpit\nPad adjustment | 140mm fore/aft, 95mm stack range\nExtension shape | Ski-bend, tool-free angle adjust"
+          }
+        },
+        "g4": {
+          "type": "group",
+          "settings": {
+            "title": "Geometry & sizing",
+            "rows": "Sizes | Small · Medium · Large · XL\nRider range | ~5'1\" to 6'4\" (155–193 cm)\nSizing help | Free remote fit call + size calculator; free exchanges"
+          }
+        },
+        "g5": {
+          "type": "group",
+          "settings": {
+            "title": "In the box & assembly",
+            "rows": "Pre-assembly | Ships 92% assembled\nYou install | Seatpost, cockpit, and brake dial-in — take your time with the included torque wrench\nTypical setup time | Under an hour with the included video guide\nPrefer a shop? | Most local shops finish the build for $50–150"
+          }
+        }
+      },
+      "block_order": [
+        "g1",
+        "g2",
+        "g3",
+        "g4",
+        "g5"
+      ],
+      "settings": {
+        "kicker": "Specs & details",
+        "heading": "Everything on this build",
+        "auto_specs": true,
+        "components_title": "Drivetrain & components",
+        "frame_weight": "1,250 g"
+      }
+    },
+    "1780531623d78958a5": {
+      "type": "apps",
+      "settings": {
+        "heading": "App section",
+        "enable_animation": true,
+        "divider_style": "none",
+        "section_padding": "section--vertical-padding-top-bottom"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "reviews",
+    "compare",
+    "specs",
+    "1780531623d78958a5"
+  ]
+}
