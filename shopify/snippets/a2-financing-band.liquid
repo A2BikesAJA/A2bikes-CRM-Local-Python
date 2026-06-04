@@ -1,0 +1,45 @@
+{%- comment -%}
+  A2 Bikes — Affirm + Truemed affordability band (non-blocking).
+  Affirm's on-page messaging script (loaded store-wide / async) replaces the
+  `.affirm-as-low-as` text once ready; the inner text is the graceful fallback.
+  Params:
+    price            (number)  representative price in DOLLARS (Affirm wants cents)
+    price_label      (string)  fallback text shown until Affirm renders
+    affirm_heading   (string)
+    truemed_heading  (string)
+    truemed_text     (string)
+    truemed_url      (string)  link into the Truemed eligibility flow
+    note             (string)  fine print
+{%- endcomment -%}
+{%- liquid
+  assign _price = price | default: 0
+  assign _cents = _price | times: 100 | floor
+-%}
+<div class="a2-band__grid">
+  <div class="a2-band__col">
+    <span class="a2-band__badge">Pay monthly · Affirm</span>
+    <h3 class="a2-h3">{{ affirm_heading | default: 'Ride now, pay monthly' }}</h3>
+    {%- if _cents > 0 -%}
+      <p class="affirm-as-low-as" data-page-type="category" data-amount="{{ _cents }}">
+        {{ price_label | default: 'Split it into easy monthly payments with Affirm.' }}
+      </p>
+    {%- else -%}
+      <p>{{ price_label | default: 'Split it into easy monthly payments with Affirm.' }}</p>
+    {%- endif -%}
+    {%- if note != blank -%}<p class="a2-fineprint">{{ note }}</p>{%- endif -%}
+  </div>
+  <div class="a2-band__col">
+    <span class="a2-band__badge">Pre-tax · HSA / FSA</span>
+    <h3 class="a2-h3">{{ truemed_heading | default: 'Use pre-tax HSA / FSA dollars' }}</h3>
+    {%- if truemed_text != blank -%}<p>{{ truemed_text }}</p>{%- endif -%}
+    {%- if truemed_url != blank -%}
+      {% render 'a2-cta',
+         label: 'See if you qualify',
+         href: truemed_url,
+         style: 'secondary',
+         event: 'truemed_learn_more',
+         cta_id: 'financing-band-truemed',
+         target: '_blank' %}
+    {%- endif -%}
+  </div>
+</div>
