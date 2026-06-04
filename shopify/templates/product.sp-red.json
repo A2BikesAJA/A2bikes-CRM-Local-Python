@@ -278,12 +278,23 @@
             "comp2": "Internal hydration; flagship aero",
             "comp3": "—"
           }
+        },
+        "cshift": {
+          "type": "row",
+          "settings": {
+            "label": "Shift-button placement",
+            "a2": "Wireless Blips, place anywhere",
+            "a2_style": "yes",
+            "comp1": "Wired Di2, fixed",
+            "comp2": "Wired Di2, fixed"
+          }
         }
       },
       "block_order": [
         "c1",
         "c2",
         "c3",
+        "cshift",
         "c4",
         "c5",
         "c6",

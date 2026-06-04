@@ -85,7 +85,7 @@
         "edu_1_title": "Lightweight Carbon Fiber Frame",
         "edu_1_desc": "Hand-laid Toray T700 carbon at 900 g — light, stiff, and tuned for all-day comfort.",
         "edu_2_title": "Tri-Ready",
-        "edu_2_desc": "Tri-ready — add clip-on aero extensions for extra aerodynamic gains, plus SRAM Blips for extra shifting positions.",
+        "edu_2_desc": "Tri-ready — add clip-on aero extensions for extra aerodynamic gains, plus wireless SRAM Blips you can place anywhere on your bars for shifting from any position.",
         "edu_3_title": "Wide Tire Ability",
         "edu_3_desc": "Clearance for tires up to 35 mm — road-bike speed when you want it, gravel grip when the pavement ends."
       }
@@ -230,12 +230,24 @@
             "comp2": "Direct",
             "comp3": "Direct"
           }
+        },
+        "cshift": {
+          "type": "row",
+          "settings": {
+            "label": "Shift-button placement",
+            "a2": "Wireless Blips, place anywhere",
+            "a2_style": "yes",
+            "comp1": "Wireless AXS",
+            "comp2": "Wired Di2, fixed",
+            "comp3": "Wireless AXS"
+          }
         }
       },
       "block_order": [
         "c1",
         "c2",
         "c3",
+        "cshift",
         "c4",
         "c5",
         "c6",
@@ -277,7 +289,7 @@
           "type": "group",
           "settings": {
             "title": "Cockpit & fit",
-            "rows": "Setup | Road cockpit — stem & bar listed in the components above\nTri-ready | Add clip-on aero extensions for aero gains, plus SRAM Blips for extra shift positions\nFit help | Free remote fit call + size calculator; free exchanges"
+            "rows": "Setup | Road cockpit — stem & bar listed in the components above\nTri-ready | Add clip-on aero extensions for aero gains, plus wireless SRAM Blips placed anywhere for extra shift positions\nFit help | Free remote fit call + size calculator; free exchanges"
           }
         },
         "g4": {
