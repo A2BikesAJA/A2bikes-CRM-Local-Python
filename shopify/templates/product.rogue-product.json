@@ -148,9 +148,9 @@
             "a2": "$2,699",
             "a2_source": "price",
             "a2_style": "bold",
-            "comp1": "—",
-            "comp2": "—",
-            "comp3": "—"
+            "comp1": "from $5,099",
+            "comp2": "from $4,599",
+            "comp3": "from $5,499"
           }
         },
         "c2": {
@@ -159,32 +159,32 @@
             "label": "Frame",
             "a2": "Toray T700, 900 g",
             "a2_style": "normal",
-            "comp1": "Carbon",
-            "comp2": "Carbon",
-            "comp3": "Carbon"
+            "comp1": "Carbon (aero)",
+            "comp2": "Carbon (aero)",
+            "comp3": "Carbon (aero)"
           }
         },
         "c3": {
           "type": "row",
           "settings": {
-            "label": "Groupset",
+            "label": "Groupset (entry electronic)",
             "a2": "Shimano 105",
             "a2_source": "groupset",
             "a2_style": "normal",
-            "comp1": "—",
-            "comp2": "—",
-            "comp3": "—"
+            "comp1": "105 Di2",
+            "comp2": "105 Di2",
+            "comp3": "Rival AXS"
           }
         },
         "c4": {
           "type": "row",
           "settings": {
             "label": "Tire clearance",
-            "a2": "Up to 35 mm",
-            "a2_style": "yes",
-            "comp1": "Often less",
-            "comp2": "Often less",
-            "comp3": "Often less"
+            "a2": "35 mm",
+            "a2_style": "normal",
+            "comp1": "32 mm",
+            "comp2": "36 mm",
+            "comp3": "35 mm"
           }
         },
         "c5": {
@@ -193,9 +193,9 @@
             "label": "Built for",
             "a2": "Race · gravel · commute",
             "a2_style": "yes",
-            "comp1": "Road",
-            "comp2": "Tri",
-            "comp3": "Road / tri"
+            "comp1": "Aero road",
+            "comp2": "Aero road",
+            "comp3": "Aero road"
           }
         },
         "c6": {
@@ -204,9 +204,9 @@
             "label": "Fit support",
             "a2": "Free remote fitter",
             "a2_style": "yes",
-            "comp1": "Varies",
+            "comp1": "Online",
             "comp2": "Via dealer",
-            "comp3": "Varies"
+            "comp3": "Direct"
           }
         },
         "c7": {
@@ -215,7 +215,7 @@
             "label": "Frame warranty",
             "a2": "Lifetime + crash replacement",
             "a2_style": "yes",
-            "comp1": "Limited",
+            "comp1": "6-year",
             "comp2": "Limited",
             "comp3": "Limited"
           }
@@ -244,16 +244,16 @@
       ],
       "settings": {
         "heading": "How the Rogue compares",
-        "note": "We're a younger brand, so it's fair to ask how we stack up. Here's the Rogue against the Canyon, Quintana Roo Service Course, and Ventum NS1 — competitor prices and specs are placeholders, so verify them before publishing.",
+        "note": "We're a younger brand, so here's an honest look at the Rogue against the entry electronic builds of three aero-road rivals (US list prices, June 2026). Where they beat us, we say so.",
         "pick_label": "Best value",
         "col_a2_name": "A2 Rogue",
         "col_a2_sub": "This build",
-        "col1_name": "Canyon",
-        "col1_sub": "all-road",
-        "col2_name": "Quintana Roo",
-        "col2_sub": "Service Course",
-        "col3_name": "Ventum",
-        "col3_sub": "NS1"
+        "col1_name": "Canyon Aeroad",
+        "col1_sub": "CF SLX 7",
+        "col2_name": "QR Service Course",
+        "col2_sub": "aero road",
+        "col3_name": "Ventum NS1",
+        "col3_sub": "V3"
       }
     },
     "specs": {
