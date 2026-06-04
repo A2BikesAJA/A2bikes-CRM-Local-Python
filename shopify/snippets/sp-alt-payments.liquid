@@ -1,0 +1,29 @@
+{%- comment -%}
+  Alternative Payments — rendered in the cart footer, immediately under the
+  checkout buttons (main-cart.liquid). Self-contained styles so it renders
+  whether or not the .sppdp assets are loaded. Affirm / TrueMed / GovX.
+{%- endcomment -%}
+<div class="sp-altpay">
+  <div class="sp-altpay__title">Other ways to pay</div>
+  <a class="sp-altpay__opt" href="{{ pages.affirm.url | default: '/pages/affirm' }}">
+    <span class="sp-altpay__name">Affirm</span>
+    <span class="sp-altpay__desc">Split it into monthly payments — 0% APR available.</span>
+  </a>
+  <a class="sp-altpay__opt" href="{{ pages.truemed.url | default: '/pages/truemed' }}">
+    <span class="sp-altpay__name">TrueMed — HSA / FSA</span>
+    <span class="sp-altpay__desc">Pay with pre-tax health dollars and save up to 30%.</span>
+  </a>
+  <a class="sp-altpay__opt" href="{{ pages.govx.url | default: '/pages/govx' }}">
+    <span class="sp-altpay__name">GovX ID</span>
+    <span class="sp-altpay__desc">Military, first responders &amp; educators — verify to save.</span>
+  </a>
+</div>
+<style>
+  .sp-altpay{ margin-top:18px; padding-top:16px; border-top:1px solid #E2DFD8; font-family:'Instrument Sans',system-ui,-apple-system,Segoe UI,Roboto,sans-serif; }
+  .sp-altpay__title{ font-size:.72rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:#6A6F75; margin-bottom:10px; }
+  .sp-altpay__opt{ display:block; padding:9px 0; border-bottom:1px solid #EFEDE8; text-decoration:none; }
+  .sp-altpay__opt:last-child{ border-bottom:0; }
+  .sp-altpay__name{ display:block; font-size:.92rem; font-weight:700; color:#0E0F11; letter-spacing:-0.01em; }
+  .sp-altpay__desc{ display:block; font-size:.8rem; color:#6A6F75; line-height:1.4; margin-top:1px; }
+  .sp-altpay__opt:hover .sp-altpay__name{ color:#E5322B; }
+</style>

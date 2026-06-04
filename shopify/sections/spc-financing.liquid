@@ -1,0 +1,59 @@
+{% render 'spc-assets' %}
+<div class="spc">
+  <section class="spc-sec spc-pay">
+    <div class="spc-wrap">
+      <div class="spc-head spc-head--center spc-reveal">
+        <p class="spc-eyebrow">{{ section.settings.eyebrow }}</p>
+        <h2 class="spc-h2">{{ section.settings.heading }}</h2>
+        <p class="spc-lede">{{ section.settings.lede }}</p>
+      </div>
+      <div class="spc-pay-grid">
+        {%- for block in section.blocks -%}
+          {%- assign dly = forloop.index0 | at_most: 3 -%}
+          <div class="spc-pay-card spc-reveal{% if dly > 0 %} d{{ dly }}{% endif %}" {{ block.shopify_attributes }}>
+            <div class="spc-pay-card__brand"><span class="spc-wordmark">{{ block.settings.wordmark }}</span></div>
+            <h3>{{ block.settings.heading }}</h3>
+            <p>{{ block.settings.body }}</p>
+            <a class="spc-pay-link" href="{{ block.settings.link | default: '#' }}" data-financing="{{ block.settings.provider | escape }}">{{ block.settings.link_label }} <span class="spc-arw">→</span></a>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+</div>
+{% schema %}
+{
+  "name": "SP · Financing",
+  "tag": "section",
+  "max_blocks": 4,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "No need to pay all at once" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "How to pay for it" },
+    { "type": "textarea", "id": "lede", "label": "Lede", "default": "Three independent ways to make an SP easier on the budget. Pick whichever fits your situation." }
+  ],
+  "blocks": [
+    {
+      "type": "financing_card",
+      "name": "Financing option",
+      "settings": [
+        { "type": "text", "id": "wordmark", "label": "Wordmark", "default": "affirm" },
+        { "type": "inline_richtext", "id": "heading", "label": "Heading (bold the figure)", "default": "From <strong>$260/mo</strong> at 0% APR" },
+        { "type": "textarea", "id": "body", "label": "Body", "default": "Split your bike over 12 months at 0% APR on the SP 105. No fees, no surprises. Pre-qualify in 30 seconds — it won't affect your credit score." },
+        { "type": "text", "id": "link_label", "label": "Link label", "default": "Calculate my monthly payment" },
+        { "type": "url", "id": "link", "label": "Link" },
+        { "type": "text", "id": "provider", "label": "Analytics name", "default": "affirm" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SP · Financing",
+      "blocks": [
+        { "type": "financing_card", "settings": { "wordmark": "affirm", "heading": "From <strong>$260/mo</strong> at 0% APR", "body": "Split your bike over 12 months at 0% APR on the SP 105. No fees, no surprises. Pre-qualify in 30 seconds — it won't affect your credit score.", "link_label": "Calculate my monthly payment", "provider": "affirm" } },
+        { "type": "financing_card", "settings": { "wordmark": "truemed.", "heading": "Save up to 30% with <strong>HSA / FSA</strong>", "body": "Use pre-tax HSA or FSA dollars toward your bike. Triathlon bikes qualify as eligible health expenses with Truemed certification — effective savings of 25–40% depending on your tax bracket.", "link_label": "See if I qualify", "provider": "truemed" } },
+        { "type": "financing_card", "settings": { "wordmark": "GovX", "heading": "<strong>10% off</strong> for service & educators", "body": "Active military, veterans, first responders, and teachers receive 10% off through GovX verification. Verify once and the discount applies at checkout.", "link_label": "Verify and save", "provider": "govx" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

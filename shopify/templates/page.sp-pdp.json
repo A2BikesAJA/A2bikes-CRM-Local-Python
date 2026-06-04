@@ -1,0 +1,69 @@
+/*
+ * Page template for the SP — Shimano 105 PDP redesign.
+ * One responsive page (desktop 2-col + sticky buy box collapses to mobile
+ * single-column + swipe gallery + persistent add-to-cart bar at 960px),
+ * built from reorderable sections: Main (gallery + buy box), Reviews,
+ * Compare, Specs. Repeating items (gallery images, trust points, review
+ * cards, compare rows, spec tiles/groups) are blocks you can add / remove /
+ * reorder in the theme editor. Price + Affirm pull live from the product set
+ * on the Main section ("product_handle"). The theme's global header/footer
+ * wrap this page. Assign this template to a page (suffix "sp-pdp").
+ */
+{
+  "sections": {
+    "main": {
+      "type": "sppdp-main",
+      "blocks": {
+        "m1": { "type": "media", "settings": { "tag": "", "caption": "Drive-side profile — Oswego Blue, size M" } },
+        "m2": { "type": "media", "settings": { "tag": "Detail", "caption": "Front 3/4 — kammtail head tube & fork crown" } },
+        "m3": { "type": "media", "settings": { "tag": "Detail", "caption": "SAGS aerobar cockpit — pad & extension adjustment" } },
+        "m4": { "type": "media", "settings": { "tag": "Detail", "caption": "Rear triangle — internal routing & flat-mount disc" } },
+        "t1": { "type": "trust", "settings": { "icon": "shield-check", "title": "Designed by ex-Cervélo engineers", "sub": "Kevin Quan, who designed the Cervélo P-Series, drew this frame." } },
+        "t2": { "type": "trust", "settings": { "icon": "bars", "title": "Direct-to-consumer pricing", "sub": "No dealer markup. You pay for the bike, not the showroom." } },
+        "t3": { "type": "trust", "settings": { "icon": "sliders", "title": "Free fit support & size exchanges", "sub": "Talk to a real fitter before and after you buy. Wrong size? Swap it free." } },
+        "t4": { "type": "trust", "settings": { "icon": "warranty", "title": "Lifetime frame warranty + crash replacement", "sub": "Honored directly by us. Damage it in a crash and we replace the frame." } }
+      },
+      "block_order": ["m1", "m2", "m3", "m4", "t1", "t2", "t3", "t4"]
+    },
+    "reviews": {
+      "type": "sppdp-reviews",
+      "blocks": {
+        "r1": { "type": "review", "settings": { "stars": "★★★★★", "result": "First 70.3 · 5:42", "quote": "My first carbon tri bike. I'm not a pro — I just wanted to stop getting dropped on the bike leg. It fit out of the box once I used their sizing call, and I genuinely felt faster.", "name": "Marcus T.", "context": "Age-grouper, Columbus OH", "verified": true } },
+        "r2": { "type": "review", "settings": { "stars": "★★★★★", "result": "3rd AG · Olympic", "quote": "Honest take: assembly took me about an hour and the headset needed patience. But for the money there's nothing close. The SAGS cockpit let me get low without buying parts.", "name": "Dana R.", "context": "2nd season, Boulder CO", "verified": true } },
+        "r3": { "type": "review", "settings": { "stars": "★★★★☆", "result": "New to tri", "quote": "Shopped the Cervélo and QR at my local shop and walked out because of the price. Glad I waited. Mechanical 105 just works, and support actually answered when I had a routing question.", "name": "Priya S.", "context": "Beginner, Austin TX", "verified": true } }
+      },
+      "block_order": ["r1", "r2", "r3"]
+    },
+    "compare": {
+      "type": "sppdp-compare",
+      "blocks": {
+        "c1": { "type": "row", "settings": { "label": "Price", "a2": "$3,270", "a2_style": "bold", "comp1": "~$4,600", "comp2": "~$3,900" } },
+        "c2": { "type": "row", "settings": { "label": "Frame", "a2": "Toray T700 carbon, 1,250g", "a2_style": "normal", "comp1": "Carbon", "comp2": "Carbon" } },
+        "c3": { "type": "row", "settings": { "label": "Groupset", "a2": "Shimano 105 R7100, 12-spd", "a2_style": "normal", "comp1": "Shimano 105 mechanical", "comp2": "Shimano 105 mechanical" } },
+        "c4": { "type": "row", "settings": { "label": "Fit adjustability", "a2": "SAGS cockpit — 140mm range", "a2_style": "normal", "comp1": "Stem swaps needed", "comp2": "Stem swaps needed" } },
+        "c5": { "type": "row", "settings": { "label": "Fit support", "a2": "Free remote fitter", "a2_style": "yes", "comp1": "Via dealer (varies)", "comp2": "Via dealer (varies)" } },
+        "c6": { "type": "row", "settings": { "label": "Frame warranty", "a2": "Lifetime + crash replacement", "a2_style": "yes", "comp1": "Limited / years", "comp2": "Limited / years" } },
+        "c7": { "type": "row", "settings": { "label": "Where you buy", "a2": "Direct — 7-day home demo", "a2_style": "normal", "comp1": "Local dealer", "comp2": "Local dealer" } },
+        "c8": { "type": "row", "settings": { "label": "Where they win", "a2": "Newer brand, fewer shops", "a2_style": "muted", "comp1": "Established name & dealer network", "comp2": "Strong tri-specific fit reputation" } }
+      },
+      "block_order": ["c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8"]
+    },
+    "specs": {
+      "type": "sppdp-specs",
+      "blocks": {
+        "q1": { "type": "quick", "settings": { "k": "Frame weight", "v": "1,250 g" } },
+        "q2": { "type": "quick", "settings": { "k": "Groupset", "v": "105 · 12-spd" } },
+        "q3": { "type": "quick", "settings": { "k": "Wheels", "v": "Vision Team 30" } },
+        "q4": { "type": "quick", "settings": { "k": "Complete weight", "v": "~9.1 kg" } },
+        "g1": { "type": "group", "settings": { "title": "Frame & fork", "rows": "Material | Hand-laid Toray T700 carbon fiber\nFrame weight | 1,250 g (size M, painted)\nTube profiles | Truncated-airfoil (kammtail) down tube, seat tube & fork\nRouting | Fully internal cable & hydraulic hose\nDesigner | Kevin Quan (former Cervélo P-Series engineer)" } },
+        "g2": { "type": "group", "settings": { "title": "Drivetrain", "rows": "Groupset | Shimano 105 R7100, 12-speed mechanical\nShifting | Bar-end shifters (TT/tri standard)\nCrankset | 52/36T mid-compact\nCassette | 11–34T, 12-speed\nBrakes | Shimano 105 hydraulic disc, flat-mount" } },
+        "g3": { "type": "group", "settings": { "title": "Wheels & tires", "rows": "Wheelset | Vision Team 30 alloy, tubeless-ready\nTires | Continental Ultra Sport III, 700×28c\nAxles | 12mm thru-axle, front & rear\nUpgrade path | Accepts standard 12-speed wheelsets — many owners add deep aero wheels for race day" } },
+        "g4": { "type": "group", "settings": { "title": "Cockpit & fit (SAGS)", "rows": "Aerobar | SAGS integrated cockpit, alloy extensions\nPad adjustment | 140mm fore/aft, 95mm stack range\nExtension shape | Ski-bend, tool-free angle adjust\nBase bar | Aero alloy, internally routed" } },
+        "g5": { "type": "group", "settings": { "title": "Geometry & sizing", "rows": "Sizes | XS · S · M · L · XL\nRider range | ~5'1\" to 6'4\" (155–193 cm)\nSize M fits | ~5'7\"–5'10\"\nSizing help | Free remote fit call + size calculator; free exchanges" } },
+        "g6": { "type": "group", "settings": { "title": "In the box & assembly", "rows": "Pre-assembly | Ships 92% assembled\nYou install | Seatpost, cockpit, and brake dial-in — the headset & stem are the fiddly parts, so take your time with the included torque wrench\nTypical setup time | Under an hour with the included video guide\nPrefer a shop? | Most local shops finish the build for $50–150" } }
+      },
+      "block_order": ["q1", "q2", "q3", "q4", "g1", "g2", "g3", "g4", "g5", "g6"]
+    }
+  },
+  "order": ["main", "reviews", "compare", "specs"]
+}

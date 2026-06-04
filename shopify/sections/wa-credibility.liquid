@@ -1,0 +1,57 @@
+{% render 'wa-assets' %}
+<div class="whya2">
+  <section class="wa-sec wa-sec--dark wa-cred">
+    <div class="wa-cred-bg{% unless section.settings.cred_image %} wa-ph{% endunless %}"{% if section.settings.cred_image %} style="background-image:url({{ section.settings.cred_image | image_url: width: 2000 }})"{% else %} data-label="Race photo — set in theme editor"{% endif %}></div>
+    <div class="wa-cred-scrim"></div>
+    <div class="wa-wrap">
+      <div class="wa-head reveal">
+        <p class="wa-eyebrow">{{ section.settings.eyebrow }}</p>
+        <h2 class="wa-h2">{{ section.settings.heading }}</h2>
+      </div>
+      <div class="wa-proof">
+        {%- for block in section.blocks -%}
+          {%- assign dly = forloop.index0 | at_most: 3 -%}
+          <div class="wa-proof-item reveal{% if dly > 0 %} d{{ dly }}{% endif %}" {{ block.shopify_attributes }}>
+            <div class="wa-proof-num">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</div>
+            <h3>{{ block.settings.title }}</h3>
+            {%- if block.settings.show_stars -%}<div class="wa-stars" aria-label="5 out of 5 stars">★★★★★</div>{%- endif -%}
+            <p>{{ block.settings.body }}</p>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+</div>
+{% schema %}
+{
+  "name": "Why A2 · Credibility",
+  "tag": "section",
+  "max_blocks": 6,
+  "settings": [
+    { "type": "image_picker", "id": "cred_image", "label": "Background race photo" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Proven, not promised" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Designed by Kevin Quan. Tested at Kona." }
+  ],
+  "blocks": [
+    {
+      "type": "proof",
+      "name": "Proof point",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Drawn by a former Cervélo P-Series engineer" },
+        { "type": "textarea", "id": "body", "label": "Body", "default": "A2's geometry comes from Kevin Quan — the engineer behind the Cervélo P-Series, one of the most successful triathlon bikes ever made." },
+        { "type": "checkbox", "id": "show_stars", "label": "Show 5 stars", "default": false }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Why A2 · Credibility",
+      "blocks": [
+        { "type": "proof", "settings": { "title": "Drawn by a former Cervélo P-Series engineer", "body": "A2's geometry comes from Kevin Quan — the engineer behind the Cervélo P-Series, one of the most successful triathlon bikes ever made.", "show_stars": false } },
+        { "type": "proof", "settings": { "title": "Trusted at the Ironman World Championships", "body": "A2 bikes have been raced on the lava fields of Kona — the toughest proving ground in the sport.", "show_stars": false } },
+        { "type": "proof", "settings": { "title": "Best Beginner Triathlon Bike", "body": "Named by Triathlete Magazine — a five-time winner of the category.", "show_stars": true } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,8 @@
+{%- comment -%}
+  Shared assets for the SP-105 product detail page (sppdp-* sections).
+  Every sppdp-* section renders this once. The CSS is browser-cached (one
+  fetch no matter how many sections include it) and the JS guards itself so
+  it only initialises a single time per page.
+{%- endcomment -%}
+{{ 'sp-pdp.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'sp-pdp.js' | asset_url }}" defer="defer"></script>

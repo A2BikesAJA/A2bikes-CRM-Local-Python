@@ -1,0 +1,82 @@
+{%- comment -%} SP-105 PDP — reviews / rider results. Wire to the real Fera reviews for this product in production; use real verified athletes only. {%- endcomment -%}
+{% render 'sppdp-assets' %}
+{%- assign rscore = product.metafields.reviews.rating.value.rating | default: section.settings.score -%}
+{%- assign rcount = product.metafields.reviews.rating_count.value | default: section.settings.count -%}
+<div class="sppdp">
+  <section class="pdp-section pdp-section--paper" id="sppdp-reviews">
+    <div class="pdp-wrap">
+      <div class="pdp-section__head">
+        <span class="pdp-section__kicker">{{ section.settings.kicker }}</span>
+        <h2 class="pdp-section__title">{{ section.settings.heading }}</h2>
+      </div>
+      {%- if section.settings.show_summary -%}
+      <div class="reviews-top">
+        <div class="reviews-score"><span class="n">{{ rscore }}</span><span class="stars">{{ section.settings.stars }}</span><span class="of">/ 5</span></div>
+        <div class="reviews-meta"><b>{{ rcount }}</b> verified reviews · <b>{{ section.settings.recommend }}</b> would recommend to a training partner</div>
+      </div>
+      {%- endif -%}
+      {%- assign review_count = 0 -%}
+      {%- for block in section.blocks -%}{% if block.type == 'review' %}{% assign review_count = review_count | plus: 1 %}{% endif %}{%- endfor -%}
+      {%- if review_count > 0 -%}
+      <div class="review-grid">
+        {%- for block in section.blocks -%}
+          {%- if block.type != 'review' -%}{%- continue -%}{%- endif -%}
+          <article class="review-card" {{ block.shopify_attributes }}>
+            <div class="stars">{{ block.settings.stars }}</div>
+            {% if block.settings.result != blank %}<span class="result-tag"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V3h12v6a6 6 0 0 1-12 0zM4 6h2M18 6h2M9 21h6M12 15v6"/></svg>{{ block.settings.result }}</span>{% endif %}
+            <p class="quote">{{ block.settings.quote }}</p>
+            <div class="meta">
+              <div><div class="name">{{ block.settings.name }}</div><div class="ctx">{{ block.settings.context }}</div></div>
+              {% if block.settings.verified %}<span class="verified"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6"/></svg>Verified</span>{% endif %}
+            </div>
+          </article>
+        {%- endfor -%}
+      </div>
+      {%- endif -%}
+      {%- for block in section.blocks -%}
+        {%- if block.type == '@app' -%}<div class="sppdp-app">{% render block %}</div>{%- endif -%}
+      {%- endfor -%}
+    </div>
+  </section>
+</div>
+{% schema %}
+{
+  "name": "SP-105 PDP · Reviews",
+  "tag": "section",
+  "max_blocks": 12,
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "Owner reviews · athlete to athlete" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "What SP-105 riders actually say" },
+    { "type": "text", "id": "score", "label": "Aggregate score", "default": "4.8" },
+    { "type": "text", "id": "stars", "label": "Stars", "default": "★★★★★" },
+    { "type": "text", "id": "count", "label": "Review count", "default": "96" },
+    { "type": "text", "id": "recommend", "label": "Recommend %", "default": "97%" },
+    { "type": "checkbox", "id": "show_summary", "label": "Show built-in summary (score / count)", "info": "Turn off if your review app shows its own summary.", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review card",
+      "settings": [
+        { "type": "text", "id": "stars", "label": "Stars", "default": "★★★★★" },
+        { "type": "text", "id": "result", "label": "Result chip", "default": "First 70.3 · 5:42" },
+        { "type": "textarea", "id": "quote", "label": "Quote", "default": "My first carbon tri bike. It fit out of the box once I used their sizing call, and I genuinely felt faster." },
+        { "type": "text", "id": "name", "label": "Name", "default": "Marcus T." },
+        { "type": "text", "id": "context", "label": "Rider context", "default": "Age-grouper, Columbus OH" },
+        { "type": "checkbox", "id": "verified", "label": "Verified badge", "default": true }
+      ]
+    },
+    { "type": "@app" }
+  ],
+  "presets": [
+    {
+      "name": "SP-105 PDP · Reviews",
+      "blocks": [
+        { "type": "review", "settings": { "stars": "★★★★★", "result": "First 70.3 · 5:42", "quote": "My first carbon tri bike. I'm not a pro — I just wanted to stop getting dropped on the bike leg. It fit out of the box once I used their sizing call, and I genuinely felt faster.", "name": "Marcus T.", "context": "Age-grouper, Columbus OH", "verified": true } },
+        { "type": "review", "settings": { "stars": "★★★★★", "result": "3rd AG · Olympic", "quote": "Honest take: assembly took me about an hour and the headset needed patience. But for the money there's nothing close. The SAGS cockpit let me get low without buying parts.", "name": "Dana R.", "context": "2nd season, Boulder CO", "verified": true } },
+        { "type": "review", "settings": { "stars": "★★★★☆", "result": "New to tri", "quote": "Shopped the Cervélo and QR at my local shop and walked out because of the price. Glad I waited. Mechanical 105 just works, and support actually answered when I had a routing question.", "name": "Priya S.", "context": "Beginner, Austin TX", "verified": true } }
+      ]
+    }
+  ]
+}
+{% endschema %}
