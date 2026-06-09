@@ -196,6 +196,26 @@ all carry stored UTM/click IDs.
      `sections/a2-test-*.liquid` debug stubs — `themeFilesDelete` is blocked
      by tooling; owner deletes them in the theme code editor. Klaviyo/Truemed
      IDs, athlete quotes, Fit Finder coords still open (§9).
+11. **Fixed per-color PDP galleries (June 9, store data — affects live).**
+   How the theme's variant media works (`main-product--default.liquid` +
+   `theme.js` `Product._refreshOverviewWithVariant`): with the
+   `enable_multiple_variant_media` setting ON (it already is, live and
+   draft), Liquid slices the product's media list into groups using the
+   **positions of the variants' assigned images as delimiters** — alt text
+   is ignored. On variant change the JS re-renders the gallery via the
+   Section Rendering API. Contract per product: media ordered in contiguous
+   color blocks (same order as the Color option), every variant assigned its
+   color block's **first** image, sizes of a color sharing that image.
+   Audit of all 8 bikes: 6 already compliant; fixed the 2 violations via
+   Admin API: **rogue-rival-axs** (stray Matte-Black/Silver photo at
+   position 10 inside the Cascade Blue block → moved into the black/silver
+   block via `productReorderMedia`) and **rogue-sram-red-axs** (8 Cascade
+   Blue variants pointed at the 2nd CB image, orphaning image #1 →
+   reassigned via `productVariantDetachMedia`/`AppendMedia`). Re-queried and
+   verified. Cosmetic leftovers for the owner: two "Matte Black and Glossy
+   Gold" photos group under Matte-Black/Silver on `rogue-shimano-105` and
+   `rogue-sram-force-etap-axs`; multi-color group shots sit inside one
+   color's block on the SPs; `sp-sram-rival-1` has only ONE Lava Red photo.
 
 ## 6. Deploy pipeline (the reliable way) + gotchas
 
