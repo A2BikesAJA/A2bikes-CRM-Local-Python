@@ -257,6 +257,17 @@ all carry stored UTM/click IDs.
    type, malformed `querySelectorAll` string, duplicated `a2IdentifyVisitor`
    definitions, duplicate Zoho SalesIQ loader, orphan `{%- endif -%}` after
    `</html>`.
+   **Resolution (same day):** owner activated Affirm by adding the Affirm
+   app's COLLECTION app block (an `apps` section, loads affirm.js) to both
+   collection templates in the theme editor and uploading the official logo
+   (`shopify://shop_images/986051c-affirm-logo.png`) to the band — Affirm
+   messaging confirmed working. Owner edits synced back into the repo
+   (`templates/collection.json`), and the band + verbatim app block were
+   added to the Rogue template `templates/collection.collection-landing.json`
+   (Rogue collection templateSuffix = `collection-landing`; SP uses the
+   default template). Both deployed + checksum-verified. The cart-drawer
+   embed's `public_api_key_drawer` is still empty — cart messaging still
+   dead until the owner fills it.
 
 ## 6. Deploy pipeline (the reliable way) + gotchas
 
