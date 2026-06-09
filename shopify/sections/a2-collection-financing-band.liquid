@@ -1,18 +1,67 @@
 {%- comment -%}
-  A2 Bikes — slim "pay over time" marketing band for collection pages.
-  Generic financing language only (no dollar figures — Affirm's own
-  as-low-as messaging lives on the product cards). All copy is
-  settings-driven per the claims/financing discipline.
+  A2 Bikes — Affirm pay-over-time band for collection pages.
+  Compliance posture (Affirm merchant marketing guides):
+  - The "As low as $X/mo" line is rendered by Affirm's own component
+    (.affirm-as-low-as) — never hardcoded. It stays empty without affirm.js.
+  - The logo slot expects the official, unaltered asset uploaded from
+    Affirm's brand kit (Business Hub → Logos, Banners, and Buttons).
+  - The lender disclosure ships as Affirm's standard wording; edit only per
+    their compliance guides. All copy is settings-driven for review cycles.
+  affirm.js loading: preferred source is the Affirm app embed (Theme
+  settings → App embeds). The public-key setting below is a fallback
+  bootstrap for pages using this section until the embed is enabled.
 {%- endcomment -%}
+{%- liquid
+  assign ala_amount = 0
+  if section.settings.show_as_low_as and collection
+    for p in collection.products limit: 50
+      if p.available and p.price >= 50000
+        if ala_amount == 0 or p.price < ala_amount
+          assign ala_amount = p.price
+        endif
+      endif
+    endfor
+  endif
+-%}
+{%- if section.settings.affirm_public_key != blank -%}
+  <script>
+    /* Fallback affirm.js bootstrap — no-op when the Affirm app embed
+       already defines window.affirm / window._affirm_config. */
+    (function () {
+      if (window.affirm || window._affirm_config) return;
+      window._affirm_config = {
+        public_api_key: {{ section.settings.affirm_public_key | json }},
+        script: "https://cdn1.affirm.com/js/v2/affirm.js"
+      };
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = window._affirm_config.script;
+      document.head.appendChild(s);
+    })();
+  </script>
+{%- endif -%}
 <section class="a2-colfin" style="background:{{ section.settings.bg_color }};color:{{ section.settings.text_color }};">
   <div class="a2-colfin__wrap">
     <div class="a2-colfin__copy">
-      {%- if section.settings.eyebrow != blank -%}
-        <p class="a2-colfin__eyebrow" style="color:{{ section.settings.accent_color }};">{{ section.settings.eyebrow }}</p>
+      {%- if section.settings.affirm_logo -%}
+        <img
+          class="a2-colfin__logo"
+          src="{{ section.settings.affirm_logo | image_url: width: 200 }}"
+          alt="Affirm"
+          width="100"
+          height="{{ 100 | divided_by: section.settings.affirm_logo.aspect_ratio | round }}"
+          loading="lazy"
+        >
       {%- endif -%}
       <h2 class="a2-colfin__heading">{{ section.settings.heading }}</h2>
       {%- if section.settings.text != blank -%}
         <div class="a2-colfin__text">{{ section.settings.text }}</div>
+      {%- endif -%}
+      {%- if ala_amount > 0 -%}
+        <p class="affirm-as-low-as a2-colfin__ala" data-page-type="category" data-amount="{{ ala_amount }}"></p>
+      {%- endif -%}
+      {%- if section.settings.secondary_text != blank -%}
+        <div class="a2-colfin__text a2-colfin__text--secondary">{{ section.settings.secondary_text }}</div>
       {%- endif -%}
     </div>
     {%- if section.settings.button_label != blank -%}
@@ -26,35 +75,54 @@
       </div>
     {%- endif -%}
   </div>
+  {%- if section.settings.disclosure != blank -%}
+    <div class="a2-colfin__wrap">
+      <p class="a2-colfin__disclosure">
+        {{ section.settings.disclosure }}
+        <a href="https://www.affirm.com/lenders" target="_blank" rel="noopener">affirm.com/lenders</a>.
+      </p>
+    </div>
+  {%- endif -%}
 </section>
 {% stylesheet %}
-.a2-colfin { padding: 28px 0; }
+.a2-colfin { padding: 28px 0 20px; }
 .a2-colfin__wrap { max-width: 1200px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 48px);
   display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
-.a2-colfin__eyebrow { margin: 0 0 6px; text-transform: uppercase; letter-spacing: .18em;
-  font-size: .72rem; font-weight: 600; }
+.a2-colfin__logo { display: block; width: 100px; height: auto; margin-bottom: 10px; }
 .a2-colfin__heading { margin: 0; font-size: clamp(1.2rem, 2.2vw, 1.6rem); line-height: 1.15; }
 .a2-colfin__text { margin-top: 8px; font-size: .95rem; max-width: 560px; }
 .a2-colfin__text p { margin: 0; }
+.a2-colfin__text--secondary { font-size: .88rem; opacity: .85; }
+.a2-colfin__ala { margin: 10px 0 0; font-size: .95rem; min-height: 0; }
+.a2-colfin__ala:empty { display: none; }
 .a2-colfin__btn { display: inline-block; padding: 12px 22px; border: 1.5px solid; border-radius: 4px;
   font-weight: 600; text-decoration: none; transition: transform .18s ease; }
 .a2-colfin__btn:hover { transform: translateY(-2px); }
+.a2-colfin__disclosure { margin: 14px 0 0; font-size: .72rem; line-height: 1.45; opacity: .7; max-width: 760px; }
+.a2-colfin__disclosure a { color: inherit; text-decoration: underline; }
 @media (max-width: 720px) { .a2-colfin__wrap { flex-direction: column; align-items: flex-start; } }
 {% endstylesheet %}
 {% schema %}
 {
-  "name": "A2 · Financing band",
+  "name": "A2 · Affirm band",
   "tag": "section",
   "settings": [
-    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Financing" },
-    { "type": "text", "id": "heading", "label": "Heading", "default": "Ride now. Pay over time." },
-    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Split your purchase into monthly payments with Affirm, or save an average of 30% using pre-tax HSA/FSA dollars with Truemed.</p>", "info": "Keep figures generic or sourced — this copy ships on every collection using the template." },
+    { "type": "header", "content": "Content" },
+    { "type": "image_picker", "id": "affirm_logo", "label": "Affirm logo", "info": "Upload the official, unaltered logo from Affirm's brand kit (Business Hub → Logos, Banners, and Buttons). Do not recreate or restyle it." },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Buy now, pay later with Affirm.", "info": "Use phrasing from Affirm's approved messaging list." },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Choose Affirm at checkout to split your purchase into monthly payments.</p>", "info": "Copy must follow Affirm's marketing guides — submit custom wording to Affirm for review." },
+    { "type": "checkbox", "id": "show_as_low_as", "label": "Show Affirm's \"As low as\" line", "default": true, "info": "Rendered by Affirm's own script for the collection's lowest-priced eligible bike. Stays hidden until affirm.js loads." },
+    { "type": "richtext", "id": "secondary_text", "label": "Secondary text", "default": "<p>Prefer pre-tax dollars? Eligible riders save an average of 30% with HSA/FSA via Truemed.</p>" },
+    { "type": "textarea", "id": "disclosure", "label": "Affirm disclosure", "default": "Payment options through Affirm are subject to eligibility, may not be available in all states, and are provided by these lending partners:", "info": "Affirm's required fine print — a link to affirm.com/lenders is appended automatically. Edit only per Affirm's compliance guides." },
     { "type": "text", "id": "button_label", "label": "Button label", "default": "Explore financing options" },
     { "type": "url", "id": "button_link", "label": "Button link", "info": "Defaults to /pages/financing-hsa-fsa when blank." },
+    { "type": "header", "content": "Affirm script" },
+    { "type": "text", "id": "affirm_public_key", "label": "Affirm public API key", "info": "Fallback only: loads affirm.js on pages using this section when blank in the Affirm app. Prefer enabling the Affirm app embed in Theme settings → App embeds, then leave this empty." },
+    { "type": "header", "content": "Style" },
     { "type": "color", "id": "bg_color", "label": "Background", "default": "#f7f7e8" },
     { "type": "color", "id": "text_color", "label": "Text color", "default": "#222425" },
     { "type": "color", "id": "accent_color", "label": "Accent color", "default": "#C51C26" }
   ],
-  "presets": [{ "name": "A2 · Financing band" }]
+  "presets": [{ "name": "A2 · Affirm band" }]
 }
 {% endschema %}

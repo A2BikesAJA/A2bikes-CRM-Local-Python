@@ -191,9 +191,11 @@
     "a2_financing_band": {
       "type": "a2-collection-financing-band",
       "settings": {
-        "eyebrow": "Financing",
-        "heading": "Ride now. Pay over time.",
-        "text": "<p>Split your purchase into monthly payments with Affirm, or save an average of 30% using pre-tax HSA/FSA dollars with Truemed.</p>",
+        "heading": "Buy now, pay later with Affirm.",
+        "text": "<p>Choose Affirm at checkout to split your purchase into monthly payments.</p>",
+        "show_as_low_as": true,
+        "secondary_text": "<p>Prefer pre-tax dollars? Eligible riders save an average of 30% with HSA/FSA via Truemed.</p>",
+        "disclosure": "Payment options through Affirm are subject to eligibility, may not be available in all states, and are provided by these lending partners:",
         "button_label": "Explore financing options",
         "bg_color": "#f7f7e8",
         "text_color": "#222425",

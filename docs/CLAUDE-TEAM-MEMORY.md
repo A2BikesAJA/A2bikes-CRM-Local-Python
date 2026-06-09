@@ -231,6 +231,32 @@ all carry stored UTM/click IDs.
    parsed content instead). Known issue noted: the DEFAULT collection
    template is SP-specific (hero/video/size guide) and renders on Rogue +
    accessory collections — Phase 1 item.
+13. **Affirm messaging root cause + compliant band rework (June 9).**
+   Why "As low as $X/mo" wasn't rendering: **affirm.js is not loaded
+   anywhere** — on BOTH themes the only Affirm presence is the app's
+   cart-drawer embed (enabled but `public_api_key_drawer: ""`); no
+   site-messaging embed, no script in `theme.liquid`, no key stored
+   anywhere in either theme (verified by full settings_data.json scans).
+   Reworked `a2-collection-financing-band` to Affirm compliance: approved
+   default phrasing ("Buy now, pay later with Affirm."), image_picker slot
+   for the OFFICIAL logo (upload from Affirm Business Hub brand kit — never
+   recreate it), Affirm-rendered as-low-as line for the collection's
+   cheapest eligible bike, required lender disclosure (+ affirm.com/lenders
+   link), and an optional `affirm_public_key` setting that bootstraps
+   affirm.js as a fallback (no-ops if the app embed is active). Hardcoding
+   Affirm's promo language is prohibited per their guides; placements use
+   their components. **OWNER ACTION (new blocker): activate Affirm
+   messaging** — in the draft theme editor → Theme settings → App embeds,
+   enable the Affirm site/promotional messaging embed (and fill the public
+   API key on the cart-drawer block), or paste the public key into the
+   band's setting. Until then every `.affirm-as-low-as` placeholder
+   (collection cards + band) stays empty by design.
+   Live-theme `layout/theme.liquid` issues spotted during the read-only
+   scan (for a future cleanup pass, NOT touched): unclosed
+   `gtag('event','view_item')` script referencing `product` on every page
+   type, malformed `querySelectorAll` string, duplicated `a2IdentifyVisitor`
+   definitions, duplicate Zoho SalesIQ loader, orphan `{%- endif -%}` after
+   `</html>`.
 
 ## 6. Deploy pipeline (the reliable way) + gotchas
 
