@@ -201,6 +201,7 @@
     "a2_financing_band": {
       "type": "a2-collection-financing-band",
       "settings": {
+        "compact": true,
         "affirm_logo": "shopify://shop_images/986051c-affirm-logo.png",
         "heading": "Buy now, pay later with Affirm.",
         "text": "<p>Choose Affirm at checkout to split your purchase into monthly payments.</p>",
