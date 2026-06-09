@@ -268,6 +268,29 @@ all carry stored UTM/click IDs.
    default template). Both deployed + checksum-verified. The cart-drawer
    embed's `public_api_key_drawer` is still empty — cart messaging still
    dead until the owner fills it.
+14. **Compact Affirm band + homepage rebuild (June 9, draft theme).**
+   (a) CRO: the full band pushed collection grids below the fold; added a
+   `compact` single-row mode (logo · heading · as-low-as · button, small
+   disclosure) and enabled it on both collection templates. The verbose
+   layout remains a toggle.
+   (b) **Rebuilt `templates/index.json`** (now repo-tracked) on the brand
+   system, per the high-AOV playbook (§2 of the audit + fresh research:
+   proof high on page, financing beside prices, fit-first CTA, authentic
+   athlete content). New order: wa-hero (dual CTA: Shop the SP / Find your
+   size in 60 seconds → Fit Finder) → trust ticker (kept, every claim now
+   LINKS to its page: warranty, crash-replacement, a2-promise, fit calc) →
+   wa-credibility → wa-products (live prices + financing line) → Affirm
+   band (full mode) → press quotes (kept: Esquire/Triathlete/PBJ) →
+   "Adjustability = Speed" image hero (kept, now clickable →
+   /pages/sp-performance) → wa-promise → A2 Support (kept) → blog posts
+   (kept) → wa-capture. DROPPED: 3 dead hero variants, expired BFCM
+   slideshow + countdown (impossible "Nov 31" date), Melbourne demo-theme
+   copy, duplicate SP/Rogue split, stale "AXS back in stock" closer, dead
+   `sp-25` link, hardcoded-URL rich-texts, off collection_list_slider and
+   accessory hotspot (both worth revisiting in Phase 1/3). Old homepage
+   remains intact on the LIVE theme. Note: homepage as-low-as in the band
+   won't render until the Affirm app block (or key) is present on the index
+   template — owner can add the same app embed block there via the editor.
 
 ## 6. Deploy pipeline (the reliable way) + gotchas
 
