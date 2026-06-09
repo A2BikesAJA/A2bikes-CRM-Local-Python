@@ -1,0 +1,7 @@
+{%- comment -%}
+  Shared assets for the "Why A2" landing page sections. Every wa-* section
+  renders this once; the CSS is cached (one fetch) and the JS guards itself
+  so it only initialises a single time per page.
+{%- endcomment -%}
+{{ 'why-a2.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'why-a2.js' | asset_url }}" defer="defer"></script>
