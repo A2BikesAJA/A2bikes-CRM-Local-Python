@@ -216,6 +216,21 @@ all carry stored UTM/click IDs.
    Gold" photos group under Matte-Black/Silver on `rogue-shimano-105` and
    `rogue-sram-force-etap-axs`; multi-color group shots sit inside one
    color's block on the SPs; `sp-sram-rival-1` has only ONE Lava Red photo.
+12. **Affirm messaging on collection pages (June 9, draft theme).** Adopted
+   `snippets/product-item.liquid` into the repo (md5-verified) and added
+   Affirm's `affirm-as-low-as` element (`data-page-type="category"`) under
+   each card price for in-stock products ≥ $500 — "As low as $X/mo" beside
+   every bike price, no-op if the Affirm app script is absent. New
+   settings-driven `sections/a2-collection-financing-band.liquid` (Affirm +
+   Truemed copy, button → `/pages/financing-hsa-fsa`, dataLayer event
+   `collection_financing_click`) inserted before the grid in
+   `templates/collection.json` (now repo-tracked; transcription
+   agent-verified against the theme before modifying — NOTE: JSON template
+   `body` from the API is re-formatted relative to stored bytes, so
+   pre-edit byte-checksums don't match for files we didn't write; compare
+   parsed content instead). Known issue noted: the DEFAULT collection
+   template is SP-specific (hero/video/size guide) and renders on Rogue +
+   accessory collections — Phase 1 item.
 
 ## 6. Deploy pipeline (the reliable way) + gotchas
 
