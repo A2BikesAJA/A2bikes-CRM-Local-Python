@@ -1,0 +1,861 @@
+{
+  "sections": {
+    "banner": {
+      "type": "main-collection-banner",
+      "disabled": true,
+      "settings": {
+        "show_breadcrumbs": false,
+        "show_collection_description": true,
+        "show_collection_image": false,
+        "image_aspect": "custom",
+        "desktop_height": 100,
+        "mobile_height": 100,
+        "focal_point": "center",
+        "text_position": "center_center",
+        "text_position_mobile": "center_center",
+        "text_color": "#ffffff",
+        "color_overlay": "#000000",
+        "color_overlay_gradient": "",
+        "overlay_opacity": 30,
+        "enable_animation": true,
+        "section_padding": "section--vertical-padding-none"
+      }
+    },
+    "video_hero_3Mah7X": {
+      "type": "video-hero",
+      "blocks": {
+        "accent_xAGGPR": {
+          "type": "accent",
+          "settings": {
+            "accent": "Road / Tri"
+          }
+        },
+        "heading_KBFtUG": {
+          "type": "heading",
+          "settings": {
+            "title": "The Rogue",
+            "heading_tag": "h2",
+            "heading_font_class": "fs-heading-display-2"
+          }
+        },
+        "text_fTPzLK": {
+          "type": "text",
+          "settings": {
+            "text": "<p>The Rogue was built for the miles between you and the finish line. Every road you train on leads to race day. The Rogue is ready for all of them.</p>",
+            "text_font_class": "fs-body-200"
+          }
+        },
+        "play_button_RhAgTL": {
+          "type": "play-button",
+          "disabled": true,
+          "settings": {
+            "video_source": "external",
+            "video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+            "aspect_ratio": "square",
+            "text": "Watch now",
+            "icon_style": "outline"
+          }
+        }
+      },
+      "block_order": [
+        "accent_xAGGPR",
+        "heading_KBFtUG",
+        "text_fTPzLK",
+        "play_button_RhAgTL"
+      ],
+      "name": "t:sections.video_hero.presets.name",
+      "settings": {
+        "image_aspect": "custom",
+        "desktop_height": 75,
+        "mobile_height": 50,
+        "video": "shopify://files/videos/Shopify Rogue Edit 2.mp4",
+        "media_link": "",
+        "focal_point": "image_presentation",
+        "focal_point_mobile": "image_presentation",
+        "text_position": "center_center",
+        "text_position_mobile": "center_center",
+        "text_color": "#ffffff",
+        "button_background_color": "#ffffff",
+        "button_text_color": "#000000",
+        "color_overlay": "#000000",
+        "color_overlay_gradient": "",
+        "overlay_opacity": 40,
+        "enable_animation": true,
+        "section_padding": "section--vertical-padding-none"
+      }
+    },
+    "multi_column_fMGM8P": {
+      "type": "multi-column",
+      "blocks": {
+        "column_4dAdDH": {
+          "type": "column",
+          "settings": {
+            "accent": "Aerospace Grade",
+            "heading": "100% T700 Carbon Fiber",
+            "heading_tag": "h3",
+            "heading_font_class": "fs-heading-4-base",
+            "text": "",
+            "text_font_class": "fs-body-100",
+            "text_max_width": 100,
+            "link": "",
+            "link_text": "",
+            "button_style": "btn--primary"
+          }
+        },
+        "column_ByrwGM": {
+          "type": "column",
+          "settings": {
+            "accent": "Lightweight",
+            "heading": "950g Frame",
+            "heading_tag": "h3",
+            "heading_font_class": "fs-heading-4-base",
+            "text": "",
+            "text_font_class": "fs-body-300",
+            "text_max_width": 100,
+            "link": "",
+            "link_text": "",
+            "button_style": "btn--primary"
+          }
+        },
+        "column_7qwgdX": {
+          "type": "column",
+          "settings": {
+            "accent": "Warranty",
+            "heading": "Covered Crash Replacement",
+            "heading_tag": "h3",
+            "heading_font_class": "fs-heading-4-base",
+            "text": "",
+            "text_font_class": "fs-body-100",
+            "text_max_width": 86,
+            "link": "",
+            "link_text": "",
+            "button_style": "btn--primary"
+          }
+        }
+      },
+      "block_order": [
+        "column_4dAdDH",
+        "column_ByrwGM",
+        "column_7qwgdX"
+      ],
+      "settings": {
+        "title": "",
+        "heading_tag": "h2",
+        "heading_font_class": "fs-heading-3-base",
+        "subheading": "",
+        "heading_alignment": "left",
+        "content_vertical_alignment": "center",
+        "content_background_padding": "large",
+        "columns": "3",
+        "column_spacing": 4,
+        "row_spacing": 28,
+        "column_alignment": "center",
+        "enable_slider_mobile": false,
+        "columns_mobile": "1",
+        "column_spacing_mobile": 4,
+        "row_spacing_mobile": 4,
+        "column_alignment_mobile": "center",
+        "background_behind_columns": false,
+        "background_color": "#f7f7e8",
+        "text_color": "#222425",
+        "button_background_color": "#000000",
+        "button_text_color": "#ffffff",
+        "enable_animation": true,
+        "divider_style": "none",
+        "section_padding": "section--vertical-padding-top-bottom"
+      }
+    },
+    "rich_text_e7TtBw": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_HfVKGX": {
+          "type": "heading",
+          "settings": {
+            "title": "Rogue Build Options",
+            "heading_tag": "h2",
+            "heading_font_class": "fs-heading-1-base"
+          }
+        },
+        "text_EmHXQz": {
+          "type": "text",
+          "settings": {
+            "text": "<p>This is where you choose the groupset, color, size, and add-ons you want. If you are stuck, have any questions, or don't know where to start, you can ask us anything <a href=\"/pages/contact-a2-bikes\" title=\"Contact A2 Bikes\"><span style=\"text-decoration:underline\">here</span></a><span style=\"text-decoration:underline\">.</span></p>",
+            "text_font_class": "fs-body-75"
+          }
+        }
+      },
+      "block_order": [
+        "heading_HfVKGX",
+        "text_EmHXQz"
+      ],
+      "name": "t:sections.rich_text.presets.name",
+      "settings": {
+        "alignment": "center_center",
+        "enable_animation": true,
+        "divider_style": "none",
+        "section_padding": "section--vertical-padding-top-bottom",
+        "content_width": "custom",
+        "custom_content_width": 700
+      }
+    },
+    "a2_financing_band": {
+      "type": "a2-collection-financing-band",
+      "settings": {
+        "affirm_logo": "shopify://shop_images/986051c-affirm-logo.png",
+        "heading": "Buy now, pay later with Affirm.",
+        "text": "<p>Choose Affirm at checkout to split your purchase into monthly payments.</p>",
+        "show_as_low_as": true,
+        "secondary_text": "<p>Prefer pre-tax dollars? Eligible riders save an average of 30% with HSA/FSA via Truemed.</p>",
+        "disclosure": "Payment options through Affirm are subject to eligibility, may not be available in all states, and are provided by these lending partners:",
+        "button_label": "Explore financing options",
+        "button_link": "",
+        "affirm_public_key": "",
+        "bg_color": "#f7f7e8",
+        "text_color": "#222425",
+        "accent_color": "#c51c26"
+      }
+    },
+    "main-collection-product-grid": {
+      "type": "main-collection-product-grid",
+      "settings": {
+        "columns_desktop": "2",
+        "columns_mobile": "2",
+        "rows": "3",
+        "show_item_count": true,
+        "show_sort": true,
+        "show_filters": true,
+        "enable_sticky_filter_bar": true,
+        "desktop_filter_location": "filter_bar",
+        "collapse_filter_bar": true,
+        "enable_sticky_filter_sidebar": true,
+        "collapse_filter_groups_desktop": true,
+        "collapse_filter_groups_mobile": true,
+        "show_swatch_filters": true,
+        "show_chip_filters": true,
+        "chip_layout": "3col",
+        "pagination": "click",
+        "enable_animation": true,
+        "divider_style": "solid"
+      }
+    },
+    "rich-text-2": {
+      "type": "rich-text",
+      "blocks": {
+        "spacer-1": {
+          "type": "spacer",
+          "disabled": true,
+          "settings": {
+            "space": 24
+          }
+        },
+        "spacer-2": {
+          "type": "spacer",
+          "disabled": true,
+          "settings": {
+            "space": 12
+          }
+        },
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "title": "A Road Bike for Triathletes",
+            "heading_tag": "h2",
+            "heading_font_class": "fs-heading-1-base"
+          }
+        },
+        "text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Starting at only <strong>$2,699.</strong></p><p><strong>A Road Bike. A Training Partner. Built for Triathletes.</strong></p><p>The Rogue is a perfected blend of aerodynamics and endurance. It is the only bike you need for twisted tarmac, gravel escapes, and hard interval training. Trusted by both triathletes and roadies, the Rogue was built to break records. </p><h5></h5>",
+            "text_font_class": "fs-body-100"
+          }
+        }
+      },
+      "block_order": [
+        "spacer-1",
+        "spacer-2",
+        "heading",
+        "text"
+      ],
+      "settings": {
+        "alignment": "center_center",
+        "enable_animation": true,
+        "divider_style": "none",
+        "section_padding": "section--vertical-padding-top-only",
+        "content_width": "custom",
+        "custom_content_width": 700
+      }
+    },
+    "custom_liquid_yVtH7r": {
+      "type": "custom-liquid",
+      "name": "t:sections.custom_liquid.presets.name",
+      "settings": {
+        "custom_liquid": "<div style=\"text-align: center; margin: 30px 0;\">\n  <button id=\"see-bikes-btn\" style=\"\n    background-color: #FCFCF9;\n    color: #000;\n    border: 1.5px solid #000;\n    padding: 14px 28px;\n    font-size: 24px;\n    font-weight: 500;\n    text-transform: capitalize;\n    cursor: pointer;\n    transition: all 0.3s ease;\n    font-family: 'Fraunces', serif;\n  \">Shop The Rogue Here</button>\n</div>\n\n<script>\n  document.getElementById('see-bikes-btn').addEventListener('click', function() {\n    // Common selectors for the product grid\n    const selectors = [\n      '#CollectionSection',\n      '.collection__products',\n      '.grid--collection',\n      '.grid.grid--uniform',\n      '#main-collection-products',\n      '.collection-products-wrapper',\n      '.product-grid'\n    ];\n\n    let target = null;\n\n    for (const sel of selectors) {\n      const el = document.querySelector(sel);\n      if (el) {\n        target = el;\n        break;\n      }\n    }\n\n    // Fallback: try to find a container with product items\n    if (!target) {\n      const productCards = document.querySelectorAll('.product-card, .grid__item');\n      if (productCards.length > 0) {\n        target = productCards[0].closest('section, div');\n      }\n    }\n\n    // Scroll if a target was found\n    if (target) {\n      target.scrollIntoView({ behavior: 'smooth', block: 'start' }); // scroll to top\n    }\n  });\n</script>",
+        "divider_style": "none",
+        "section_padding": "section--vertical-padding-none"
+      }
+    },
+    "175832322574f7150c": {
+      "type": "apps",
+      "blocks": {
+        "spec_compare_comparison_table_3RgNEB": {
+          "type": "shopify://apps/specs-compare/blocks/comparison-table/a9d09772-f36d-4539-a4c4-7bd785bc12c0",
+          "settings": {
+            "product": "rogue-rival-axs",
+            "product_list": [],
+            "fallback_to_related_products": false,
+            "exclude_sold_out_products": false,
+            "enable_show_differences_switch": false,
+            "differences_switch_mode": "highlight_differences",
+            "show_variant_selector": false,
+            "show_group_names": true,
+            "maximum_rows": 10,
+            "maximum_visible_products": 3,
+            "show_in_modal": false,
+            "modal_trigger_button_text": "",
+            "app_block_margin": 0,
+            "app_block_max_width": "full_width",
+            "app_block_custom_max_width": 800,
+            "show_product_image": true,
+            "show_product_vendor": false,
+            "show_product_price": true,
+            "show_product_rating": true,
+            "show_view_details_button": true,
+            "enable_ai_analysis": true,
+            "append_parent_target_selector": ""
+          }
+        }
+      },
+      "block_order": [
+        "spec_compare_comparison_table_3RgNEB"
+      ],
+      "settings": {
+        "heading": "Which Rogue is right for you?",
+        "enable_animation": true,
+        "divider_style": "none",
+        "section_padding": "section--vertical-padding-top-bottom"
+      }
+    },
+    "custom_liquid_PjLJLh": {
+      "type": "custom-liquid",
+      "disabled": true,
+      "name": "t:sections.custom_liquid.presets.name",
+      "settings": {
+        "custom_liquid": "<div style=\"text-align: center; margin: 30px 0;\">\n  <button id=\"see-bikes-btn\" style=\"\n    background-color: #FCFCF9;\n    color: #000;\n    border: 1.5px solid #000;\n    padding: 14px 28px;\n    font-size: 24px;\n    font-weight: 500;\n    text-transform: capitalize;\n    cursor: pointer;\n    transition: all 0.3s ease;\n    font-family: 'Fraunces', serif;\n  \">Shop The Rogue Here</button>\n</div>\n\n<script>\n  document.getElementById('see-bikes-btn').addEventListener('click', function() {\n    // Common selectors for the product grid\n    const selectors = [\n      '#CollectionSection',\n      '.collection__products',\n      '.grid--collection',\n      '.grid.grid--uniform',\n      '#main-collection-products',\n      '.collection-products-wrapper',\n      '.product-grid'\n    ];\n\n    let target = null;\n\n    for (const sel of selectors) {\n      const el = document.querySelector(sel);\n      if (el) {\n        target = el;\n        break;\n      }\n    }\n\n    // Fallback: try to find a container with product items\n    if (!target) {\n      const productCards = document.querySelectorAll('.product-card, .grid__item');\n      if (productCards.length > 0) {\n        target = productCards[0].closest('section, div');\n      }\n    }\n\n    // Scroll if a target was found\n    if (target) {\n      target.scrollIntoView({ behavior: 'smooth', block: 'start' }); // scroll to top\n    }\n  });\n</script>",
+        "divider_style": "none",
+        "section_padding": "section--vertical-padding-none"
+      }
+    },
+    "grid_h3niHR": {
+      "type": "grid",
+      "blocks": {
+        "item_8LVVEg": {
+          "type": "item",
+          "settings": {
+            "width": "66",
+            "height": 300,
+            "mobile_height": 500,
+            "media_type": "image",
+            "image": "shopify://shop_images/Buy_a_Rogue_18.png",
+            "mobile_image": "shopify://shop_images/Black_Friday_Banner_Ideas_1080_x_1920_px_4.png",
+            "focal_point": "image_presentation",
+            "mobile_focal_point": "image_presentation",
+            "video_focal_point": "center",
+            "mobile_video_focal_point": "center",
+            "media_fit": "contain",
+            "text_position": "center_center",
+            "accent": "",
+            "title": "",
+            "heading_tag": "h3",
+            "heading_font_class": "fs-heading-2-base",
+            "subheading": "",
+            "subheading_tag": "h4",
+            "subheading_font_class": "fs-heading-5-base",
+            "text": "",
+            "text_font_class": "fs-body-100",
+            "link": "",
+            "link_text": "",
+            "button_style": "btn--primary",
+            "background_color": "",
+            "text_color": "#ffffff",
+            "button_background_color": "#ffffff",
+            "button_text_color": "#000000",
+            "color_overlay": "#000000",
+            "color_overlay_gradient": "",
+            "overlay_opacity": 0
+          }
+        },
+        "item_8P6Tm4": {
+          "type": "item",
+          "settings": {
+            "width": "33",
+            "height": 600,
+            "mobile_height": 500,
+            "media_type": "image",
+            "image": "shopify://shop_images/DSCF8292.jpg",
+            "focal_point": "image_presentation",
+            "mobile_focal_point": "image_presentation",
+            "video_focal_point": "center",
+            "mobile_video_focal_point": "center",
+            "media_fit": "contain",
+            "text_position": "center_center",
+            "accent": "",
+            "title": "",
+            "heading_tag": "h3",
+            "heading_font_class": "fs-heading-2-base",
+            "subheading": "",
+            "subheading_tag": "h4",
+            "subheading_font_class": "fs-heading-5-base",
+            "text": "",
+            "text_font_class": "fs-body-100",
+            "link": "",
+            "link_text": "",
+            "button_style": "btn--primary",
+            "background_color": "",
+            "text_color": "#ffffff",
+            "button_background_color": "#ffffff",
+            "button_text_color": "#000000",
+            "color_overlay": "#000000",
+            "color_overlay_gradient": "",
+            "overlay_opacity": 0
+          }
+        },
+        "item_CQPYNG": {
+          "type": "item",
+          "disabled": true,
+          "settings": {
+            "width": "100",
+            "height": 500,
+            "mobile_height": 500,
+            "media_type": "image",
+            "focal_point": "image_presentation",
+            "mobile_focal_point": "image_presentation",
+            "video_focal_point": "center",
+            "mobile_video_focal_point": "center",
+            "media_fit": "cover",
+            "text_position": "center_center",
+            "accent": "",
+            "title": "Grid item",
+            "heading_tag": "h3",
+            "heading_font_class": "fs-heading-2-base",
+            "subheading": "<p>Perfect for lookbooks and editorial photography</p>",
+            "subheading_tag": "h4",
+            "subheading_font_class": "fs-heading-5-base",
+            "text": "",
+            "text_font_class": "fs-body-100",
+            "link": "",
+            "link_text": "",
+            "button_style": "btn--primary",
+            "background_color": "",
+            "text_color": "#ffffff",
+            "button_background_color": "#ffffff",
+            "button_text_color": "#000000",
+            "color_overlay": "#000000",
+            "color_overlay_gradient": "",
+            "overlay_opacity": 30
+          }
+        }
+      },
+      "block_order": [
+        "item_8LVVEg",
+        "item_8P6Tm4",
+        "item_CQPYNG"
+      ],
+      "name": "t:sections.grid.presets.name",
+      "settings": {
+        "heading": "",
+        "heading_tag": "h3",
+        "subheading": "<h2>Conquer Any Training Block, Anywhere with the Rogue.</h2>",
+        "content_alignment": "center",
+        "enable_animation": true,
+        "full_width": true,
+        "spacing": 24,
+        "divider_style": "none",
+        "section_padding": "section--vertical-padding-none"
+      }
+    },
+    "gallery_carousel_ntBQC8": {
+      "type": "gallery-carousel",
+      "blocks": {
+        "image_KCCKqd": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Rogue_black_and_silver_forest.jpg",
+            "focal_point": "image_presentation",
+            "title": "Conquer Any Road.",
+            "text": "<p>The Rogue is an aerodynamic race bike, disguised as an off-road tackler. Road first, with the capabilities of dirt or gravel if you wanted. </p>"
+          }
+        },
+        "image_LwGxnJ": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/MWS1776.jpg",
+            "focal_point": "image_presentation",
+            "title": "Easy to Travel with.",
+            "text": "<p>We designed the Rogue to be easy to travel with, so you can take it on any adventure, no matter where you are. External cable routing and UDH installation allow you to simply take the parts off you need to compact your Rogue. </p>"
+          }
+        },
+        "image_mfwXtR": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Untitled_design_22_09011c9e-0100-405e-a24f-b14359443be4.png",
+            "focal_point": "image_presentation",
+            "title": "Large Clearance = Large Adventures.",
+            "text": "<p>With up to 35mm tire clearance on the Rogue, this high-performance road bike can now become an agile trailblazer. </p>"
+          }
+        },
+        "image_x6NNDJ": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/47.png",
+            "focal_point": "image_presentation",
+            "title": "Built for Speed.",
+            "text": "<p>The Rogue was built to be an aero road bike first. That is what it is going to perform best at. But we wanted to take a versatile take on what 'Aero Road' could look like. From this, the Rogue was born. </p>"
+          }
+        }
+      },
+      "block_order": [
+        "image_KCCKqd",
+        "image_LwGxnJ",
+        "image_mfwXtR",
+        "image_x6NNDJ"
+      ],
+      "name": "t:sections.gallery_carousel.presets.name",
+      "settings": {
+        "heading": "The Rogue Gallery",
+        "heading_tag": "h2",
+        "subheading": "",
+        "link": "",
+        "link_text": "",
+        "button_style": "btn--callout",
+        "columns": "2",
+        "mobile_columns": "1",
+        "loop_carousel": true,
+        "aspect_ratio": "landscape",
+        "image_caption_size": "fs-body-75",
+        "image_caption_style": "overlay",
+        "overlay_text_background_style": "gradient",
+        "overlay_text_color": "#ffffff",
+        "overlay_text_background": "#22292d",
+        "enable_animation": true,
+        "divider_style": "none",
+        "section_padding": "section--vertical-padding-top-bottom"
+      }
+    },
+    "shoppable_image_ajCGVD": {
+      "type": "shoppable-image",
+      "blocks": {
+        "hotspot_T6qhgi": {
+          "type": "hotspot",
+          "disabled": true,
+          "settings": {
+            "product_item": "a2-sags-stem",
+            "horizontal_position": 62,
+            "vertical_position": 72
+          }
+        },
+        "hotspot_3WGqf9": {
+          "type": "hotspot",
+          "disabled": true,
+          "settings": {
+            "product_item": "",
+            "horizontal_position": 75,
+            "vertical_position": 82
+          }
+        },
+        "hotspot_mMeRra": {
+          "type": "hotspot",
+          "disabled": true,
+          "settings": {
+            "product_item": "zipp-808-firecrest-tubless-disc-brake-wheelset",
+            "horizontal_position": 32,
+            "vertical_position": 56
+          }
+        }
+      },
+      "block_order": [
+        "hotspot_T6qhgi",
+        "hotspot_3WGqf9",
+        "hotspot_mMeRra"
+      ],
+      "disabled": true,
+      "name": "t:sections.shoppable_image.presets.name",
+      "settings": {
+        "image": "shopify://shop_images/Buy_a_Rogue_11.png",
+        "aspect_ratio": "natural",
+        "heading": "",
+        "heading_tag": "h2",
+        "subheading": "",
+        "link": "",
+        "link_text": "",
+        "button_style": "btn--secondary",
+        "enable_animation": false,
+        "divider_style": "none",
+        "section_padding": "section--vertical-padding-none"
+      }
+    },
+    "collapsible_row_list_XEMbbJ": {
+      "type": "collapsible-row-list",
+      "blocks": {
+        "item_AqtKV3": {
+          "type": "item",
+          "settings": {
+            "expand_by_default": false,
+            "icon": "none",
+            "title": "Rogue Size Guide",
+            "text": "<ul><li>Small: <strong>5'3\"-5'6\"</strong> or 160-167.5 cm</li><li>Medium: <strong>5'7\"-5'10\"</strong> or 170-178 cm</li><li>Large: <strong>5'11\"-6'2\"</strong> or 180-189 cm</li><li>XL: <strong>6'2\"-6'5\"</strong> or 190-196 cm</li></ul>"
+          }
+        },
+        "item_RCJzMU": {
+          "type": "item",
+          "settings": {
+            "expand_by_default": false,
+            "icon": "none",
+            "title": "Rogue Effective Top Tube",
+            "text": "<ul><li>Small:<strong> 528</strong>mm</li><li>Medium: <strong>540</strong>mm</li><li>Large: <strong>552</strong>mm</li><li>XL: <strong>567</strong>mm</li></ul>"
+          }
+        },
+        "item_J8nhFz": {
+          "type": "item",
+          "settings": {
+            "expand_by_default": false,
+            "icon": "none",
+            "title": "Rogue Groupset Options",
+            "text": "<ul><li><strong>Shimano 105</strong>: Beginner, Mechanical Shifting, Mechanical Brakes</li><li><strong>SRAM Apex 1X</strong>: Beginner/Intermediate, Electronic Shifting 1X, Hydraulic Brakes</li><li><strong>SRAM Rival AXS</strong>: Intermediate, Electronic Shifting, Hydraulic Brakes</li><li><strong>SRAM Force AXS</strong>: Intermediate, Electronic Shifting, Hydraulic Brakes</li><li><strong>SRAM Red AXS</strong>: Advanced, Electronic Shifting, Hydraulic Brakes</li></ul>"
+          }
+        },
+        "item_Rx3tTX": {
+          "type": "item",
+          "disabled": true,
+          "settings": {
+            "expand_by_default": false,
+            "icon": "none",
+            "title": "This is an example of a question that a customer might ask",
+            "text": "<p>This is an example of a response that you might give. It's good to be as thorough as possible in responses as that has a tendency to improve trust overall.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "item_AqtKV3",
+        "item_RCJzMU",
+        "item_J8nhFz",
+        "item_Rx3tTX"
+      ],
+      "name": "t:sections.collapsible_row_list.presets.name",
+      "settings": {
+        "title": "Discover the Specs",
+        "heading_tag": "h2",
+        "heading_font_class": "fs-heading-3-base",
+        "heading_alignment": "left",
+        "subheading": "",
+        "subheading_tag": "h3",
+        "subheading_font_class": "fs-heading-5-base",
+        "item_heading_font": "heading",
+        "auto_collapse_rows": false,
+        "enable_animation": true,
+        "divider_style": "none",
+        "section_padding": "section--vertical-padding-bottom-only",
+        "content_width": "custom",
+        "custom_content_width": 700
+      }
+    },
+    "image_with_text_GJ4UrW": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_ACeenK": {
+          "type": "heading",
+          "settings": {
+            "title": "Dynamic Versatility",
+            "heading_tag": "h2",
+            "heading_font_class": "fs-heading-1-base"
+          }
+        },
+        "subheading_VrYrrA": {
+          "type": "subheading",
+          "settings": {
+            "subheading": "Inspired by the undying spirit of the Pacific Northwest and the cascading beauty of the Rogue River, this bike offers versatility like none other. With aero endurance geometry and 35mm* tire clearance, the Rogue adapts effortlessly to any tarmac road or gravel path. Available in 1x or 2x mechanical and electronic builds.",
+            "subheading_tag": "h3",
+            "subheading_font_class": "fs-heading-6-base"
+          }
+        },
+        "button_TMadrA": {
+          "type": "button",
+          "disabled": true,
+          "settings": {
+            "link": "",
+            "link_text": "Read more",
+            "button_style": "btn--primary"
+          }
+        }
+      },
+      "block_order": [
+        "heading_ACeenK",
+        "subheading_VrYrrA",
+        "button_TMadrA"
+      ],
+      "name": "t:sections.image_with_text.presets.name",
+      "settings": {
+        "image_position": "right",
+        "image": "shopify://shop_images/image0.jpg",
+        "aspect_ratio": "natural",
+        "focal_point": "center",
+        "image_caption": "",
+        "text_alignment": "center",
+        "show_small_image": true,
+        "image_small": "shopify://shop_images/DSCF7760.jpg",
+        "image_small_aspect": "square",
+        "image_small_focal_point": "image_presentation",
+        "background_color": "#f5f5f5",
+        "text_color": "#000000",
+        "button_background_color": "#000000",
+        "button_text_color": "#ffffff",
+        "enable_animation": true,
+        "divider_style": "none",
+        "section_padding": "section--vertical-padding-top-bottom"
+      }
+    },
+    "image_with_text_split_4tTQ84": {
+      "type": "image-with-text-split",
+      "blocks": {
+        "accent_wiyd6x": {
+          "type": "accent",
+          "settings": {
+            "accent": "Jack-of-all-Trades"
+          }
+        },
+        "heading_9C9wba": {
+          "type": "heading",
+          "settings": {
+            "title": "A Bike for Any Condition",
+            "heading_tag": "h2",
+            "heading_font_class": "fs-heading-display-3"
+          }
+        },
+        "subheading_kwqkFQ": {
+          "type": "subheading",
+          "settings": {
+            "subheading": "We've set out to challenge the theory that there's no one-bike quiver. The Rogue is designed to handle anything from twisted road turns to course backcountry paths, all with an endurance-focused, wind tunnel-tested frame that enables you to go the distance. Be prepared for any adventure with one bike to rule them all.",
+            "subheading_tag": "h3",
+            "subheading_font_class": "fs-heading-5-base"
+          }
+        }
+      },
+      "block_order": [
+        "accent_wiyd6x",
+        "heading_9C9wba",
+        "subheading_kwqkFQ"
+      ],
+      "name": "t:sections.image_with_text_split.presets.name",
+      "settings": {
+        "image_position": "right",
+        "image_mobile_position": "above-content",
+        "image_padding": "none",
+        "image": "shopify://shop_images/For_web.png",
+        "aspect_ratio": "landscape",
+        "focal_point": "image_presentation",
+        "content_alignment": "left",
+        "background_color": "#d9a49c",
+        "text_color": "#000000",
+        "button_background_color": "#000000",
+        "button_text_color": "#ffffff",
+        "enable_animation": true,
+        "section_padding": "section--vertical-padding-none"
+      }
+    },
+    "image_with_text_split_MKaNDx": {
+      "type": "image-with-text-split",
+      "blocks": {
+        "accent_JWPAge": {
+          "type": "accent",
+          "settings": {
+            "accent": "Road? Gravel? Both."
+          }
+        },
+        "heading_zbR3gn": {
+          "type": "heading",
+          "settings": {
+            "title": "On Road, Off Road, All Road.",
+            "heading_tag": "h2",
+            "heading_font_class": "fs-heading-display-3"
+          }
+        },
+        "subheading_H3kxP7": {
+          "type": "subheading",
+          "settings": {
+            "subheading": "Whether you're racking up miles on the tarmac or tearing through the mud on a country trail (or both in one ride), the Rogue will let you do everything without sacrificing anything. Discover true cycling freedom today.",
+            "subheading_tag": "h3",
+            "subheading_font_class": "fs-heading-5-base"
+          }
+        }
+      },
+      "block_order": [
+        "accent_JWPAge",
+        "heading_zbR3gn",
+        "subheading_H3kxP7"
+      ],
+      "name": "t:sections.image_with_text_split.presets.name",
+      "settings": {
+        "image_position": "left",
+        "image_mobile_position": "above-content",
+        "image_padding": "none",
+        "image": "shopify://shop_images/RogueWhiteOffroad_Desktop_79fe6273-94c1-43bc-8dde-58c4f4023774.jpg",
+        "aspect_ratio": "landscape",
+        "focal_point": "image_presentation",
+        "content_alignment": "left",
+        "background_color": "#d9a49c",
+        "text_color": "#000000",
+        "button_background_color": "#000000",
+        "button_text_color": "#ffffff",
+        "enable_animation": true,
+        "section_padding": "section--vertical-padding-none"
+      }
+    },
+    "1781045132e034f370": {
+      "type": "apps",
+      "blocks": {
+        "affirm_pay_over_time_messaging_collection_block_3UjK88": {
+          "type": "shopify://apps/affirm-pay-over-time-messaging/blocks/collection-block/6dce54be-130d-4d13-9636-1e8f611b3071",
+          "settings": {
+            "logo_align": "left",
+            "font_size": 12,
+            "logo_color": "blue",
+            "logo_type": "logo",
+            "public_api_key": "",
+            "collection_selector": "",
+            "card_selector": "",
+            "price_selector": ""
+          }
+        }
+      },
+      "block_order": [
+        "affirm_pay_over_time_messaging_collection_block_3UjK88"
+      ],
+      "settings": {
+        "heading": "App section",
+        "enable_animation": true,
+        "divider_style": "none",
+        "section_padding": "section--vertical-padding-top-bottom"
+      }
+    }
+  },
+  "order": [
+    "banner",
+    "video_hero_3Mah7X",
+    "multi_column_fMGM8P",
+    "rich_text_e7TtBw",
+    "a2_financing_band",
+    "main-collection-product-grid",
+    "rich-text-2",
+    "custom_liquid_yVtH7r",
+    "175832322574f7150c",
+    "custom_liquid_PjLJLh",
+    "grid_h3niHR",
+    "gallery_carousel_ntBQC8",
+    "shoppable_image_ajCGVD",
+    "collapsible_row_list_XEMbbJ",
+    "image_with_text_GJ4UrW",
+    "image_with_text_split_4tTQ84",
+    "image_with_text_split_MKaNDx",
+    "1781045132e034f370"
+  ]
+}

@@ -191,15 +191,18 @@
     "a2_financing_band": {
       "type": "a2-collection-financing-band",
       "settings": {
+        "affirm_logo": "shopify://shop_images/986051c-affirm-logo.png",
         "heading": "Buy now, pay later with Affirm.",
         "text": "<p>Choose Affirm at checkout to split your purchase into monthly payments.</p>",
         "show_as_low_as": true,
         "secondary_text": "<p>Prefer pre-tax dollars? Eligible riders save an average of 30% with HSA/FSA via Truemed.</p>",
         "disclosure": "Payment options through Affirm are subject to eligibility, may not be available in all states, and are provided by these lending partners:",
         "button_label": "Explore financing options",
+        "button_link": "",
+        "affirm_public_key": "",
         "bg_color": "#f7f7e8",
         "text_color": "#222425",
-        "accent_color": "#C51C26"
+        "accent_color": "#c51c26"
       }
     },
     "main-collection-product-grid": {
@@ -976,6 +979,33 @@
     "1757459778547f43b3": {
       "type": "_blocks",
       "settings": {}
+    },
+    "17810447529c1016a8": {
+      "type": "apps",
+      "blocks": {
+        "affirm_pay_over_time_messaging_collection_block_gXEfY6": {
+          "type": "shopify://apps/affirm-pay-over-time-messaging/blocks/collection-block/6dce54be-130d-4d13-9636-1e8f611b3071",
+          "settings": {
+            "logo_align": "center",
+            "font_size": 12,
+            "logo_color": "blue",
+            "logo_type": "symbol",
+            "public_api_key": "",
+            "collection_selector": "",
+            "card_selector": "",
+            "price_selector": ""
+          }
+        }
+      },
+      "block_order": [
+        "affirm_pay_over_time_messaging_collection_block_gXEfY6"
+      ],
+      "settings": {
+        "heading": "App section",
+        "enable_animation": true,
+        "divider_style": "none",
+        "section_padding": "section--vertical-padding-top-bottom"
+      }
     }
   },
   "order": [
@@ -999,6 +1029,7 @@
     "image_with_text_split_rCzpiJ",
     "image_with_text_split_JaYAAK",
     "gallery_carousel_FRihCM",
-    "1757459778547f43b3"
+    "1757459778547f43b3",
+    "17810447529c1016a8"
   ]
 }
