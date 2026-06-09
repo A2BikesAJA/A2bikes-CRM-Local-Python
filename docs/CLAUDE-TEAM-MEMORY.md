@@ -82,8 +82,10 @@ placeholder athlete quotes and an empty klaviyo_form_id.
 | Why A2 — DRAFT (preview, do not publish yet) | `gid://shopify/OnlineStoreTheme/176492183716` | UNPUBLISHED — all new work lives here |
 | May_26_Stilletto_Theme_Update | `gid://shopify/OnlineStoreTheme/176478617764` | LIVE/MAIN — untouched by this project |
 
-The draft is a **clone of the live theme (May 29, 2026)** — `templates/product.json`,
-`templates/index.json`, `layout/theme.liquid` are byte-identical to live — plus:
+The draft is a **clone of the live theme (May 29, 2026)** — `templates/index.json`
+and `layout/theme.liquid` are byte-identical to live; `templates/product.json`
+**was** identical until the Phase 0 fixes landed on it June 9 (see §5.10; repo
+copy: `shopify/templates/product.json`) — plus:
 1. **Why A2 page system** (built with Claude June 1–3): sections `wa-hero`,
    `wa-credibility`, `wa-promise`, `wa-products`, `wa-athletes`, `wa-capture`
    (2–3 KB each) + `assets/why-a2.css` (11 KB) + `templates/page.why-a2.json`.
@@ -170,6 +172,30 @@ all carry stored UTM/click IDs.
    → benchmark patterns stated from knowledge). Headline findings in §7.
 9. **Evaluated the draft theme** (this doc, §8): confirmed it's a live-theme
    clone + the Why A2 page system + the LP system; read `page.why-a2.json`.
+10. **Executed punch-list items A + C (June 9, branch `claude/upbeat-meitner-cve145`).**
+   Adopted the whole Why A2 system into the repo (`wa-*` sections, `wa-assets`
+   snippet, `why-a2.css/.js`, `page.why-a2.json`) and added
+   `shopify/templates/product.json` — both now repo-tracked source of truth.
+   Changes deployed to the draft theme and checksum-verified:
+   - **Why A2:** hero CTA 2 now links to the SP Fit Finder
+     (`/pages/sp-performance#a2-fit-calc`, label "Find your size in 60
+     seconds"); SP card → `/pages/sp-performance`, Rogue card →
+     `/pages/rogue-road-gravel`; product cards bind to `sp-shimano-105n` /
+     `rogue-shimano-105` for live "from" prices (hardcoded text is fallback
+     only) plus an illustrative settings-driven "or ~$X/mo with financing ·
+     HSA/FSA eligible" line; athletes section `disabled: true` until real
+     quotes arrive. Verified `pages/warranty` EXISTS (published) — link OK.
+   - **Phase 0 on the draft PDP template:** removed the 4 Force-AXS
+     cross-product sections, both broken size calculators, the
+     `verify.plaid.com` callout, the mid-page exit banner (+ its in-body
+     Google Fonts), the two demo callouts and the "Always Chic." leftover;
+     enabled description, trust callouts and star rating; disabled the
+     untracked-inventory scarcity bar; fixed `collections/sp-25` (confirmed
+     dead) → `/collections/sp`; genericized warranty/crash copy SP → A2.
+   - **Not done (blocked):** `sections/why-a2.liquid` deletion + 5 leftover
+     `sections/a2-test-*.liquid` debug stubs — `themeFilesDelete` is blocked
+     by tooling; owner deletes them in the theme code editor. Klaviyo/Truemed
+     IDs, athlete quotes, Fit Finder coords still open (§9).
 
 ## 6. Deploy pipeline (the reliable way) + gotchas
 
@@ -192,6 +218,15 @@ Gotchas learned the hard way:
   upsert sections first, templates second.
 - Theme writes are only allowed on UNPUBLISHED themes (API enforces).
 - Storefront HTML is bot-protected (403) — evaluate via Admin API file reads.
+- **Section files are validated async and rejected SILENTLY** (June 9): the
+  upsert job returns `done: true` with empty `userErrors`, but the file never
+  changes. Trigger found: schema setting **labels that are too long** (a
+  ~96-char label failed; ~60–66-char labels also failed; short labels with
+  detail moved to `info` passed — `info` can be long). Always read back
+  `checksumMd5` after EVERY upsert; if stale, bisect the file (body vs schema)
+  via a throwaway `sections/a2-test-*.liquid` filename.
+- `themeFilesDelete` is blocked by the MCP safety layer — file deletions must
+  be done by the owner in the theme code editor.
 
 ## 7. Audit headline (full detail: docs/ECOM-AUDIT-AND-ROADMAP.md)
 
@@ -243,6 +278,10 @@ sections (2–3 KB each), Klaviyo capture section present.
 7. Dead code: `sections/why-a2.liquid` (31.5 KB, superseded by wa-*).
 
 ### Proposed changes — draft theme punch list
+> Status June 9: **A and C are DONE** (except owner-blocked bits: Klaviyo form
+> ID, claim citations, athlete quotes, and the `why-a2.liquid` /
+> `a2-test-*.liquid` deletions). B and D remain. Details in §5.10.
+
 **A. Finish Why A2 (content, ~1 day)**
    fill/hide athletes · set `klaviyo_form_id` · hero CTA2 → Fit Finder/sizing ·
    route SP card → `/pages/sp-performance` (or `/collections/sp`) consistently ·

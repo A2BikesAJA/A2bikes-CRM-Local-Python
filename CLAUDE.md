@@ -52,4 +52,8 @@ deploy pipeline with its gotchas, audit findings, and the roadmap. Other docs:
   `KLAVIYO_LIST_ID`); Truemed and Octane URLs unset.
 - The four LP pages are published but render empty on the live theme (their
   templates exist only in the draft theme).
-- Why A2 page: athlete quotes are placeholders; `klaviyo_form_id` empty.
+- Why A2 page: athlete quotes are placeholders (section hidden June 9 until
+  real quotes arrive); `klaviyo_form_id` empty.
+- Owner to delete in the theme code editor (API deletes are blocked):
+  `sections/why-a2.liquid` (dead code) and the 5 `sections/a2-test-*.liquid`
+  debug stubs from the June 9 deploy.
