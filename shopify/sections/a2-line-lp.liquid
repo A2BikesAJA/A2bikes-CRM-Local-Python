@@ -72,6 +72,7 @@
       }
       #shopify-section-{{ section.id }} .a2-hero .a2-h1,
       #shopify-section-{{ section.id }} .a2-hero .a2-eyebrow,
+      #shopify-section-{{ section.id }} .a2-hero .a2-hero__price,
       #shopify-section-{{ section.id }} .a2-hero .a2-lead { color: {{ section.settings.brand_dark_fg | default: '#f7f7e8' }}; }
     {%- endif -%}
   {%- endstyle -%}
@@ -118,9 +119,27 @@
       {%- if section.settings.proof_heading != blank -%}<h2 class="a2-h2 a2-center">{{ section.settings.proof_heading }}</h2>{%- endif -%}
       <div class="a2-proof-grid">
         {%- for b in proof_blocks -%}
-          <div class="a2-proof" {{ b.shopify_attributes }}>
+          <div class="a2-proof{% if b.settings.photo %} a2-proof--photo{% endif %}" {{ b.shopify_attributes }}>
+            {%- if b.settings.photo -%}
+              <img class="a2-proof__photo" src="{{ b.settings.photo | image_url: width: 800 }}" alt="{{ b.settings.title | escape }}" loading="lazy" width="400" height="250" decoding="async">
+            {%- endif -%}
             {%- if b.settings.image -%}
               <img class="a2-proof__icon" src="{{ b.settings.image | image_url: width: 88 }}" alt="" loading="lazy" width="44" height="44" decoding="async">
+            {%- elsif b.settings.icon != blank and b.settings.icon != 'none' -%}
+              <span class="a2-proof__svg" aria-hidden="true">
+                {%- case b.settings.icon -%}
+                  {%- when 'wind' -%}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 8h11a3 3 0 1 0-3-3"/><path d="M3 12h15a3 3 0 1 1-3 3"/><path d="M3 16h7"/></svg>
+                  {%- when 'feather' -%}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" y1="8" x2="2" y2="22"/><line x1="17.5" y1="15" x2="9" y2="15"/></svg>
+                  {%- when 'sliders' -%}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+                  {%- when 'shield' -%}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                  {%- when 'dollar' -%}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                {%- endcase -%}
+              </span>
             {%- endif -%}
             {%- if b.settings.metric != blank -%}<div class="a2-proof__metric">{{ b.settings.metric }}</div>{%- endif -%}
             <h3 class="a2-h3">{{ b.settings.title }}</h3>
@@ -407,6 +426,15 @@
       "type": "proof",
       "name": "Proof point",
       "settings": [
+        { "type": "image_picker", "id": "photo", "label": "Card photo", "info": "Optional image across the top of the card." },
+        { "type": "select", "id": "icon", "label": "Icon", "default": "none", "options": [
+          { "value": "none", "label": "None" },
+          { "value": "wind", "label": "Wind / aero" },
+          { "value": "feather", "label": "Feather / light" },
+          { "value": "sliders", "label": "Sliders / fit" },
+          { "value": "shield", "label": "Shield / warranty" },
+          { "value": "dollar", "label": "Dollar / value" }
+        ], "info": "Built-in icon. A custom icon image below overrides it." },
         { "type": "image_picker", "id": "image", "label": "Icon (optional)" },
         { "type": "text", "id": "metric", "label": "Metric (optional)", "default": "−18%" },
         { "type": "text", "id": "title", "label": "Title", "default": "Wind-tunnel aero" },

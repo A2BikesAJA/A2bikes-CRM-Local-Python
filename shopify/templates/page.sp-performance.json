@@ -6,6 +6,7 @@
         "proof_aero": {
           "type": "proof",
           "settings": {
+            "icon": "wind",
             "metric": "Aero-first",
             "title": "Wind-tunnel shaped",
             "text": "Tube profiles tuned for real-world yaw, not just a flattering spec sheet."
@@ -14,6 +15,7 @@
         "proof_weight": {
           "type": "proof",
           "settings": {
+            "icon": "feather",
             "metric": "Race-light",
             "title": "Light where it counts",
             "text": "A stiff, responsive frame that holds speed and climbs when the course turns up."
@@ -22,6 +24,7 @@
         "proof_geo": {
           "type": "proof",
           "settings": {
+            "icon": "sliders",
             "metric": "Fit-first",
             "title": "Dialed geometry",
             "text": "Aggressive when you want it, sustainable enough to run strong off the bike."

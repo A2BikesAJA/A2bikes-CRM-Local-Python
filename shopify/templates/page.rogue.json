@@ -3,18 +3,101 @@
     "main": {
       "type": "a2-line-lp",
       "blocks": {
-        "proof_versatile": { "type": "proof", "settings": { "metric": "All-road", "title": "One bike, every surface", "text": "Tarmac, back roads and gravel — clearance and geometry that don't make you choose." } },
-        "proof_ride": { "type": "proof", "settings": { "metric": "All-day", "title": "Ride-quality carbon", "text": "A frame tuned to stay smooth and composed when the miles add up." } },
-        "proof_value": { "type": "proof", "settings": { "metric": "Direct value", "title": "Priced direct", "text": "Race-grade build, no dealer markup — the value that defines A2." } },
-        "build_105": { "type": "build", "settings": { "product": "rogue-shimano-105", "name_override": "Rogue · Shimano 105" } },
-        "build_rival": { "type": "build", "settings": { "product": "rogue-rival-axs", "name_override": "Rogue · SRAM Rival AXS" } },
-        "build_force": { "type": "build", "settings": { "product": "rogue-sram-force-etap-axs", "name_override": "Rogue · SRAM Force AXS" } },
-        "build_red": { "type": "build", "settings": { "product": "rogue-sram-red-axs", "name_override": "Rogue · SRAM Red AXS" } },
-        "rev1": { "type": "review", "settings": { "rating": 5, "quote": "Fast enough for the group ride, capable enough for the gravel detour home.", "author": "Verified rider", "detail": "All-road convert" } },
-        "rev2": { "type": "review", "settings": { "rating": 5, "quote": "The value is unreal — carbon and AXS for what others charge for alloy.", "author": "Verified rider", "detail": "Weekend racer" } },
-        "rev3": { "type": "review", "settings": { "rating": 5, "quote": "Financed it monthly and was riding within the week.", "author": "Verified rider", "detail": "New road rider" } }
+        "proof_versatile": {
+          "type": "proof",
+          "settings": {
+            "icon": "sliders",
+            "metric": "All-road",
+            "title": "One bike, every surface",
+            "text": "Tarmac, back roads and gravel — clearance and geometry that don't make you choose."
+          }
+        },
+        "proof_ride": {
+          "type": "proof",
+          "settings": {
+            "icon": "feather",
+            "metric": "All-day",
+            "title": "Ride-quality carbon",
+            "text": "A frame tuned to stay smooth and composed when the miles add up."
+          }
+        },
+        "proof_value": {
+          "type": "proof",
+          "settings": {
+            "icon": "dollar",
+            "metric": "Direct value",
+            "title": "Priced direct",
+            "text": "Race-grade build, no dealer markup — the value that defines A2."
+          }
+        },
+        "build_105": {
+          "type": "build",
+          "settings": {
+            "product": "rogue-shimano-105",
+            "name_override": "Rogue · Shimano 105"
+          }
+        },
+        "build_rival": {
+          "type": "build",
+          "settings": {
+            "product": "rogue-rival-axs",
+            "name_override": "Rogue · SRAM Rival AXS"
+          }
+        },
+        "build_force": {
+          "type": "build",
+          "settings": {
+            "product": "rogue-sram-force-etap-axs",
+            "name_override": "Rogue · SRAM Force AXS"
+          }
+        },
+        "build_red": {
+          "type": "build",
+          "settings": {
+            "product": "rogue-sram-red-axs",
+            "name_override": "Rogue · SRAM Red AXS"
+          }
+        },
+        "rev1": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "quote": "Fast enough for the group ride, capable enough for the gravel detour home.",
+            "author": "Verified rider",
+            "detail": "All-road convert"
+          }
+        },
+        "rev2": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "quote": "The value is unreal — carbon and AXS for what others charge for alloy.",
+            "author": "Verified rider",
+            "detail": "Weekend racer"
+          }
+        },
+        "rev3": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "quote": "Financed it monthly and was riding within the week.",
+            "author": "Verified rider",
+            "detail": "New road rider"
+          }
+        }
       },
-      "block_order": ["proof_versatile", "proof_ride", "proof_value", "build_105", "build_rival", "build_force", "build_red", "rev1", "rev2", "rev3"],
+      "block_order": [
+        "proof_versatile",
+        "proof_ride",
+        "proof_value",
+        "build_105",
+        "build_rival",
+        "build_force",
+        "build_red",
+        "rev1",
+        "rev2",
+        "rev3"
+      ],
       "settings": {
         "line": "rogue",
         "eyebrow": "A2 Bikes · Rogue",
@@ -42,5 +125,7 @@
       }
     }
   },
-  "order": ["main"]
+  "order": [
+    "main"
+  ]
 }

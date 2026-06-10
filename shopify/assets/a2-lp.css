@@ -99,7 +99,11 @@
 .a2-proof-grid { display: grid; gap: clamp(16px, 3vw, 28px); grid-template-columns: 1fr; }
 @media (min-width: 720px) { .a2-proof-grid { grid-template-columns: repeat(3, 1fr); } }
 .a2-proof { background: var(--a2-card); border: 1px solid var(--a2-border); border-radius: var(--a2-radius); padding: clamp(20px, 3vw, 30px); }
+.a2-proof--photo { padding-top: 0; overflow: hidden; }
+.a2-proof__photo { display: block; width: calc(100% + 2 * clamp(20px, 3vw, 30px)); margin: 0 calc(-1 * clamp(20px, 3vw, 30px)) 16px; aspect-ratio: 16 / 10; object-fit: cover; }
 .a2-proof__icon { width: 44px; height: 44px; margin-bottom: 14px; color: var(--a2-accent); }
+.a2-proof__svg { display: inline-block; width: 44px; height: 44px; margin-bottom: 14px; color: var(--a2-accent); }
+.a2-proof__svg svg { width: 100%; height: 100%; }
 .a2-proof__metric { font-family: var(--a2-font-display); font-size: 2rem; color: var(--a2-accent); line-height: 1; }
 
 .a2-band { background: var(--a2-card); border-block: 1px solid var(--a2-border); }
