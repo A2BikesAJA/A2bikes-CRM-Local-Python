@@ -22,12 +22,41 @@
       <p class="wa-hero-sub reveal d2">{{ section.settings.hero_sub }}</p>
       <div class="wa-hero-cta reveal d3">
         <a class="wa-btn wa-btn--primary" href="{{ section.settings.hero_cta1_link | default: '/collections/sp' }}">{{ section.settings.hero_cta1_label }} →</a>
-        <a class="wa-btn wa-btn--ghost-light" href="{{ section.settings.hero_cta2_link | default: '#wa-capture' }}">{{ section.settings.hero_cta2_label }}</a>
+        <a class="wa-btn wa-btn--ghost-light" href="{{ section.settings.hero_cta2_link | default: '#wa-capture' }}"{% if section.settings.hero_cta2_modal %} data-wa-fit-open{% endif %}>{{ section.settings.hero_cta2_label }}</a>
       </div>
     </div>
     <div class="wa-scrollcue" aria-hidden="true">Scroll</div>
   </section>
 </div>
+{%- if section.settings.hero_cta2_modal -%}
+  {{ 'a2-lp.css' | asset_url | stylesheet_tag }}
+  <dialog class="wa-fitmodal" id="wa-fitmodal">
+    <button class="wa-fitmodal__close" type="button" data-wa-fit-close aria-label="Close">&times;</button>
+    <div class="a2-lp a2-theme-financing wa-fitmodal__body">
+      <h2 class="wa-fitmodal__heading">Find your size in 60 seconds</h2>
+      {% render 'a2-fit-calculator' %}
+    </div>
+  </dialog>
+  <script>
+    (function () {
+      var dlg = document.getElementById('wa-fitmodal');
+      if (!dlg || !dlg.showModal) return;
+      document.querySelectorAll('[data-wa-fit-open]').forEach(function (a) {
+        a.addEventListener('click', function (e) {
+          e.preventDefault();
+          var t = document.getElementById('togglefit'), f = document.getElementById('fitfinder');
+          if (t) t.style.display = 'none';
+          if (f) f.style.display = 'block';
+          dlg.showModal();
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({ event: 'fit_calculator_open', cta_id: 'home-hero-fit' });
+        });
+      });
+      dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
+      dlg.querySelector('[data-wa-fit-close]').addEventListener('click', function () { dlg.close(); });
+    })();
+  </script>
+{%- endif -%}
 {% schema %}
 {
   "name": "Why A2 · Hero",
@@ -41,7 +70,8 @@
     { "type": "text", "id": "hero_cta1_label", "label": "Primary button label", "default": "See the bikes" },
     { "type": "url", "id": "hero_cta1_link", "label": "Primary button link (defaults to /collections/sp)" },
     { "type": "text", "id": "hero_cta2_label", "label": "Secondary button label", "default": "Get our sizing guide" },
-    { "type": "text", "id": "hero_cta2_link", "label": "Secondary button link", "info": "E.g. /pages/sp-performance#a2-fit-calc — leave blank to scroll to the email form." }
+    { "type": "text", "id": "hero_cta2_link", "label": "Secondary button link", "info": "E.g. /pages/sp-performance#a2-fit-calc — leave blank to scroll to the email form." },
+    { "type": "checkbox", "id": "hero_cta2_modal", "label": "Open Fit Finder in a pop-up", "default": false, "info": "CTA 2 opens the A2 Fit Finder dialog instead of navigating. The link above stays as the no-JS fallback." }
   ],
   "presets": [{ "name": "Why A2 · Hero" }]
 }

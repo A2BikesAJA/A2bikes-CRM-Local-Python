@@ -11,7 +11,8 @@
         "hero_cta1_label": "Shop the SP",
         "hero_cta1_link": "shopify://collections/sp",
         "hero_cta2_label": "Find your size in 60 seconds",
-        "hero_cta2_link": "/pages/sp-performance#a2-fit-calc"
+        "hero_cta2_link": "/pages/sp-performance#a2-fit-calc",
+        "hero_cta2_modal": true
       }
     },
     "trust_ticker": {
