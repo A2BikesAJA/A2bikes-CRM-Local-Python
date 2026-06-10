@@ -2,7 +2,16 @@
 <div class="whya2">
   <section class="wa-hero wa-sec--dark">
     {%- if section.settings.hero_image -%}
-      {{ section.settings.hero_image | image_url: width: 2400 | image_tag: class: 'wa-hero-img', loading: 'eager', fetchpriority: 'high', widths: '600,900,1200,1600,2000,2400', sizes: '100vw', alt: section.settings.hero_image.alt }}
+      <picture>
+        {%- if section.settings.hero_image_mobile -%}
+          <source
+            media="(max-width: 749px)"
+            srcset="{{ section.settings.hero_image_mobile | image_url: width: 750 }} 750w, {{ section.settings.hero_image_mobile | image_url: width: 1080 }} 1080w"
+            sizes="100vw"
+          >
+        {%- endif -%}
+        {{ section.settings.hero_image | image_url: width: 2400 | image_tag: class: 'wa-hero-img', loading: 'eager', fetchpriority: 'high', widths: '600,900,1200,1600,2000,2400', sizes: '100vw', alt: section.settings.hero_image.alt }}
+      </picture>
     {%- else -%}
       <div class="wa-hero-img wa-ph" data-label="Hero image — set in theme editor (use an action / riding shot)"></div>
     {%- endif -%}
@@ -25,6 +34,7 @@
   "tag": "section",
   "settings": [
     { "type": "image_picker", "id": "hero_image", "label": "Hero image (use an action / riding shot, not a studio photo)" },
+    { "type": "image_picker", "id": "hero_image_mobile", "label": "Hero image — mobile", "info": "Portrait crop shown under 750px. Leave blank to reuse the desktop image." },
     { "type": "text", "id": "hero_eyebrow", "label": "Eyebrow", "default": "Rider Focused. Always." },
     { "type": "text", "id": "hero_heading", "label": "Heading", "default": "Pro-level triathlon bikes. Without the pro-level price." },
     { "type": "inline_richtext", "id": "hero_sub", "label": "Subhead", "default": "The same design pedigree as a <b>Cervélo P-Series</b> — drawn by the engineer who shaped it — sold direct, so you skip the retail markup." },

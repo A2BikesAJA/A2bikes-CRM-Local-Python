@@ -4,6 +4,7 @@
       "type": "wa-hero",
       "settings": {
         "hero_image": "shopify://shop_images/Black_Friday_Banner_Ideas_6.jpg",
+        "hero_image_mobile": "shopify://shop_images/Black_Friday_Banner_Ideas_1080_x_1920_px_8.png",
         "hero_eyebrow": "Rider Focused. Always.",
         "hero_heading": "Pro-level bikes. Without the pro-level price.",
         "hero_sub": "The same design pedigree as a <strong>Cervélo P-Series</strong> — drawn by the engineer who shaped it — sold direct from Oregon, so you skip the retail markup.",
