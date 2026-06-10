@@ -291,6 +291,30 @@ all carry stored UTM/click IDs.
    remains intact on the LIVE theme. Note: homepage as-low-as in the band
    won't render until the Affirm app block (or key) is present on the index
    template — owner can add the same app embed block there via the editor.
+15. **Parallel-session drift discovered + LP/PDP fixes (June 10).** A second
+   session (Team account, June 9 ~19:00) modified theme files directly:
+   restyled the LP system (new "Brand & color" schema group on
+   `a2-line-lp`, light brand palette + dark hero) and built an entire
+   per-build PDP system in the theme only — `sppdp-*` sections + 13
+   product templates (`product.sp-shimano/sp-rival/sp-force/sp-red`,
+   `product.rogue-*`, `product.sppdp-live*`, `page.sp-pdp`). Adopted into
+   the repo (md5-verified): `a2-lp.css`, `a2-line-lp.liquid`,
+   `page.sp-performance.json` (semantic — Shopify's stored serialization
+   of this template never byte-matches the API body), `sppdp-specs.liquid`.
+   Fixes deployed on top: (1) raw-JSON "Complete weight" tile — the section
+   rendered `{{ mf.weight }}` (the drop) instead of
+   `{{ mf.weight.value.value }} {{ mf.weight.value.unit }}`; fixes all 12
+   build PDPs; (2) black-on-black hero financing line — the dark-hero
+   override recolored h1/eyebrow/lead but not `.a2-hero__price` (which sat
+   on the near-black brand accent #242526); (3) proof cards now support a
+   card photo + built-in inline-SVG icons (wind/feather/sliders/shield/
+   dollar) — icons set on both LP templates, photos owner-fillable.
+   **ADOPTION BACKLOG (theme newer than repo, not yet adopted):**
+   `sections/a2-vs-competitor-lp.liquid`, `sections/a2-financing-lp.liquid`,
+   `templates/page.financing.json`, `templates/page.sp-vs-qr.json`, plus
+   all other `sppdp-*` sections/snippets/assets and the 13 sppdp product
+   templates. Until adopted, do NOT deploy those repo files — they would
+   overwrite newer theme work.
 
 ## 6. Deploy pipeline (the reliable way) + gotchas
 
