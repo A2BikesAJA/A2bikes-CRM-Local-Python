@@ -417,6 +417,27 @@ all carry stored UTM/click IDs.
    C = consolidation (canonical financing/sizing pages, 301s, zombie purge
    — needs owner sign-off on the kill list); D = video/UGC/blog.
 
+BATCH C EXECUTED (June 10, partial — the safe half): CONSTRUCTIVE — (1)
+   `/pages/a2-shipping` rewritten with current terms + published; (2) A2
+   Promise page (`page.our-promise.json`, draft) productized with a
+   5-pillar row; (3) NEW canonical `/pages/size-guide` (id 152884904100,
+   templateSuffix `sizing`) with HTML SP+Rogue geometry tables in the body
+   (renders on any theme) + the v2 calculator on the draft template.
+   DESTRUCTIVE — bulk URL-redirect import (job done) of 30 paths: 12 sizing
+   handles → /pages/size-guide, pay-with-truemed-1 → /pages/pay-with-truemed,
+   17 zombie/legacy → nearest live equivalent; then unpublished the 7
+   still-published sources (sp-sizing, sp-size-guide, sp-geometry-chart,
+   sp-geometry-chart-1, copy-of-sp-geometry,
+   copy-of-rogue-all-road-geometry-guide, pay-with-truemed-1) so the
+   redirects fire; retitled `sp-comparison-page-draft` → "Compare Bikes"
+   (handle unchanged). DEFERRED TO PUBLISH (would alter live nav or send
+   live traffic to a draft-only page): financing consolidation (finance,
+   finance-your-bike, financing-your-bike, ride-now-pay-later,
+   financing-and-installments → /pages/financing-hsa-fsa — target only
+   renders on draft, and finance-your-bike/financing-your-bike are in live
+   menus), about → about-new, and the buying-process vs buying-process-2-0
+   dedup (both in live menus; owner to pick canonical at publish).
+
 ## 6. Deploy pipeline (the reliable way) + gotchas
 
 ```
