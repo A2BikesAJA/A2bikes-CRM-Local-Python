@@ -301,20 +301,12 @@
       "settings": {
         "frame_weight": "900 g"
       }
-    },
-    "size_calc": {
-      "type": "a2-size-calculator",
-      "settings": {
-        "kicker": "Sizing",
-        "heading": "Not sure which size? Find out in 30 seconds."
-      }
     }
   },
   "order": [
     "main",
     "reviews",
     "compare",
-    "specs",
-    "size_calc"
+    "specs"
   ]
 }

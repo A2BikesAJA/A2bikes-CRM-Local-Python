@@ -358,13 +358,6 @@
         "divider_style": "none",
         "section_padding": "section--vertical-padding-top-bottom"
       }
-    },
-    "size_calc": {
-      "type": "a2-size-calculator",
-      "settings": {
-        "kicker": "Sizing",
-        "heading": "Not sure which size? Find out in 30 seconds."
-      }
     }
   },
   "order": [
@@ -372,7 +365,6 @@
     "reviews",
     "compare",
     "specs",
-    "size_calc",
     "17805316728f5b181f"
   ]
 }

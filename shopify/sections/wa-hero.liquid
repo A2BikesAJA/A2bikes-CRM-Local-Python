@@ -22,7 +22,11 @@
       <p class="wa-hero-sub reveal d2">{{ section.settings.hero_sub }}</p>
       <div class="wa-hero-cta reveal d3">
         <a class="wa-btn wa-btn--primary" href="{{ section.settings.hero_cta1_link | default: '/collections/sp' }}">{{ section.settings.hero_cta1_label }} →</a>
-        <a class="wa-btn wa-btn--ghost-light" href="{{ section.settings.hero_cta2_link | default: '#wa-capture' }}"{% if section.settings.hero_cta2_modal %} data-wa-fit-open{% endif %}>{{ section.settings.hero_cta2_label }}</a>
+        {%- if section.settings.hero_cta2_modal -%}
+          <button type="button" class="wa-btn wa-btn--ghost-light" data-wa-fit-open>{{ section.settings.hero_cta2_label }}</button>
+        {%- else -%}
+          <a class="wa-btn wa-btn--ghost-light" href="{{ section.settings.hero_cta2_link | default: '#wa-capture' }}">{{ section.settings.hero_cta2_label }}</a>
+        {%- endif -%}
       </div>
     </div>
     <div class="wa-scrollcue" aria-hidden="true">Scroll</div>
@@ -42,12 +46,14 @@
       document.querySelectorAll('[data-wa-fit-open]').forEach(function (a) {
         a.addEventListener('click', function (e) {
           e.preventDefault();
+          e.stopImmediatePropagation();
           dlg.showModal();
           window.dataLayer = window.dataLayer || [];
           window.dataLayer.push({ event: 'fit_calculator_open', cta_id: 'home-hero-fit' });
         });
       });
-      dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
+      /* Close only via the X or Esc — iOS fires phantom backdrop clicks when
+         a <select> picker inside the dialog dismisses, so no backdrop-close. */
       dlg.querySelector('[data-wa-fit-close]').addEventListener('click', function () { dlg.close(); });
     })();
   </script>

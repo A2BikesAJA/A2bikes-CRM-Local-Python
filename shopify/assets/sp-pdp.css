@@ -308,3 +308,17 @@
 .sppdp .sticky-buy__price b{ color:var(--ink); }
 .sppdp .sticky-buy .btn{ flex:1; padding-block:15px; font-weight:700; }
 @media (min-width:961px){ .sppdp .sticky-buy{ display:none !important; } }
+
+/* collapsible size calculator (under the edu tiles / mobile gallery) */
+.sppdp .sppdp-sizecalc{ margin-top:18px; }
+.sppdp .sppdp-sizecalc__cta{ display:flex; align-items:center; gap:10px; cursor:pointer; list-style:none;
+  background:#000; color:#fff; padding:15px 18px; border-radius:10px; font-weight:700; font-size:1rem; letter-spacing:.01em;
+  transition:background .2s ease; }
+.sppdp .sppdp-sizecalc__cta::-webkit-details-marker{ display:none; }
+.sppdp .sppdp-sizecalc__cta svg{ width:20px; height:20px; stroke:var(--accent); fill:none; stroke-width:2.2;
+  stroke-linecap:round; stroke-linejoin:round; flex:0 0 auto; }
+.sppdp .sppdp-sizecalc__chev{ margin-left:auto; stroke:#fff !important; transition:transform .2s ease; }
+.sppdp .sppdp-sizecalc[open] .sppdp-sizecalc__chev{ transform:rotate(180deg); }
+.sppdp .sppdp-sizecalc__cta:hover{ background:var(--accent); }
+.sppdp .sppdp-sizecalc__cta:hover svg{ stroke:#fff; }
+.sppdp .sppdp-sizecalc__body{ padding-top:14px; }

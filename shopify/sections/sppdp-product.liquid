@@ -37,6 +37,24 @@
     endif
   endfor
 -%}
+{%- liquid
+  assign calc_bike = 'sp'
+  if product.handle contains 'rogue'
+    assign calc_bike = 'rogue'
+  endif
+-%}
+{%- capture size_calc_details -%}
+  {%- if section.settings.show_size_calc -%}
+  <details class="sppdp-sizecalc">
+    <summary class="sppdp-sizecalc__cta">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 22c1.1 0 2-.9 2-2h-4a2 2 0 0 0 2 2z"/><line x1="2" y1="4" x2="22" y2="4"/><line x1="4" y1="4" x2="4" y2="16"/><line x1="20" y1="4" x2="20" y2="16"/><line x1="12" y1="4" x2="12" y2="8"/><path d="M4 16l8 -4 8 4"/></svg>
+      <span>{{ section.settings.size_calc_cta | default: 'Find your perfect bike size here' }}</span>
+      <svg class="sppdp-sizecalc__chev" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 9l6 6 6-6"/></svg>
+    </summary>
+    <div class="sppdp-sizecalc__body">{% render 'a2-size-calc', default_bike: calc_bike %}</div>
+  </details>
+  {%- endif -%}
+{%- endcapture -%}
 <div class="sppdp" id="sppdp-pdp-{{ section.id }}">
   <div class="pdp-wrap">
     <nav class="breadcrumb" aria-label="Breadcrumb">
@@ -101,6 +119,7 @@
           {%- endif -%}
         {%- endfor -%}
       </div>
+      {{ size_calc_details }}
     </section>
 
     <!-- MOBILE SWIPE GALLERY -->
@@ -118,6 +137,7 @@
           <span{% if forloop.first %} class="on"{% endif %} data-gallery-dot></span>
         {%- endfor -%}
       </div>
+      {{ size_calc_details }}
     </section>
 
     <!-- BUY BOX -->
@@ -424,90 +444,431 @@
   "tag": "section",
   "max_blocks": 30,
   "settings": [
-    { "type": "header", "content": "Breadcrumb" },
-    { "type": "text", "id": "bc_home", "label": "Home label", "default": "Home" },
-    { "type": "text", "id": "bc_col", "label": "Collection label", "default": "Triathlon — SP" },
-    { "type": "url", "id": "bc_col_url", "label": "Collection link" },
-    { "type": "header", "content": "Build switcher (groupset)" },
-    { "type": "text", "id": "build_collection", "label": "Collection of SP builds (handle)", "info": "Every product in this collection becomes a switchable build pill; the current product is highlighted. Leave blank to hide.", "default": "sp" },
-    { "type": "text", "id": "build_label", "label": "Switcher label", "default": "Groupset" },
-    { "type": "header", "content": "Title & rating" },
-    { "type": "text", "id": "kicker", "label": "Kicker", "default": "SP Triathlon · Entry build" },
-    { "type": "text", "id": "subtitle", "label": "Subtitle (defaults to product type)", "default": "Carbon triathlon & time-trial bike" },
-    { "type": "text", "id": "rating_stars", "label": "Stars", "default": "★★★★★" },
-    { "type": "text", "id": "rating_value", "label": "Rating value (falls back to reviews.rating metafield)", "default": "4.8" },
-    { "type": "text", "id": "rating_count", "label": "Review count (falls back to reviews.rating_count metafield)" },
-    { "type": "text", "id": "reviews_anchor", "label": "Reviews anchor", "default": "#sppdp-reviews" },
-    { "type": "header", "content": "Price & financing" },
-    { "type": "text", "id": "price_note", "label": "Price note", "default": "USD · ships free in the continental US" },
-    { "type": "range", "id": "affirm_months", "label": "Affirm months (monthly = price ÷ months)", "min": 6, "max": 48, "step": 6, "default": 12 },
-    { "type": "text", "id": "affirm_apr", "label": "Affirm APR text", "default": "0% APR" },
-    { "type": "url", "id": "affirm_url", "label": "Affirm prequalify link (static line)" },
-    { "type": "text", "id": "wheel_note", "label": "Wheel-upgrade note", "info": "Shown under the wheel-upgrade options. Per build, set custom.wheel_upgrade_variant (one-click wheel add) and custom.wheel_upgrade_credit (= base wheelset price minus $150); the PDP shows wheel price minus credit, with a matching Save chip. Add custom.wheel_upgrade_variant_2 for a second wheel option. Text-only builds use custom.wheel_upgrade for the callout.", "default": "Discount applied automatically when your bike & wheels are in your cart." },
-    { "type": "checkbox", "id": "show_affirm_line", "label": "Show built-in Affirm line", "info": "Turn off if you add the official Affirm app block (below) so you don't show both.", "default": false },
-    { "type": "header", "content": "Gallery — caption & hotspots", "info": "Add 'Hotspot' blocks below; set each one's Photo number to place it on that gallery image. Hotspots show only when their photo is on the main stage." },
-    { "type": "textarea", "id": "gallery_caption", "label": "Stage caption", "default": "Hover the numbered points to explore the frame tech." },
-    { "type": "checkbox", "id": "show_hotspots", "label": "Show annotation hotspots", "default": true },
-    { "type": "header", "content": "Education detail tiles" },
-    { "type": "image_picker", "id": "edu_1_image", "label": "Tile 1 image" },
-    { "type": "text", "id": "edu_1_title", "label": "Tile 1 title", "default": "Toray T700 carbon" },
-    { "type": "textarea", "id": "edu_1_desc", "label": "Tile 1 text", "default": "Hand-laid layup — the same fiber class as superbikes costing 3× more." },
-    { "type": "image_picker", "id": "edu_2_image", "label": "Tile 2 image" },
-    { "type": "text", "id": "edu_2_title", "label": "Tile 2 title", "default": "SAGS adjustable cockpit" },
-    { "type": "textarea", "id": "edu_2_desc", "label": "Tile 2 text", "default": "140mm fore/aft pad range. Dial your aero fit without a new stem." },
-    { "type": "image_picker", "id": "edu_3_image", "label": "Tile 3 image" },
-    { "type": "text", "id": "edu_3_title", "label": "Tile 3 title", "default": "Race-day storage" },
-    { "type": "textarea", "id": "edu_3_desc", "label": "Tile 3 text", "default": "Down-tube and top-tube mounts for nutrition and tools, built in." },
-    { "type": "header", "content": "Size help & CTA" },
-    { "type": "text", "id": "size_help_label", "label": "Find-your-size link label", "default": "Find your size" },
-    { "type": "url", "id": "size_help_url", "label": "Find-your-size link" },
-    { "type": "text", "id": "cta_prefix", "label": "Add-to-cart label prefix", "default": "Add to cart — " },
-    { "type": "text", "id": "demo_note", "label": "Demo note", "default": "7-day home demo" },
-    { "type": "text", "id": "consult_label", "label": "Consult link label", "default": "Or book a free fit consult" },
-    { "type": "url", "id": "consult_url", "label": "Consult link" },
-    { "type": "header", "content": "Mobile" },
-    { "type": "checkbox", "id": "show_sticky", "label": "Show persistent mobile add-to-cart bar", "default": true }
+    {
+      "type": "header",
+      "content": "Breadcrumb"
+    },
+    {
+      "type": "text",
+      "id": "bc_home",
+      "label": "Home label",
+      "default": "Home"
+    },
+    {
+      "type": "text",
+      "id": "bc_col",
+      "label": "Collection label",
+      "default": "Triathlon — SP"
+    },
+    {
+      "type": "url",
+      "id": "bc_col_url",
+      "label": "Collection link"
+    },
+    {
+      "type": "header",
+      "content": "Build switcher (groupset)"
+    },
+    {
+      "type": "text",
+      "id": "build_collection",
+      "label": "Collection of SP builds (handle)",
+      "info": "Every product in this collection becomes a switchable build pill; the current product is highlighted. Leave blank to hide.",
+      "default": "sp"
+    },
+    {
+      "type": "text",
+      "id": "build_label",
+      "label": "Switcher label",
+      "default": "Groupset"
+    },
+    {
+      "type": "header",
+      "content": "Title & rating"
+    },
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Kicker",
+      "default": "SP Triathlon · Entry build"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle (defaults to product type)",
+      "default": "Carbon triathlon & time-trial bike"
+    },
+    {
+      "type": "text",
+      "id": "rating_stars",
+      "label": "Stars",
+      "default": "★★★★★"
+    },
+    {
+      "type": "text",
+      "id": "rating_value",
+      "label": "Rating value (falls back to reviews.rating metafield)",
+      "default": "4.8"
+    },
+    {
+      "type": "text",
+      "id": "rating_count",
+      "label": "Review count (falls back to reviews.rating_count metafield)"
+    },
+    {
+      "type": "text",
+      "id": "reviews_anchor",
+      "label": "Reviews anchor",
+      "default": "#sppdp-reviews"
+    },
+    {
+      "type": "header",
+      "content": "Price & financing"
+    },
+    {
+      "type": "text",
+      "id": "price_note",
+      "label": "Price note",
+      "default": "USD · ships free in the continental US"
+    },
+    {
+      "type": "range",
+      "id": "affirm_months",
+      "label": "Affirm months (monthly = price ÷ months)",
+      "min": 6,
+      "max": 48,
+      "step": 6,
+      "default": 12
+    },
+    {
+      "type": "text",
+      "id": "affirm_apr",
+      "label": "Affirm APR text",
+      "default": "0% APR"
+    },
+    {
+      "type": "url",
+      "id": "affirm_url",
+      "label": "Affirm prequalify link (static line)"
+    },
+    {
+      "type": "text",
+      "id": "wheel_note",
+      "label": "Wheel-upgrade note",
+      "info": "Shown under the wheel-upgrade options. Per build, set custom.wheel_upgrade_variant (one-click wheel add) and custom.wheel_upgrade_credit (= base wheelset price minus $150); the PDP shows wheel price minus credit, with a matching Save chip. Add custom.wheel_upgrade_variant_2 for a second wheel option. Text-only builds use custom.wheel_upgrade for the callout.",
+      "default": "Discount applied automatically when your bike & wheels are in your cart."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_affirm_line",
+      "label": "Show built-in Affirm line",
+      "info": "Turn off if you add the official Affirm app block (below) so you don't show both.",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Gallery — caption & hotspots",
+      "info": "Add 'Hotspot' blocks below; set each one's Photo number to place it on that gallery image. Hotspots show only when their photo is on the main stage."
+    },
+    {
+      "type": "textarea",
+      "id": "gallery_caption",
+      "label": "Stage caption",
+      "default": "Hover the numbered points to explore the frame tech."
+    },
+    {
+      "type": "header",
+      "content": "Size calculator"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_size_calc",
+      "label": "Show size calculator",
+      "default": true,
+      "info": "Collapsible Find-your-size panel under the tech tiles (and after the mobile gallery)."
+    },
+    {
+      "type": "text",
+      "id": "size_calc_cta",
+      "label": "Calculator CTA",
+      "default": "Find your perfect bike size here"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_hotspots",
+      "label": "Show annotation hotspots",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Education detail tiles"
+    },
+    {
+      "type": "image_picker",
+      "id": "edu_1_image",
+      "label": "Tile 1 image"
+    },
+    {
+      "type": "text",
+      "id": "edu_1_title",
+      "label": "Tile 1 title",
+      "default": "Toray T700 carbon"
+    },
+    {
+      "type": "textarea",
+      "id": "edu_1_desc",
+      "label": "Tile 1 text",
+      "default": "Hand-laid layup — the same fiber class as superbikes costing 3× more."
+    },
+    {
+      "type": "image_picker",
+      "id": "edu_2_image",
+      "label": "Tile 2 image"
+    },
+    {
+      "type": "text",
+      "id": "edu_2_title",
+      "label": "Tile 2 title",
+      "default": "SAGS adjustable cockpit"
+    },
+    {
+      "type": "textarea",
+      "id": "edu_2_desc",
+      "label": "Tile 2 text",
+      "default": "140mm fore/aft pad range. Dial your aero fit without a new stem."
+    },
+    {
+      "type": "image_picker",
+      "id": "edu_3_image",
+      "label": "Tile 3 image"
+    },
+    {
+      "type": "text",
+      "id": "edu_3_title",
+      "label": "Tile 3 title",
+      "default": "Race-day storage"
+    },
+    {
+      "type": "textarea",
+      "id": "edu_3_desc",
+      "label": "Tile 3 text",
+      "default": "Down-tube and top-tube mounts for nutrition and tools, built in."
+    },
+    {
+      "type": "header",
+      "content": "Size help & CTA"
+    },
+    {
+      "type": "text",
+      "id": "size_help_label",
+      "label": "Find-your-size link label",
+      "default": "Find your size"
+    },
+    {
+      "type": "url",
+      "id": "size_help_url",
+      "label": "Find-your-size link"
+    },
+    {
+      "type": "text",
+      "id": "cta_prefix",
+      "label": "Add-to-cart label prefix",
+      "default": "Add to cart — "
+    },
+    {
+      "type": "text",
+      "id": "demo_note",
+      "label": "Demo note",
+      "default": "7-day home demo"
+    },
+    {
+      "type": "text",
+      "id": "consult_label",
+      "label": "Consult link label",
+      "default": "Or book a free fit consult"
+    },
+    {
+      "type": "url",
+      "id": "consult_url",
+      "label": "Consult link"
+    },
+    {
+      "type": "header",
+      "content": "Mobile"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sticky",
+      "label": "Show persistent mobile add-to-cart bar",
+      "default": true
+    }
   ],
   "blocks": [
     {
       "type": "trust",
       "name": "Trust item",
       "settings": [
-        { "type": "select", "id": "icon", "label": "Icon", "options": [
-          { "value": "shield-check", "label": "Shield check" },
-          { "value": "bars", "label": "Bars" },
-          { "value": "sliders", "label": "Sliders" },
-          { "value": "warranty", "label": "Warranty" }
-        ], "default": "shield-check" },
-        { "type": "text", "id": "title", "label": "Title", "default": "Trust point" },
-        { "type": "textarea", "id": "sub", "label": "Subtext" }
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            {
+              "value": "shield-check",
+              "label": "Shield check"
+            },
+            {
+              "value": "bars",
+              "label": "Bars"
+            },
+            {
+              "value": "sliders",
+              "label": "Sliders"
+            },
+            {
+              "value": "warranty",
+              "label": "Warranty"
+            }
+          ],
+          "default": "shield-check"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Trust point"
+        },
+        {
+          "type": "textarea",
+          "id": "sub",
+          "label": "Subtext"
+        }
       ]
     },
     {
       "type": "hotspot",
       "name": "Hotspot",
       "settings": [
-        { "type": "range", "id": "image_index", "label": "Photo number (which gallery image)", "min": 1, "max": 6, "step": 1, "default": 1 },
-        { "type": "text", "id": "label", "label": "Label", "default": "Feature callout" },
-        { "type": "range", "id": "x", "label": "X position %", "min": 0, "max": 100, "step": 1, "default": 50 },
-        { "type": "range", "id": "y", "label": "Y position %", "min": 0, "max": 100, "step": 1, "default": 50 }
+        {
+          "type": "range",
+          "id": "image_index",
+          "label": "Photo number (which gallery image)",
+          "min": 1,
+          "max": 6,
+          "step": 1,
+          "default": 1
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Feature callout"
+        },
+        {
+          "type": "range",
+          "id": "x",
+          "label": "X position %",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 50
+        },
+        {
+          "type": "range",
+          "id": "y",
+          "label": "Y position %",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 50
+        }
       ]
     },
-    { "type": "@app" }
+    {
+      "type": "@app"
+    }
   ],
   "presets": [
     {
       "name": "SP-105 PDP · Product",
       "blocks": [
-        { "type": "trust", "settings": { "icon": "shield-check", "title": "Designed by ex-Cervélo engineers", "sub": "Kevin Quan, who designed the Cervélo P-Series, drew this frame." } },
-        { "type": "trust", "settings": { "icon": "bars", "title": "Direct-to-consumer pricing", "sub": "No dealer markup. You pay for the bike, not the showroom." } },
-        { "type": "trust", "settings": { "icon": "sliders", "title": "Free fit support & size exchanges", "sub": "Talk to a real fitter before and after you buy. Wrong size? Swap it free." } },
-        { "type": "trust", "settings": { "icon": "warranty", "title": "Lifetime frame warranty + crash replacement", "sub": "Honored directly by us. Damage it in a crash and we replace the frame." } },
-        { "type": "hotspot", "settings": { "image_index": 1, "label": "Kammtail tube shapes — aero without UCI-only weirdness", "x": 34, "y": 58 } },
-        { "type": "hotspot", "settings": { "image_index": 1, "label": "Fully internal cable + hose routing", "x": 60, "y": 40 } },
-        { "type": "hotspot", "settings": { "image_index": 1, "label": "SAGS cockpit — 140mm of fit adjustment", "x": 78, "y": 30 } },
-        { "type": "hotspot", "settings": { "image_index": 2, "label": "TRP Spyre mechanical disc — flat-mount", "x": 32, "y": 66 } },
-        { "type": "hotspot", "settings": { "image_index": 2, "label": "12mm thru-axle", "x": 72, "y": 70 } }
+        {
+          "type": "trust",
+          "settings": {
+            "icon": "shield-check",
+            "title": "Designed by ex-Cervélo engineers",
+            "sub": "Kevin Quan, who designed the Cervélo P-Series, drew this frame."
+          }
+        },
+        {
+          "type": "trust",
+          "settings": {
+            "icon": "bars",
+            "title": "Direct-to-consumer pricing",
+            "sub": "No dealer markup. You pay for the bike, not the showroom."
+          }
+        },
+        {
+          "type": "trust",
+          "settings": {
+            "icon": "sliders",
+            "title": "Free fit support & size exchanges",
+            "sub": "Talk to a real fitter before and after you buy. Wrong size? Swap it free."
+          }
+        },
+        {
+          "type": "trust",
+          "settings": {
+            "icon": "warranty",
+            "title": "Lifetime frame warranty + crash replacement",
+            "sub": "Honored directly by us. Damage it in a crash and we replace the frame."
+          }
+        },
+        {
+          "type": "hotspot",
+          "settings": {
+            "image_index": 1,
+            "label": "Kammtail tube shapes — aero without UCI-only weirdness",
+            "x": 34,
+            "y": 58
+          }
+        },
+        {
+          "type": "hotspot",
+          "settings": {
+            "image_index": 1,
+            "label": "Fully internal cable + hose routing",
+            "x": 60,
+            "y": 40
+          }
+        },
+        {
+          "type": "hotspot",
+          "settings": {
+            "image_index": 1,
+            "label": "SAGS cockpit — 140mm of fit adjustment",
+            "x": 78,
+            "y": 30
+          }
+        },
+        {
+          "type": "hotspot",
+          "settings": {
+            "image_index": 2,
+            "label": "TRP Spyre mechanical disc — flat-mount",
+            "x": 32,
+            "y": 66
+          }
+        },
+        {
+          "type": "hotspot",
+          "settings": {
+            "image_index": 2,
+            "label": "12mm thru-axle",
+            "x": 72,
+            "y": 70
+          }
+        }
       ]
     }
   ]

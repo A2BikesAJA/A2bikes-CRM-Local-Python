@@ -5,6 +5,7 @@
   guard so rendering the snippet twice on a page can't double-bind events.
   Self-contained (scoped CSS + JS, Klaviyo tracking with consent check).
   Update BIKE_BUILDS in the script when the lineup changes.
+  Optional param: default_bike ('sp' | 'rogue') preselects the bike.
 {%- endcomment -%}
 <style>
   /* -- Theme tokens -- */
@@ -447,8 +448,8 @@
         <label>
           <span class="a2-size-calc__label-text">Which Bike?</span>
           <select data-a2="bike-model">
-            <option value="sp">The SP &#8212; Triathlon</option>
-            <option value="rogue">The Rogue &#8212; Road / Gravel</option>
+            <option value="sp"{% unless default_bike == 'rogue' %} selected{% endunless %}>The SP &#8212; Triathlon</option>
+            <option value="rogue"{% if default_bike == 'rogue' %} selected{% endif %}>The Rogue &#8212; Road / Gravel</option>
           </select>
         </label>
       </div>
