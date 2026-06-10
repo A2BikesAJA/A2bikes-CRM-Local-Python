@@ -1,0 +1,23 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "enable_animation": true,
+        "content_width": "custom",
+        "custom_content_width": 850
+      }
+    },
+    "size_calc": {
+      "type": "a2-size-calculator",
+      "settings": {
+        "kicker": "Sizing",
+        "heading": "Find your size in 30 seconds"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "size_calc"
+  ]
+}
