@@ -383,6 +383,19 @@ all carry stored UTM/click IDs.
    live's → /pages/pay-with-truemed until the LP works on live). Draft
    footer renders link lists `footer` (the updated Support menu) and
    `the-company` (Financing Options fixed → pay-with-truemed). Batches:
+      NAV UPDATE (June 10, owner direction): live nav must stay UNTOUCHED
+   until publish — the three live-shared menus (`menu-3-0-northwrd-copy`
+   header incl. its "Why Choose A2?" item, footer `Support` list incl. its
+   original dead "Chat Our Team" link, `the-company`) were reverted to
+   their exact pre-session state. All nav improvements live ONLY in the
+   draft theme's menu `menu-4-0-6-26` ("Menu 4.0 (6/26)"), restructured
+   against nav best practice (5 top-level; <=7 per dropdown; grouped by
+   intent): Bikes (Tri/Road/Demo/Quiz — setup links moved out), Compare
+   Bikes, Gear, Support (Warranty/Crash/Financing LP/Size Guide/Setup/
+   Owner's Manual/FAQs), About (7 items; Press folded into News; FAQs +
+   Owner's Manual moved to Support). AT PUBLISH: re-apply the Support
+   structure to whichever menu the published theme's header references,
+   and fix the footer dead link + the-company financing link then.
    B = owner-input
    pass (legal text, Klaviyo IDs, Affirm key, geometry, Truemed URL);
    C = consolidation (canonical financing/sizing pages, 301s, zombie purge
