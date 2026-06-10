@@ -151,7 +151,7 @@
 
 .wa-fitmodal{ border:0; border-radius:14px; padding:0; max-width:880px; width:calc(100vw - 32px); }
 .wa-fitmodal::backdrop{ background:rgba(14,15,17,.72); }
-.wa-fitmodal__body{ padding:28px; overflow:auto; max-height:82vh; }
+.wa-fitmodal__body{ padding:40px 14px 14px; overflow:auto; max-height:82vh; }
 .wa-fitmodal__heading{ margin:0 0 6px; font-size:1.35rem; font-weight:700; }
 .wa-fitmodal__close{ position:absolute; top:8px; right:14px; z-index:2; font-size:30px; line-height:1;
   background:none; border:0; cursor:pointer; color:#1b2430; }

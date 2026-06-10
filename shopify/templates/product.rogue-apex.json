@@ -1111,10 +1111,18 @@
         "divider_style": "none",
         "section_padding": "section--vertical-padding-top-bottom"
       }
+    },
+    "size_calc": {
+      "type": "a2-size-calculator",
+      "settings": {
+        "kicker": "Sizing",
+        "heading": "Not sure which size? Find out in 30 seconds."
+      }
     }
   },
   "order": [
     "main",
+    "size_calc",
     "promotion_bar_QnywpJ",
     "apps_bMRhFT",
     "rich_text_433CbN",

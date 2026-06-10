@@ -29,12 +29,10 @@
   </section>
 </div>
 {%- if section.settings.hero_cta2_modal -%}
-  {{ 'a2-lp.css' | asset_url | stylesheet_tag }}
   <dialog class="wa-fitmodal" id="wa-fitmodal">
     <button class="wa-fitmodal__close" type="button" data-wa-fit-close aria-label="Close">&times;</button>
-    <div class="a2-lp a2-theme-financing wa-fitmodal__body">
-      <h2 class="wa-fitmodal__heading">Find your size in 60 seconds</h2>
-      {% render 'a2-fit-calculator' %}
+    <div class="wa-fitmodal__body">
+      {% render 'a2-size-calc' %}
     </div>
   </dialog>
   <script>
@@ -44,9 +42,6 @@
       document.querySelectorAll('[data-wa-fit-open]').forEach(function (a) {
         a.addEventListener('click', function (e) {
           e.preventDefault();
-          var t = document.getElementById('togglefit'), f = document.getElementById('fitfinder');
-          if (t) t.style.display = 'none';
-          if (f) f.style.display = 'block';
           dlg.showModal();
           window.dataLayer = window.dataLayer || [];
           window.dataLayer.push({ event: 'fit_calculator_open', cta_id: 'home-hero-fit' });

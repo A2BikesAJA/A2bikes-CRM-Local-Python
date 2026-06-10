@@ -1,0 +1,1084 @@
+{%- comment -%}
+  A2 Bikes — Size Calculator v2 (height/inseam -> S-XL, current sizing).
+  Provided by the owner June 10; adopted verbatim with two changes:
+  build URLs made relative (preview-theme safe) and a per-container bind
+  guard so rendering the snippet twice on a page can't double-bind events.
+  Self-contained (scoped CSS + JS, Klaviyo tracking with consent check).
+  Update BIKE_BUILDS in the script when the lineup changes.
+{%- endcomment -%}
+<style>
+  /* -- Theme tokens -- */
+  .a2-size-calc {
+    --a2-red:        #C51C26;
+    --a2-red-hover:  #a8161e;
+    --a2-black:      #000;
+    --a2-bg:         #fafafa;
+    --a2-results-bg: #f0f0f0;
+    --a2-border:     #e5e5e5;
+  }
+
+  /* -- Scoped reset -- */
+  .a2-size-calc *, .a2-size-calc *::before, .a2-size-calc *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  .a2-size-calc {
+    font-family: 'Fraunces', Georgia, serif;
+    max-width: 720px;
+    margin: 0 auto;
+    background: var(--a2-bg);
+    border: 1px solid var(--a2-border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  /* -- Header -- */
+  .a2-size-calc__header {
+    background: var(--a2-black);
+    color: #fff;
+    padding: 16px 28px;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .a2-size-calc__header-icon {
+    color: var(--a2-red);
+  }
+
+  /* -- Body layout -- */
+  .a2-size-calc__body {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+  }
+
+  /* -- Left: inputs -- */
+  .a2-size-calc__inputs {
+    flex: 1 1 300px;
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .a2-size-calc__field-group > label {
+    display: block;
+  }
+  .a2-size-calc__label-text {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 6px;
+    letter-spacing: 0.03em;
+  }
+
+  /* Fieldset acts like a field-group -- strip default UA chrome */
+  .a2-size-calc__fieldset {
+    border: 0;
+    padding: 0;
+    margin: 0;
+    min-width: 0;
+  }
+  .a2-size-calc__legend {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 6px;
+    letter-spacing: 0.03em;
+    padding: 0;
+  }
+
+  /* Screen-reader-only utility */
+  .a2-size-calc__sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+  .a2-size-calc__sr-only-label {
+    flex: 1;
+    display: block;
+  }
+
+  .a2-size-calc__height-row {
+    display: flex;
+    gap: 10px;
+  }
+  .a2-size-calc__height-row select { flex: 1; }
+
+  /* -- Aero checkbox (SP only) -- */
+  .a2-size-calc__aero-group {
+    display: none;
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 6px;
+    padding: 12px 14px;
+  }
+  .a2-size-calc__aero-group.is-visible {
+    display: block;
+    animation: a2FadeIn 0.25s ease;
+  }
+  .a2-size-calc__checkbox-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #222;
+    line-height: 1.4;
+    margin-bottom: 0 !important;
+  }
+  .a2-size-calc__checkbox-label input[type="checkbox"] {
+    margin-top: 2px;
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    accent-color: var(--a2-red);
+    cursor: pointer;
+  }
+  .a2-size-calc__help-text {
+    font-size: 12px;
+    color: #666;
+    line-height: 1.4;
+    margin-top: 6px;
+    margin-left: 26px;
+  }
+
+  .a2-size-calc select {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 16px;
+    font-family: 'Fraunces', Georgia, serif;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background: #fff;
+    color: #111;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+  .a2-size-calc select:focus {
+    outline: none;
+    border-color: var(--a2-red);
+  }
+
+  .a2-size-calc__btn {
+    background: var(--a2-black);
+    color: #fff;
+    border: none;
+    padding: 15px 24px;
+    min-height: 48px;
+    font-size: 16px;
+    font-weight: 700;
+    font-family: 'Fraunces', Georgia, serif;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background 0.25s ease, transform 0.15s ease;
+    width: 100%;
+    margin-top: 4px;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .a2-size-calc__btn:focus-visible {
+    outline: 2px solid var(--a2-red);
+    outline-offset: 2px;
+  }
+  .a2-size-calc__btn:hover {
+    background: var(--a2-red);
+  }
+  .a2-size-calc__btn:active {
+    transform: scale(0.98);
+    background: var(--a2-red);
+  }
+
+  /* -- Right: results -- */
+  .a2-size-calc__results {
+    flex: 1 1 280px;
+    padding: 28px;
+    background: var(--a2-results-bg);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 260px;
+  }
+  .a2-size-calc__results:focus {
+    outline: none;
+  }
+
+  .a2-size-calc__results-placeholder {
+    color: #999;
+    font-size: 15px;
+    line-height: 1.5;
+    text-align: center;
+    padding: 20px 10px;
+  }
+
+  /* Sized result */
+  .a2-size-calc__results-content {
+    display: none !important;
+  }
+  .a2-size-calc__results-content.is-visible {
+    display: block !important;
+    animation: a2FadeIn 0.35s ease;
+  }
+
+  @keyframes a2FadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .a2-size-calc__size-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 4px;
+  }
+  .a2-size-calc__size-value {
+    font-size: 36px;
+    font-weight: 900;
+    color: var(--a2-red);
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+  .a2-size-calc__model-note {
+    font-size: 14px;
+    color: #444;
+    line-height: 1.5;
+    margin-bottom: 12px;
+  }
+  .a2-size-calc__fit-note {
+    font-size: 13px;
+    color: #555;
+    line-height: 1.5;
+    border-top: 1px solid #ddd;
+    padding-top: 12px;
+    margin-top: 4px;
+  }
+
+  /* CTA buttons in result panel (one per build) */
+  .a2-size-calc__ctas {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 18px;
+  }
+  .a2-size-calc__ctas-heading {
+    font-size: 12px;
+    font-weight: 500;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 2px;
+  }
+  .a2-size-calc__cta {
+    display: block;
+    width: 100%;
+    text-align: center;
+    background: var(--a2-red);
+    color: #fff;
+    text-decoration: none;
+    padding: 11px 16px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: 'Fraunces', Georgia, serif;
+    letter-spacing: 0.03em;
+    border-radius: 6px;
+    transition: background 0.2s ease, transform 0.15s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .a2-size-calc__cta:hover {
+    background: var(--a2-red-hover);
+    color: #fff;
+    text-decoration: none;
+  }
+  .a2-size-calc__cta:active {
+    transform: scale(0.98);
+  }
+  .a2-size-calc__cta:focus-visible {
+    outline: 2px solid #000;
+    outline-offset: 2px;
+  }
+
+  /* Out-of-range result */
+  .a2-size-calc__out-of-range {
+    display: none !important;
+  }
+  .a2-size-calc__out-of-range.is-visible {
+    display: block !important;
+    animation: a2FadeIn 0.35s ease;
+  }
+  .a2-size-calc__out-of-range-heading {
+    font-size: 18px;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 10px;
+  }
+  .a2-size-calc__out-of-range-msg {
+    font-size: 14px;
+    color: #444;
+    line-height: 1.6;
+    margin-bottom: 14px;
+  }
+  .a2-size-calc__out-of-range-msg a {
+    color: var(--a2-red);
+    text-decoration: underline;
+    font-weight: 600;
+  }
+
+  /* OOR lead-capture form */
+  .a2-size-calc__oor-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 6px;
+  }
+  .a2-size-calc__oor-input {
+    width: 100%;
+    padding: 11px 12px;
+    font-size: 15px;
+    font-family: 'Fraunces', Georgia, serif;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background: #fff;
+    color: #111;
+    transition: border-color 0.2s;
+  }
+  .a2-size-calc__oor-input:focus {
+    outline: none;
+    border-color: var(--a2-red);
+  }
+  .a2-size-calc__oor-error {
+    color: var(--a2-red);
+    font-size: 13px;
+    font-weight: 500;
+    display: none;
+  }
+  .a2-size-calc__oor-error.is-visible {
+    display: block;
+  }
+  .a2-size-calc__oor-success {
+    display: none;
+    background: #f5fbf5;
+    border: 1px solid #cfe5cf;
+    color: #1f5a1f;
+    padding: 12px 14px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: 6px;
+  }
+  .a2-size-calc__oor-success.is-visible {
+    display: block;
+    animation: a2FadeIn 0.3s ease;
+  }
+  .a2-size-calc__oor-fallback {
+    font-size: 12px;
+    color: #777;
+    margin-top: 10px;
+    text-align: center;
+  }
+  .a2-size-calc__oor-fallback a {
+    color: var(--a2-red);
+    text-decoration: underline;
+  }
+
+  /* Error state */
+  .a2-size-calc__error {
+    color: var(--a2-red);
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+    padding: 10px;
+    display: none !important;
+  }
+  .a2-size-calc__error.is-visible {
+    display: block !important;
+    animation: a2FadeIn 0.25s ease;
+  }
+
+  /* -- Responsive -- */
+  @media (max-width: 600px) {
+    .a2-size-calc__body {
+      flex-direction: column;
+    }
+    .a2-size-calc__results {
+      min-height: auto;
+      padding: 24px;
+    }
+    .a2-size-calc__inputs {
+      padding: 24px;
+    }
+    .a2-size-calc__header {
+      padding: 14px 20px;
+      font-size: 18px;
+    }
+  }
+</style>
+
+<div class="a2-size-calc js-a2-size-calc">
+  <!-- Header -->
+  <div class="a2-size-calc__header">
+    <svg class="a2-size-calc__header-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 22c1.1 0 2-.9 2-2h-4a2 2 0 0 0 2 2z"/><line x1="2" y1="4" x2="22" y2="4"/><line x1="4" y1="4" x2="4" y2="16"/><line x1="20" y1="4" x2="20" y2="16"/><line x1="12" y1="4" x2="12" y2="8"/><path d="M4 16l8 -4 8 4"/></svg>
+    Find Your Perfect Size
+  </div>
+
+  <div class="a2-size-calc__body">
+    <!-- Inputs -->
+    <form class="a2-size-calc__inputs" data-a2="form" novalidate>
+      <div class="a2-size-calc__field-group">
+        <label>
+          <span class="a2-size-calc__label-text">Which Bike?</span>
+          <select data-a2="bike-model">
+            <option value="sp">The SP &#8212; Triathlon</option>
+            <option value="rogue">The Rogue &#8212; Road / Gravel</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="a2-size-calc__field-group a2-size-calc__aero-group" data-a2="aero-group">
+        <label class="a2-size-calc__checkbox-label">
+          <input type="checkbox" data-a2="aero">
+          <span>Advanced rider &#8212; prioritize aero position</span>
+        </label>
+        <p class="a2-size-calc__help-text">Triathletes with bike-fit experience may benefit from a more aggressive frame size.</p>
+      </div>
+
+      <fieldset class="a2-size-calc__field-group a2-size-calc__fieldset">
+        <legend class="a2-size-calc__legend">Your Height</legend>
+        <div class="a2-size-calc__height-row">
+          <label class="a2-size-calc__sr-only-label">
+            <span class="a2-size-calc__sr-only">Feet</span>
+            <select data-a2="height-feet">
+              <option value="" disabled selected>Feet</option>
+              <option value="4">4 ft</option>
+              <option value="5">5 ft</option>
+              <option value="6">6 ft</option>
+              <option value="7">7 ft</option>
+            </select>
+          </label>
+          <label class="a2-size-calc__sr-only-label">
+            <span class="a2-size-calc__sr-only">Inches</span>
+            <select data-a2="height-inches">
+              <option value="" disabled selected>Inches</option>
+              <option value="0">0 in</option>
+              <option value="1">1 in</option>
+              <option value="2">2 in</option>
+              <option value="3">3 in</option>
+              <option value="4">4 in</option>
+              <option value="5">5 in</option>
+              <option value="6">6 in</option>
+              <option value="7">7 in</option>
+              <option value="8">8 in</option>
+              <option value="9">9 in</option>
+              <option value="10">10 in</option>
+              <option value="11">11 in</option>
+            </select>
+          </label>
+        </div>
+      </fieldset>
+
+      <div class="a2-size-calc__field-group">
+        <label>
+          <span class="a2-size-calc__label-text">Your Inseam (optional)</span>
+          <select data-a2="inseam">
+            <option value="" selected>I don't know</option>
+          <option value="27">27&#8243;</option>
+          <option value="28">28&#8243;</option>
+          <option value="29">29&#8243;</option>
+          <option value="30">30&#8243;</option>
+          <option value="31">31&#8243;</option>
+          <option value="32">32&#8243;</option>
+          <option value="33">33&#8243;</option>
+          <option value="34">34&#8243;</option>
+          <option value="35">35&#8243;</option>
+          <option value="36">36&#8243;</option>
+          <option value="37">37&#8243;</option>
+          <option value="38">38&#8243;</option>
+          </select>
+        </label>
+      </div>
+
+      <button type="submit" class="a2-size-calc__btn" data-a2="calc-btn">See My Size</button>
+
+      <!-- Inline error (visible above fold on mobile) -->
+      <div class="a2-size-calc__error" data-a2="error" role="alert" aria-live="assertive"></div>
+    </form>
+
+    <!-- Results -->
+    <div class="a2-size-calc__results" data-a2="results-panel" aria-live="polite" aria-atomic="false">
+      <div class="a2-size-calc__results-placeholder" data-a2="placeholder">
+        Select your bike and height, then hit <strong>See My Size</strong>.
+      </div>
+
+      <!-- Normal sized result -->
+      <div class="a2-size-calc__results-content" data-a2="result-content">
+        <div class="a2-size-calc__size-label">Your Recommended Size</div>
+        <div class="a2-size-calc__size-value" data-a2="size-value"></div>
+        <div class="a2-size-calc__model-note" data-a2="model-note"></div>
+        <div class="a2-size-calc__fit-note" data-a2="fit-note"></div>
+        <div class="a2-size-calc__ctas" data-a2="ctas"></div>
+      </div>
+
+      <!-- Out-of-range result -->
+      <div class="a2-size-calc__out-of-range" data-a2="oor-box">
+        <div class="a2-size-calc__out-of-range-heading" data-a2="oor-heading"></div>
+        <div class="a2-size-calc__out-of-range-msg" data-a2="oor-msg"></div>
+        <form class="a2-size-calc__oor-form" data-a2="oor-form" novalidate>
+          <input type="text" class="a2-size-calc__oor-input" data-a2="oor-name" placeholder="Your name" autocomplete="name" required>
+          <input type="email" class="a2-size-calc__oor-input" data-a2="oor-email" placeholder="Your email" autocomplete="email" required>
+          <button type="submit" class="a2-size-calc__btn" data-a2="oor-submit">Get in Touch</button>
+          <div class="a2-size-calc__oor-error" data-a2="oor-error"></div>
+        </form>
+        <div class="a2-size-calc__oor-success" data-a2="oor-success">
+          Thanks &#8212; we&#8217;ll reach out shortly to help you find the right fit.
+        </div>
+        <div class="a2-size-calc__oor-fallback">
+          Prefer email? Reach us at <a href="mailto:info@a2bikes.com">info@a2bikes.com</a>.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  /* ================================================================
+     A2 Bikes – Size Calculator v2
+     ----------------------------------------------------------------
+     • No inline handlers (Shopify / CSP safe)
+     • Multi-instance safe (works when Shopify duplicates content
+       for desktop/mobile layouts — no ID collisions)
+     • Out-of-range messaging for < 5'3" and > 6'5"
+     • Borderline heights recommend sizing up
+     • Inseam-aware: unusual inseam + borderline = stronger size-up
+     • Scrolls result into view on mobile after calculation
+     ================================================================ */
+  function a2SizeCalcInit() {
+    'use strict';
+
+    /* ── SIZE CHART CONFIG ──
+       Sizes share the same height ranges across SP and Rogue, but the
+       traditional cm labels differ slightly per bike. Advanced/aero SP
+       riders can opt to size down via the SP-only checkbox.
+       min/max = inclusive height range in inches.
+       cm     = traditional geometry-based label shown next to the letter size. */
+    const SP_CHART = [
+      { min: 63, max: 66, size: 'S',  cm: 50 },
+      { min: 67, max: 70, size: 'M',  cm: 53 },
+      { min: 71, max: 74, size: 'L',  cm: 55 },
+      { min: 75, max: 77, size: 'XL', cm: 58 }
+    ];
+
+    const ROGUE_CHART = [
+      { min: 63, max: 66, size: 'S',  cm: 50 },
+      { min: 67, max: 70, size: 'M',  cm: 52 },
+      { min: 71, max: 74, size: 'L',  cm: 54 },
+      { min: 75, max: 77, size: 'XL', cm: 58 }
+    ];
+
+    const MIN_HEIGHT = 63;
+    const MAX_HEIGHT = 77;
+
+    /* Builds per bike — listed price-descending so premium leads.
+       Add/remove builds here when the lineup changes. */
+    const BIKE_BUILDS = {
+      sp: [
+        { name: 'SRAM Red AXS',   url: '/collections/sp/products/sp-sram-red-axs' },
+        { name: 'SRAM Force AXS', url: '/collections/sp/products/sp-sram-force' },
+        { name: 'SRAM Rival AXS', url: '/collections/sp/products/sp-sram-rival-1' },
+        { name: 'Shimano 105',    url: '/collections/sp/products/sp-shimano-105n' }
+      ],
+      rogue: [
+        { name: 'SRAM Red AXS',   url: '/collections/rogue/products/rogue-sram-red-axs' },
+        { name: 'SRAM Force AXS', url: '/collections/rogue/products/rogue-sram-force-etap-axs' },
+        { name: 'SRAM Rival AXS', url: '/collections/rogue/products/rogue-rival-axs' },
+        { name: 'Shimano 105',    url: '/collections/rogue/products/rogue-shimano-105' }
+      ]
+    };
+
+    const AVG_INSEAM = {
+      63:29.5, 64:30, 65:30.5, 66:31, 67:31.5,
+      68:32, 69:32.5, 70:33, 71:33.5, 72:34,
+      73:34.5, 74:35, 75:35.5, 76:36, 77:36.5
+    };
+    const INSEAM_TOLERANCE = 1.5;
+
+    /* ── SHARED HELPERS ── */
+    function fmtHeight(totalIn) {
+      return Math.floor(totalIn / 12) + '′' + (totalIn % 12) + '″';
+    }
+
+    function lookupSize(chart, h) {
+      for (let i = 0; i < chart.length; i++) {
+        if (h >= chart[i].min && h <= chart[i].max) {
+          return { index: i, size: chart[i].size };
+        }
+      }
+      return null;
+    }
+
+    function isBorderline(chart, h) {
+      for (let i = 0; i < chart.length - 1; i++) {
+        if (h === chart[i].max) return true;
+      }
+      return false;
+    }
+
+    function nextSizeUp(chart, idx) {
+      if (idx < chart.length - 1) return chart[idx + 1].size;
+      return null;
+    }
+
+    function nextSizeDown(chart, idx) {
+      if (idx > 0) return chart[idx - 1].size;
+      return null;
+    }
+
+    /* Defers to Shopify's Customer Privacy API when present. If the visitor
+       has opted out of marketing/analytics tracking, we suppress Klaviyo
+       calls. When the API isn't available we assume tracking is allowed
+       (consistent with prior behavior on stores without a consent banner). */
+    function hasMarketingConsent() {
+      try {
+        if (window.Shopify && window.Shopify.customerPrivacy) {
+          const cp = window.Shopify.customerPrivacy;
+          if (typeof cp.userCanBeTracked === 'function') {
+            return !!cp.userCanBeTracked();
+          }
+          if (typeof cp.analyticsProcessingAllowed === 'function') {
+            return !!cp.analyticsProcessingAllowed();
+          }
+        }
+      } catch (e) { /* fall through to permissive default */ }
+      return true;
+    }
+
+    /* Only log tracking errors on dev hosts so production shoppers don't see
+       noise, but issues are visible during local/staging QA. */
+    function isDevHost() {
+      try {
+        const h = window.location.hostname || '';
+        return h === 'localhost' || h === '127.0.0.1' || h.endsWith('.local') ||
+               h.indexOf('staging') !== -1 || h.indexOf('preview') !== -1;
+      } catch (e) { return false; }
+    }
+    function devWarn(label, err) {
+      if (isDevHost() && window.console && console.warn) {
+        console.warn('[a2-size-calc] ' + label, err);
+      }
+    }
+
+    function trackKlaviyo(eventName, props) {
+      if (!hasMarketingConsent()) return;
+      try {
+        if (window.klaviyo && typeof window.klaviyo.track === 'function') {
+          window.klaviyo.track(eventName, props);
+          return;
+        }
+        if (window._learnq && typeof window._learnq.push === 'function') {
+          window._learnq.push(['track', eventName, props]);
+          return;
+        }
+        devWarn('No Klaviyo client found for event: ' + eventName);
+      } catch (e) {
+        devWarn('trackKlaviyo failed for event: ' + eventName, e);
+      }
+    }
+
+    function identifyKlaviyo(email, props) {
+      if (!hasMarketingConsent()) return false;
+      try {
+        const payload = { '$email': email };
+        for (const k in props) {
+          if (Object.prototype.hasOwnProperty.call(props, k) && props[k] != null) {
+            payload[k] = props[k];
+          }
+        }
+        if (window.klaviyo && typeof window.klaviyo.identify === 'function') {
+          window.klaviyo.identify(payload);
+          return true;
+        }
+        if (window._learnq && typeof window._learnq.push === 'function') {
+          window._learnq.push(['identify', payload]);
+          return true;
+        }
+        devWarn('No Klaviyo client found for identify');
+      } catch (e) {
+        devWarn('identifyKlaviyo failed', e);
+      }
+      return false;
+    }
+
+    function isValidEmail(s) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
+    }
+
+    /* ── INIT EACH INSTANCE ──
+       Shopify themes often duplicate Custom Liquid blocks into
+       separate desktop and mobile containers. This loop ensures
+       every copy of the calculator gets its own event binding
+       scoped to its own container. */
+    const containers = document.querySelectorAll('.js-a2-size-calc');
+
+    for (let c = 0; c < containers.length; c++) {
+      (function (root) {
+        if (root.dataset.a2Bound) return;
+        root.dataset.a2Bound = '1';
+        /* Scoped element refs — all queries stay inside this root */
+        function q(sel) { return root.querySelector('[data-a2="' + sel + '"]'); }
+
+        const formEl       = q('form');
+        const modelEl      = q('bike-model');
+        const feetEl       = q('height-feet');
+        const inchesEl     = q('height-inches');
+        const inseamEl     = q('inseam');
+        const aeroEl       = q('aero');
+        const aeroGroup    = q('aero-group');
+        const btnEl        = q('calc-btn');
+        const placeholder  = q('placeholder');
+        const errorEl      = q('error');
+        const resultBox    = q('result-content');
+        const sizeVal      = q('size-value');
+        const modelNote    = q('model-note');
+        const fitNote      = q('fit-note');
+        const ctasEl       = q('ctas');
+        const oorBox       = q('oor-box');
+        const oorHeading   = q('oor-heading');
+        const oorMsg       = q('oor-msg');
+        const oorForm      = q('oor-form');
+        const oorName      = q('oor-name');
+        const oorEmail     = q('oor-email');
+        const oorSubmit    = q('oor-submit');
+        const oorError     = q('oor-error');
+        const oorSuccess   = q('oor-success');
+        const resultsPanel = q('results-panel');
+
+        if (!btnEl) return;
+
+        function updateAeroVisibility() {
+          if (!aeroGroup) return;
+          if (modelEl.value === 'sp') {
+            aeroGroup.classList.add('is-visible');
+          } else {
+            aeroGroup.classList.remove('is-visible');
+            if (aeroEl) aeroEl.checked = false;
+          }
+        }
+
+        function hideAll() {
+          placeholder.style.display = 'none';
+          errorEl.classList.remove('is-visible');
+          resultBox.classList.remove('is-visible');
+          oorBox.classList.remove('is-visible');
+        }
+
+        function showError(msg) {
+          hideAll();
+          errorEl.textContent = msg;
+          errorEl.classList.add('is-visible');
+        }
+
+        function showAnimated(el) {
+          el.classList.remove('is-visible');
+          void el.offsetWidth;
+          el.classList.add('is-visible');
+        }
+
+        function scrollToResults() {
+          /* Mobile: smooth-scroll the results into view */
+          if (window.innerWidth <= 600) {
+            setTimeout(function () {
+              resultsPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 80);
+            return;
+          }
+          /* Desktop: shift focus to the results region so keyboard + SR users
+             land on the new content. tabindex=-1 makes it programmatically
+             focusable without entering the tab order. */
+          if (resultsPanel) {
+            resultsPanel.setAttribute('tabindex', '-1');
+            try {
+              resultsPanel.focus({ preventScroll: true });
+            } catch (e) {
+              resultsPanel.focus();
+            }
+          }
+        }
+
+        function calculate() {
+          const feet   = parseInt(feetEl.value, 10);
+          const inches = parseInt(inchesEl.value, 10);
+
+          if (isNaN(feet) || isNaN(inches)) {
+            showError('Please select your height above.');
+            return;
+          }
+
+          const totalIn  = feet * 12 + inches;
+          const bike     = modelEl.value;
+          const chart    = bike === 'sp' ? SP_CHART : ROGUE_CHART;
+          const bikeName = bike === 'sp' ? 'The SP' : 'The Rogue';
+
+          hideAll();
+
+          if (totalIn < MIN_HEIGHT || totalIn > MAX_HEIGHT) {
+            const isShort   = totalIn < MIN_HEIGHT;
+            const rangeText = isShort ? '5′3″ and taller' : 'up to 6′5″';
+            oorHeading.textContent = 'We’d Love to Help You Find the Right Fit';
+            oorMsg.textContent =
+              'Our current ' + bikeName + ' lineup is designed for riders ' + rangeText + '. ' +
+              'At ' + fmtHeight(totalIn) + ', we want to make sure you get a bike that fits safely and performs beautifully. ' +
+              'Drop your details below and we’ll personally help you explore your options.';
+
+            /* Stash context so the lead-form submit handler can include it */
+            if (oorForm) {
+              oorForm.dataset.bike       = bikeName;
+              oorForm.dataset.height     = fmtHeight(totalIn);
+              oorForm.dataset.heightIn   = String(totalIn);
+              oorForm.dataset.resultType = isShort ? 'too_short' : 'too_tall';
+
+              /* Reset form state in case the user re-runs after a prior OOR submit */
+              if (oorSuccess) oorSuccess.classList.remove('is-visible');
+              if (oorError)   oorError.classList.remove('is-visible');
+              oorForm.style.display = '';
+              if (oorName)   { oorName.disabled = false;   oorName.value = ''; }
+              if (oorEmail)  { oorEmail.disabled = false;  oorEmail.value = ''; }
+              if (oorSubmit) { oorSubmit.disabled = false; }
+            }
+
+            showAnimated(oorBox);
+            scrollToResults();
+            trackKlaviyo('Size Calculator', {
+              bike_model: bikeName, height: fmtHeight(totalIn), height_inches: totalIn,
+              recommended_size: 'Out of Range', result_type: isShort ? 'too_short' : 'too_tall',
+              tags: ['SizeCalculator', 'OutOfRange']
+            });
+            return;
+          }
+
+          const match = lookupSize(chart, totalIn);
+          if (!match) {
+            showError('Something went wrong — please try again.');
+            return;
+          }
+
+          const size      = match.size;
+          const sizeCm    = chart[match.index].cm;
+          const border    = isBorderline(chart, totalIn);
+          const upSize    = nextSizeUp(chart, match.index);
+          const upCm      = upSize   ? chart[match.index + 1].cm : null;
+          const downSize  = nextSizeDown(chart, match.index);
+          const downCm    = downSize ? chart[match.index - 1].cm : null;
+          const inseam    = parseInt(inseamEl.value, 10);
+          const hasInseam = !isNaN(inseam);
+          const aeroPref  = !!(aeroEl && aeroEl.checked && bike === 'sp');
+
+          const avgIns       = AVG_INSEAM[totalIn] || 32;
+          const inseamDelta  = hasInseam ? inseam - avgIns : 0;
+          const inseamLong   = hasInseam && inseamDelta > INSEAM_TOLERANCE;
+          const inseamShort  = hasInseam && inseamDelta < -INSEAM_TOLERANCE;
+          const inseamNormal = hasInseam && !inseamLong && !inseamShort;
+
+          /* Helper: format a single size as "M (53 cm)" */
+          function lbl(letter, cm) { return letter + ' (' + cm + ' cm)'; }
+
+          let sizeText = lbl(size, sizeCm);
+          let noteText = bikeName + ' in size ' + lbl(size, sizeCm) + ' — built for riders around ' + fmtHeight(totalIn) + '.';
+          let fitText  = '';
+
+          if (aeroPref && border && upSize) {
+            /* SP + aero rider on a size boundary — suppress the size-up bias */
+            sizeText = lbl(size, sizeCm);
+            fitText  = 'You’re at the top of the ' + size + ' range. For a more aggressive aero position on the SP, we recommend staying with ' + lbl(size, sizeCm) +
+                       ' rather than sizing up.';
+            if (downSize) {
+              fitText += ' Experienced triathletes prioritizing maximum aero may even consider sizing down to ' + lbl(downSize, downCm) +
+                         ' — but get a professional bike fit first to confirm it’s right for you.';
+            }
+          } else if (aeroPref && !border) {
+            /* SP + aero, comfortably in a size — note size-down option */
+            if (downSize) {
+              fitText = lbl(size, sizeCm) + ' is the standard recommendation for your height. Experienced triathletes seeking the most aggressive aero position may consider sizing down to ' + lbl(downSize, downCm) +
+                        '. A professional bike fit is recommended before sizing down.';
+            } else {
+              fitText = 'You’re already in our smallest SP frame — ideal for an aero, aggressive position.';
+            }
+          } else if (border && upSize) {
+            if (inseamLong) {
+              sizeText = size + ' / ' + upSize + ' (' + sizeCm + ' / ' + upCm + ' cm)';
+              noteText = bikeName + ' in size ' + lbl(size, sizeCm) + ' or ' + lbl(upSize, upCm) + ' for ' + fmtHeight(totalIn) + '.';
+              fitText  = 'You’re right at the boundary between ' + size + ' and ' + upSize +
+                         ', and your inseam is longer than average for your height. We strongly recommend sizing up to ' +
+                         lbl(upSize, upCm) + ' for a more comfortable ride with better leg extension.';
+            } else if (inseamShort) {
+              fitText = 'You’re at the top of the ' + size + ' range, but your inseam is shorter than average for your height. ' +
+                        'Staying with ' + lbl(size, sizeCm) + ' should give you the best fit and standover clearance.';
+            } else {
+              sizeText = size + ' / ' + upSize + ' (' + sizeCm + ' / ' + upCm + ' cm)';
+              noteText = bikeName + ' in size ' + lbl(size, sizeCm) + ' or ' + lbl(upSize, upCm) + ' for ' + fmtHeight(totalIn) + '.';
+              fitText  = 'Your height puts you right on the border between ' + size + ' and ' + upSize +
+                         '. We recommend sizing up to ' + lbl(upSize, upCm) + ' for a more comfortable ride.';
+              if (!hasInseam) {
+                fitText += ' For an even more precise recommendation, try adding your inseam measurement above.';
+              }
+            }
+          } else {
+            if (inseamLong && upSize) {
+              fitText = 'Your inseam is longer than average for your height. You may want to consider sizing up to ' + lbl(upSize, upCm) +
+                        ' for extra leg extension and a more comfortable ride. Otherwise, ' + lbl(size, sizeCm) + ' with seatpost adjustment will work well.';
+            } else if (inseamLong && !upSize) {
+              /* XL with a long inseam — no size to step up to */
+              fitText = 'You’re already in our largest frame and your inseam is longer than average for your height. ' +
+                        'A longer or high-rise seatpost will get you the leg extension you need — reach out to us if you’d like personalized fit guidance.';
+            } else if (inseamShort) {
+              fitText = 'Your inseam is a bit shorter than average for your height — ' + lbl(size, sizeCm) +
+                        ' is the right call. Our full adjustability system will dial in your fit perfectly.';
+            } else if (inseamNormal) {
+              fitText = 'Your inseam is right in the sweet spot for this size. You’re good to go.';
+            } else {
+              fitText = 'For an even more precise fit, try adding your inseam measurement above and re-run. ' +
+                        'Every A2 bike ships with our full adjustability system, so you’ll dial it in perfectly.';
+            }
+          }
+
+          sizeVal.textContent   = sizeText;
+          modelNote.textContent = noteText;
+          fitNote.textContent   = fitText;
+
+          if (ctasEl) {
+            /* Wipe any prior build buttons (the user may have changed bikes) */
+            while (ctasEl.firstChild) ctasEl.removeChild(ctasEl.firstChild);
+
+            const builds = BIKE_BUILDS[bike] || [];
+            if (builds.length) {
+              const heading = document.createElement('div');
+              heading.className = 'a2-size-calc__ctas-heading';
+              heading.textContent = 'Shop ' + bikeName + ' — size ' + lbl(size, sizeCm);
+              ctasEl.appendChild(heading);
+
+              builds.forEach(function (build) {
+                const a = document.createElement('a');
+                a.className = 'a2-size-calc__cta';
+                a.href = build.url;
+                a.textContent = 'Shop ' + build.name + ' →';
+                a.setAttribute('aria-label', 'Shop ' + bikeName + ' ' + build.name + ' in size ' + lbl(size, sizeCm));
+                ctasEl.appendChild(a);
+              });
+            }
+          }
+
+          showAnimated(resultBox);
+          scrollToResults();
+
+          const klavProps = {
+            bike_model: bikeName, height: fmtHeight(totalIn), height_inches: totalIn,
+            recommended_size: size, size_cm: sizeCm,
+            displayed_size: sizeText, is_borderline: border,
+            aero_preference: aeroPref,
+            tags: ['SizeCalculator', size]
+          };
+          if (hasInseam) {
+            klavProps.inseam = inseam;
+            klavProps.inseam_vs_average = inseamLong ? 'long' : (inseamShort ? 'short' : 'normal');
+          }
+          if (border && upSize && !aeroPref) {
+            klavProps.size_up_suggestion = upSize;
+          }
+          if (aeroPref && downSize) {
+            klavProps.size_down_option = downSize;
+          }
+          trackKlaviyo('Size Calculator', klavProps);
+        }
+
+        if (formEl) {
+          formEl.addEventListener('submit', function (e) {
+            e.preventDefault();
+            calculate();
+          });
+        } else {
+          btnEl.addEventListener('click', function (e) {
+            e.preventDefault();
+            calculate();
+          });
+        }
+
+        if (modelEl) {
+          modelEl.addEventListener('change', updateAeroVisibility);
+          updateAeroVisibility();
+        }
+
+        if (oorForm) {
+          oorForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            if (!oorEmail || !oorName) return;
+
+            const name  = (oorName.value || '').trim();
+            const email = (oorEmail.value || '').trim();
+
+            if (!isValidEmail(email)) {
+              if (oorError) {
+                oorError.textContent = 'Please enter a valid email address.';
+                oorError.classList.add('is-visible');
+              }
+              oorEmail.focus();
+              return;
+            }
+            if (oorError) oorError.classList.remove('is-visible');
+
+            const leadProps = {
+              first_name:    name,
+              bike_interest: oorForm.dataset.bike || '',
+              height:        oorForm.dataset.height || '',
+              height_inches: parseInt(oorForm.dataset.heightIn, 10) || null,
+              oor_type:      oorForm.dataset.resultType || '',
+              source:        'Size Calculator (Out of Range)'
+            };
+
+            identifyKlaviyo(email, leadProps);
+            trackKlaviyo('Size Calculator OOR Lead', {
+              email:         email,
+              first_name:    name,
+              bike_model:    leadProps.bike_interest,
+              height:        leadProps.height,
+              height_inches: leadProps.height_inches,
+              result_type:   leadProps.oor_type,
+              tags: ['SizeCalculator', 'OutOfRange', 'Lead']
+            });
+
+            /* Disable form + show success */
+            if (oorName)   oorName.disabled = true;
+            if (oorEmail)  oorEmail.disabled = true;
+            if (oorSubmit) oorSubmit.disabled = true;
+            oorForm.style.display = 'none';
+            if (oorSuccess) oorSuccess.classList.add('is-visible');
+          });
+        }
+
+      })(containers[c]);
+    }
+  }
+
+  /* Run immediately if DOM is ready, otherwise wait */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', a2SizeCalcInit);
+  } else {
+    a2SizeCalcInit();
+  }
+</script>
