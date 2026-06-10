@@ -1,0 +1,31 @@
+{% render 'spc-assets' %}
+<div class="spc">
+  <section class="spc-hero">
+    {%- if section.settings.hero_image -%}
+      {{ section.settings.hero_image | image_url: width: 2400 | image_tag: class: 'spc-hero__media', loading: 'eager', fetchpriority: 'high', widths: '600,900,1200,1600,2000,2400', sizes: '100vw', alt: section.settings.hero_image.alt }}
+    {%- else -%}
+      <div class="spc-hero__media spc-ph" data-label="Hero image — premium SP (Force / Red AXS), action shot"></div>
+    {%- endif -%}
+    <div class="spc-hero__scrim"></div>
+    <div class="spc-hero__inner spc-wrap">
+      <div class="spc-hero__content">
+        <p class="spc-eyebrow spc-reveal">{{ section.settings.hero_eyebrow }}<span class="spc-dot">.</span></p>
+        <h1 class="spc-display spc-reveal d1">{{ section.settings.hero_heading }}</h1>
+        <p class="spc-hero__sub spc-reveal d2">{{ section.settings.hero_sub }}</p>
+      </div>
+    </div>
+  </section>
+</div>
+{% schema %}
+{
+  "name": "SP · Hero",
+  "tag": "section",
+  "settings": [
+    { "type": "image_picker", "id": "hero_image", "label": "Hero image (premium SP, action shot — this is the LCP image)" },
+    { "type": "text", "id": "hero_eyebrow", "label": "Eyebrow (a red period is added automatically)", "default": "Choose your build" },
+    { "type": "text", "id": "hero_heading", "label": "Heading", "default": "Which SP is right for you?" },
+    { "type": "inline_richtext", "id": "hero_sub", "label": "Subhead", "default": "Same race-tested carbon frame. Same <strong>SAGS</strong> adjustability. Four ways to ride it." }
+  ],
+  "presets": [{ "name": "SP · Hero" }]
+}
+{% endschema %}

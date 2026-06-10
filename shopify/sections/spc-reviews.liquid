@@ -1,0 +1,118 @@
+{% render 'spc-assets' %}
+{%- assign reviews = section.blocks | where: 'type', 'review' -%}
+{%- assign athletes = section.blocks | where: 'type', 'athlete' -%}
+<div class="spc">
+  <section class="spc-sec spc-reviews" id="spc-reviews">
+    <div class="spc-wrap">
+      <div class="spc-head spc-head--center spc-reveal">
+        <p class="spc-eyebrow">{{ section.settings.eyebrow }}</p>
+        <h2 class="spc-h2">{{ section.settings.heading }}</h2>
+      </div>
+      <div class="spc-rating spc-reveal">
+        <div class="spc-rating__block">
+          <span class="spc-rating__num">{{ section.settings.rating_avg }}<span class="spc-stars">★</span></span>
+          <span class="spc-rating__lbl">{{ section.settings.rating_avg_label }}</span>
+        </div>
+        <div class="spc-rating__block">
+          <span class="spc-rating__num">{{ section.settings.rating_count }}</span>
+          <span class="spc-rating__lbl">{{ section.settings.rating_count_label }}</span>
+        </div>
+        <div class="spc-rating__block">
+          <span class="spc-rating__num">{{ section.settings.rating_recommend }}</span>
+          <span class="spc-rating__lbl">{{ section.settings.rating_recommend_label }}</span>
+        </div>
+      </div>
+
+      {%- if reviews.size > 0 -%}
+        <div class="spc-review-grid">
+          {%- for block in reviews -%}
+            {%- assign dly = forloop.index0 | at_most: 3 -%}
+            <article class="spc-review-card spc-reveal{% if dly > 0 %} d{{ dly }}{% endif %}" {{ block.shopify_attributes }}>
+              <div class="spc-review-card__stars">★★★★★</div>
+              <p class="spc-review-card__quote">{{ block.settings.quote }}</p>
+              <div class="spc-review-card__meta">
+                <div>
+                  <div class="spc-review-card__name">{{ block.settings.name }}</div>
+                  <div class="spc-review-card__sub">{{ block.settings.sub }}</div>
+                </div>
+                <span class="spc-review-card__verified"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6"/></svg>Verified</span>
+              </div>
+            </article>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+      {%- if athletes.size > 0 -%}
+        <div class="spc-athlete-rule spc-reveal">
+          <p class="spc-eyebrow">{{ section.settings.athlete_eyebrow }}</p>
+        </div>
+        <div class="spc-proof">
+          {%- for block in athletes -%}
+            {%- assign dly = forloop.index0 | at_most: 3 -%}
+            <article class="spc-proof-card spc-reveal{% if dly > 0 %} d{{ dly }}{% endif %}" {{ block.shopify_attributes }}>
+              <div class="spc-proof-card__photo{% unless block.settings.image %} spc-ph spc-ph--light{% endunless %}"{% if block.settings.image %} style="background-image:url({{ block.settings.image | image_url: width: 900 }})"{% else %} data-label="Athlete photo"{% endif %}></div>
+              <div class="spc-proof-card__body">
+                <p class="spc-proof-card__quote">{{ block.settings.quote }}</p>
+                <div>
+                  <div class="spc-proof-card__name">{{ block.settings.name }}</div>
+                  <div class="spc-proof-card__race">{{ block.settings.race }}</div>
+                </div>
+              </div>
+            </article>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </section>
+</div>
+{% schema %}
+{
+  "name": "SP · Reviews & athletes",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Don't take our word for it" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "What SP owners say" },
+    { "type": "text", "id": "rating_avg", "label": "Rating — average", "default": "4.9" },
+    { "type": "text", "id": "rating_avg_label", "label": "Rating — average label", "default": "Average rating" },
+    { "type": "text", "id": "rating_count", "label": "Rating — count", "default": "312" },
+    { "type": "text", "id": "rating_count_label", "label": "Rating — count label", "default": "Verified SP reviews" },
+    { "type": "text", "id": "rating_recommend", "label": "Rating — recommend %", "default": "98%" },
+    { "type": "text", "id": "rating_recommend_label", "label": "Rating — recommend label", "default": "Would recommend to a friend" },
+    { "type": "text", "id": "athlete_eyebrow", "label": "Athlete rule — eyebrow", "default": "From the A2 Racing Team" }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        { "type": "textarea", "id": "quote", "label": "Quote", "default": "My first carbon bike and I was nervous about the assembly. The seatpost and cockpit took me about 40 minutes with the video. Riding it the same afternoon." },
+        { "type": "text", "id": "name", "label": "Name", "default": "Marcus T." },
+        { "type": "text", "id": "sub", "label": "Build owned", "default": "SP 105 owner" }
+      ]
+    },
+    {
+      "type": "athlete",
+      "name": "Athlete",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Photo" },
+        { "type": "textarea", "id": "quote", "label": "Quote", "default": "The SP let me hold an aero position I could actually sustain. I came off the bike with legs left to run." },
+        { "type": "text", "id": "name", "label": "Name", "default": "Kinley Bollinger" },
+        { "type": "text", "id": "race", "label": "Race / result", "default": "1st Overall — Ironman 70.3 Puerto Rico, March 2026 · 4:40:39" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SP · Reviews & athletes",
+      "blocks": [
+        { "type": "review", "settings": { "quote": "My first carbon bike and I was nervous about the assembly. The seatpost and cockpit took me about 40 minutes with the video. Riding it the same afternoon.", "name": "Marcus T.", "sub": "SP 105 owner" } },
+        { "type": "review", "settings": { "quote": "I'm 6'4″ with a long torso and have never found a stock tri bike that fit. The SAGS cockpit dialed me in perfectly. Force AXS shifting is flawless.", "name": "Dana R.", "sub": "SP Force AXS owner" } },
+        { "type": "review", "settings": { "quote": "Quoted over $11K for a comparable superbike elsewhere. The Red AXS build came in thousands less and the support has been genuinely excellent.", "name": "Priya S.", "sub": "SP Red AXS owner" } },
+        { "type": "athlete", "settings": { "quote": "The SP let me hold an aero position I could actually sustain. I came off the bike with legs left to run.", "name": "Kinley Bollinger", "race": "1st Overall — Ironman 70.3 Puerto Rico, March 2026 · 4:40:39" } },
+        { "type": "athlete", "settings": { "quote": "[Real athlete quote — replace before launch. Use a verified A2 Racing Team member with permission.]", "name": "[Athlete name]", "race": "[Race & result]" } },
+        { "type": "athlete", "settings": { "quote": "[Real athlete quote — replace before launch. Use a verified A2 Racing Team member with permission.]", "name": "[Athlete name]", "race": "[Race & result]" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

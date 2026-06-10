@@ -1,0 +1,57 @@
+{% render 'spc-assets' %}
+<div class="spc">
+  <section class="spc-sec spc-filter">
+    <div class="spc-wrap">
+      <div class="spc-head spc-head--center spc-reveal">
+        <p class="spc-eyebrow">{{ section.settings.eyebrow }}</p>
+        <h2 class="spc-h2">{{ section.settings.heading }}</h2>
+        <p class="spc-lede">{{ section.settings.lede }}</p>
+      </div>
+      <div class="spc-pills spc-reveal d1" role="group" aria-label="Decision filter">
+        {%- for block in section.blocks -%}
+          <button class="spc-pill" data-filter="{{ block.settings.filter | escape }}" data-recommends="{{ block.settings.recommends | escape }}" aria-pressed="false" {{ block.shopify_attributes }}>
+            <span class="spc-pill__check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6"/></svg></span>
+            <span class="spc-pill__kicker">{{ block.settings.kicker }}</span>
+            <span class="spc-pill__label">{{ block.settings.label }}</span>
+            <span class="spc-pill__build">{{ block.settings.build }}</span>
+          </button>
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+</div>
+{% schema %}
+{
+  "name": "SP · Decision filter",
+  "tag": "section",
+  "max_blocks": 4,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Start here" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "What matters most to you?" },
+    { "type": "textarea", "id": "lede", "label": "Lede", "default": "Pick one and we'll point you to a build — but every option stays on the table. This is a nudge, not a quiz." }
+  ],
+  "blocks": [
+    {
+      "type": "pill",
+      "name": "Priority pill",
+      "settings": [
+        { "type": "text", "id": "kicker", "label": "Kicker", "default": "Best price" },
+        { "type": "text", "id": "label", "label": "Label", "default": "Get racing for less" },
+        { "type": "text", "id": "build", "label": "Sub-line", "default": "Points to the SP 105" },
+        { "type": "text", "id": "recommends", "label": "Recommends build (must match a build's \"Key\" in the table)", "default": "105" },
+        { "type": "text", "id": "filter", "label": "Analytics name", "default": "price" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SP · Decision filter",
+      "blocks": [
+        { "type": "pill", "settings": { "kicker": "Best price", "label": "Get racing for less", "build": "Points to the SP 105", "recommends": "105", "filter": "price" } },
+        { "type": "pill", "settings": { "kicker": "Performance for the money", "label": "The sweet spot", "build": "Points to the SP Force AXS", "recommends": "force", "filter": "performance" } },
+        { "type": "pill", "settings": { "kicker": "Best of everything", "label": "No compromises", "build": "Points to the SP Red AXS", "recommends": "red", "filter": "premium" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
