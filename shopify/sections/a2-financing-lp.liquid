@@ -23,33 +23,83 @@
   assign affirm_steps = section.blocks | where: 'type', 'step'
   assign price_options = section.blocks | where: 'type', 'price_option'
   assign faqs = section.blocks | where: 'type', 'faq'
+
+  assign has_hero_image = false
+  if section.settings.hero_image != blank
+    assign has_hero_image = true
+  endif
+  assign hero_layout = section.settings.hero_layout | default: 'side'
 -%}
 
-{%- if section.settings.use_theme_fonts -%}
+{%- if section.settings.apply_brand -%}
   {%- style -%}
     #shopify-section-{{ section.id }} .a2-lp {
-      --a2-font-display: {{ section.settings.heading_font.family }}, {{ section.settings.heading_font.fallback_families }};
-      --a2-font-body: {{ section.settings.body_font.family }}, {{ section.settings.body_font.fallback_families }};
+      {% if section.settings.brand_bg != blank %}--a2-bg: {{ section.settings.brand_bg }};{% endif %}
+      {% if section.settings.brand_fg != blank %}--a2-fg: {{ section.settings.brand_fg }};{% endif %}
+      {% if section.settings.brand_muted != blank %}--a2-muted: {{ section.settings.brand_muted }};{% endif %}
+      {% if section.settings.brand_card != blank %}--a2-card: {{ section.settings.brand_card }};{% endif %}
+      {% if section.settings.brand_border != blank %}--a2-border: {{ section.settings.brand_border }};{% endif %}
+      {% if section.settings.brand_accent != blank %}--a2-accent: {{ section.settings.brand_accent }};{% endif %}
+      {% if section.settings.brand_accent_fg != blank %}--a2-accent-fg: {{ section.settings.brand_accent_fg }};{% endif %}
+      {% if section.settings.brand_sale != blank %}--a2-sale: {{ section.settings.brand_sale }};{% endif %}
     }
-    {{ section.settings.heading_font | font_face: font_display: 'swap' }}
-    {{ section.settings.body_font | font_face: font_display: 'swap' }}
+    {%- if section.settings.heading_font != blank -%}
+      #shopify-section-{{ section.id }} .a2-lp { --a2-font-display: {{ section.settings.heading_font.family }}, {{ section.settings.heading_font.fallback_families }}; }
+      {{ section.settings.heading_font | font_face: font_display: 'swap' }}
+    {%- endif -%}
+    {%- if section.settings.body_font != blank -%}
+      #shopify-section-{{ section.id }} .a2-lp { --a2-font-body: {{ section.settings.body_font.family }}, {{ section.settings.body_font.fallback_families }}; }
+      {{ section.settings.body_font | font_face: font_display: 'swap' }}
+    {%- endif -%}
   {%- endstyle -%}
 {%- endif -%}
 
 <section class="a2-lp a2-theme-financing" id="a2-financing-lp" aria-label="{{ section.settings.heading | escape }}">
 
-  {%- comment -%} HERO {%- endcomment -%}
-  <header class="a2-hero a2-section a2-hero--plain">
+  {%- comment -%} HERO — optional image. Layout: side-by-side (default) or background. {%- endcomment -%}
+  {%- liquid
+    assign hero_classes = 'a2-hero a2-section'
+    if has_hero_image and hero_layout == 'background'
+      assign hero_classes = 'a2-hero a2-section a2-hero--bg'
+    elsif has_hero_image and hero_layout == 'side'
+      assign hero_classes = 'a2-hero a2-section a2-hero--split'
+    else
+      assign hero_classes = 'a2-hero a2-section a2-hero--plain'
+    endif
+  -%}
+  <header class="{{ hero_classes }}">
+
+    {%- if has_hero_image and hero_layout == 'background' -%}
+      <div class="a2-hero__media" aria-hidden="true">
+        {{ section.settings.hero_image | image_url: width: 2200 | image_tag:
+           loading: 'eager', fetchpriority: 'high', sizes: '100vw',
+           widths: '600, 900, 1200, 1600, 2000, 2200', alt: '' }}
+      </div>
+      <div class="a2-hero__scrim" aria-hidden="true"></div>
+    {%- endif -%}
+
     <div class="a2-wrap">
-      <div class="a2-hero__inner">
-        {%- if section.settings.eyebrow != blank -%}<p class="a2-eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
-        <h1 class="a2-h1">{{ section.settings.heading | default: 'Ride now, pay monthly — or use pre-tax dollars.' }}</h1>
-        {%- if section.settings.subheading != blank -%}<p class="a2-lead">{{ section.settings.subheading }}</p>{%- endif -%}
-        {%- if section.settings.hero_example != blank -%}<p class="a2-hero__price">{{ section.settings.hero_example }}</p>{%- endif -%}
-        <div class="a2-cta-row">
-          {% render 'a2-cta', label: section.settings.cta_label, href: '#a2-fin-calc', event: cta_event, cta_id: 'hero-see-options' %}
-          {% render 'a2-cta', label: section.settings.cta_secondary_label, href: primary_href, style: 'secondary', event: cta_event, cta_id: 'hero-build' %}
+      <div class="a2-hero__layout">
+        <div class="a2-hero__inner">
+          {%- if section.settings.eyebrow != blank -%}<p class="a2-eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
+          <h1 class="a2-h1">{{ section.settings.heading | default: 'Ride now, pay monthly — or use pre-tax dollars.' }}</h1>
+          {%- if section.settings.subheading != blank -%}<p class="a2-lead">{{ section.settings.subheading }}</p>{%- endif -%}
+          {%- if section.settings.hero_example != blank -%}<p class="a2-hero__price">{{ section.settings.hero_example }}</p>{%- endif -%}
+          <div class="a2-cta-row">
+            {% render 'a2-cta', label: section.settings.cta_label, href: '#a2-fin-calc', event: cta_event, cta_id: 'hero-see-options' %}
+            {% render 'a2-cta', label: section.settings.cta_secondary_label, href: primary_href, style: 'secondary', event: cta_event, cta_id: 'hero-build' %}
+          </div>
         </div>
+
+        {%- if has_hero_image and hero_layout == 'side' -%}
+          <div class="a2-hero__figure">
+            {{ section.settings.hero_image | image_url: width: 1400 | image_tag:
+               loading: 'eager', fetchpriority: 'high',
+               sizes: '(min-width: 900px) 46vw, 100vw',
+               widths: '500, 700, 900, 1100, 1400',
+               alt: section.settings.hero_image_alt | default: section.settings.heading | escape }}
+          </div>
+        {%- endif -%}
       </div>
     </div>
   </header>
@@ -193,10 +243,78 @@
   "tag": "section",
   "class": "a2-lp-section",
   "settings": [
-    { "type": "header", "content": "Fonts" },
-    { "type": "checkbox", "id": "use_theme_fonts", "label": "Use custom fonts below", "default": false },
-    { "type": "font_picker", "id": "heading_font", "label": "Heading font", "default": "assistant_n4" },
-    { "type": "font_picker", "id": "body_font", "label": "Body font", "default": "assistant_n4" },
+    {
+    "type": "header",
+    "content": "Brand & color",
+    "info": "Defaults match the A2 site brand (cream / near-black / cream-yellow button, red for sale). Change any value to override; clear a field to fall back to the page's built-in palette."
+  },
+  {
+    "type": "checkbox",
+    "id": "apply_brand",
+    "label": "Apply brand styling",
+    "default": true,
+    "info": "On = use the brand colors & fonts below. Off = use the page's built-in palette and the theme's default fonts."
+  },
+  {
+    "type": "color",
+    "id": "brand_bg",
+    "label": "Page background",
+    "default": "#fcfcf9"
+  },
+  {
+    "type": "color",
+    "id": "brand_fg",
+    "label": "Text",
+    "default": "#22292d"
+  },
+  {
+    "type": "color",
+    "id": "brand_muted",
+    "label": "Muted text",
+    "default": "#5c6873"
+  },
+  {
+    "type": "color",
+    "id": "brand_card",
+    "label": "Card / surface",
+    "default": "#ffffff"
+  },
+  {
+    "type": "color",
+    "id": "brand_border",
+    "label": "Border",
+    "default": "#AAAAAA"
+  },
+  {
+    "type": "color",
+    "id": "brand_accent",
+    "label": "Accent / button",
+    "default": "#242526"
+  },
+  {
+    "type": "color",
+    "id": "brand_accent_fg",
+    "label": "Accent text (on button)",
+    "default": "#faf7c3"
+  },
+  {
+    "type": "color",
+    "id": "brand_sale",
+    "label": "Sale / urgency",
+    "default": "#d21404"
+  },
+  {
+    "type": "font_picker",
+    "id": "heading_font",
+    "label": "Heading font",
+    "default": "fraunces_n3"
+  },
+  {
+    "type": "font_picker",
+    "id": "body_font",
+    "label": "Body font",
+    "default": "instrument_sans_n4"
+  },
 
     { "type": "header", "content": "Hero" },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Affordability" },
@@ -205,6 +323,12 @@
     { "type": "text", "id": "hero_example", "label": "Example monthly figure", "default": "SPs from about $63/mo with Affirm." },
     { "type": "text", "id": "cta_label", "label": "Primary CTA label", "default": "See your options" },
     { "type": "text", "id": "cta_secondary_label", "label": "Secondary CTA label", "default": "Browse builds" },
+    { "type": "image_picker", "id": "hero_image", "label": "Hero image", "info": "Optional. Leave blank for a clean text-only hero. Best result: a clean side/profile bike shot." },
+    { "type": "text", "id": "hero_image_alt", "label": "Hero image alt text", "info": "Describe the image for accessibility/SEO. Falls back to the headline." },
+    { "type": "select", "id": "hero_layout", "label": "Hero image layout", "options": [
+      { "value": "side", "label": "Side-by-side (text + image)" },
+      { "value": "background", "label": "Full-width background (text over image)" }
+    ], "default": "side", "info": "Side-by-side keeps the price message most legible (recommended). Background is more dramatic but the headline sits over the photo." },
 
     { "type": "header", "content": "Routing" },
     { "type": "url", "id": "build_selector_url", "label": "Build-selector URL", "info": "Blank falls back to /collections/sp." },
