@@ -122,7 +122,9 @@
         "email_source": "Rogue LP",
         "final_heading": "Ready to build your Rogue?",
         "final_text": "Pick your groupset and see your monthly or pre-tax price.",
-        "truemed_url": "https://www.truemed.com/shop/partners/a2-bikes"
+        "truemed_url": "https://www.truemed.com/shop/partners/a2-bikes",
+        "klaviyo_company_id": "YejYTH",
+        "klaviyo_list_id": "Riv6B2"
       }
     }
   },

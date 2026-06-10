@@ -406,9 +406,12 @@ all carry stored UTM/click IDs.
    optional). Recommend owner has counsel skim both pages. (e) DONE —
    Truemed qualification URL https://www.truemed.com/shop/partners/a2-bikes
    wired into page.financing.json, page.sp-performance.json,
-   page.rogue.json (deployed + verified). STILL PENDING from owner:
-   (b) Klaviyo company/list/form IDs, (c) Affirm cart-drawer public key
-   (editor toggle), (d) current SP+Rogue geometry.
+   page.rogue.json (deployed + verified). (b) DONE June 10 — Klaviyo company ID YejYTH + list ID Riv6B2 wired
+   into all four LP templates (email capture live on draft); Why A2
+   `klaviyo_form_id` still empty (owner has no published sign-up form yet;
+   capture uses the built-in fallback). STILL PENDING from owner: (c)
+   Affirm cart-drawer public key (editor toggle), (d) current SP+Rogue
+   geometry.
    B = owner-input
    pass (legal text, Klaviyo IDs, Affirm key, geometry, Truemed URL);
    C = consolidation (canonical financing/sizing pages, 301s, zombie purge
