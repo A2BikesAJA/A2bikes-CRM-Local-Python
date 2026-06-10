@@ -375,7 +375,15 @@ all carry stored UTM/click IDs.
    sections disabled on all 8 build PDPs; Klaviyo Reviews app block added
    in their place; headings de-105'd, fake verified badges/summary off.
    (11) FAQ page rebuilt (live): 10 current Q&As, every answer linking its
-   canonical page, stale handles/claims removed. Batches: B = owner-input
+   canonical page, stale handles/claims removed. NAV CLARIFICATION: menus
+   are STORE-LEVEL (not theme files) — theme-file discipline is unaffected.
+   The DRAFT theme's header uses menu handle `menu-4-0-6-26` ("Menu 4.0
+   (6/26)"); the live header uses `menu-3-0-northwrd-copy`. Both now carry
+   the Support dropdown (draft's financing link → /pages/financing-hsa-fsa;
+   live's → /pages/pay-with-truemed until the LP works on live). Draft
+   footer renders link lists `footer` (the updated Support menu) and
+   `the-company` (Financing Options fixed → pay-with-truemed). Batches:
+   B = owner-input
    pass (legal text, Klaviyo IDs, Affirm key, geometry, Truemed URL);
    C = consolidation (canonical financing/sizing pages, 301s, zombie purge
    — needs owner sign-off on the kill list); D = video/UGC/blog.
