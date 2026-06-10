@@ -10,9 +10,9 @@
         "hero_sub": "The same design pedigree as a <strong>Cervélo P-Series</strong> — drawn by the engineer who shaped it — sold direct from Oregon, so you skip the retail markup.",
         "hero_cta1_label": "Shop the SP",
         "hero_cta1_link": "shopify://collections/sp",
-        "hero_cta2_label": "Find your size in 60 seconds",
-        "hero_cta2_link": "/pages/sp-performance#a2-fit-calc",
-        "hero_cta2_modal": true
+        "hero_cta2_label": "Find your bike in 60 seconds",
+        "hero_cta2_link": "/pages/a2-bikes-selector-quiz",
+        "hero_cta2_modal": false
       }
     },
     "trust_ticker": {
