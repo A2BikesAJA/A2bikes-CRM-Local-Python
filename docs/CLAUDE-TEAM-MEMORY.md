@@ -315,6 +315,37 @@ all carry stored UTM/click IDs.
    all other `sppdp-*` sections/snippets/assets and the 13 sppdp product
    templates. Until adopted, do NOT deploy those repo files — they would
    overwrite newer theme work.
+16. **Full adoption pass DONE (June 10).** The backlog above is cleared —
+   the repo again mirrors every project file in the draft theme (all
+   adoptions checksum-verified): the 4 drifted LP files; the complete
+   `spc-*` compare-page system (10 sections + 3 snippets +
+   `sp-compare.css/js`); the complete `sppdp-*` per-build PDP system
+   (5 sections + 2 snippets + `sp-pdp.css/js`); and 15 templates — 4 SP
+   build PDPs, 5 Rogue PDPs, 3 `sppdp-live*` test templates,
+   `page.sp-pdp`, `page.sp-compare`, and `page.sp-performance` re-synced
+   (Shopify dropped its unrecognized `use_theme_fonts` setting). NOT
+   adopted on purpose: the ~50 live-theme-clone baseline templates
+   (page.about/faq, collection.accessories, product.gift-card etc.) — the
+   repo tracks project systems, not the whole theme.
+   **Pre-publish content flags found during adoption (add to §9):**
+   - All four SP build templates say "What SP-105 riders actually say"
+     (wrong on Rival/Force/Red) and hardcode "Shimano 105" in a compare
+     row; Rogue compare notes reference "—" cells that don't exist.
+   - Identical illustrative reviews ("Marcus T. / Dana R. / Priya S.",
+     `verified: true`, 4.8★/96 reviews/97% recommend) ship on ALL build
+     PDPs — claims-discipline violation if published as-is; replace with
+     Klaviyo Reviews or strip `verified` flags and ratings.
+   - Competitor prices in compare tables ($5,099/$4,599/$5,499…) need
+     verification per the claims rule.
+   - Empty settings across PDP templates: Affirm app-block key,
+     `affirm_url`, `consult_url`, `size_help_url`, `rating_count`;
+     `show_affirm_line: false` everywhere; Klaviyo IDs still placeholders.
+   - Cleanup candidates for the owner (with the a2-test stubs):
+     `product.sppdp-live/live2/live4` (empty test templates),
+     `page.sp-pdp` (page mirror of the 105 PDP), the 4 `spcv3`/staging
+     clones of page.sp-compare, `snippets/spc-deploy-check.liquid`, and
+     `product.rogue-apex.json` (Stiletto-default outlier; no Apex build
+     in the registry).
 
 ## 6. Deploy pipeline (the reliable way) + gotchas
 
