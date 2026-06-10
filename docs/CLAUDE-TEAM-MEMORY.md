@@ -396,6 +396,19 @@ all carry stored UTM/click IDs.
    Owner's Manual moved to Support). AT PUBLISH: re-apply the Support
    structure to whichever menu the published theme's header references,
    and fix the footer dead link + the-company financing link then.
+   BATCH B PROGRESS (June 10): (a) DONE — warranty + crash-replacement
+   pages rewritten LIVE with owner-supplied facts (limited lifetime
+   warranty on carbon frames, original owner, 130kg limit kept; flat 30%
+   crash replacement discount replacing the tiered table AND the unsourced
+   competitor table; placeholders gone; one contact email info@a2bikes.com;
+   Oregon governing law; CTAs added; registration gate REMOVED so the
+   missing registration form is no longer a dead-end — backlog #5 now
+   optional). Recommend owner has counsel skim both pages. (e) DONE —
+   Truemed qualification URL https://www.truemed.com/shop/partners/a2-bikes
+   wired into page.financing.json, page.sp-performance.json,
+   page.rogue.json (deployed + verified). STILL PENDING from owner:
+   (b) Klaviyo company/list/form IDs, (c) Affirm cart-drawer public key
+   (editor toggle), (d) current SP+Rogue geometry.
    B = owner-input
    pass (legal text, Klaviyo IDs, Affirm key, geometry, Truemed URL);
    C = consolidation (canonical financing/sizing pages, 301s, zombie purge
