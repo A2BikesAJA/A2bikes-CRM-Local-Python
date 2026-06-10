@@ -438,6 +438,19 @@ BATCH C EXECUTED (June 10, partial — the safe half): CONSTRUCTIVE — (1)
    menus), about → about-new, and the buying-process vs buying-process-2-0
    dedup (both in live menus; owner to pick canonical at publish).
 
+BATCH D RECON DONE (June 10): Drive UGC/social-proof sweep complete —
+   full inventory in `docs/UGC-ASSET-INVENTORY.md`. Highlights: the Fera
+   reviews were recovered (Darren's xlsx export in the Written UGC folder;
+   cleaned to `docs/data/fera-reviews-clean.csv` — 96 genuine reviews,
+   4.53★, 81×5★; 6 flagged-fake 1★ "Ben"/"Lars" reviews EXCLUDED — ask
+   Fera support to strike them; text is truncated ~150 chars, full text
+   needs the Fera dashboard). Verified press quote in hand (Jon Dorn,
+   Triathlete, SP Force review). Video for backlog #19 confirmed: SP
+   Website Header_4.mp4 + finished SP UGC edits + creator race-day/pro-
+   tips footage (Brennen/Carolyn/Kaitlin/Markus; Kinley & Travis UGC '26
+   folders look empty — ask Darren). Athlete-quote candidates for #17:
+   Kinley (has 5★ review + 1x1 video) + the other five creators.
+
 ## 6. Deploy pipeline (the reliable way) + gotchas
 
 ```
