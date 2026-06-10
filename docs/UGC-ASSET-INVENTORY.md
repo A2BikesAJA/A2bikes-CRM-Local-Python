@@ -109,14 +109,16 @@ are the right counters.
 
 ## 5. Recommended next steps
 
-1. **Owner/Darren:** restore Fera dashboard access (or reinstall read-only) to
-   get full review text + per-product filtering; ask Fera support to strike
-   the 12 flagged Ben/Lars submissions.
-2. **#3 PDP reviews:** seed the chosen platform (memory §9 recommends Klaviyo
-   Reviews) with the genuine Fera corpus — these are real, dated, named
-   reviews, not fabrications; meanwhile the §3 quotes can replace the current
+1. **Owner decision (June 10):** Fera will be updated/re-enabled **when the
+   draft theme goes live** — the app can't run on a live and a draft template
+   at the same time. So no Fera embed work on the draft before publish-swap;
+   add "re-enable Fera + strike the 12 flagged Ben/Lars submissions + pull
+   full review text" to the publish checklist.
+2. **#3 PDP reviews (interim, draft-safe):** replace the fabricated
    placeholder copy in `sppdp-reviews.liquid` / `spc-reviews.liquid` settings
-   with "Fera customer review, &lt;month year&gt;" attribution.
+   with the genuine §3 quotes, attributed "Fera customer review, &lt;month
+   year&gt;" — real, dated, named content with no app dependency. Swap to the
+   live Fera widget at publish.
 3. **#17 athlete quotes:** request quotes from Kinley (+ Carolyn/Kaitlin/
    Brennen — they're already on camera) via Darren; unhide `wa-athletes`.
 4. **#19 video slot:** compress `SP Website Header_4.mp4` → PDP gallery video;

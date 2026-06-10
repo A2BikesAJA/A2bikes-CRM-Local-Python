@@ -450,6 +450,11 @@ BATCH D RECON DONE (June 10): Drive UGC/social-proof sweep complete —
    tips footage (Brennen/Carolyn/Kaitlin/Markus; Kinley & Travis UGC '26
    folders look empty — ask Darren). Athlete-quote candidates for #17:
    Kinley (has 5★ review + 1x1 video) + the other five creators.
+   OWNER CONSTRAINT (June 10): Fera can't run on live + draft templates
+   simultaneously — owner will update/re-enable Fera AT PUBLISH-SWAP, not
+   before. Interim for #3: static genuine quotes (settings-driven, dated
+   attribution) in the draft review sections; Fera widget + fake-review
+   removal + full-text pull go on the publish checklist.
 
 ## 6. Deploy pipeline (the reliable way) + gotchas
 
