@@ -42,14 +42,38 @@
   endif
 -%}
 
-{%- if section.settings.use_theme_fonts -%}
+{%- if section.settings.apply_brand -%}
   {%- style -%}
     #shopify-section-{{ section.id }} .a2-lp {
-      --a2-font-display: {{ section.settings.heading_font.family }}, {{ section.settings.heading_font.fallback_families }};
-      --a2-font-body: {{ section.settings.body_font.family }}, {{ section.settings.body_font.fallback_families }};
+      {% if section.settings.brand_bg != blank %}--a2-bg: {{ section.settings.brand_bg }};{% endif %}
+      {% if section.settings.brand_fg != blank %}--a2-fg: {{ section.settings.brand_fg }};{% endif %}
+      {% if section.settings.brand_muted != blank %}--a2-muted: {{ section.settings.brand_muted }};{% endif %}
+      {% if section.settings.brand_card != blank %}--a2-card: {{ section.settings.brand_card }};{% endif %}
+      {% if section.settings.brand_border != blank %}--a2-border: {{ section.settings.brand_border }};{% endif %}
+      {% if section.settings.brand_accent != blank %}--a2-accent: {{ section.settings.brand_accent }};{% endif %}
+      {% if section.settings.brand_accent_fg != blank %}--a2-accent-fg: {{ section.settings.brand_accent_fg }};{% endif %}
+      {% if section.settings.brand_sale != blank %}--a2-sale: {{ section.settings.brand_sale }};{% endif %}
     }
-    {{ section.settings.heading_font | font_face: font_display: 'swap' }}
-    {{ section.settings.body_font | font_face: font_display: 'swap' }}
+    {%- if section.settings.heading_font != blank -%}
+      #shopify-section-{{ section.id }} .a2-lp { --a2-font-display: {{ section.settings.heading_font.family }}, {{ section.settings.heading_font.fallback_families }}; }
+      {{ section.settings.heading_font | font_face: font_display: 'swap' }}
+    {%- endif -%}
+    {%- if section.settings.body_font != blank -%}
+      #shopify-section-{{ section.id }} .a2-lp { --a2-font-body: {{ section.settings.body_font.family }}, {{ section.settings.body_font.fallback_families }}; }
+      {{ section.settings.body_font | font_face: font_display: 'swap' }}
+    {%- endif -%}
+    {%- if section.settings.hero_style == 'dark' -%}
+      #shopify-section-{{ section.id }} .a2-hero, #shopify-section-{{ section.id }} .a2-hero.a2-hero--plain {
+        --a2-bg: {{ section.settings.brand_dark_bg | default: '#171819' }};
+        --a2-fg: {{ section.settings.brand_dark_fg | default: '#f7f7e8' }};
+        --a2-card: {{ section.settings.brand_dark_bg | default: '#171819' }};
+        background: {{ section.settings.brand_dark_bg | default: '#171819' }};
+        color: {{ section.settings.brand_dark_fg | default: '#f7f7e8' }};
+      }
+      #shopify-section-{{ section.id }} .a2-hero .a2-h1,
+      #shopify-section-{{ section.id }} .a2-hero .a2-eyebrow,
+      #shopify-section-{{ section.id }} .a2-hero .a2-lead { color: {{ section.settings.brand_dark_fg | default: '#f7f7e8' }}; }
+    {%- endif -%}
   {%- endstyle -%}
 {%- endif -%}
 
@@ -219,10 +243,107 @@
       { "value": "rogue", "label": "Rogue (road/gravel — earthy theme)" }
     ], "default": "sp",
       "info": "Drives palette, the collection fallback (/collections/sp or /collections/rogue) and analytics event prefix (sp_lp_* or rogue_lp_*)." },
-    { "type": "checkbox", "id": "use_theme_fonts", "label": "Use custom fonts below", "default": false,
-      "info": "Off = built-in technical display stack (no extra font download). On = use the fonts picked here." },
-    { "type": "font_picker", "id": "heading_font", "label": "Heading font", "default": "assistant_n4" },
-    { "type": "font_picker", "id": "body_font", "label": "Body font", "default": "assistant_n4" },
+    {
+    "type": "header",
+    "content": "Brand & color",
+    "info": "Defaults match the A2 site brand (cream / near-black / cream-yellow button, red for sale). Change any value to override; clear a field to fall back to the page's built-in palette."
+  },
+  {
+    "type": "checkbox",
+    "id": "apply_brand",
+    "label": "Apply brand styling",
+    "default": true,
+    "info": "On = use the brand colors & fonts below. Off = use the page's built-in palette and the theme's default fonts."
+  },
+  {
+    "type": "color",
+    "id": "brand_bg",
+    "label": "Page background",
+    "default": "#fcfcf9"
+  },
+  {
+    "type": "color",
+    "id": "brand_fg",
+    "label": "Text",
+    "default": "#22292d"
+  },
+  {
+    "type": "color",
+    "id": "brand_muted",
+    "label": "Muted text",
+    "default": "#5c6873"
+  },
+  {
+    "type": "color",
+    "id": "brand_card",
+    "label": "Card / surface",
+    "default": "#ffffff"
+  },
+  {
+    "type": "color",
+    "id": "brand_border",
+    "label": "Border",
+    "default": "#AAAAAA"
+  },
+  {
+    "type": "color",
+    "id": "brand_accent",
+    "label": "Accent / button",
+    "default": "#242526"
+  },
+  {
+    "type": "color",
+    "id": "brand_accent_fg",
+    "label": "Accent text (on button)",
+    "default": "#faf7c3"
+  },
+  {
+    "type": "color",
+    "id": "brand_sale",
+    "label": "Sale / urgency",
+    "default": "#d21404"
+  },
+  {
+    "type": "font_picker",
+    "id": "heading_font",
+    "label": "Heading font",
+    "default": "fraunces_n3"
+  },
+  {
+    "type": "font_picker",
+    "id": "body_font",
+    "label": "Body font",
+    "default": "instrument_sans_n4"
+  },
+  {
+    "type": "select",
+    "id": "hero_style",
+    "label": "Hero style",
+    "options": [
+      {
+        "value": "light",
+        "label": "Light (brand)"
+      },
+      {
+        "value": "dark",
+        "label": "Dark (on-brand variant)"
+      }
+    ],
+    "default": "dark",
+    "info": "Dark uses the site's footer-dark surface with the cream-yellow accent. The rest of the page stays light/on-brand."
+  },
+  {
+    "type": "color",
+    "id": "brand_dark_bg",
+    "label": "Dark hero background",
+    "default": "#171819"
+  },
+  {
+    "type": "color",
+    "id": "brand_dark_fg",
+    "label": "Dark hero text",
+    "default": "#f7f7e8"
+  },
 
     { "type": "header", "content": "Hero" },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "A2 Bikes · SP" },

@@ -3,33 +3,145 @@
     "main": {
       "type": "a2-line-lp",
       "blocks": {
-        "proof_aero": { "type": "proof", "settings": { "metric": "Aero-first", "title": "Wind-tunnel shaped", "text": "Tube profiles tuned for real-world yaw, not just a flattering spec sheet." } },
-        "proof_weight": { "type": "proof", "settings": { "metric": "Race-light", "title": "Light where it counts", "text": "A stiff, responsive frame that holds speed and climbs when the course turns up." } },
-        "proof_geo": { "type": "proof", "settings": { "metric": "Fit-first", "title": "Dialed geometry", "text": "Aggressive when you want it, sustainable enough to run strong off the bike." } },
-        "build_105": { "type": "build", "settings": { "product": "sp-shimano-105n", "name_override": "SP · Shimano 105" } },
-        "build_rival": { "type": "build", "settings": { "product": "sp-sram-rival-1", "name_override": "SP · SRAM Rival AXS" } },
-        "build_force": { "type": "build", "settings": { "product": "sp-sram-force", "name_override": "SP · SRAM Force AXS" } },
-        "build_red": { "type": "build", "settings": { "product": "sp-sram-red-axs", "name_override": "SP · SRAM Red AXS" } },
-        "rev1": { "type": "review", "settings": { "rating": 5, "quote": "Beat my PR and my budget. Genuinely faster than bikes twice the price.", "author": "Verified rider", "detail": "70.3 age-grouper" } },
-        "rev2": { "type": "review", "settings": { "rating": 5, "quote": "Shipped fast, built perfectly, and the financing made it a no-brainer.", "author": "Verified rider", "detail": "Full-distance triathlete" } },
-        "rev3": { "type": "review", "settings": { "rating": 5, "quote": "Used my HSA through Truemed and saved hundreds. Wish I'd known sooner.", "author": "Verified rider", "detail": "First tri bike" } }
+        "proof_aero": {
+          "type": "proof",
+          "settings": {
+            "metric": "Aero-first",
+            "title": "Wind-tunnel shaped",
+            "text": "Tube profiles tuned for real-world yaw, not just a flattering spec sheet."
+          }
+        },
+        "proof_weight": {
+          "type": "proof",
+          "settings": {
+            "metric": "Race-light",
+            "title": "Light where it counts",
+            "text": "A stiff, responsive frame that holds speed and climbs when the course turns up."
+          }
+        },
+        "proof_geo": {
+          "type": "proof",
+          "settings": {
+            "metric": "Fit-first",
+            "title": "Dialed geometry",
+            "text": "Aggressive when you want it, sustainable enough to run strong off the bike."
+          }
+        },
+        "build_105": {
+          "type": "build",
+          "settings": {
+            "product": "sp-shimano-105n",
+            "name_override": "SP · Shimano 105",
+            "price_override": ""
+          }
+        },
+        "build_rival": {
+          "type": "build",
+          "settings": {
+            "product": "sp-sram-rival-1",
+            "name_override": "SP · SRAM Rival AXS",
+            "price_override": ""
+          }
+        },
+        "build_force": {
+          "type": "build",
+          "settings": {
+            "product": "sp-sram-force",
+            "name_override": "SP · SRAM Force AXS",
+            "price_override": ""
+          }
+        },
+        "build_red": {
+          "type": "build",
+          "settings": {
+            "product": "sp-sram-red-axs",
+            "name_override": "SP · SRAM Red AXS",
+            "price_override": ""
+          }
+        },
+        "rev1": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "quote": "Beat my PR and my budget. Genuinely faster than bikes twice the price.",
+            "author": "Verified rider",
+            "detail": "70.3 age-grouper"
+          }
+        },
+        "rev2": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "quote": "Shipped fast, built perfectly, and the financing made it a no-brainer.",
+            "author": "Verified rider",
+            "detail": "Full-distance triathlete"
+          }
+        },
+        "rev3": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "quote": "Used my HSA through Truemed and saved hundreds. Wish I'd known sooner.",
+            "author": "Verified rider",
+            "detail": "First tri bike"
+          }
+        }
       },
-      "block_order": ["proof_aero", "proof_weight", "proof_geo", "build_105", "build_rival", "build_force", "build_red", "rev1", "rev2", "rev3"],
+      "block_order": [
+        "proof_aero",
+        "proof_weight",
+        "proof_geo",
+        "build_105",
+        "build_rival",
+        "build_force",
+        "build_red",
+        "rev1",
+        "rev2",
+        "rev3"
+      ],
       "settings": {
         "line": "sp",
+        "use_theme_fonts": false,
+        "heading_font": "assistant_n4",
+        "body_font": "assistant_n4",
         "eyebrow": "A2 Bikes · SP",
         "heading": "Podium speed. Without the podium price.",
         "subheading": "Carbon triathlon performance engineered to win on race day and make sense on your budget.",
         "price_from": "From about $108/mo with Affirm — or buy it pre-tax with HSA/FSA.",
         "cta_label": "Build Your SP",
         "hero_alt": "A2 SP triathlon bike at speed",
+        "build_selector_url": "",
+        "proof_heading": "Built to be faster",
+        "band_heading": "A new bike is more attainable than you think",
         "financing_price": 3115,
-        "email_source": "SP Performance LP",
+        "financing_price_label": "Split it into easy monthly payments with Affirm.",
+        "affirm_heading": "Ride now, pay monthly",
+        "truemed_heading": "Buy it with pre-tax HSA/FSA dollars",
+        "truemed_text": "Most triathletes don't know a bike can qualify for HSA/FSA spending through Truemed's medical-necessity pathway — an effective discount of roughly 30%.",
+        "truemed_url": "",
+        "financing_note": "Estimates are illustrative, not an offer of credit or tax advice. Rates and eligibility are determined by Affirm and Truemed.",
+        "builds_heading": "Four builds. Four price points.",
+        "builds_subheading": "Same race-proven frame. Choose the groupset that fits your goals and budget.",
+        "reviews_heading": "Raced. Reviewed. Repeated.",
+        "reviews_embed": "",
         "sizing_heading": "Not sure of your size?",
         "sizing_text": "Use the A2 Fit Finder — enter your height and inseam and we'll recommend your frame size and cockpit setup.",
-        "show_fit_calculator": true
+        "octane_quiz_url": "",
+        "octane_cta_label": "Find my size",
+        "show_fit_calculator": true,
+        "email_heading": "Not ready to buy? Get the SP Buyer's Guide.",
+        "email_text": "Specs, sizing and a straight-talk financing breakdown — straight to your inbox.",
+        "email_cta_label": "Send the guide",
+        "email_success": "You're in — check your inbox for the guide.",
+        "email_source": "SP Performance LP",
+        "klaviyo_company_id": "KLAVIYO_COMPANY_ID",
+        "klaviyo_list_id": "KLAVIYO_LIST_ID",
+        "final_heading": "Ready to build yours?",
+        "final_text": "Pick your groupset and see your monthly or pre-tax price."
       }
     }
   },
-  "order": ["main"]
+  "order": [
+    "main"
+  ]
 }
