@@ -346,6 +346,22 @@ all carry stored UTM/click IDs.
      clones of page.sp-compare, `snippets/spc-deploy-check.liquid`, and
      `product.rogue-apex.json` (Stiletto-default outlier; no Apex build
      in the registry).
+17. **Size Calculator v2 rolled out (June 10).** The owner supplied a new
+   self-contained size calculator (height/inseam → S–XL with cm labels,
+   SP "aero" size-down option, out-of-range Klaviyo lead capture with
+   consent check, per-build CTAs). Adopted as
+   `snippets/a2-size-calc.liquid` (verbatim except: build URLs made
+   relative so preview-theme visitors aren't bounced to the live site,
+   and a per-container bind guard so double-rendering can't double-bind).
+   Wrapped in `sections/a2-size-calculator.liquid` (theme-editor preset)
+   and inserted after the specs section on all 9 bike PDP templates; the
+   homepage hero pop-up now renders THIS calculator instead of the 2021
+   pad-X/Y Fit Finder. **This supersedes the fit_coords blocker for
+   PDP/homepage sizing** — the old Fit Finder remains only on the SP LP
+   (`show_fit_calculator`) until the owner provides current geometry or
+   chooses to swap it there too. Size charts live in the snippet's
+   SP_CHART/ROGUE_CHART/BIKE_BUILDS constants — update there when the
+   lineup or sizing changes.
 
 ## 6. Deploy pipeline (the reliable way) + gotchas
 
