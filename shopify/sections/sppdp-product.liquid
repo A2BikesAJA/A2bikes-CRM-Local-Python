@@ -180,9 +180,11 @@
         </div>
         {%- if section.settings.show_affirm_line -%}
         <div class="affirm">
-          <span class="affirm__logo">affirm</span>
-          <span>As low as <b data-affirm>${{ monthly }}/mo</b> at {{ section.settings.affirm_apr }}</span>
-          <a href="{{ section.settings.affirm_url | default: '/pages/affirm' }}">Prequalify →</a>
+          {%- comment -%} Affirm's own component renders the compliant
+            as-low-as language + logo (needs the Affirm app block / affirm.js;
+            stays empty without it). {%- endcomment -%}
+          <p class="affirm-as-low-as" data-page-type="product" data-amount="{{ cur.price }}"></p>
+          <a href="{{ section.settings.affirm_url | default: '/pages/financing-hsa-fsa' }}">Financing options →</a>
         </div>
         {%- endif -%}
         {%- for block in section.blocks -%}

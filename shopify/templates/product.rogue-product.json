@@ -83,7 +83,9 @@
         "edu_2_title": "Tri-Ready",
         "edu_2_desc": "Tri-ready — add clip-on aero extensions for extra aerodynamic gains.",
         "edu_3_title": "Wide Tire Ability",
-        "edu_3_desc": "Clearance for tires up to 35 mm — road-bike speed when you want it, gravel grip when the pavement ends."
+        "edu_3_desc": "Clearance for tires up to 35 mm — road-bike speed when you want it, gravel grip when the pavement ends.",
+        "show_affirm_line": true,
+        "affirm_url": "/pages/financing-hsa-fsa"
       }
     },
     "reviews": {
@@ -97,7 +99,7 @@
             "quote": "One bike for everything. I race it, ride gravel on the weekend, and commute on it. Fit was dialed in out of the box after their sizing call.",
             "name": "Marcus T.",
             "context": "All-rounder, Columbus OH",
-            "verified": true
+            "verified": false
           }
         },
         "r2": {
@@ -108,7 +110,7 @@
             "quote": "Honest take: assembly took about an hour and the headset needed patience. But for the money there's nothing close, and support actually answered my routing question.",
             "name": "Dana R.",
             "context": "2nd season, Boulder CO",
-            "verified": true
+            "verified": false
           }
         },
         "r3": {
@@ -119,7 +121,7 @@
             "quote": "Shopped the big brands at my local shop and walked out over the price. Glad I waited — light, comfortable, and it just works.",
             "name": "Priya S.",
             "context": "Endurance rider, Austin TX",
-            "verified": true
+            "verified": false
           }
         }
       },
@@ -130,9 +132,11 @@
       ],
       "settings": {
         "kicker": "Owner reviews · rider to rider",
-        "heading": "What Rogue riders say",
-        "recommend": "97%"
-      }
+        "heading": "What Rogue riders actually say",
+        "recommend": "97%",
+        "show_summary": false
+      },
+      "disabled": true
     },
     "compare": {
       "type": "sppdp-compare",
@@ -301,11 +305,30 @@
       "settings": {
         "frame_weight": "900 g"
       }
+    },
+    "reviews_app": {
+      "type": "apps",
+      "blocks": {
+        "klaviyo_reviews_product_reviews": {
+          "type": "shopify://apps/klaviyo-reviews/blocks/product-reviews/db20e365-d984-4ac4-9655-e1588d951ca9",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "klaviyo_reviews_product_reviews"
+      ],
+      "settings": {
+        "heading": "App section",
+        "enable_animation": true,
+        "divider_style": "none",
+        "section_padding": "section--vertical-padding-top-bottom"
+      }
     }
   },
   "order": [
     "main",
     "reviews",
+    "reviews_app",
     "compare",
     "specs"
   ]

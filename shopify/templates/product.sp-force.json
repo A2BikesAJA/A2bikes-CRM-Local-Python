@@ -99,9 +99,9 @@
         "price_note": "USD · ships free in the continental US",
         "affirm_months": 12,
         "affirm_apr": "0% APR",
-        "affirm_url": "",
+        "affirm_url": "/pages/financing-hsa-fsa",
         "wheel_note": "Discount applied automatically when your bike & wheels are in your cart.",
-        "show_affirm_line": false,
+        "show_affirm_line": true,
         "gallery_caption": "Hover the numbered points to explore the frame tech.",
         "show_hotspots": true,
         "edu_1_title": "Toray T700 carbon",
@@ -130,7 +130,7 @@
             "quote": "My first carbon tri bike. I'm not a pro — I just wanted to stop getting dropped on the bike leg. It fit out of the box once I used their sizing call, and I genuinely felt faster.",
             "name": "Marcus T.",
             "context": "Age-grouper, Columbus OH",
-            "verified": true
+            "verified": false
           }
         },
         "r2": {
@@ -141,7 +141,7 @@
             "quote": "Honest take: assembly took me about an hour and the headset needed patience. But for the money there's nothing close. The SAGS cockpit let me get low without buying parts.",
             "name": "Dana R.",
             "context": "2nd season, Boulder CO",
-            "verified": true
+            "verified": false
           }
         },
         "r3": {
@@ -152,7 +152,7 @@
             "quote": "Shopped the Cervélo and QR at my local shop and walked out because of the price. Glad I waited. Just works, and support actually answered when I had a routing question.",
             "name": "Priya S.",
             "context": "Beginner, Austin TX",
-            "verified": true
+            "verified": false
           }
         }
       },
@@ -163,13 +163,14 @@
       ],
       "settings": {
         "kicker": "Owner reviews · athlete to athlete",
-        "heading": "What SP-105 riders actually say",
+        "heading": "What SP riders actually say",
         "score": "4.8",
         "stars": "★★★★★",
         "count": "96",
         "recommend": "97%",
-        "show_summary": true
-      }
+        "show_summary": false
+      },
+      "disabled": true
     },
     "compare": {
       "type": "sppdp-compare",
@@ -369,11 +370,30 @@
         "divider_style": "none",
         "section_padding": "section--vertical-padding-top-bottom"
       }
+    },
+    "reviews_app": {
+      "type": "apps",
+      "blocks": {
+        "klaviyo_reviews_product_reviews": {
+          "type": "shopify://apps/klaviyo-reviews/blocks/product-reviews/db20e365-d984-4ac4-9655-e1588d951ca9",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "klaviyo_reviews_product_reviews"
+      ],
+      "settings": {
+        "heading": "App section",
+        "enable_animation": true,
+        "divider_style": "none",
+        "section_padding": "section--vertical-padding-top-bottom"
+      }
     }
   },
   "order": [
     "main",
     "reviews",
+    "reviews_app",
     "compare",
     "specs",
     "1780531623d78958a5"
