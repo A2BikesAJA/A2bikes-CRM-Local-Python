@@ -362,6 +362,23 @@ all carry stored UTM/click IDs.
    chooses to swap it there too. Size charts live in the snippet's
    SP_CHART/ROGUE_CHART/BIKE_BUILDS constants — update there when the
    lineup or sizing changes.
+18. **Batch A of the prioritized backlog DONE (June 10).** Working through
+   `docs/PRIORITIZED-EDITS.md` in batches: A (items 1,2,3,11) complete.
+   (1) NAV (live, store-wide): header "Menu 3.0 (Northwrd) (copy)" gained
+   a Support dropdown (Warranty, Crash Replacement, Financing & HSA/FSA →
+   `/pages/pay-with-truemed` until the canonical financing page ships in
+   Batch C, Size Guide, Bike Setup, Bike Selector Quiz) + quiz under Shop;
+   footer Support menu: dead "Chat Our Team" removed, Warranty/Crash/
+   Financing added. (2) PDP financing line ON across the 8 build PDPs —
+   the DIY "affirm" text-logo + hardcoded as-low-as was replaced with
+   Affirm's official component first (compliance). (3) Fabricated reviews
+   sections disabled on all 8 build PDPs; Klaviyo Reviews app block added
+   in their place; headings de-105'd, fake verified badges/summary off.
+   (11) FAQ page rebuilt (live): 10 current Q&As, every answer linking its
+   canonical page, stale handles/claims removed. Batches: B = owner-input
+   pass (legal text, Klaviyo IDs, Affirm key, geometry, Truemed URL);
+   C = consolidation (canonical financing/sizing pages, 301s, zombie purge
+   — needs owner sign-off on the kill list); D = video/UGC/blog.
 
 ## 6. Deploy pipeline (the reliable way) + gotchas
 
