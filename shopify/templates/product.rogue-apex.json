@@ -1,0 +1,1134 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product--default",
+      "blocks": {
+        "product_header": {
+          "type": "product_header",
+          "settings": {
+            "show_divider": true,
+            "show_vendor": false,
+            "show_sku": false,
+            "show_discount": true,
+            "discount_format": "percent_off",
+            "show_product_rating": false,
+            "show_sale_badge": true,
+            "show_custom_badges": true
+          }
+        },
+        "text": {
+          "type": "text",
+          "disabled": true,
+          "settings": {
+            "text_font_class": "fs-body-100",
+            "text": "<p>Our premier Triathlon bike is perfect for all races. Transition from T1 to T2 swiftly with Zipp 808 Firecrest wheels, and SRAM Red AXS e1.</p>",
+            "column_placement": "right"
+          }
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "variant_popup_option": "Sizing",
+            "variant_popup_icon": "measuring-tape",
+            "variant_popup_text": "Size guide",
+            "variant_popup_page": "size-guide",
+            "swatch_size": "large",
+            "chip_layout": "3col"
+          }
+        },
+        "accordion_xkAn4T": {
+          "type": "accordion",
+          "settings": {
+            "expand_by_default": true,
+            "column_placement": "left",
+            "heading": "A2 Bikes Sizing Calculator",
+            "heading_tag": "h3",
+            "content": "<p>Add your collapsible row content here.</p>",
+            "page_for_content": "sp-sizing",
+            "custom_liquid": "<style>\n  .bike-size-calculator {\n    display: flex;\n    flex-wrap: wrap;\n    justify-content: space-between;\n    align-items: flex-start;\n    gap: 40px;\n    padding: 20px;\n    border: 1px solid #eee;\n    background: #fafafa;\n    border-radius: 8px;\n  }\n\n  .calculator-inputs {\n    flex: 1;\n    min-width: 260px;\n  }\n\n  .calculator-results {\n    flex: 1;\n    min-width: 260px;\n    border-left: 2px solid #ddd;\n    padding-left: 30px;\n  }\n\n  .bike-size-calculator h3 {\n    font-family: 'Fraunces', serif;\n    font-size: 22px;\n    margin-bottom: 12px;\n    color: #000;\n  }\n\n  .bike-size-calculator label {\n    display: block;\n    margin-bottom: 8px;\n    font-size: 18px;\n    font-family: 'Fraunces', serif;\n    font-weight: 500;\n    color: #111;\n  }\n\n  .bike-size-calculator select, \n  .bike-size-calculator input {\n    width: 100%;\n    padding: 8px 10px;\n    font-size: 16px;\n    margin-bottom: 16px;\n    border: 1px solid #ccc;\n    border-radius: 4px;\n  }\n\n  .result-highlight {\n    font-family: 'Fraunces', serif;\n    font-size: 26px;\n    font-weight: 700;\n    color: #C51C26; /* A2 red */\n    margin-top: 8px;\n  }\n\n  .bike-size-calculator button {\n    background-color: #000;\n    color: #fff;\n    border: none;\n    padding: 12px 24px;\n    font-size: 16px;\n    font-weight: 600;\n    font-family: 'Fraunces', serif;\n    cursor: pointer;\n    transition: all 0.3s ease;\n  }\n\n  .bike-size-calculator button:hover {\n    background-color: #C51C26;\n  }\n</style>\n\n<div class=\"bike-size-calculator\">\n  <div class=\"calculator-inputs\">\n    <h3>Find Your Size</h3>\n    <label for=\"height\">Your Height</label>\n    <input type=\"text\" id=\"height\" placeholder=\"e.g. 5'9&quot;\">\n    \n    <label for=\"inseam\">Your Inseam</label>\n    <input type=\"text\" id=\"inseam\" placeholder=\"e.g. 32&quot;\">\n    \n    <button onclick=\"calculateBikeSize()\">See My Size</button>\n  </div>\n\n  <div class=\"calculator-results\">\n    <h3>Recommended Size</h3>\n    <div id=\"size-result\" class=\"result-highlight\">—</div>\n    <p id=\"bike-model\">We’ll suggest the best SP or Rogue size for you.</p>\n  </div>\n</div>\n\n<script>\n  function calculateBikeSize() {\n    const height = document.getElementById('height').value;\n    const inseam = document.getElementById('inseam').value;\n    let result = \"Medium\";\n    let model = \"SP Triathlon or Rogue All-Road\";\n\n    // Simple height-based logic (update with your chart)\n    if (height.includes(\"5'3\") || height.includes(\"5'4\") || height.includes(\"5'5\") || height.includes(\"5'6\")) {\n      result = \"Small\";\n    } else if (height.includes(\"5'7\") || height.includes(\"5'8\") || height.includes(\"5'9\") || height.includes(\"5'10\")) {\n      result = \"Medium\";\n    } else if (height.includes(\"5'11\") || height.includes(\"6'0\") || height.includes(\"6'1\") || height.includes(\"6'2\")) {\n      result = \"Large\";\n    } else if (height.includes(\"6'3\") || height.includes(\"6'4\") || height.includes(\"6'5\")) {\n      result = \"XL\";\n    }\n\n    document.getElementById('size-result').innerText = result;\n    document.getElementById('bike-model').innerText = `Recommended build: ${model} (${result})`;\n  }\n</script>"
+          }
+        },
+        "inventory-counter": {
+          "type": "inventory-counter",
+          "settings": {
+            "label": "",
+            "inventory_max": "40",
+            "low_inventory_threshold": "8",
+            "show_status_bar": true,
+            "show_untracked_quantity": true
+          }
+        },
+        "quantity_selector": {
+          "type": "quantity_selector",
+          "disabled": true,
+          "settings": {
+            "show_labels": true
+          }
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true,
+            "enable_sticky_atc_bar_desktop": true,
+            "enable_sticky_atc_bar_mobile": true,
+            "divider_width": "border--thin"
+          }
+        },
+        "product_callouts-1": {
+          "type": "product_callouts",
+          "disabled": true,
+          "settings": {
+            "title": "",
+            "title_tag": "h3",
+            "add_box": false,
+            "add_dividers": true,
+            "icon_1": "leaf",
+            "text_1": "<p>Your order ships carbon neutral</p>",
+            "icon_2": "none",
+            "text_2": "",
+            "icon_3": "none",
+            "text_3": "",
+            "icon_4": "none",
+            "text_4": "",
+            "icon_5": "none",
+            "text_5": "",
+            "icon_6": "chat",
+            "text_6": "",
+            "display_as_collapsible_row": false,
+            "expand_by_default": false
+          }
+        },
+        "product_callouts-2": {
+          "type": "product_callouts",
+          "disabled": true,
+          "settings": {
+            "title": "",
+            "title_tag": "h3",
+            "add_box": true,
+            "add_dividers": false,
+            "icon_1": "price-tag",
+            "text_1": "<p><strong>BIGGER MARKDOWNS</strong> — We've refreshed our sale with discounts of up to 50% on select styles.</p>",
+            "icon_2": "paper-airplane",
+            "text_2": "",
+            "icon_3": "chat",
+            "text_3": "",
+            "icon_4": "none",
+            "text_4": "",
+            "icon_5": "none",
+            "text_5": "",
+            "icon_6": "chat",
+            "text_6": "",
+            "display_as_collapsible_row": false,
+            "expand_by_default": false
+          }
+        },
+        "text_fLrUak": {
+          "type": "text",
+          "settings": {
+            "text_font_class": "fs-body-100",
+            "text": "<p>Save up to 30% with Truemed. <a href=\"https://a2bikes.com/pages/pay-with-truemed\" title=\"https://a2bikes.com/pages/pay-with-truemed\">Click here to learn more! </a></p>",
+            "column_placement": "right"
+          }
+        },
+        "product_callouts_4WrDEd": {
+          "type": "product_callouts",
+          "disabled": true,
+          "settings": {
+            "title": "",
+            "title_tag": "h3",
+            "add_box": true,
+            "add_dividers": true,
+            "icon_1": "money-bills",
+            "text_1": "<p>Financing Options</p>",
+            "icon_2": "measuring-tape",
+            "text_2": "<p>Free Size Exchanges within 30 Days</p>",
+            "icon_3": "measuring-tape",
+            "text_3": "",
+            "icon_4": "chat",
+            "text_4": "<p>Need help? <a href=\"/pages/contact\">Contact us</a></p>",
+            "icon_5": "moving-truck",
+            "text_5": "<p>Free shipping on orders over $5,000</p>",
+            "icon_6": "padlock",
+            "text_6": "<p>Secure payment</p>",
+            "display_as_collapsible_row": false,
+            "expand_by_default": false
+          }
+        },
+        "description": {
+          "type": "description",
+          "settings": {
+            "title": "Description",
+            "title_tag": "h3",
+            "text_font_class": "fs-body-100",
+            "column_placement": "left",
+            "display_as_collapsible_row": true,
+            "expand_by_default": true
+          }
+        },
+        "featured_products": {
+          "type": "featured_products",
+          "settings": {
+            "heading": "Customers also search for",
+            "heading_tag": "h3",
+            "column_placement": "left",
+            "max_products": 3,
+            "product_source": "custom-product-list",
+            "product_list": [
+              "rogue-shimano-105",
+              "rogue-apex-axs",
+              "rogue-sram-force-etap-axs",
+              "rogue-sram-red-axs",
+              "rogue-rival-axs"
+            ],
+            "enable_swiper_mobile": true,
+            "display_as_collapsible_row": true,
+            "expand_by_default": true
+          }
+        },
+        "custom_liquid_iimbca": {
+          "type": "custom_liquid",
+          "settings": {
+            "column_placement": "left",
+            "custom_liquid": "<!-- Promo Banner -->\n<div style=\"background-color:#C51C26; color:white; padding:20px 40px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;\">\n\n  <!-- Left Side: Header -->\n  <div style=\"flex:1; padding-right:20px; font-family:'Fraunces', serif; font-weight:300; font-size:30px; line-height:1.2;\">\n    More Options. More Savings. More Riding.\n  </div>\n\n \n\n  <!-- Right Side: Subheader + Button -->\n  <div style=\"flex:1; display:flex; flex-direction:column; align-items:flex-start; font-family:'Instrument Sans', sans-serif;\">\n    <div style=\"font-size:18px; margin-bottom:12px;\">\n      30% Savings with Truemed, 0% APR with A2, Pro Deals, and Flexible Plans.\n    </div>\n    <a href=\"/pages/financing-your-bike\" \n       style=\"border:1.5px solid white; color:white; padding:10px 20px; text-decoration:none; font-weight:600; display:inline-block;\">\n      Discover Our Options\n    </a>\n  </div>\n\n</div>\n\n<!-- Load Fonts (place in <head> of theme.liquid) -->\n<link href=\"https://fonts.googleapis.com/css2?family=Fraunces:wght@300&family=Instrument+Sans:wght@400;600&display=swap\" rel=\"stylesheet\">"
+          }
+        },
+        "share": {
+          "type": "share",
+          "disabled": true,
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "product_header",
+        "text",
+        "variant_picker",
+        "accordion_xkAn4T",
+        "inventory-counter",
+        "quantity_selector",
+        "buy_buttons",
+        "product_callouts-1",
+        "product_callouts-2",
+        "text_fLrUak",
+        "product_callouts_4WrDEd",
+        "description",
+        "featured_products",
+        "custom_liquid_iimbca",
+        "share"
+      ],
+      "settings": {
+        "enable_sticky_product_details": true,
+        "show_breadcrumbs": false,
+        "show_navigation_buttons": false,
+        "show_featured_media_first": false,
+        "gallery_style": "thumbnails",
+        "gallery_style_mobile": "thumbnails",
+        "gallery_size": "xlarge",
+        "gallery_overflow": "2",
+        "enable_video_looping": true,
+        "enable_product_lightbox": true,
+        "image_aspect_ratio": "natural",
+        "enable_multiple_variant_media": true,
+        "enable_mobile_carousel_looping": true,
+        "show_mobile_carousel_images_full_width": true,
+        "hide_mobile_carousel_dots": false,
+        "enable_gift_card_recipient": false,
+        "enable_animation": false
+      }
+    },
+    "promotion_bar_QnywpJ": {
+      "type": "promotion-bar",
+      "disabled": true,
+      "name": "t:sections.promotion_bar.presets.name",
+      "settings": {
+        "min_height": 60,
+        "min_height_mobile": 60,
+        "heading": "More Options. More Savings.  More Riding.",
+        "heading_tag": "h2",
+        "text": "<p><strong>30%</strong> Savings with <a href=\"/pages/pay-with-truemed\" title=\"Truemed\"><span style=\"text-decoration:underline\">Truemed</span></a>, <a href=\"/pages/financing-your-bike\" title=\"Financing Your Bike\"><span style=\"text-decoration:underline\"><strong>0% APR</strong></span><span style=\"text-decoration:underline\"> with A2</span></a>, <a href=\"/pages/a2-racing-team\" title=\"A2 Racing Team\"><span style=\"text-decoration:underline\"><strong>Pro Deals</strong></span></a>, and <a href=\"/pages/contact-a2-bikes\" title=\"Contact A2 Bikes\"><span style=\"text-decoration:underline\"><strong>Flexible Plans</strong></span></a>.</p>",
+        "link": "shopify://pages/financing-your-bike",
+        "link_text": "Discover Our Options",
+        "button_style": "btn--secondary",
+        "focal_point": "image_presentation",
+        "mobile_focal_point": "image_presentation",
+        "background_color": "#c51c26",
+        "text_color": "#ffffff",
+        "button_background_color": "#ffffff",
+        "button_text_color": "#000000",
+        "color_overlay": "#000000",
+        "color_overlay_gradient": "",
+        "overlay_opacity": 0,
+        "enable_animation": true,
+        "full_width": false,
+        "section_padding": "section--vertical-padding-top-bottom"
+      }
+    },
+    "apps_bMRhFT": {
+      "type": "apps",
+      "blocks": {
+        "spec_compare_comparison_table_bdzNi8": {
+          "type": "shopify://apps/specs-compare/blocks/comparison-table/a9d09772-f36d-4539-a4c4-7bd785bc12c0",
+          "settings": {
+            "product": "{{product}}",
+            "product_list": [],
+            "fallback_to_related_products": false,
+            "exclude_sold_out_products": false,
+            "enable_show_differences_switch": false,
+            "differences_switch_mode": "highlight_differences",
+            "show_variant_selector": false,
+            "show_group_names": true,
+            "maximum_rows": 20,
+            "maximum_visible_products": 3,
+            "show_in_modal": false,
+            "modal_trigger_button_text": "",
+            "app_block_margin": 0,
+            "app_block_max_width": "full_width",
+            "app_block_custom_max_width": 800,
+            "show_product_image": true,
+            "show_product_vendor": false,
+            "show_product_price": true,
+            "show_product_rating": true,
+            "show_view_details_button": true,
+            "enable_ai_analysis": false,
+            "append_parent_target_selector": ""
+          }
+        }
+      },
+      "block_order": [
+        "spec_compare_comparison_table_bdzNi8"
+      ],
+      "settings": {
+        "heading": "Compare All Rogue Builds",
+        "enable_animation": true,
+        "divider_style": "solid",
+        "section_padding": "section--vertical-padding-top-bottom"
+      }
+    },
+    "rich_text_433CbN": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_x4HgxX": {
+          "type": "heading",
+          "settings": {
+            "title": "Click the Icons to Learn the Rogue Apex AXS Specs",
+            "heading_tag": "h2",
+            "heading_font_class": "fs-heading-1-base"
+          }
+        },
+        "text_8VQEew": {
+          "type": "text",
+          "disabled": true,
+          "settings": {
+            "text": "<p>Use this text area to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p>",
+            "text_font_class": "fs-body-100"
+          }
+        }
+      },
+      "block_order": [
+        "heading_x4HgxX",
+        "text_8VQEew"
+      ],
+      "name": "t:sections.rich_text.presets.name",
+      "settings": {
+        "alignment": "center_center",
+        "enable_animation": true,
+        "divider_style": "none",
+        "section_padding": "section--vertical-padding-bottom-only",
+        "content_width": "custom",
+        "custom_content_width": 700
+      }
+    },
+    "blocks_aJrPrT": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_a5e244d_GywR9G": {
+          "type": "ai_gen_block_a5e244d",
+          "settings": {
+            "image": "shopify://shop_images/Buy_a_Rogue_19.png",
+            "aspect_ratio": "natural",
+            "image_fit": "contain",
+            "image_border_radius": 8,
+            "hotspot_size": 40,
+            "hotspot_color": "#ffffff",
+            "hotspot_border_color": "#000000",
+            "hotspot_icon_color": "#000000",
+            "popup_position": "top",
+            "popup_width": 320,
+            "popup_bg_color": "#ffffff",
+            "popup_text_color": "#000000",
+            "hotspot_1_enabled": true,
+            "hotspot_1_x": 32,
+            "hotspot_1_y": 64,
+            "hotspot_1_title": "SRAM Apex Cassette XPLR 11-44",
+            "hotspot_1_text": "400% range meets road-speed precision. With a tight 11-12-13 progression in the fast gears and big enough 38-44 cogs for climbs, this cassette fits on a standard HG freehub and works with Flattop chains. Perfect for riders who crave versatility without weight or complexity.",
+            "hotspot_2_enabled": true,
+            "hotspot_2_x": 47,
+            "hotspot_2_y": 69,
+            "hotspot_2_title": "SRAM Apex AXS 1x Crankset",
+            "hotspot_2_text": "SRAM Apex 1x 42T crankset gives you wide-range gearing with single-ring simplicity. CNC-machined X-SYNC teeth keep the chain quiet and secure. Made with an asymmetric spider for better stiffness-to-weight ratio, it works with both 10- and 11-speed Apex setups. Perfect when you want less shifting stress and more riding enjoyment.",
+            "hotspot_3_enabled": false,
+            "hotspot_3_x": 70,
+            "hotspot_3_y": 33,
+            "hotspot_3_title": "Shimano Dura Ace Shifters",
+            "hotspot_3_text": "Shimano’s 11-Speed Dura-Ace shifters deliver smooth, reliable shifting right from the hoods or drops.",
+            "hotspot_4_enabled": true,
+            "hotspot_4_x": 33,
+            "hotspot_4_y": 74,
+            "hotspot_4_title": "SRAM Apex AXS XPLR Rear Derailleur",
+            "hotspot_4_text": "Engineered for versatility, this derailleur seamlessly shifts across wide-range 12-speed cassettes with up to 44T large cogs. Its X-HORIZON design eliminates ghost shifting, while the clutch mechanism ensures consistent chain tension, delivering smooth and reliable performance on every ride.",
+            "hotspot_5_enabled": true,
+            "hotspot_5_x": 66,
+            "hotspot_5_y": 61,
+            "hotspot_5_title": "SRAM Apex Hydraulic Brakes",
+            "hotspot_5_text": "Equipped with reliable stopping power, this brake features a forged aluminum caliper with a 2-piston design, offering consistent performance across various terrains. Its ergonomic lever design ensures comfort, while the reach adjustability allows for a personalized fit. Coming with Shimano 160mm rotors, it's a solid choice for riders seeking dependable braking."
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_a5e244d_GywR9G"
+      ],
+      "settings": {}
+    },
+    "product_tabs": {
+      "type": "product-tabs",
+      "blocks": {
+        "product_description_B47rUG": {
+          "type": "product_description",
+          "disabled": true,
+          "settings": {
+            "tab_heading": "Description",
+            "heading": "Get to know the Rogue 105",
+            "heading_font_class": "fs-heading-4-base",
+            "heading_tag": "h2",
+            "text_font_class": "fs-body-100",
+            "content_width": "custom",
+            "text_max_width": 800
+          }
+        },
+        "one_column_yWgGJj": {
+          "type": "one_column",
+          "disabled": true,
+          "settings": {
+            "tab_heading": "Spec Guide",
+            "heading_column_1": "SP Force AXS Spec Guide",
+            "heading_font_class_column_1": "fs-heading-4-base",
+            "heading_tag_column_1": "h2",
+            "text_column_1": "",
+            "page_for_content_column_1": "{{ product.metafields.custom.component_guide_page.value }}",
+            "custom_liquid_column_1": "",
+            "text_font_class_column_1": "fs-body-100",
+            "content_width": "custom",
+            "text_max_width": 800,
+            "image_width_column_1": 100,
+            "image_position_column_1": "above_text"
+          }
+        },
+        "one_column_cCyr9a": {
+          "type": "one_column",
+          "settings": {
+            "tab_heading": "Geometry Guide",
+            "heading_column_1": "Rogue All-Road Geometry Guide",
+            "heading_font_class_column_1": "fs-heading-4-base",
+            "heading_tag_column_1": "h2",
+            "text_column_1": "",
+            "page_for_content_column_1": "copy-of-rogue-all-road-geometry-guide",
+            "custom_liquid_column_1": "",
+            "text_font_class_column_1": "fs-body-75",
+            "content_width": "full",
+            "text_max_width": 850,
+            "image_width_column_1": 100,
+            "image_position_column_1": "above_text"
+          }
+        },
+        "one_column_UfpW9X": {
+          "type": "one_column",
+          "settings": {
+            "tab_heading": "Size & Fit",
+            "heading_column_1": "Size & Fit",
+            "heading_font_class_column_1": "fs-heading-4-base",
+            "heading_tag_column_1": "h2",
+            "text_column_1": "",
+            "page_for_content_column_1": "size-guide",
+            "custom_liquid_column_1": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  \n    <style>\n        body {\n            font-family: Arial, sans-serif;\n            margin: 20px;\n        }\n        .container {\n            padding: 20px;\n            border: 1px solid #ccc;\n            border-radius: 8px;\n        }\n        h2 {\n            font-size: 14px;\n        }\n        input {\n            width: 100%;\n            margin: 10px 0;\n            padding: 10px;\n            border-radius: 4px;\n            border: 1px solid #ccc;\n        }\n        button.btn--calculate {\n            padding: 10px;\n            width: 100%;\n            border: none;\n            border-radius: 4px;\n            background-color: black;\n            color: white;\n            font-size: 16px;\n            cursor: pointer;\n            transition: background-color 0.3s, color 0.3s;\n        }\n        button.btn--calculate:hover {\n            background-color: white;\n            color: black;\n        }\n    </style>\n</head>\n<body>\n    <div class=\"container\">\n        <h2>A2 Bikes Size Calculator</h2>\n        <label for=\"heightFeet\">Height (Feet):</label>\n        <input type=\"number\" id=\"heightFeet\" placeholder=\"Feet\" min=\"0\">\n        \n        <label for=\"heightInches\">Height (Inches):</label>\n        <input type=\"number\" id=\"heightInches\" placeholder=\"Inches\" min=\"0\">\n        \n        <label for=\"inseam\">Inseam (Inches):</label>\n        <input type=\"number\" id=\"inseam\" placeholder=\"Inseam\" min=\"0\">\n\n        <button class=\"btn--calculate\" onclick=\"calculateSize()\">Calculate Size</button>\n        <div id=\"result\" style=\"margin-top: 20px;\"></div>\n    </div>\n\n    <script>\n        function calculateSize() {\n            const heightFeet = parseInt(document.getElementById('heightFeet').value);\n            const heightInches = parseInt(document.getElementById('heightInches').value);\n            const inseam = parseInt(document.getElementById('inseam').value);\n\n            if (isNaN(heightFeet) || isNaN(heightInches) || isNaN(inseam)) {\n                document.getElementById('result').innerText = 'Please enter valid numbers.';\n                return;\n            }\n\n            const totalHeightInInches = (heightFeet * 12) + heightInches;\n\n            let size;\n            if (totalHeightInInches >= 63 && totalHeightInInches <= 66) { // 5'3\" to 5'6\"\n                size = 'Size Small';\n            } else if (totalHeightInInches >= 67 && totalHeightInInches <= 70) { // 5'7\" to 5'10\"\n                size = 'Size Medium';\n            } else if (totalHeightInInches >= 71 && totalHeightInInches <= 73) { // 5'11\" to 6'1\"\n                size = 'Size Large';\n            } else if (totalHeightInInches >= 74 && totalHeightInInches <= 76) { // 6'1\" to 6'4\"\n                size = 'Size XL';\n            } else {\n                size = 'Height not in size range.';\n            }\n\n            document.getElementById('result').innerText = `Your suggested bike size is: ${size}`;\n        }\n    </script>\n</body>\n</html>",
+            "text_font_class_column_1": "fs-body-100",
+            "content_width": "custom",
+            "text_max_width": 800,
+            "image_width_column_1": 100,
+            "image_position_column_1": "above_text"
+          }
+        },
+        "one_column_acnHT7": {
+          "type": "one_column",
+          "settings": {
+            "tab_heading": "Lifetime Warranty",
+            "heading_column_1": "SP Lifetime Warranty",
+            "heading_font_class_column_1": "fs-heading-4-base",
+            "heading_tag_column_1": "h2",
+            "text_column_1": "<p>When you ride an A2, you can ride with confidence. That's because your SP is backed by our lifetime warranty. From your first race to your biggest achievement, we stand behind every SP frame, for life. <span style=\"text-decoration:underline\">Read more here.</span></p>",
+            "page_for_content_column_1": "",
+            "custom_liquid_column_1": "",
+            "text_font_class_column_1": "fs-body-100",
+            "content_width": "custom",
+            "text_max_width": 800,
+            "image_width_column_1": 100,
+            "image_position_column_1": "above_text"
+          }
+        },
+        "one_column_iJUxAt": {
+          "type": "one_column",
+          "settings": {
+            "tab_heading": "Crash Replacement Policy",
+            "heading_column_1": "Crash Replacement Policy",
+            "heading_font_class_column_1": "fs-heading-4-base",
+            "heading_tag_column_1": "h2",
+            "text_column_1": "<p>We understand that crashes happen, and it can already be a lot as it is. That is why we create the <span style=\"text-decoration:underline\">A2 Crash Replacement Policy</span>, which states any SP frame directly purchased from A2, in the event of a crash, will be fully replaced by us, no additional cost. </p>",
+            "page_for_content_column_1": "",
+            "custom_liquid_column_1": "",
+            "text_font_class_column_1": "fs-body-100",
+            "content_width": "custom",
+            "text_max_width": 800,
+            "image_width_column_1": 100,
+            "image_position_column_1": "above_text"
+          }
+        },
+        "two_column_tab_QmTHWe": {
+          "type": "two_column_tab",
+          "settings": {
+            "tab_heading": "Shipping & Returns",
+            "content_vertical_alignment": "top",
+            "column_spacing": 48,
+            "heading_column_1": "Standard shipping",
+            "heading_font_class_column_1": "fs-heading-4-base",
+            "heading_tag_column_1": "h3",
+            "text_column_1": "<p>Standard ground shipping usually takes between 3 and 5 business days and is $99. <br/></p>",
+            "page_for_content_column_1": "",
+            "custom_liquid_column_1": "",
+            "text_font_class_column_1": "fs-body-100",
+            "image_width_column_1": 100,
+            "image_position_column_1": "above_text",
+            "heading_column_2": "Free Easy Returns",
+            "heading_font_class_column_2": "fs-heading-4-base",
+            "heading_tag_column_2": "h3",
+            "text_column_2": "<p>Buying a bike shouldn't be a stressful experience. That's why we work with you during the purchasing process to ensure you get the perfect bike to fit your needs. If you need to exchange or return your bike, contact our customer service team within 30 days of purchase if you need to exchange your bike. A2 is happy to provide <strong>free size exchanges on all bikes that we produce.</strong></p>",
+            "page_for_content_column_2": "",
+            "custom_liquid_column_2": "",
+            "text_font_class_column_2": "fs-body-100",
+            "image_width_column_2": 100,
+            "image_position_column_2": "above_text"
+          }
+        }
+      },
+      "block_order": [
+        "product_description_B47rUG",
+        "one_column_yWgGJj",
+        "one_column_cCyr9a",
+        "one_column_UfpW9X",
+        "one_column_acnHT7",
+        "one_column_iJUxAt",
+        "two_column_tab_QmTHWe"
+      ],
+      "settings": {
+        "tab_alignment": "left",
+        "tab_spacing": 40,
+        "font_choice": "ff-heading",
+        "tab_font_size": "fs-body-150",
+        "background_color": "",
+        "text_color": "#000000",
+        "enable_animation": true,
+        "section_padding": "section--vertical-padding-bottom-only"
+      }
+    },
+    "grid_d6bqtw": {
+      "type": "grid",
+      "blocks": {
+        "item_CVAiyp": {
+          "type": "item",
+          "settings": {
+            "width": "50",
+            "height": 500,
+            "mobile_height": 500,
+            "media_type": "image",
+            "image": "shopify://shop_images/L1000047.jpg",
+            "focal_point": "image_presentation",
+            "mobile_focal_point": "image_presentation",
+            "video_focal_point": "center",
+            "mobile_video_focal_point": "center",
+            "media_fit": "cover",
+            "text_position": "center_center",
+            "accent": "",
+            "title": "",
+            "heading_tag": "h3",
+            "heading_font_class": "fs-heading-2-base",
+            "subheading": "",
+            "subheading_tag": "h4",
+            "subheading_font_class": "fs-heading-5-base",
+            "text": "",
+            "text_font_class": "fs-body-100",
+            "link": "",
+            "link_text": "",
+            "button_style": "btn--primary",
+            "background_color": "",
+            "text_color": "#ffffff",
+            "button_background_color": "#ffffff",
+            "button_text_color": "#000000",
+            "color_overlay": "#000000",
+            "color_overlay_gradient": "",
+            "overlay_opacity": 0
+          }
+        },
+        "item_eHeJzN": {
+          "type": "item",
+          "settings": {
+            "width": "50",
+            "height": 500,
+            "mobile_height": 500,
+            "media_type": "image",
+            "image": "shopify://shop_images/gravel_edit_2.jpg",
+            "focal_point": "image_presentation",
+            "mobile_focal_point": "image_presentation",
+            "video_focal_point": "center",
+            "mobile_video_focal_point": "center",
+            "media_fit": "cover",
+            "text_position": "center_center",
+            "accent": "",
+            "title": "",
+            "heading_tag": "h3",
+            "heading_font_class": "fs-heading-2-base",
+            "subheading": "",
+            "subheading_tag": "h4",
+            "subheading_font_class": "fs-heading-5-base",
+            "text": "",
+            "text_font_class": "fs-body-100",
+            "link": "",
+            "link_text": "",
+            "button_style": "btn--primary",
+            "background_color": "",
+            "text_color": "#ffffff",
+            "button_background_color": "#ffffff",
+            "button_text_color": "#000000",
+            "color_overlay": "#000000",
+            "color_overlay_gradient": "",
+            "overlay_opacity": 0
+          }
+        },
+        "item_CmAkE9": {
+          "type": "item",
+          "settings": {
+            "width": "100",
+            "height": 520,
+            "mobile_height": 500,
+            "media_type": "image",
+            "image": "shopify://shop_images/IMG_8513.jpg",
+            "focal_point": "image_presentation",
+            "mobile_focal_point": "image_presentation",
+            "video_focal_point": "center",
+            "mobile_video_focal_point": "center",
+            "media_fit": "cover",
+            "text_position": "center_center",
+            "accent": "",
+            "title": "",
+            "heading_tag": "h3",
+            "heading_font_class": "fs-heading-2-base",
+            "subheading": "",
+            "subheading_tag": "h4",
+            "subheading_font_class": "fs-heading-5-base",
+            "text": "",
+            "text_font_class": "fs-body-100",
+            "link": "",
+            "link_text": "",
+            "button_style": "btn--primary",
+            "background_color": "",
+            "text_color": "#ffffff",
+            "button_background_color": "#ffffff",
+            "button_text_color": "#000000",
+            "color_overlay": "#000000",
+            "color_overlay_gradient": "",
+            "overlay_opacity": 0
+          }
+        }
+      },
+      "block_order": [
+        "item_CVAiyp",
+        "item_eHeJzN",
+        "item_CmAkE9"
+      ],
+      "name": "t:sections.grid.presets.name",
+      "settings": {
+        "heading": "",
+        "heading_tag": "h2",
+        "subheading": "",
+        "content_alignment": "left",
+        "enable_animation": true,
+        "full_width": false,
+        "spacing": 24,
+        "divider_style": "none",
+        "section_padding": "section--vertical-padding-top-bottom"
+      }
+    },
+    "page_section_tfU9n8": {
+      "type": "page-section",
+      "name": "t:sections.page_section.presets.name",
+      "settings": {
+        "title": "Rogue Apex AXS 1x Spec Guide",
+        "heading_tag": "h2",
+        "heading_font_class": "fs-heading-2-base",
+        "heading_alignment": "center",
+        "page": "spec-guide-rogue-apex-axs-1x",
+        "enable_animation": true,
+        "divider_style": "none",
+        "section_padding": "section--vertical-padding-bottom-only",
+        "content_width": "custom",
+        "custom_content_width": 800
+      }
+    },
+    "multi_column_xbHjbp": {
+      "type": "multi-column",
+      "blocks": {
+        "column_cLGazK": {
+          "type": "column",
+          "settings": {
+            "accent": "Frame Weight",
+            "heading": "950g",
+            "heading_tag": "h3",
+            "heading_font_class": "fs-heading-2-base",
+            "text": "",
+            "text_font_class": "fs-body-300",
+            "text_max_width": 100,
+            "link": "",
+            "link_text": "",
+            "button_style": "btn--primary"
+          }
+        },
+        "column_zDq9fb": {
+          "type": "column",
+          "settings": {
+            "accent": "Tire Clearance",
+            "heading": "35mm",
+            "heading_tag": "h3",
+            "heading_font_class": "fs-heading-2-base",
+            "text": "",
+            "text_font_class": "fs-body-100",
+            "text_max_width": 100,
+            "link": "",
+            "link_text": "",
+            "button_style": "btn--primary"
+          }
+        },
+        "column_TVTwXg": {
+          "type": "column",
+          "settings": {
+            "accent": "Groupset Weight",
+            "heading": "2,719g",
+            "heading_tag": "h3",
+            "heading_font_class": "fs-heading-2-base",
+            "text": "",
+            "text_font_class": "fs-body-100",
+            "text_max_width": 86,
+            "link": "",
+            "link_text": "",
+            "button_style": "btn--primary"
+          }
+        }
+      },
+      "block_order": [
+        "column_cLGazK",
+        "column_zDq9fb",
+        "column_TVTwXg"
+      ],
+      "settings": {
+        "title": "",
+        "heading_tag": "h2",
+        "heading_font_class": "fs-heading-3-base",
+        "subheading": "",
+        "heading_alignment": "left",
+        "content_vertical_alignment": "center",
+        "content_background_padding": "large",
+        "columns": "3",
+        "column_spacing": 4,
+        "row_spacing": 28,
+        "column_alignment": "center",
+        "enable_slider_mobile": false,
+        "columns_mobile": "1",
+        "column_spacing_mobile": 4,
+        "row_spacing_mobile": 4,
+        "column_alignment_mobile": "center",
+        "background_behind_columns": false,
+        "background_color": "#f7f7e8",
+        "text_color": "#222425",
+        "button_background_color": "#000000",
+        "button_text_color": "#ffffff",
+        "enable_animation": true,
+        "divider_style": "none",
+        "section_padding": "section--vertical-padding-top-bottom"
+      }
+    },
+    "rich_text_KQyXpY": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_TzAcC7": {
+          "type": "heading",
+          "settings": {
+            "title": "The Most Adjustable Triathlon Bike",
+            "heading_tag": "h2",
+            "heading_font_class": "fs-heading-2-base"
+          }
+        },
+        "text_PcDTHF": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Comfort is everything, especially in triathlon. The last thing you want is to feel cramped or strained in the aero position, wasting watts and holding yourself back. That’s why we built the SP to be the most adjustable triathlon bike on the market, so you can dial in your fit and ride your best.</p>",
+            "text_font_class": "fs-body-100"
+          }
+        }
+      },
+      "block_order": [
+        "heading_TzAcC7",
+        "text_PcDTHF"
+      ],
+      "disabled": true,
+      "name": "t:sections.rich_text.presets.name",
+      "settings": {
+        "alignment": "center_center",
+        "enable_animation": true,
+        "divider_style": "none",
+        "section_padding": "section--vertical-padding-top-bottom",
+        "content_width": "custom",
+        "custom_content_width": 700
+      }
+    },
+    "image_with_text_split_q7pFnm": {
+      "type": "image-with-text-split",
+      "blocks": {
+        "accent_pGpNfh": {
+          "type": "accent",
+          "settings": {
+            "accent": "Bike Assembly"
+          }
+        },
+        "heading_i6n7kT": {
+          "type": "heading",
+          "settings": {
+            "title": "Arrives 92% Built",
+            "heading_tag": "h2",
+            "heading_font_class": "fs-heading-display-3"
+          }
+        },
+        "subheading_XkXhTg": {
+          "type": "subheading",
+          "settings": {
+            "subheading": "Your bike shows up 92% assembled, complete with the tools and step-by-step instructions—no mechanical know-how required.",
+            "subheading_tag": "h3",
+            "subheading_font_class": "fs-heading-5-base"
+          }
+        },
+        "button_rWgpwA": {
+          "type": "button",
+          "settings": {
+            "link": "shopify://pages/sp-and-rogue-out-of-box-installation",
+            "link_text": "Let's Build!",
+            "button_style": "btn--primary"
+          }
+        }
+      },
+      "block_order": [
+        "accent_pGpNfh",
+        "heading_i6n7kT",
+        "subheading_XkXhTg",
+        "button_rWgpwA"
+      ],
+      "name": "t:sections.image_with_text_split.presets.name",
+      "settings": {
+        "image_position": "left",
+        "image_mobile_position": "above-content",
+        "image_padding": "none",
+        "image": "shopify://shop_images/DSCF7469-Edit.jpg",
+        "aspect_ratio": "landscape",
+        "focal_point": "image_presentation",
+        "content_alignment": "left",
+        "background_color": "#e2e2e2",
+        "text_color": "#000000",
+        "button_background_color": "#000000",
+        "button_text_color": "#ffffff",
+        "enable_animation": true,
+        "section_padding": "section--vertical-padding-top-bottom"
+      }
+    },
+    "gallery_carousel_bVqVQi": {
+      "type": "gallery-carousel",
+      "blocks": {
+        "image_hPGenN": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/17_09fbcb3a-017c-4bcc-abd1-74f7b756c7d5.png",
+            "focal_point": "image_presentation",
+            "title": "Rogue 105",
+            "text": "<p>Simple, reliable, and built for exploration. The Rogue 105 is our most popular all-road build, equipped with Shimano’s trusted 105 groupset. Perfect for riders seeking dependability on climbs, descents, and gravel stretches while keeping adventure within reach.</p>"
+          }
+        },
+        "image_3faB7X": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/18.png",
+            "focal_point": "image_presentation",
+            "title": "Rogue Apex AXS 1x",
+            "text": "<p>Modern, wireless, and built for adventure. The Rogue Apex AXS 1x features SRAM’s intuitive wireless shifting, giving you smooth, precise gear changes with just the tap of a button. With a wide-range cassette and simplified 1x setup, it’s perfect for riders who want performance and versatility on every road, paved or unpaved.</p>"
+          }
+        },
+        "image_PY8aCx": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/19.png",
+            "focal_point": "image_presentation",
+            "title": "Rogue Rival AXS",
+            "text": "<p>A step up from Apex, the Rogue Rival AXS delivers precise electronic shifting from SRAM. With a streamlined 2x drivetrain and wide gear range, it’s built to handle long climbs, fast descents, and everything in between, making every ride smoother and more efficient.</p>"
+          }
+        },
+        "image_UXGqqi": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/20.png",
+            "focal_point": "image_presentation",
+            "title": "Rogue Force AXS",
+            "text": "<p>Many riders choose the Rogue Force AXS for its high-end performance without the premium price tag of Red. This build strikes the perfect balance between efficiency and refinement, making it a top choice for cyclists who want to climb stronger, descend faster, and take on long rides with confidence.</p>"
+          }
+        },
+        "image_rgdqxq": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/21_3b639101-3f1b-4c7e-a23f-f263a7f7fec3.png",
+            "focal_point": "image_presentation",
+            "title": "Rogue Red AXS",
+            "text": "<p>The Rogue Red AXS represents the peak of all-road performance. Outfitted with SRAM’s lightest and most precise Red AXS groupset and paired with Zipp 353 NSW carbon wheels, this build is for riders chasing the ultimate in speed, responsiveness, and climbing efficiency. Designed for those who demand nothing less than excellence on every ride.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "image_hPGenN",
+        "image_3faB7X",
+        "image_PY8aCx",
+        "image_UXGqqi",
+        "image_rgdqxq"
+      ],
+      "name": "t:sections.gallery_carousel.presets.name",
+      "settings": {
+        "heading": "Compare Our Rogue Builds",
+        "heading_tag": "h2",
+        "subheading": "<p>The Rogue is built for versatility, endurance, and all-road performance. Explore each build to find the setup that matches your riding style and opens the door to more miles, more comfort, and more adventure.</p>",
+        "link": "shopify://collections/rogue",
+        "link_text": "Explore Other Rogues",
+        "button_style": "btn--secondary",
+        "columns": "2",
+        "mobile_columns": "2",
+        "loop_carousel": true,
+        "aspect_ratio": "natural",
+        "image_caption_size": "fs-body-75",
+        "image_caption_style": "beneath",
+        "overlay_text_background_style": "gradient",
+        "overlay_text_color": "#fcfcf9",
+        "overlay_text_background": "#22292d",
+        "enable_animation": true,
+        "divider_style": "solid",
+        "section_padding": "section--vertical-padding-top-bottom"
+      }
+    },
+    "video_hero_74hX3U": {
+      "type": "video-hero",
+      "blocks": {
+        "accent_YDaLJG": {
+          "type": "accent",
+          "disabled": true,
+          "settings": {
+            "accent": "Accent"
+          }
+        },
+        "heading_n8JcNL": {
+          "type": "heading",
+          "disabled": true,
+          "settings": {
+            "title": "Video hero",
+            "heading_tag": "h2",
+            "heading_font_class": "fs-heading-display-2"
+          }
+        },
+        "text_RcyfqP": {
+          "type": "text",
+          "disabled": true,
+          "settings": {
+            "text": "<p>Use this section to promote a particular feature with editorial video.</p>",
+            "text_font_class": "fs-body-100"
+          }
+        },
+        "play_button_FpeTxp": {
+          "type": "play-button",
+          "disabled": true,
+          "settings": {
+            "video_source": "external",
+            "video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+            "aspect_ratio": "square",
+            "text": "Watch now",
+            "icon_style": "outline"
+          }
+        }
+      },
+      "block_order": [
+        "accent_YDaLJG",
+        "heading_n8JcNL",
+        "text_RcyfqP",
+        "play_button_FpeTxp"
+      ],
+      "name": "t:sections.video_hero.presets.name",
+      "settings": {
+        "image_aspect": "custom",
+        "desktop_height": 100,
+        "mobile_height": 100,
+        "video": "shopify://files/videos/Rogue Adventure Shopify Edit.mp4",
+        "media_link": "",
+        "focal_point": "image_presentation",
+        "focal_point_mobile": "image_presentation",
+        "text_position": "center_center",
+        "text_position_mobile": "center_center",
+        "text_color": "#ffffff",
+        "button_background_color": "#ffffff",
+        "button_text_color": "#000000",
+        "color_overlay": "#000000",
+        "color_overlay_gradient": "",
+        "overlay_opacity": 0,
+        "enable_animation": true,
+        "section_padding": "section--vertical-padding-none"
+      }
+    },
+    "image-hero": {
+      "type": "image-hero",
+      "blocks": {
+        "accent": {
+          "type": "accent",
+          "settings": {
+            "accent": "A seamless addition"
+          }
+        },
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "title": "Always Chic.",
+            "heading_tag": "h2",
+            "heading_font_class": "fs-heading-display-2"
+          }
+        }
+      },
+      "block_order": [
+        "accent",
+        "heading"
+      ],
+      "disabled": true,
+      "settings": {
+        "image_aspect": "custom",
+        "desktop_height": 70,
+        "mobile_height": 65,
+        "focal_point": "center",
+        "mobile_focal_point": "center",
+        "media_link": "",
+        "text_position": "flex-start_flex-start",
+        "text_position_mobile": "center_center",
+        "text_color": "#f5f5f5",
+        "button_background_color": "#ffffff",
+        "button_text_color": "#000000",
+        "color_overlay": "#000000",
+        "color_overlay_gradient": "",
+        "overlay_opacity": 40,
+        "enable_animation": true,
+        "section_padding": "section--vertical-padding-none"
+      }
+    },
+    "recommendations": {
+      "type": "recommended-products",
+      "disabled": true,
+      "settings": {
+        "title": "Recommended",
+        "heading_tag": "h2",
+        "subheading": "",
+        "maximum_products": 8,
+        "columns": "4",
+        "mobile_columns": "2",
+        "enable_animation": true,
+        "divider_style": "none",
+        "section_padding": "section--vertical-padding-top-bottom"
+      }
+    },
+    "scrolling_content": {
+      "type": "scrolling-content",
+      "blocks": {
+        "text_4fw7ri": {
+          "type": "text",
+          "settings": {
+            "text": "End of season sale",
+            "link": ""
+          }
+        },
+        "image_mXA98G": {
+          "type": "image",
+          "settings": {
+            "image_size": 100,
+            "image_size_mobile": 200,
+            "link": ""
+          }
+        },
+        "text_izGRTC": {
+          "type": "text",
+          "settings": {
+            "text": "Get them before they're gone",
+            "link": ""
+          }
+        },
+        "image_kN83bd": {
+          "type": "image",
+          "settings": {
+            "image_size": 100,
+            "image_size_mobile": 200,
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "text_4fw7ri",
+        "image_mXA98G",
+        "text_izGRTC",
+        "image_kN83bd"
+      ],
+      "disabled": true,
+      "settings": {
+        "font_choice": "ff-heading",
+        "text_font_class": "fs-heading-2-base",
+        "duration": 10,
+        "direction": "normal",
+        "gap": 50,
+        "padding_top": 0,
+        "padding_bottom": 5,
+        "borders": "none",
+        "background_color": "rgba(0,0,0,0)",
+        "text_color": "#222425",
+        "border_color": "#aaaaaa",
+        "enable_animation": true,
+        "divider_style": "none",
+        "section_padding": "section--vertical-padding-top-bottom"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "promotion_bar_QnywpJ",
+    "apps_bMRhFT",
+    "rich_text_433CbN",
+    "blocks_aJrPrT",
+    "product_tabs",
+    "grid_d6bqtw",
+    "page_section_tfU9n8",
+    "multi_column_xbHjbp",
+    "rich_text_KQyXpY",
+    "image_with_text_split_q7pFnm",
+    "gallery_carousel_bVqVQi",
+    "video_hero_74hX3U",
+    "image-hero",
+    "recommendations",
+    "scrolling_content"
+  ]
+}

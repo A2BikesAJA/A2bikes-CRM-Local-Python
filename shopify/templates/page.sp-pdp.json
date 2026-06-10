@@ -1,0 +1,392 @@
+{
+  "sections": {
+    "main": {
+      "type": "sppdp-main",
+      "blocks": {
+        "m1": {
+          "type": "media",
+          "settings": {
+            "image": "shopify://shop_images/SP1.1_PNG_Cutout.png",
+            "tag": "",
+            "caption": "Drive-side profile — Oswego Blue, size M"
+          }
+        },
+        "m2": {
+          "type": "media",
+          "settings": {
+            "tag": "Detail",
+            "caption": "Front 3/4 — kammtail head tube & fork crown"
+          }
+        },
+        "m3": {
+          "type": "media",
+          "settings": {
+            "tag": "Detail",
+            "caption": "SAGS aerobar cockpit — pad & extension adjustment"
+          }
+        },
+        "m4": {
+          "type": "media",
+          "settings": {
+            "tag": "Detail",
+            "caption": "Rear triangle — internal routing & flat-mount disc"
+          }
+        },
+        "t1": {
+          "type": "trust",
+          "settings": {
+            "icon": "shield-check",
+            "title": "Designed by ex-Cervélo engineers",
+            "sub": "Kevin Quan, who designed the Cervélo P-Series, drew this frame."
+          }
+        },
+        "t2": {
+          "type": "trust",
+          "settings": {
+            "icon": "bars",
+            "title": "Direct-to-consumer pricing",
+            "sub": "No dealer markup. You pay for the bike, not the showroom."
+          }
+        },
+        "t3": {
+          "type": "trust",
+          "settings": {
+            "icon": "sliders",
+            "title": "Free fit support & size exchanges",
+            "sub": "Talk to a real fitter before and after you buy. Wrong size? Swap it free."
+          }
+        },
+        "t4": {
+          "type": "trust",
+          "settings": {
+            "icon": "warranty",
+            "title": "Lifetime frame warranty + crash replacement",
+            "sub": "Honored directly by us. Damage it in a crash and we replace the frame."
+          }
+        }
+      },
+      "block_order": [
+        "m1",
+        "m2",
+        "m3",
+        "m4",
+        "t1",
+        "t2",
+        "t3",
+        "t4"
+      ],
+      "settings": {
+        "product_handle": "sp-shimano-105n",
+        "bc_home": "Home",
+        "bc_col": "Triathlon — SP",
+        "bc_col_url": "",
+        "kicker": "SP Triathlon · Entry build",
+        "title": "SP — Shimano 105",
+        "subtitle": "Carbon triathlon & time-trial bike",
+        "rating_stars": "★★★★★",
+        "rating_value": "4.8",
+        "rating_count": "96",
+        "reviews_anchor": "#sppdp-reviews",
+        "price": "$3,270",
+        "price_note": "USD · ships free in the continental US",
+        "affirm_value": "$273",
+        "affirm_months": 12,
+        "affirm_apr": "0% APR",
+        "affirm_url": "",
+        "stage_badge": "",
+        "gallery_caption": "Drive-side profile — Oswego Blue, size M. Hover the numbered points to explore the frame tech.",
+        "show_hotspots": true,
+        "hotspot_1_label": "Kammtail tube shapes — aero without UCI-only weirdness",
+        "hotspot_1_x": 34,
+        "hotspot_1_y": 58,
+        "hotspot_2_label": "Fully internal cable + hose routing",
+        "hotspot_2_x": 60,
+        "hotspot_2_y": 40,
+        "hotspot_3_label": "SAGS cockpit — 140mm of fit adjustment",
+        "hotspot_3_x": 78,
+        "hotspot_3_y": 30,
+        "edu_1_title": "Toray T700 carbon",
+        "edu_1_desc": "Hand-laid layup — the same fiber class as superbikes costing 3× more.",
+        "edu_2_title": "SAGS adjustable cockpit",
+        "edu_2_desc": "140mm fore/aft pad range. Dial your aero fit without a new stem.",
+        "edu_3_title": "Race-day storage",
+        "edu_3_desc": "Down-tube and top-tube mounts for nutrition and tools, built in.",
+        "swatch_1_name": "Oswego Blue",
+        "swatch_1_c1": "#3a6076",
+        "swatch_1_c2": "#1a3142",
+        "swatch_2_name": "Summit Grey",
+        "swatch_2_c1": "#a6acb1",
+        "swatch_2_c2": "#6c7176",
+        "swatch_3_name": "Matte Black",
+        "swatch_3_c1": "#2a2c30",
+        "swatch_3_c2": "#0e0f11",
+        "sizes_csv": "XS, S, M, L, XL",
+        "size_selected": "M",
+        "soldout_csv": "",
+        "size_helper": "fits ~5'7\"–5'10\". Free size exchanges.",
+        "size_help_label": "Find your size",
+        "size_help_url": "",
+        "cta_prefix": "Add to cart —",
+        "demo_note": "7-day home demo",
+        "consult_label": "Or book a free fit consult",
+        "consult_url": "",
+        "show_sticky": true
+      }
+    },
+    "reviews": {
+      "type": "sppdp-reviews",
+      "blocks": {
+        "r1": {
+          "type": "review",
+          "settings": {
+            "stars": "★★★★★",
+            "result": "First 70.3 · 5:42",
+            "quote": "My first carbon tri bike. I'm not a pro — I just wanted to stop getting dropped on the bike leg. It fit out of the box once I used their sizing call, and I genuinely felt faster.",
+            "name": "Marcus T.",
+            "context": "Age-grouper, Columbus OH",
+            "verified": true
+          }
+        },
+        "r2": {
+          "type": "review",
+          "settings": {
+            "stars": "★★★★★",
+            "result": "3rd AG · Olympic",
+            "quote": "Honest take: assembly took me about an hour and the headset needed patience. But for the money there's nothing close. The SAGS cockpit let me get low without buying parts.",
+            "name": "Dana R.",
+            "context": "2nd season, Boulder CO",
+            "verified": true
+          }
+        },
+        "r3": {
+          "type": "review",
+          "settings": {
+            "stars": "★★★★☆",
+            "result": "New to tri",
+            "quote": "Shopped the Cervélo and QR at my local shop and walked out because of the price. Glad I waited. Mechanical 105 just works, and support actually answered when I had a routing question.",
+            "name": "Priya S.",
+            "context": "Beginner, Austin TX",
+            "verified": true
+          }
+        }
+      },
+      "block_order": [
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "settings": {
+        "kicker": "Owner reviews · athlete to athlete",
+        "heading": "What SP-105 riders actually say",
+        "score": "4.8",
+        "stars": "★★★★★",
+        "count": "96",
+        "recommend": "97%"
+      }
+    },
+    "compare": {
+      "type": "sppdp-compare",
+      "blocks": {
+        "c1": {
+          "type": "row",
+          "settings": {
+            "label": "Price",
+            "a2": "$3,270",
+            "a2_style": "bold",
+            "comp1": "~$4,600",
+            "comp2": "~$3,900"
+          }
+        },
+        "c2": {
+          "type": "row",
+          "settings": {
+            "label": "Frame",
+            "a2": "Toray T700 carbon, 1,250g",
+            "a2_style": "normal",
+            "comp1": "Carbon",
+            "comp2": "Carbon"
+          }
+        },
+        "c3": {
+          "type": "row",
+          "settings": {
+            "label": "Groupset",
+            "a2": "Shimano 105 R7100, 12-spd",
+            "a2_style": "normal",
+            "comp1": "Shimano 105 mechanical",
+            "comp2": "Shimano 105 mechanical"
+          }
+        },
+        "c4": {
+          "type": "row",
+          "settings": {
+            "label": "Fit adjustability",
+            "a2": "SAGS cockpit — 140mm range",
+            "a2_style": "normal",
+            "comp1": "Stem swaps needed",
+            "comp2": "Stem swaps needed"
+          }
+        },
+        "c5": {
+          "type": "row",
+          "settings": {
+            "label": "Fit support",
+            "a2": "Free remote fitter",
+            "a2_style": "yes",
+            "comp1": "Via dealer (varies)",
+            "comp2": "Via dealer (varies)"
+          }
+        },
+        "c6": {
+          "type": "row",
+          "settings": {
+            "label": "Frame warranty",
+            "a2": "Lifetime + crash replacement",
+            "a2_style": "yes",
+            "comp1": "Limited / years",
+            "comp2": "Limited / years"
+          }
+        },
+        "c7": {
+          "type": "row",
+          "settings": {
+            "label": "Where you buy",
+            "a2": "Direct — 7-day home demo",
+            "a2_style": "normal",
+            "comp1": "Local dealer",
+            "comp2": "Local dealer"
+          }
+        },
+        "c8": {
+          "type": "row",
+          "settings": {
+            "label": "Where they win",
+            "a2": "Newer brand, fewer shops",
+            "a2_style": "muted",
+            "comp1": "Established name & dealer network",
+            "comp2": "Strong tri-specific fit reputation"
+          }
+        }
+      },
+      "block_order": [
+        "c1",
+        "c2",
+        "c3",
+        "c4",
+        "c5",
+        "c6",
+        "c7",
+        "c8"
+      ],
+      "settings": {
+        "kicker": "Honest comparison",
+        "heading": "SP-105 vs. comparable entry tri bikes",
+        "note": "We're a younger brand, so it's fair to ask how we stack up. Here's a straight comparison against the entry 105 builds from two established names — prices are current MSRP for the closest equivalent build. Where they beat us, we say so.",
+        "pick_label": "Best value",
+        "col_a2_name": "A2 SP — 105",
+        "col_a2_sub": "This bike",
+        "col1_name": "Cervélo P-Series",
+        "col1_sub": "105 build",
+        "col2_name": "Quintana Roo",
+        "col2_sub": "entry tri build"
+      }
+    },
+    "specs": {
+      "type": "sppdp-specs",
+      "blocks": {
+        "q1": {
+          "type": "quick",
+          "settings": {
+            "k": "Frame weight",
+            "v": "1,250 g"
+          }
+        },
+        "q2": {
+          "type": "quick",
+          "settings": {
+            "k": "Groupset",
+            "v": "105 · 12-spd"
+          }
+        },
+        "q3": {
+          "type": "quick",
+          "settings": {
+            "k": "Wheels",
+            "v": "Vision Team 30"
+          }
+        },
+        "q4": {
+          "type": "quick",
+          "settings": {
+            "k": "Complete weight",
+            "v": "~9.1 kg"
+          }
+        },
+        "g1": {
+          "type": "group",
+          "settings": {
+            "title": "Frame & fork",
+            "rows": "Material | Hand-laid Toray T700 carbon fiber\nFrame weight | 1,250 g (size M, painted)\nTube profiles | Truncated-airfoil (kammtail) down tube, seat tube & fork\nRouting | Fully internal cable & hydraulic hose\nDesigner | Kevin Quan (former Cervélo P-Series engineer)"
+          }
+        },
+        "g2": {
+          "type": "group",
+          "settings": {
+            "title": "Drivetrain",
+            "rows": "Groupset | Shimano 105 R7100, 12-speed mechanical\nShifting | Bar-end shifters (TT/tri standard)\nCrankset | 52/36T mid-compact\nCassette | 11–34T, 12-speed\nBrakes | Shimano 105 hydraulic disc, flat-mount"
+          }
+        },
+        "g3": {
+          "type": "group",
+          "settings": {
+            "title": "Wheels & tires",
+            "rows": "Wheelset | Vision Team 30 alloy, tubeless-ready\nTires | Continental Ultra Sport III, 700×28c\nAxles | 12mm thru-axle, front & rear\nUpgrade path | Accepts standard 12-speed wheelsets — many owners add deep aero wheels for race day"
+          }
+        },
+        "g4": {
+          "type": "group",
+          "settings": {
+            "title": "Cockpit & fit (SAGS)",
+            "rows": "Aerobar | SAGS integrated cockpit, alloy extensions\nPad adjustment | 140mm fore/aft, 95mm stack range\nExtension shape | Ski-bend, tool-free angle adjust\nBase bar | Aero alloy, internally routed"
+          }
+        },
+        "g5": {
+          "type": "group",
+          "settings": {
+            "title": "Geometry & sizing",
+            "rows": "Sizes | XS · S · M · L · XL\nRider range | ~5'1\" to 6'4\" (155–193 cm)\nSize M fits | ~5'7\"–5'10\"\nSizing help | Free remote fit call + size calculator; free exchanges"
+          }
+        },
+        "g6": {
+          "type": "group",
+          "settings": {
+            "title": "In the box & assembly",
+            "rows": "Pre-assembly | Ships 92% assembled\nYou install | Seatpost, cockpit, and brake dial-in — the headset & stem are the fiddly parts, so take your time with the included torque wrench\nTypical setup time | Under an hour with the included video guide\nPrefer a shop? | Most local shops finish the build for $50–150"
+          }
+        }
+      },
+      "block_order": [
+        "q1",
+        "q2",
+        "q3",
+        "q4",
+        "g1",
+        "g2",
+        "g3",
+        "g4",
+        "g5",
+        "g6"
+      ],
+      "settings": {
+        "kicker": "Specs & details",
+        "heading": "Everything on the SP-105"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "reviews",
+    "compare",
+    "specs"
+  ]
+}

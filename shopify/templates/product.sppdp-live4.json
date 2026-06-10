@@ -1,0 +1,276 @@
+{
+  "sections": {
+    "main": {
+      "type": "sppdp-product",
+      "blocks": {
+        "t1": {
+          "type": "trust",
+          "settings": {
+            "icon": "shield-check",
+            "title": "Designed by ex-Cervélo engineers",
+            "sub": "Kevin Quan, who designed the Cervélo P-Series, drew this frame."
+          }
+        },
+        "t2": {
+          "type": "trust",
+          "settings": {
+            "icon": "bars",
+            "title": "Direct-to-consumer pricing",
+            "sub": "No dealer markup. You pay for the bike, not the showroom."
+          }
+        },
+        "t3": {
+          "type": "trust",
+          "settings": {
+            "icon": "sliders",
+            "title": "Free fit support & size exchanges",
+            "sub": "Talk to a real fitter before and after you buy. Wrong size? Swap it free."
+          }
+        },
+        "t4": {
+          "type": "trust",
+          "settings": {
+            "icon": "warranty",
+            "title": "Lifetime frame warranty + crash replacement",
+            "sub": "Honored directly by us. Damage it in a crash and we replace the frame."
+          }
+        },
+        "h1": {
+          "type": "hotspot",
+          "settings": {
+            "image_index": 1,
+            "label": "Kammtail tube shapes — aero without UCI-only weirdness",
+            "x": 34,
+            "y": 58
+          }
+        },
+        "h2": {
+          "type": "hotspot",
+          "settings": {
+            "image_index": 1,
+            "label": "Fully internal cable + hose routing",
+            "x": 60,
+            "y": 40
+          }
+        },
+        "h3": {
+          "type": "hotspot",
+          "settings": {
+            "image_index": 1,
+            "label": "SAGS cockpit — 140mm of fit adjustment",
+            "x": 78,
+            "y": 30
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "t3",
+        "t4",
+        "h1",
+        "h2",
+        "h3"
+      ],
+      "settings": {}
+    },
+    "reviews": {
+      "type": "sppdp-reviews",
+      "blocks": {
+        "r1": {
+          "type": "review",
+          "settings": {
+            "stars": "★★★★★",
+            "result": "First 70.3 · 5:42",
+            "quote": "My first carbon tri bike. I'm not a pro — I just wanted to stop getting dropped on the bike leg. It fit out of the box once I used their sizing call, and I genuinely felt faster.",
+            "name": "Marcus T.",
+            "context": "Age-grouper, Columbus OH",
+            "verified": true
+          }
+        },
+        "r2": {
+          "type": "review",
+          "settings": {
+            "stars": "★★★★★",
+            "result": "3rd AG · Olympic",
+            "quote": "Honest take: assembly took me about an hour and the headset needed patience. But for the money there's nothing close. The SAGS cockpit let me get low without buying parts.",
+            "name": "Dana R.",
+            "context": "2nd season, Boulder CO",
+            "verified": true
+          }
+        },
+        "r3": {
+          "type": "review",
+          "settings": {
+            "stars": "★★★★☆",
+            "result": "New to tri",
+            "quote": "Shopped the Cervélo and QR at my local shop and walked out because of the price. Glad I waited. Just works, and support actually answered when I had a routing question.",
+            "name": "Priya S.",
+            "context": "Beginner, Austin TX",
+            "verified": true
+          }
+        }
+      },
+      "block_order": [
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "settings": {
+        "recommend": "97%"
+      }
+    },
+    "compare": {
+      "type": "sppdp-compare",
+      "blocks": {
+        "c1": {
+          "type": "row",
+          "settings": {
+            "label": "Price",
+            "a2": "$3,115",
+            "a2_source": "price",
+            "a2_style": "bold",
+            "comp1": "~$4,600",
+            "comp2": "~$3,900"
+          }
+        },
+        "c2": {
+          "type": "row",
+          "settings": {
+            "label": "Frame",
+            "a2": "Toray T700 carbon, 1,250g",
+            "a2_style": "normal",
+            "comp1": "Carbon",
+            "comp2": "Carbon"
+          }
+        },
+        "c3": {
+          "type": "row",
+          "settings": {
+            "label": "Groupset",
+            "a2": "Shimano 105",
+            "a2_source": "groupset",
+            "a2_style": "normal",
+            "comp1": "Shimano 105 mechanical",
+            "comp2": "Shimano 105 mechanical"
+          }
+        },
+        "c4": {
+          "type": "row",
+          "settings": {
+            "label": "Fit adjustability",
+            "a2": "SAGS cockpit — 140mm range",
+            "a2_style": "normal",
+            "comp1": "Stem swaps needed",
+            "comp2": "Stem swaps needed"
+          }
+        },
+        "c5": {
+          "type": "row",
+          "settings": {
+            "label": "Fit support",
+            "a2": "Free remote fitter",
+            "a2_style": "yes",
+            "comp1": "Via dealer (varies)",
+            "comp2": "Via dealer (varies)"
+          }
+        },
+        "c6": {
+          "type": "row",
+          "settings": {
+            "label": "Frame warranty",
+            "a2": "Lifetime + crash replacement",
+            "a2_style": "yes",
+            "comp1": "Limited / years",
+            "comp2": "Limited / years"
+          }
+        },
+        "c7": {
+          "type": "row",
+          "settings": {
+            "label": "Where you buy",
+            "a2": "Direct — 7-day home demo",
+            "a2_style": "normal",
+            "comp1": "Local dealer",
+            "comp2": "Local dealer"
+          }
+        },
+        "c8": {
+          "type": "row",
+          "settings": {
+            "label": "Where they win",
+            "a2": "Newer brand, fewer shops",
+            "a2_style": "muted",
+            "comp1": "Established name & dealer network",
+            "comp2": "Strong tri-specific fit reputation"
+          }
+        }
+      },
+      "block_order": [
+        "c1",
+        "c2",
+        "c3",
+        "c4",
+        "c5",
+        "c6",
+        "c7",
+        "c8"
+      ],
+      "settings": {}
+    },
+    "specs": {
+      "type": "sppdp-specs",
+      "blocks": {
+        "g1": {
+          "type": "group",
+          "settings": {
+            "title": "Frame & fork",
+            "rows": "Material | Hand-laid Toray T700 carbon fiber\nFrame weight | 1,250 g (size M, painted)\nTube profiles | Truncated-airfoil (kammtail) down tube, seat tube & fork\nRouting | Fully internal cable & hose\nDesigner | Kevin Quan (former Cervélo P-Series engineer)"
+          }
+        },
+        "g2": {
+          "type": "group",
+          "settings": {
+            "title": "Wheels & tires",
+            "rows": "Axles | 12mm thru-axle, front & rear\nUpgrade path | Accepts standard wheelsets — many owners add deep aero wheels for race day"
+          }
+        },
+        "g3": {
+          "type": "group",
+          "settings": {
+            "title": "Cockpit & fit (SAGS)",
+            "rows": "Aerobar | SAGS integrated cockpit\nPad adjustment | 140mm fore/aft, 95mm stack range\nExtension shape | Ski-bend, tool-free angle adjust"
+          }
+        },
+        "g4": {
+          "type": "group",
+          "settings": {
+            "title": "Geometry & sizing",
+            "rows": "Sizes | Small · Medium · Large · XL\nRider range | ~5'1\" to 6'4\" (155–193 cm)\nSizing help | Free remote fit call + size calculator; free exchanges"
+          }
+        },
+        "g5": {
+          "type": "group",
+          "settings": {
+            "title": "In the box & assembly",
+            "rows": "Pre-assembly | Ships 92% assembled\nYou install | Seatpost, cockpit, and brake dial-in — take your time with the included torque wrench\nTypical setup time | Under an hour with the included video guide\nPrefer a shop? | Most local shops finish the build for $50–150"
+          }
+        }
+      },
+      "block_order": [
+        "g1",
+        "g2",
+        "g3",
+        "g4",
+        "g5"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "main",
+    "reviews",
+    "compare",
+    "specs"
+  ]
+}

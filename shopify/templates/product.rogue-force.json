@@ -1,0 +1,324 @@
+{
+  "sections": {
+    "main": {
+      "type": "sppdp-product",
+      "blocks": {
+        "t1": {
+          "type": "trust",
+          "settings": {
+            "icon": "shield-check",
+            "title": "Designed by ex-Cervélo engineers",
+            "sub": "Kevin Quan, who designed the Cervélo P-Series, drew this frame."
+          }
+        },
+        "t2": {
+          "type": "trust",
+          "settings": {
+            "icon": "bars",
+            "title": "Direct-to-consumer pricing",
+            "sub": "No dealer markup. You pay for the bike, not the showroom."
+          }
+        },
+        "t3": {
+          "type": "trust",
+          "settings": {
+            "icon": "sliders",
+            "title": "Free fit support & size exchanges",
+            "sub": "Talk to a real fitter before and after you buy. Wrong size? Swap it free."
+          }
+        },
+        "t4": {
+          "type": "trust",
+          "settings": {
+            "icon": "warranty",
+            "title": "Lifetime frame warranty + crash replacement",
+            "sub": "Honored directly by us. Damage it in a crash and we replace the frame."
+          }
+        },
+        "h1": {
+          "type": "hotspot",
+          "settings": {
+            "image_index": 1,
+            "label": "Toray T700 carbon — 900 g frame",
+            "x": 34,
+            "y": 58
+          }
+        },
+        "h2": {
+          "type": "hotspot",
+          "settings": {
+            "image_index": 1,
+            "label": "Fully internal cable + hose routing",
+            "x": 60,
+            "y": 40
+          }
+        },
+        "h3": {
+          "type": "hotspot",
+          "settings": {
+            "image_index": 1,
+            "label": "Clearance for tires up to 35 mm",
+            "x": 78,
+            "y": 30
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "t3",
+        "t4",
+        "h1",
+        "h2",
+        "h3"
+      ],
+      "settings": {
+        "build_collection": "rogue",
+        "bc_col": "Rogue",
+        "bc_col_url": "/collections/rogue",
+        "kicker": "Rogue All-Road · SRAM Force AXS build",
+        "subtitle": "Carbon all-road endurance bike",
+        "edu_1_title": "Lightweight Carbon Fiber Frame",
+        "edu_1_desc": "Hand-laid Toray T700 carbon at 900 g — light, stiff, and tuned for all-day comfort.",
+        "edu_2_title": "Tri-Ready",
+        "edu_2_desc": "Tri-ready — add clip-on aero extensions for extra aerodynamic gains, plus wireless SRAM Blips you can place anywhere on your bars for shifting from any position.",
+        "edu_3_title": "Wide Tire Ability",
+        "edu_3_desc": "Clearance for tires up to 35 mm — road-bike speed when you want it, gravel grip when the pavement ends."
+      }
+    },
+    "reviews": {
+      "type": "sppdp-reviews",
+      "blocks": {
+        "r1": {
+          "type": "review",
+          "settings": {
+            "stars": "★★★★★",
+            "result": "Road + gravel",
+            "quote": "One bike for everything. I race it, ride gravel on the weekend, and commute on it. Fit was dialed in out of the box after their sizing call.",
+            "name": "Marcus T.",
+            "context": "All-rounder, Columbus OH",
+            "verified": true
+          }
+        },
+        "r2": {
+          "type": "review",
+          "settings": {
+            "stars": "★★★★★",
+            "result": "Daily driver",
+            "quote": "Honest take: assembly took about an hour and the headset needed patience. But for the money there's nothing close, and support actually answered my routing question.",
+            "name": "Dana R.",
+            "context": "2nd season, Boulder CO",
+            "verified": true
+          }
+        },
+        "r3": {
+          "type": "review",
+          "settings": {
+            "stars": "★★★★☆",
+            "result": "Upgraded from alloy",
+            "quote": "Shopped the big brands at my local shop and walked out over the price. Glad I waited — light, comfortable, and it just works.",
+            "name": "Priya S.",
+            "context": "Endurance rider, Austin TX",
+            "verified": true
+          }
+        }
+      },
+      "block_order": [
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "settings": {
+        "kicker": "Owner reviews · rider to rider",
+        "heading": "What Rogue riders say",
+        "recommend": "97%"
+      }
+    },
+    "compare": {
+      "type": "sppdp-compare",
+      "blocks": {
+        "c1": {
+          "type": "row",
+          "settings": {
+            "label": "Price",
+            "a2": "$5,000",
+            "a2_source": "price",
+            "a2_style": "bold",
+            "comp1": "$6,199",
+            "comp2": "—",
+            "comp3": "$7,599"
+          }
+        },
+        "c2": {
+          "type": "row",
+          "settings": {
+            "label": "Frame",
+            "a2": "Toray T700, 900 g",
+            "a2_style": "normal",
+            "comp1": "Carbon (aero)",
+            "comp2": "Carbon (aero)",
+            "comp3": "Carbon (aero)"
+          }
+        },
+        "c3": {
+          "type": "row",
+          "settings": {
+            "label": "Groupset (entry electronic)",
+            "a2": "SRAM Force AXS (wireless, 12-speed)",
+            "a2_source": "groupset",
+            "a2_style": "normal",
+            "comp1": "Ultegra Di2",
+            "comp2": "Ultegra Di2",
+            "comp3": "Force AXS"
+          }
+        },
+        "c4": {
+          "type": "row",
+          "settings": {
+            "label": "Tire clearance",
+            "a2": "35 mm",
+            "a2_style": "normal",
+            "comp1": "32 mm",
+            "comp2": "36 mm",
+            "comp3": "35 mm"
+          }
+        },
+        "c5": {
+          "type": "row",
+          "settings": {
+            "label": "Made for",
+            "a2": "Aero · Tri",
+            "a2_style": "yes",
+            "comp1": "Aero road",
+            "comp2": "Aero road",
+            "comp3": "Aero road"
+          }
+        },
+        "c6": {
+          "type": "row",
+          "settings": {
+            "label": "Fit support",
+            "a2": "Free remote fitter",
+            "a2_style": "yes",
+            "comp1": "Online",
+            "comp2": "Online",
+            "comp3": "Direct"
+          }
+        },
+        "c7": {
+          "type": "row",
+          "settings": {
+            "label": "Frame warranty",
+            "a2": "Lifetime + crash replacement",
+            "a2_style": "yes",
+            "comp1": "6-year",
+            "comp2": "Limited",
+            "comp3": "Limited"
+          }
+        },
+        "c8": {
+          "type": "row",
+          "settings": {
+            "label": "Where you buy",
+            "a2": "Direct — 7-day home demo",
+            "a2_style": "normal",
+            "comp1": "Direct",
+            "comp2": "Direct",
+            "comp3": "Direct"
+          }
+        },
+        "cshift": {
+          "type": "row",
+          "settings": {
+            "label": "Shift-button placement",
+            "a2": "Wireless Blips, place anywhere",
+            "a2_style": "yes",
+            "comp1": "Wired Di2, fixed",
+            "comp2": "Wired Di2, fixed",
+            "comp3": "Wireless AXS"
+          }
+        }
+      },
+      "block_order": [
+        "c1",
+        "c2",
+        "c3",
+        "cshift",
+        "c4",
+        "c5",
+        "c6",
+        "c7",
+        "c8"
+      ],
+      "settings": {
+        "heading": "How the Rogue compares",
+        "note": "We're a younger brand, so here's an honest look at this build vs the Canyon Aeroad, QR Service Course, and Ventum NS1 (US list, June 2026). Prices are complete-bike; a carbon wheel upgrade is available on the Rogue, while competitors include their stock carbon wheels. Cells marked — are configurator-only competitor prices to confirm before publishing. Where they beat us, we say so.",
+        "pick_label": "Best value",
+        "col_a2_name": "A2 Rogue",
+        "col_a2_sub": "This build",
+        "col1_name": "Canyon Aeroad",
+        "col1_sub": "aero road",
+        "col2_name": "QR Service Course",
+        "col2_sub": "aero road",
+        "col3_name": "Ventum NS1",
+        "col3_sub": "V3"
+      }
+    },
+    "specs": {
+      "type": "sppdp-specs",
+      "blocks": {
+        "g1": {
+          "type": "group",
+          "settings": {
+            "title": "Frame & fork",
+            "rows": "Material | Hand-laid Toray T700 carbon fiber\nFrame weight | 900 g\nDesigner | Kevin Quan Studios (designed the Cervélo P-Series)\nTire clearance | Up to 35 mm\nRouting | Fully internal cable & hose"
+          }
+        },
+        "g2": {
+          "type": "group",
+          "settings": {
+            "title": "Wheels & tires",
+            "rows": "Axles | 12 mm thru-axle, front & rear\nTire clearance | Up to 35 mm — road & all-road tires\nWheels | Choose your wheelset above; accepts standard disc wheelsets"
+          }
+        },
+        "g3": {
+          "type": "group",
+          "settings": {
+            "title": "Cockpit & fit",
+            "rows": "Setup | Road cockpit — stem & bar listed in the components above\nTri-ready | Add clip-on aero extensions for aero gains, plus wireless SRAM Blips placed anywhere for extra shift positions\nFit help | Free remote fit call + size calculator; free exchanges"
+          }
+        },
+        "g4": {
+          "type": "group",
+          "settings": {
+            "title": "Geometry & sizing",
+            "rows": "Sizes | Small · Medium · Large · XL\nRider range | Approx. 155–193 cm\nRide | All-road endurance geometry — stable and comfortable for long days"
+          }
+        },
+        "g5": {
+          "type": "group",
+          "settings": {
+            "title": "In the box & assembly",
+            "rows": "Pre-assembly | Ships mostly assembled\nYou install | Seatpost, cockpit, and brake dial-in with the included 5 Nm torque wrench\nSetup help | Step-by-step guide at a2bikes.com/roguesetup\nPrefer a shop? | Most local shops finish the build for $50–150"
+          }
+        }
+      },
+      "block_order": [
+        "g1",
+        "g2",
+        "g3",
+        "g4",
+        "g5"
+      ],
+      "settings": {
+        "frame_weight": "900 g"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "reviews",
+    "compare",
+    "specs"
+  ]
+}
