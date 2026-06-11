@@ -475,6 +475,14 @@ BATCH D STEP 1 DEPLOYED (June 10/11): new `sections/sppdp-media.liquid`
    triggers on Liquid syntax errors (an unclosed `{% if %}` here) — not
    just long labels; t1/t3 test stubs were overwritten during bisection
    (still junk, still on the owner's delete list).
+   PUBLISH PLAN (June 11): full owner punch list + publish-day sequence
+   now lives in `docs/PUBLISH-CHECKLIST.md` — read it before publish work.
+   STILETTO v6 ADVISORY (June 11, Fluorescent emails): v6 ships ~mid-June,
+   free; settings partially RESET (colors/spacing/typography) and custom
+   code files do NOT transfer. Decision: publish current draft first; v6
+   migration is a separate post-publish project (install v6 unpublished,
+   re-deploy custom layer from repo, restyle, second swap). Never update
+   the theme in place.
    DRIFT EVENT (June 11 ~00:14 UTC): a stale theme-editor save overwrote
    templates/product.sp-shimano.json ~3 min after the media deploy,
    removing BOTH the new media section AND the earlier Affirm product
