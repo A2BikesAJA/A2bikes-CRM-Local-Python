@@ -26,6 +26,7 @@
   }
   .a2-fit-calc .fitCalcButton:hover { filter: brightness(1.06); }
   .a2-fit-calc .fitCalcButton:focus-visible { outline: 3px solid var(--a2-accent-2); outline-offset: 2px; }
+  .a2-fit-calc .fitCalc__div_fitKnown_buttons .fitCalcButton[aria-pressed="false"] { background: transparent; color: var(--a2-fg); border-color: var(--a2-border); }
   .a2-fit-calc h3 { font-family: var(--a2-font-display); margin: 0 0 .4em; }
   .a2-fit-calc__intro { margin-bottom: 1em; }
   .a2-fit-calc .fitCalc__div_fitKnown_buttons { display: flex; flex-wrap: wrap; gap: 14px; margin: 1em 0; }
@@ -164,8 +165,13 @@ if (!window.__a2fcInit) {
   }
 
   function beginFit(fitKnown) {
-    if (fitKnown == true) { showMe("enterPadXY"); }
-    else if (fitKnown == false) { showMe("enterMeasurements"); }
+    document.getElementById("enterPadXY").style.display = fitKnown ? "block" : "none";
+    document.getElementById("enterMeasurements").style.display = fitKnown ? "none" : "block";
+    var btns = document.querySelectorAll(".fitCalc__div_fitKnown_buttons .fitCalcButton");
+    if (btns.length === 2) {
+      btns[0].setAttribute("aria-pressed", fitKnown ? "false" : "true");
+      btns[1].setAttribute("aria-pressed", fitKnown ? "true" : "false");
+    }
   }
 
   function toggleFit() { showMe("togglefit"); showMe("fitfinder"); }
