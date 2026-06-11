@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A2 Bikes — The SP 3D Viewer</title>
+<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+<style>
+  :root { --a2-red: #EB1C2D; --a2-gray: #7D858C; }
+  body { margin: 0; font-family: "Helvetica Neue", Arial, sans-serif; background: #fff; }
+  .wrap { max-width: 960px; margin: 0 auto; padding: 16px; }
+  h1 { letter-spacing: .12em; font-weight: 600; color: #222; }
+  h1 span { color: var(--a2-red); }
+  model-viewer {
+    width: 100%; height: 70vh; min-height: 420px;
+    background: #f4f4f5; border-radius: 8px;
+    --progress-bar-color: var(--a2-red);
+  }
+  .hint { color: var(--a2-gray); font-size: 14px; margin-top: 8px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>THE SP <span>/ A&sup2; BIKES</span></h1>
+  <model-viewer id="mv"
+      src="sample.glb"
+      alt="A2 Bikes SP triathlon bike, matte black"
+      camera-controls
+      auto-rotate
+      auto-rotate-delay="1500"
+      rotation-per-second="20deg"
+      interaction-prompt="when-focused"
+      shadow-intensity="1"
+      shadow-softness="0.8"
+      exposure="1.1"
+      environment-image="neutral"
+      min-camera-orbit="auto 0deg auto"
+      max-camera-orbit="auto 180deg auto"
+      ar ar-modes="webxr scene-viewer quick-look">
+  </model-viewer>
+  <p class="hint">Drag to spin &amp; flip &middot; scroll/pinch to zoom &middot; two-finger drag to pan.
+     Append <code>?src=path/to/model.glb</code> to view a different model.</p>
+</div>
+<script>
+  const src = new URLSearchParams(location.search).get("src");
+  if (src) document.getElementById("mv").src = src;
+</script>
+</body>
+</html>
