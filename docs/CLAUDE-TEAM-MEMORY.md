@@ -475,6 +475,14 @@ BATCH D STEP 1 DEPLOYED (June 10/11): new `sections/sppdp-media.liquid`
    triggers on Liquid syntax errors (an unclosed `{% if %}` here) — not
    just long labels; t1/t3 test stubs were overwritten during bisection
    (still junk, still on the owner's delete list).
+   DRIFT EVENT (June 11 ~00:14 UTC): a stale theme-editor save overwrote
+   templates/product.sp-shimano.json ~3 min after the media deploy,
+   removing BOTH the new media section AND the earlier Affirm product
+   block (the tab predated that change too). Re-deployed from repo and
+   checksum-verified. Lesson: after any template deploy, anyone with an
+   already-open editor tab will clobber it on save — have the owner
+   refresh/close editor tabs before saving, and re-verify checksums if a
+   template's updatedAt moves without a matching session action.
 
 ## 6. Deploy pipeline (the reliable way) + gotchas
 
