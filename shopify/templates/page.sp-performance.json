@@ -9,7 +9,8 @@
             "icon": "wind",
             "metric": "Aero-first",
             "title": "Wind-tunnel shaped",
-            "text": "Tube profiles tuned for real-world yaw, not just a flattering spec sheet."
+            "text": "Tube profiles tuned for real-world yaw, not just a flattering spec sheet.",
+            "photo": "shopify://shop_images/sp-lp-aero-tubes.jpg"
           }
         },
         "proof_weight": {
@@ -18,7 +19,8 @@
             "icon": "feather",
             "metric": "Race-light",
             "title": "Light where it counts",
-            "text": "A stiff, responsive frame that holds speed and climbs when the course turns up."
+            "text": "A stiff, responsive frame that holds speed and climbs when the course turns up.",
+            "photo": "shopify://shop_images/sp-lp-frame-light.jpg"
           }
         },
         "proof_geo": {
@@ -27,14 +29,15 @@
             "icon": "sliders",
             "metric": "Fit-first",
             "title": "Dialed geometry",
-            "text": "Aggressive when you want it, sustainable enough to run strong off the bike."
+            "text": "Aggressive when you want it, sustainable enough to run strong off the bike.",
+            "photo": "shopify://shop_images/sp-edu-stem-sags.jpg"
           }
         },
         "build_105": {
           "type": "build",
           "settings": {
             "product": "sp-shimano-105n",
-            "name_override": "SP · Shimano 105",
+            "name_override": "SP \u00b7 Shimano 105",
             "price_override": ""
           }
         },
@@ -42,7 +45,7 @@
           "type": "build",
           "settings": {
             "product": "sp-sram-rival-1",
-            "name_override": "SP · SRAM Rival AXS",
+            "name_override": "SP \u00b7 SRAM Rival AXS",
             "price_override": ""
           }
         },
@@ -50,7 +53,7 @@
           "type": "build",
           "settings": {
             "product": "sp-sram-force",
-            "name_override": "SP · SRAM Force AXS",
+            "name_override": "SP \u00b7 SRAM Force AXS",
             "price_override": ""
           }
         },
@@ -58,7 +61,7 @@
           "type": "build",
           "settings": {
             "product": "sp-sram-red-axs",
-            "name_override": "SP · SRAM Red AXS",
+            "name_override": "SP \u00b7 SRAM Red AXS",
             "price_override": ""
           }
         },
@@ -106,12 +109,12 @@
         "line": "sp",
         "heading_font": "assistant_n4",
         "body_font": "assistant_n4",
-        "eyebrow": "A2 Bikes · SP",
+        "eyebrow": "A2 Bikes \u00b7 SP",
         "heading": "Podium speed. Without the podium price.",
         "subheading": "Carbon triathlon performance engineered to win on race day and make sense on your budget.",
-        "price_from": "From about $108/mo with Affirm — or buy it pre-tax with HSA/FSA.",
+        "price_from": "From about $108/mo with Affirm \u2014 or buy it pre-tax with HSA/FSA.",
         "cta_label": "Build Your SP",
-        "hero_alt": "A2 SP triathlon bike at speed",
+        "hero_alt": "Two race-ready A2 SP triathlon bikes",
         "build_selector_url": "",
         "proof_heading": "Built to be faster",
         "band_heading": "A new bike is more attainable than you think",
@@ -119,7 +122,7 @@
         "financing_price_label": "Split it into easy monthly payments with Affirm.",
         "affirm_heading": "Ride now, pay monthly",
         "truemed_heading": "Buy it with pre-tax HSA/FSA dollars",
-        "truemed_text": "Most triathletes don't know a bike can qualify for HSA/FSA spending through Truemed's medical-necessity pathway — an effective discount of roughly 30%.",
+        "truemed_text": "Most triathletes don't know a bike can qualify for HSA/FSA spending through Truemed's medical-necessity pathway \u2014 an effective discount of roughly 30%.",
         "truemed_url": "https://www.truemed.com/shop/partners/a2-bikes",
         "financing_note": "Estimates are illustrative, not an offer of credit or tax advice. Rates and eligibility are determined by Affirm and Truemed.",
         "builds_heading": "Four builds. Four price points.",
@@ -127,19 +130,21 @@
         "reviews_heading": "Raced. Reviewed. Repeated.",
         "reviews_embed": "",
         "sizing_heading": "Not sure of your size?",
-        "sizing_text": "Use the A2 Fit Finder — enter your height and inseam and we'll recommend your frame size and cockpit setup.",
+        "sizing_text": "Use the A2 Fit Finder \u2014 enter your height and inseam and we'll recommend your frame size and cockpit setup.",
         "octane_quiz_url": "",
         "octane_cta_label": "Find my size",
         "show_fit_calculator": true,
         "email_heading": "Not ready to buy? Get the SP Buyer's Guide.",
-        "email_text": "Specs, sizing and a straight-talk financing breakdown — straight to your inbox.",
+        "email_text": "Specs, sizing and a straight-talk financing breakdown \u2014 straight to your inbox.",
         "email_cta_label": "Send the guide",
-        "email_success": "You're in — check your inbox for the guide.",
+        "email_success": "You're in \u2014 check your inbox for the guide.",
         "email_source": "SP Performance LP",
         "klaviyo_company_id": "YejYTH",
         "klaviyo_list_id": "Riv6B2",
         "final_heading": "Ready to build yours?",
-        "final_text": "Pick your groupset and see your monthly or pre-tax price."
+        "final_text": "Pick your groupset and see your monthly or pre-tax price.",
+        "hero_image": "shopify://shop_images/sp-lp-hero-deck.jpg",
+        "hero_image_mobile": "shopify://shop_images/sp-lp-hero-mobile.jpg"
       }
     }
   },
