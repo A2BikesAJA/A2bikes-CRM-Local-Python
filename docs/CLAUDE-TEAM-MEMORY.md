@@ -456,6 +456,26 @@ BATCH D RECON DONE (June 10): Drive UGC/social-proof sweep complete —
    attribution) in the draft review sections; Fera widget + fake-review
    removal + full-text pull go on the publish checklist.
 
+BATCH D STEP 1 DEPLOYED (June 10/11): new `sections/sppdp-media.liquid`
+   (hero video slot + rider UGC strip) wired into all four SP build
+   templates after `main`, deployed to the draft theme, checksums
+   verified. Hero accepts a theme-editor video pick OR a CDN URL; strip
+   blocks likewise. Seeded with the first REAL rider clip uploaded to
+   Shopify Files via staged upload (Video gid://shopify/Video/42726498173092,
+   CDN 63b15b92bf494804ba199693fd7c14d0.SD-480p…mp4 + poster
+   `shop_images/a2-sp-rider-ugc-poster.jpg`); also uploaded
+   `vivek-testimonial-facebook.png` (MediaImage 42726498107556).
+   TRANSFER CONSTRAINTS LEARNED: env egress blocks google hosts (Drive
+   direct download impossible), Drive MCP caps file transfer at <~10 MB,
+   and Shopify fileCreate rejects extensionless source URLs — so the BIG
+   Drive masters (SP Website Header_4.mp4 106 MB, creator videos
+   176–434 MB) must be drag-dropped into admin → Content → Files by the
+   owner (or picked straight into the section's video setting in the
+   theme editor). NEW GOTCHA for §6: silent section rejection also
+   triggers on Liquid syntax errors (an unclosed `{% if %}` here) — not
+   just long labels; t1/t3 test stubs were overwritten during bisection
+   (still junk, still on the owner's delete list).
+
 ## 6. Deploy pipeline (the reliable way) + gotchas
 
 ```
