@@ -87,8 +87,13 @@
       </div>
       <div id="enterMeasurements" style="display:none;">
         <form class="fitCalc__form_body" onsubmit="return false;">
-          <div class="fitCalc__row"><label for="fitCalc__input_height">Height</label><input type="number" inputmode="numeric" id="fitCalc__input_height"> mm</div>
-          <div class="fitCalc__row"><label for="fitCalc__input_inseam">Inseam</label><input type="number" inputmode="numeric" id="fitCalc__input_inseam"> mm</div>
+          <div class="a2fc-build" role="radiogroup" aria-label="Units">
+            <span class="a2fc-build__title">Units:</span>
+            <label class="a2fc-build__opt"><input type="radio" name="a2fcUnits" value="in" checked onchange="a2fcUnitsChanged()"><span>inches</span></label>
+            <label class="a2fc-build__opt"><input type="radio" name="a2fcUnits" value="cm" onchange="a2fcUnitsChanged()"><span>cm</span></label>
+          </div>
+          <div class="fitCalc__row"><label for="fitCalc__input_height">Height</label><input type="number" step="any" inputmode="decimal" id="fitCalc__input_height" placeholder="70"> <span class="a2fcUnit">in</span></div>
+          <div class="fitCalc__row"><label for="fitCalc__input_inseam">Inseam</label><input type="number" step="any" inputmode="decimal" id="fitCalc__input_inseam" placeholder="32"> <span class="a2fcUnit">in</span></div>
           <button class="fitCalcButton" type="button" onclick="buttonPress(false)">Find fit</button>
         </form>
       </div>
@@ -136,15 +141,20 @@ if (!window.__a2fcInit) {
         userpady: Number(document.getElementById("pady").value)
       };
     } else if (fitKnown == false) {
-      if (document.getElementById("fitCalc__input_height").value == "" || document.getElementById("fitCalc__input_inseam").value == "") {
-        document.getElementById("op1p").innerHTML = "Please enter your body measurements.";
-        return;
-      } else if (/\D/.test(document.getElementById("fitCalc__input_height").value) || /\D/.test(document.getElementById("fitCalc__input_inseam").value)) {
-        document.getElementById("op1p").innerHTML = "Please only enter whole numbers for body measurements.";
+      var unitEl = document.querySelector('input[name="a2fcUnits"]:checked');
+      var unit = unitEl ? unitEl.value : "in";
+      var hRaw = parseFloat(document.getElementById("fitCalc__input_height").value),
+          iRaw = parseFloat(document.getElementById("fitCalc__input_inseam").value);
+      if (isNaN(hRaw) || isNaN(iRaw)) {
+        document.getElementById("op1p").innerHTML = "Please enter your height and inseam.";
         return;
       }
-      var height = Number(document.getElementById("fitCalc__input_height").value),
-          inseam = Number(document.getElementById("fitCalc__input_inseam").value);
+      var factor = unit === "in" ? 25.4 : 10;
+      var height = hRaw * factor, inseam = iRaw * factor;
+      if (height < 1200 || height > 2200 || inseam < 500 || inseam > 1200 || inseam >= height) {
+        document.getElementById("op1p").innerHTML = "Those numbers look off — double-check your height and inseam (" + (unit === "in" ? "in inches" : "in centimeters") + ").";
+        return;
+      }
       var saddle = 0.9 * inseam;
       fit = {
         userpadx: 0.29 * height + (0.42 - saddle / height) * 500,
@@ -175,6 +185,14 @@ if (!window.__a2fcInit) {
   }
 
   function toggleFit() { showMe("togglefit"); showMe("fitfinder"); }
+
+  function a2fcUnitsChanged() {
+    var unitEl = document.querySelector('input[name="a2fcUnits"]:checked');
+    var isIn = !unitEl || unitEl.value === "in";
+    document.querySelectorAll(".a2fcUnit").forEach(function (el) { el.textContent = isIn ? "in" : "cm"; });
+    document.getElementById("fitCalc__input_height").placeholder = isIn ? "70" : "178";
+    document.getElementById("fitCalc__input_inseam").placeholder = isIn ? "32" : "81";
+  }
 
   function showMe(showBox) {
     var el = document.getElementById(showBox);
