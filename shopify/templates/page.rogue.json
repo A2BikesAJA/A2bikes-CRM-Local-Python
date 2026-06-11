@@ -9,7 +9,8 @@
             "icon": "sliders",
             "metric": "All-road",
             "title": "One bike, every surface",
-            "text": "Tarmac, back roads and gravel — clearance and geometry that don't make you choose."
+            "text": "Tarmac, back roads and gravel \u2014 clearance and geometry that don't make you choose.",
+            "photo": "shopify://shop_images/rogue-edu-wide-tire-v2.jpg"
           }
         },
         "proof_ride": {
@@ -18,7 +19,8 @@
             "icon": "feather",
             "metric": "All-day",
             "title": "Ride-quality carbon",
-            "text": "A frame tuned to stay smooth and composed when the miles add up."
+            "text": "A frame tuned to stay smooth and composed when the miles add up.",
+            "photo": "shopify://shop_images/rogue-lp-frame.jpg"
           }
         },
         "proof_value": {
@@ -27,35 +29,36 @@
             "icon": "dollar",
             "metric": "Direct value",
             "title": "Priced direct",
-            "text": "Race-grade build, no dealer markup — the value that defines A2."
+            "text": "Race-grade build, no dealer markup \u2014 the value that defines A2.",
+            "photo": "shopify://shop_images/rogue-lp-drivetrain.jpg"
           }
         },
         "build_105": {
           "type": "build",
           "settings": {
             "product": "rogue-shimano-105",
-            "name_override": "Rogue · Shimano 105"
+            "name_override": "Rogue \u00b7 Shimano 105"
           }
         },
         "build_rival": {
           "type": "build",
           "settings": {
             "product": "rogue-rival-axs",
-            "name_override": "Rogue · SRAM Rival AXS"
+            "name_override": "Rogue \u00b7 SRAM Rival AXS"
           }
         },
         "build_force": {
           "type": "build",
           "settings": {
             "product": "rogue-sram-force-etap-axs",
-            "name_override": "Rogue · SRAM Force AXS"
+            "name_override": "Rogue \u00b7 SRAM Force AXS"
           }
         },
         "build_red": {
           "type": "build",
           "settings": {
             "product": "rogue-sram-red-axs",
-            "name_override": "Rogue · SRAM Red AXS"
+            "name_override": "Rogue \u00b7 SRAM Red AXS"
           }
         },
         "rev1": {
@@ -71,7 +74,7 @@
           "type": "review",
           "settings": {
             "rating": 5,
-            "quote": "The value is unreal — carbon and AXS for what others charge for alloy.",
+            "quote": "The value is unreal \u2014 carbon and AXS for what others charge for alloy.",
             "author": "Verified rider",
             "detail": "Weekend racer"
           }
@@ -100,10 +103,10 @@
       ],
       "settings": {
         "line": "rogue",
-        "eyebrow": "A2 Bikes · Rogue",
+        "eyebrow": "A2 Bikes \u00b7 Rogue",
         "heading": "One bike for every road you can find.",
-        "subheading": "The Rogue all-road: carbon versatility for tarmac, back roads and gravel — built for value-conscious riders who refuse to compromise.",
-        "price_from": "From about $94/mo with Affirm — or buy it pre-tax with HSA/FSA.",
+        "subheading": "The Rogue all-road: carbon versatility for tarmac, back roads and gravel \u2014 built for value-conscious riders who refuse to compromise.",
+        "price_from": "From about $94/mo with Affirm \u2014 or buy it pre-tax with HSA/FSA.",
         "cta_label": "Build Your Rogue",
         "hero_alt": "A2 Rogue all-road bike on an open road",
         "proof_heading": "Built to go anywhere",
@@ -116,15 +119,17 @@
         "sizing_heading": "Not sure of your size?",
         "sizing_text": "Answer a few quick questions and we'll recommend your Rogue fit in under a minute.",
         "email_heading": "Not ready to buy? Get the Rogue guide.",
-        "email_text": "Specs, sizing and a straight-talk financing breakdown — straight to your inbox.",
+        "email_text": "Specs, sizing and a straight-talk financing breakdown \u2014 straight to your inbox.",
         "email_cta_label": "Send the Rogue guide",
-        "email_success": "You're in — check your inbox for the Rogue guide.",
+        "email_success": "You're in \u2014 check your inbox for the Rogue guide.",
         "email_source": "Rogue LP",
         "final_heading": "Ready to build your Rogue?",
         "final_text": "Pick your groupset and see your monthly or pre-tax price.",
         "truemed_url": "https://www.truemed.com/shop/partners/a2-bikes",
         "klaviyo_company_id": "YejYTH",
-        "klaviyo_list_id": "Riv6B2"
+        "klaviyo_list_id": "Riv6B2",
+        "hero_image": "shopify://shop_images/rogue-lp-hero-road.jpg",
+        "hero_image_mobile": "shopify://shop_images/rogue-lp-hero-mobile.jpg"
       }
     }
   },
