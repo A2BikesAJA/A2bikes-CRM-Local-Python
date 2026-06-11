@@ -107,9 +107,9 @@
         "edu_1_title": "Toray T700 carbon",
         "edu_1_desc": "Hand-laid layup \u2014 the same fiber class as superbikes costing 3\u00d7 more.",
         "edu_2_title": "SAGS adjustable cockpit",
-        "edu_2_desc": "140mm fore/aft pad range. Dial your aero fit without a new stem.",
+        "edu_2_desc": "Full fit adjustability around the stem \u2014 140mm of fore/aft pad range and 95mm of stack, no new parts needed.",
         "edu_3_title": "Race-day storage",
-        "edu_3_desc": "Down-tube and top-tube mounts for nutrition and tools, built in.",
+        "edu_3_desc": "Shown race-ready: XLab Stealth Pocket on the top tube, rear storage pod, and built-in down-tube mounts.",
         "size_help_label": "Find your size",
         "size_help_url": "",
         "cta_prefix": "Add to cart \u2014",
@@ -117,9 +117,9 @@
         "consult_label": "Or book a free fit consult",
         "consult_url": "",
         "show_sticky": true,
-        "edu_1_image": "shopify://shop_images/sp-edu-carbon-frame.jpg",
-        "edu_2_image": "shopify://shop_images/sp-edu-sags-cockpit.jpg",
-        "edu_3_image": "shopify://shop_images/sp-edu-storage-mounts.jpg"
+        "edu_1_image": "shopify://shop_images/sp-edu-carbon-cluster.jpg",
+        "edu_2_image": "shopify://shop_images/sp-edu-stem-sags.jpg",
+        "edu_3_image": "shopify://shop_images/sp-edu-xlab-storage.jpg"
       }
     },
     "reviews": {
