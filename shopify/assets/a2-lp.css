@@ -118,8 +118,8 @@
 @media (min-width: 940px) { .a2-builds__grid { grid-template-columns: repeat(4, 1fr); } }
 .a2-build { display: flex; flex-direction: column; background: var(--a2-card); border: 1px solid var(--a2-border); border-radius: var(--a2-radius); overflow: hidden; text-decoration: none; color: inherit; transition: transform 0.12s ease, border-color 0.12s ease; }
 .a2-build:hover { transform: translateY(-3px); border-color: var(--a2-accent); }
-.a2-build__media { aspect-ratio: 4 / 3; background: color-mix(in srgb, var(--a2-card) 70%, #000); }
-.a2-build__media img { width: 100%; height: 100%; object-fit: cover; }
+.a2-build__media { position: relative; aspect-ratio: 4 / 3; background: #fff; }
+.a2-build__media img { position: absolute; inset: 0; width: 100%; height: 100% !important; max-height: none; object-fit: contain; padding: 10px; box-sizing: border-box; }
 .a2-build__body { padding: 16px 16px 18px; display: flex; flex-direction: column; gap: 4px; flex: 1; }
 .a2-build__name { font-family: var(--a2-font-display); font-size: 1.05rem; }
 .a2-build__price { color: var(--a2-accent); font-weight: 700; }
@@ -192,3 +192,14 @@
 /* ---- Sale / urgency token consumers (brand --a2-sale) ----------------------*/
 .a2-price-sale, .a2-sale-text { color: var(--a2-sale); }
 .a2-badge-sale { display: inline-block; font-family: var(--a2-font-display); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: #fff; background: var(--a2-sale); border-radius: 999px; padding: 3px 10px; }
+
+/* Rider-profile (persona) cards */
+.a2-personas__grid { display: grid; gap: clamp(16px, 3vw, 28px); grid-template-columns: 1fr; margin-top: 18px; }
+@media (min-width: 720px) { .a2-personas__grid { grid-template-columns: repeat(3, 1fr); } }
+.a2-persona { background: var(--a2-card); border: 1px solid var(--a2-border); border-radius: var(--a2-radius); padding: clamp(20px, 3vw, 30px); display: flex; flex-direction: column; gap: 10px; }
+.a2-persona__tag { align-self: flex-start; font-family: var(--a2-font-display); text-transform: uppercase; letter-spacing: .06em; font-size: .72rem; color: var(--a2-accent); border: 1px solid currentColor; border-radius: 999px; padding: .3em .9em; }
+.a2-persona__title { font-family: var(--a2-font-display); font-size: 1.3rem; margin: 0; }
+.a2-persona__text, .a2-persona__pick, .a2-persona__upgrade { margin: 0; }
+.a2-persona__pick, .a2-persona__upgrade { font-size: .95rem; }
+.a2-persona__cta { margin-top: auto; padding-top: 6px; font-family: var(--a2-font-display); text-transform: uppercase; font-size: .8rem; letter-spacing: .08em; color: var(--a2-accent); text-decoration: none; }
+.a2-persona__cta:hover { text-decoration: underline; }

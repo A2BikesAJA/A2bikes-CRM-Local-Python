@@ -91,12 +91,51 @@
             "author": "Verified rider",
             "detail": "First tri bike"
           }
+        },
+        "persona_new": {
+          "type": "persona",
+          "settings": {
+            "tag": "New to triathlon",
+            "title": "Your first tri bike",
+            "text": "Your first race is on the calendar and the borrowed road bike is holding you back. You need the right bike for your race distance \u2014 without overbuying.",
+            "pick": "SP \u00b7 Shimano 105 \u2014 race-ready out of the box",
+            "upgrade": "Keep the stock wheels for season one and spend the savings on a proper fit \u2014 use the Fit Finder below so the size is right the first time.",
+            "cta_label": "See the 105 build",
+            "cta_url": "/products/sp-shimano-105n"
+          }
+        },
+        "persona_amateur": {
+          "type": "persona",
+          "settings": {
+            "tag": "A few seasons in",
+            "title": "The age-grouper",
+            "text": "You\u2019ve raced enough to know the bike leg is where your time hides, and the road-bike-with-clip-ons setup has hit its ceiling. Time for a dedicated tri bike.",
+            "pick": "SP \u00b7 Shimano 105 or SRAM Rival AXS",
+            "upgrade": "Carbon race wheels are the classic next step \u2014 add a wheelset with your bike and the discount applies automatically in the cart.",
+            "cta_label": "See the Rival build",
+            "cta_url": "/products/sp-sram-rival-1"
+          }
+        },
+        "persona_comeback": {
+          "type": "persona",
+          "settings": {
+            "tag": "Returning to the sport",
+            "title": "The comeback",
+            "text": "You raced in another phase of life and you\u2019re coming back \u2014 and yes, bikes cost more than they did ten years ago. You want something new and genuinely fast, not a museum piece.",
+            "pick": "SP \u00b7 SRAM Force AXS \u2014 electronic shifting, race-day spec",
+            "upgrade": "Make the math feel sane again: split it monthly with Affirm or use pre-tax HSA/FSA dollars through Truemed.",
+            "cta_label": "See the Force build",
+            "cta_url": "/products/sp-sram-force"
+          }
         }
       },
       "block_order": [
         "proof_aero",
         "proof_weight",
         "proof_geo",
+        "persona_new",
+        "persona_amateur",
+        "persona_comeback",
         "build_105",
         "build_rival",
         "build_force",
@@ -144,7 +183,10 @@
         "final_heading": "Ready to build yours?",
         "final_text": "Pick your groupset and see your monthly or pre-tax price.",
         "hero_image": "shopify://shop_images/sp-lp-hero-deck.jpg",
-        "hero_image_mobile": "shopify://shop_images/sp-lp-hero-mobile.jpg"
+        "hero_image_mobile": "shopify://shop_images/sp-lp-hero-mobile.jpg",
+        "sizing_tool": "fit_finder",
+        "personas_heading": "Which rider are you?",
+        "personas_sub": "Three kinds of athletes buy the SP. Find your build in 20 seconds."
       }
     }
   },

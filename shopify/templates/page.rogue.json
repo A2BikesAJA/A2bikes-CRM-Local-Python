@@ -37,28 +37,32 @@
           "type": "build",
           "settings": {
             "product": "rogue-shimano-105",
-            "name_override": "Rogue \u00b7 Shimano 105"
+            "name_override": "Rogue \u00b7 Shimano 105",
+            "colorway": "Matte Black"
           }
         },
         "build_rival": {
           "type": "build",
           "settings": {
             "product": "rogue-rival-axs",
-            "name_override": "Rogue \u00b7 SRAM Rival AXS"
+            "name_override": "Rogue \u00b7 SRAM Rival AXS",
+            "colorway": "Matte Black"
           }
         },
         "build_force": {
           "type": "build",
           "settings": {
             "product": "rogue-sram-force-etap-axs",
-            "name_override": "Rogue \u00b7 SRAM Force AXS"
+            "name_override": "Rogue \u00b7 SRAM Force AXS",
+            "colorway": "Glossy White"
           }
         },
         "build_red": {
           "type": "build",
           "settings": {
             "product": "rogue-sram-red-axs",
-            "name_override": "Rogue \u00b7 SRAM Red AXS"
+            "name_override": "Rogue \u00b7 SRAM Red AXS",
+            "colorway": "Cascade Blue"
           }
         },
         "rev1": {
@@ -87,12 +91,51 @@
             "author": "Verified rider",
             "detail": "New road rider"
           }
+        },
+        "persona_new": {
+          "type": "persona",
+          "settings": {
+            "tag": "First serious bike",
+            "title": "One bike for everything",
+            "text": "You want one carbon bike for group rides, fitness, light gravel and maybe a first event \u2014 versatility, not a garage full of bikes.",
+            "pick": "Rogue \u00b7 Shimano 105",
+            "upgrade": "The stock setup covers tarmac and gravel \u2014 swap tires, not bikes. Use the size calculator below to nail your frame size.",
+            "cta_label": "See the 105 build",
+            "cta_url": "/products/rogue-shimano-105"
+          }
+        },
+        "persona_amateur": {
+          "type": "persona",
+          "settings": {
+            "tag": "Riding regularly",
+            "title": "The upgrader",
+            "text": "You ride every week, you\u2019ve outgrown the entry-level bike, and you want modern shifting and real speed for the money.",
+            "pick": "Rogue \u00b7 SRAM Rival AXS \u2014 wireless electronic shifting",
+            "upgrade": "Carbon wheels are the upgrade you\u2019ll feel most \u2014 the Rogue takes deep race wheels whenever you\u2019re ready.",
+            "cta_label": "See the Rival build",
+            "cta_url": "/products/rogue-rival-axs"
+          }
+        },
+        "persona_comeback": {
+          "type": "persona",
+          "settings": {
+            "tag": "Returning to the sport",
+            "title": "The comeback",
+            "text": "Back after years away \u2014 and sticker shock is real. Direct pricing gets you the upgrades you\u2019ll actually feel (electronic shifting, disc brakes, carbon) without the boutique markup.",
+            "pick": "Rogue \u00b7 SRAM Force AXS",
+            "upgrade": "Split it monthly with Affirm, or check HSA/FSA eligibility with Truemed before you assume it\u2019s out of reach.",
+            "cta_label": "See the Force build",
+            "cta_url": "/products/rogue-sram-force-etap-axs"
+          }
         }
       },
       "block_order": [
         "proof_versatile",
         "proof_ride",
         "proof_value",
+        "persona_new",
+        "persona_amateur",
+        "persona_comeback",
         "build_105",
         "build_rival",
         "build_force",
@@ -129,7 +172,10 @@
         "klaviyo_company_id": "YejYTH",
         "klaviyo_list_id": "Riv6B2",
         "hero_image": "shopify://shop_images/rogue-lp-hero-road.jpg",
-        "hero_image_mobile": "shopify://shop_images/rogue-lp-hero-mobile.jpg"
+        "hero_image_mobile": "shopify://shop_images/rogue-lp-hero-mobile.jpg",
+        "sizing_tool": "size_calc",
+        "personas_heading": "Which rider are you?",
+        "personas_sub": "Three kinds of riders buy the Rogue. Find your build in 20 seconds."
       }
     }
   },

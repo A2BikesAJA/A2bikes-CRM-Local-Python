@@ -150,6 +150,29 @@
     </div>
   {%- endif -%}
 
+  {%- comment -%} 2b. RIDER PROFILES (psychographic segmentation) {%- endcomment -%}
+  {%- assign persona_blocks = section.blocks | where: 'type', 'persona' -%}
+  {%- if persona_blocks.size > 0 -%}
+    <div class="a2-section a2-wrap a2-personas">
+      {%- if section.settings.personas_heading != blank -%}<h2 class="a2-h2 a2-center">{{ section.settings.personas_heading }}</h2>{%- endif -%}
+      {%- if section.settings.personas_sub != blank -%}<p class="a2-lead a2-center">{{ section.settings.personas_sub }}</p>{%- endif -%}
+      <div class="a2-personas__grid">
+        {%- for b in persona_blocks -%}
+          <div class="a2-persona" {{ b.shopify_attributes }}>
+            {%- if b.settings.tag != blank -%}<span class="a2-persona__tag">{{ b.settings.tag }}</span>{%- endif -%}
+            {%- if b.settings.title != blank -%}<h3 class="a2-persona__title">{{ b.settings.title }}</h3>{%- endif -%}
+            {%- if b.settings.text != blank -%}<p class="a2-persona__text">{{ b.settings.text }}</p>{%- endif -%}
+            {%- if b.settings.pick != blank -%}<p class="a2-persona__pick"><strong>Your build:</strong> {{ b.settings.pick }}</p>{%- endif -%}
+            {%- if b.settings.upgrade != blank -%}<p class="a2-persona__upgrade"><strong>Upgrade that matters:</strong> {{ b.settings.upgrade }}</p>{%- endif -%}
+            {%- if b.settings.cta_label != blank and b.settings.cta_url != blank -%}
+              <a class="a2-persona__cta" href="{{ b.settings.cta_url }}" data-a2-cta data-a2-event="persona_select" data-a2-cta-id="persona-{{ forloop.index }}">{{ b.settings.cta_label }} &rarr;</a>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+
   {%- comment -%} 3. FINANCING BAND {%- endcomment -%}
   <div class="a2-band">
     <div class="a2-wrap a2-section">
@@ -221,7 +244,11 @@
       {%- endif -%}
     </div>
     {%- if section.settings.show_fit_calculator -%}
-      <div style="margin-top:20px">{% render 'a2-fit-calculator' %}</div>
+      {%- if section.settings.sizing_tool == 'size_calc' -%}
+        <div style="margin-top:20px">{% render 'a2-size-calc', default_bike: section.settings.line %}</div>
+      {%- else -%}
+        <div style="margin-top:20px">{% render 'a2-fit-calculator' %}</div>
+      {%- endif -%}
     {%- endif -%}
   </div>
 
@@ -256,208 +283,584 @@
   "tag": "section",
   "class": "a2-lp-section",
   "settings": [
-    { "type": "header", "content": "Line & type" },
-    { "type": "select", "id": "line", "label": "Bike line", "options": [
-      { "value": "sp", "label": "SP (triathlon — aero/dark theme)" },
-      { "value": "rogue", "label": "Rogue (road/gravel — earthy theme)" }
-    ], "default": "sp",
-      "info": "Drives palette, the collection fallback (/collections/sp or /collections/rogue) and analytics event prefix (sp_lp_* or rogue_lp_*)." },
     {
-    "type": "header",
-    "content": "Brand & color",
-    "info": "Defaults match the A2 site brand (cream / near-black / cream-yellow button, red for sale). Change any value to override; clear a field to fall back to the page's built-in palette."
-  },
-  {
-    "type": "checkbox",
-    "id": "apply_brand",
-    "label": "Apply brand styling",
-    "default": true,
-    "info": "On = use the brand colors & fonts below. Off = use the page's built-in palette and the theme's default fonts."
-  },
-  {
-    "type": "color",
-    "id": "brand_bg",
-    "label": "Page background",
-    "default": "#fcfcf9"
-  },
-  {
-    "type": "color",
-    "id": "brand_fg",
-    "label": "Text",
-    "default": "#22292d"
-  },
-  {
-    "type": "color",
-    "id": "brand_muted",
-    "label": "Muted text",
-    "default": "#5c6873"
-  },
-  {
-    "type": "color",
-    "id": "brand_card",
-    "label": "Card / surface",
-    "default": "#ffffff"
-  },
-  {
-    "type": "color",
-    "id": "brand_border",
-    "label": "Border",
-    "default": "#AAAAAA"
-  },
-  {
-    "type": "color",
-    "id": "brand_accent",
-    "label": "Accent / button",
-    "default": "#242526"
-  },
-  {
-    "type": "color",
-    "id": "brand_accent_fg",
-    "label": "Accent text (on button)",
-    "default": "#faf7c3"
-  },
-  {
-    "type": "color",
-    "id": "brand_sale",
-    "label": "Sale / urgency",
-    "default": "#d21404"
-  },
-  {
-    "type": "font_picker",
-    "id": "heading_font",
-    "label": "Heading font",
-    "default": "fraunces_n3"
-  },
-  {
-    "type": "font_picker",
-    "id": "body_font",
-    "label": "Body font",
-    "default": "instrument_sans_n4"
-  },
-  {
-    "type": "select",
-    "id": "hero_style",
-    "label": "Hero style",
-    "options": [
-      {
-        "value": "light",
-        "label": "Light (brand)"
-      },
-      {
-        "value": "dark",
-        "label": "Dark (on-brand variant)"
-      }
-    ],
-    "default": "dark",
-    "info": "Dark uses the site's footer-dark surface with the cream-yellow accent. The rest of the page stays light/on-brand."
-  },
-  {
-    "type": "color",
-    "id": "brand_dark_bg",
-    "label": "Dark hero background",
-    "default": "#171819"
-  },
-  {
-    "type": "color",
-    "id": "brand_dark_fg",
-    "label": "Dark hero text",
-    "default": "#f7f7e8"
-  },
-
-    { "type": "header", "content": "Hero" },
-    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "A2 Bikes · SP" },
-    { "type": "text", "id": "heading", "label": "Headline", "default": "Podium speed. Without the podium price." },
-    { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "Carbon triathlon performance engineered to win on race day and make sense on your budget." },
-    { "type": "text", "id": "price_from", "label": "Price-anchored line", "default": "From about $63/mo with Affirm — or pre-tax with HSA/FSA.",
-      "info": "Lead with a monthly figure, not the sticker price." },
-    { "type": "text", "id": "cta_label", "label": "Primary CTA label", "default": "Build Your SP" },
-    { "type": "image_picker", "id": "hero_image", "label": "Hero image (desktop)" },
-    { "type": "image_picker", "id": "hero_image_mobile", "label": "Hero image (mobile, optional)" },
-    { "type": "text", "id": "hero_alt", "label": "Hero image alt text", "default": "A2 SP triathlon bike at speed" },
-
-    { "type": "header", "content": "Routing / build selector" },
-    { "type": "url", "id": "build_selector_url", "label": "Build-selector URL",
-      "info": "Leave blank to fall back to the first build's product page, then to the line collection." },
-
-    { "type": "header", "content": "Proof points", "info": "Add 3 'Proof point' blocks." },
-    { "type": "text", "id": "proof_heading", "label": "Heading", "default": "Built to be faster" },
-
-    { "type": "header", "content": "Financing band (Affirm + Truemed)" },
-    { "type": "text", "id": "band_heading", "label": "Band heading", "default": "A $4k bike is more attainable than you think" },
-    { "type": "number", "id": "financing_price", "label": "Representative price ($) for Affirm estimate", "default": 3115 },
-    { "type": "text", "id": "financing_price_label", "label": "Affirm fallback text", "default": "Split it into easy monthly payments with Affirm." },
-    { "type": "text", "id": "affirm_heading", "label": "Affirm heading", "default": "Ride now, pay monthly" },
-    { "type": "text", "id": "truemed_heading", "label": "Truemed heading", "default": "Buy it with pre-tax HSA/FSA dollars" },
-    { "type": "textarea", "id": "truemed_text", "label": "Truemed text", "default": "Most triathletes don't know a bike can qualify for HSA/FSA spending through Truemed's medical-necessity pathway — an effective discount of roughly 30%." },
-    { "type": "url", "id": "truemed_url", "label": "Truemed flow URL" },
-    { "type": "textarea", "id": "financing_note", "label": "Fine print", "default": "Estimates are illustrative, not an offer of credit or tax advice. Rates and eligibility are determined by Affirm and Truemed." },
-
-    { "type": "header", "content": "Build overview", "info": "Add 4 'Build' blocks (one per groupset)." },
-    { "type": "text", "id": "builds_heading", "label": "Heading", "default": "Four builds. Four price points." },
-    { "type": "textarea", "id": "builds_subheading", "label": "Subheading", "default": "Same race-proven frame. Choose the groupset that fits your goals and budget." },
-
-    { "type": "header", "content": "Reviews / social proof" },
-    { "type": "text", "id": "reviews_heading", "label": "Heading", "default": "Raced. Reviewed. Repeated." },
-    { "type": "html", "id": "reviews_embed", "label": "Reviews embed (Fera.ai, optional)",
-      "info": "Paste a Fera.ai widget here to replace the manual review blocks below." },
-
-    { "type": "header", "content": "Sizing reassurance" },
-    { "type": "text", "id": "sizing_heading", "label": "Heading", "default": "Not sure of your size?" },
-    { "type": "textarea", "id": "sizing_text", "label": "Text", "default": "Answer a few quick questions and we'll recommend your fit in under a minute." },
-    { "type": "url", "id": "octane_quiz_url", "label": "Octane AI quiz URL" },
-    { "type": "text", "id": "octane_cta_label", "label": "Quiz button label", "default": "Find my size" },
-    { "type": "checkbox", "id": "show_fit_calculator", "label": "Show the A2 Fit Finder calculator", "default": false, "info": "Embeds the height/inseam → frame-size calculator (use on SP). Confirm fit_coords in snippets/a2-fit-calculator.liquid match current SP geometry before publishing." },
-
-    { "type": "header", "content": "Email capture (Klaviyo)" },
-    { "type": "text", "id": "email_heading", "label": "Heading", "default": "Not ready to buy? Get the SP Buyer's Guide." },
-    { "type": "textarea", "id": "email_text", "label": "Text", "default": "Specs, sizing and a straight-talk financing breakdown — straight to your inbox." },
-    { "type": "text", "id": "email_cta_label", "label": "Button label", "default": "Send the guide" },
-    { "type": "text", "id": "email_success", "label": "Success message", "default": "You're in — check your inbox for the guide." },
-    { "type": "text", "id": "email_source", "label": "Klaviyo custom_source", "default": "SP Performance LP" },
-    { "type": "text", "id": "klaviyo_company_id", "label": "Klaviyo public API key (company id)", "default": "KLAVIYO_COMPANY_ID" },
-    { "type": "text", "id": "klaviyo_list_id", "label": "Klaviyo list id", "default": "KLAVIYO_LIST_ID" },
-
-    { "type": "header", "content": "Final CTA" },
-    { "type": "text", "id": "final_heading", "label": "Heading", "default": "Ready to build yours?" },
-    { "type": "textarea", "id": "final_text", "label": "Text", "default": "Pick your groupset and see your monthly or pre-tax price." }
+      "type": "header",
+      "content": "Line & type"
+    },
+    {
+      "type": "select",
+      "id": "line",
+      "label": "Bike line",
+      "options": [
+        {
+          "value": "sp",
+          "label": "SP (triathlon \u2014 aero/dark theme)"
+        },
+        {
+          "value": "rogue",
+          "label": "Rogue (road/gravel \u2014 earthy theme)"
+        }
+      ],
+      "default": "sp",
+      "info": "Drives palette, the collection fallback (/collections/sp or /collections/rogue) and analytics event prefix (sp_lp_* or rogue_lp_*)."
+    },
+    {
+      "type": "header",
+      "content": "Brand & color",
+      "info": "Defaults match the A2 site brand (cream / near-black / cream-yellow button, red for sale). Change any value to override; clear a field to fall back to the page's built-in palette."
+    },
+    {
+      "type": "checkbox",
+      "id": "apply_brand",
+      "label": "Apply brand styling",
+      "default": true,
+      "info": "On = use the brand colors & fonts below. Off = use the page's built-in palette and the theme's default fonts."
+    },
+    {
+      "type": "color",
+      "id": "brand_bg",
+      "label": "Page background",
+      "default": "#fcfcf9"
+    },
+    {
+      "type": "color",
+      "id": "brand_fg",
+      "label": "Text",
+      "default": "#22292d"
+    },
+    {
+      "type": "color",
+      "id": "brand_muted",
+      "label": "Muted text",
+      "default": "#5c6873"
+    },
+    {
+      "type": "color",
+      "id": "brand_card",
+      "label": "Card / surface",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "brand_border",
+      "label": "Border",
+      "default": "#AAAAAA"
+    },
+    {
+      "type": "color",
+      "id": "brand_accent",
+      "label": "Accent / button",
+      "default": "#242526"
+    },
+    {
+      "type": "color",
+      "id": "brand_accent_fg",
+      "label": "Accent text (on button)",
+      "default": "#faf7c3"
+    },
+    {
+      "type": "color",
+      "id": "brand_sale",
+      "label": "Sale / urgency",
+      "default": "#d21404"
+    },
+    {
+      "type": "font_picker",
+      "id": "heading_font",
+      "label": "Heading font",
+      "default": "fraunces_n3"
+    },
+    {
+      "type": "font_picker",
+      "id": "body_font",
+      "label": "Body font",
+      "default": "instrument_sans_n4"
+    },
+    {
+      "type": "select",
+      "id": "hero_style",
+      "label": "Hero style",
+      "options": [
+        {
+          "value": "light",
+          "label": "Light (brand)"
+        },
+        {
+          "value": "dark",
+          "label": "Dark (on-brand variant)"
+        }
+      ],
+      "default": "dark",
+      "info": "Dark uses the site's footer-dark surface with the cream-yellow accent. The rest of the page stays light/on-brand."
+    },
+    {
+      "type": "color",
+      "id": "brand_dark_bg",
+      "label": "Dark hero background",
+      "default": "#171819"
+    },
+    {
+      "type": "color",
+      "id": "brand_dark_fg",
+      "label": "Dark hero text",
+      "default": "#f7f7e8"
+    },
+    {
+      "type": "header",
+      "content": "Hero"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "A2 Bikes \u00b7 SP"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Headline",
+      "default": "Podium speed. Without the podium price."
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Carbon triathlon performance engineered to win on race day and make sense on your budget."
+    },
+    {
+      "type": "text",
+      "id": "price_from",
+      "label": "Price-anchored line",
+      "default": "From about $63/mo with Affirm \u2014 or pre-tax with HSA/FSA.",
+      "info": "Lead with a monthly figure, not the sticker price."
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Primary CTA label",
+      "default": "Build Your SP"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero image (desktop)"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image_mobile",
+      "label": "Hero image (mobile, optional)"
+    },
+    {
+      "type": "text",
+      "id": "hero_alt",
+      "label": "Hero image alt text",
+      "default": "A2 SP triathlon bike at speed"
+    },
+    {
+      "type": "header",
+      "content": "Routing / build selector"
+    },
+    {
+      "type": "url",
+      "id": "build_selector_url",
+      "label": "Build-selector URL",
+      "info": "Leave blank to fall back to the first build's product page, then to the line collection."
+    },
+    {
+      "type": "header",
+      "content": "Proof points",
+      "info": "Add 3 'Proof point' blocks."
+    },
+    {
+      "type": "text",
+      "id": "proof_heading",
+      "label": "Heading",
+      "default": "Built to be faster"
+    },
+    {
+      "type": "header",
+      "content": "Rider profiles",
+      "info": "Add up to 3 'Rider profile' blocks to segment newbie / amateur / returning riders."
+    },
+    {
+      "type": "text",
+      "id": "personas_heading",
+      "label": "Heading",
+      "default": "Which rider are you?"
+    },
+    {
+      "type": "textarea",
+      "id": "personas_sub",
+      "label": "Subheading",
+      "default": "Three kinds of athletes buy this bike. Find your build in 20 seconds."
+    },
+    {
+      "type": "header",
+      "content": "Financing band (Affirm + Truemed)"
+    },
+    {
+      "type": "text",
+      "id": "band_heading",
+      "label": "Band heading",
+      "default": "A $4k bike is more attainable than you think"
+    },
+    {
+      "type": "number",
+      "id": "financing_price",
+      "label": "Representative price ($) for Affirm estimate",
+      "default": 3115
+    },
+    {
+      "type": "text",
+      "id": "financing_price_label",
+      "label": "Affirm fallback text",
+      "default": "Split it into easy monthly payments with Affirm."
+    },
+    {
+      "type": "text",
+      "id": "affirm_heading",
+      "label": "Affirm heading",
+      "default": "Ride now, pay monthly"
+    },
+    {
+      "type": "text",
+      "id": "truemed_heading",
+      "label": "Truemed heading",
+      "default": "Buy it with pre-tax HSA/FSA dollars"
+    },
+    {
+      "type": "textarea",
+      "id": "truemed_text",
+      "label": "Truemed text",
+      "default": "Most triathletes don't know a bike can qualify for HSA/FSA spending through Truemed's medical-necessity pathway \u2014 an effective discount of roughly 30%."
+    },
+    {
+      "type": "url",
+      "id": "truemed_url",
+      "label": "Truemed flow URL"
+    },
+    {
+      "type": "textarea",
+      "id": "financing_note",
+      "label": "Fine print",
+      "default": "Estimates are illustrative, not an offer of credit or tax advice. Rates and eligibility are determined by Affirm and Truemed."
+    },
+    {
+      "type": "header",
+      "content": "Build overview",
+      "info": "Add 4 'Build' blocks (one per groupset)."
+    },
+    {
+      "type": "text",
+      "id": "builds_heading",
+      "label": "Heading",
+      "default": "Four builds. Four price points."
+    },
+    {
+      "type": "textarea",
+      "id": "builds_subheading",
+      "label": "Subheading",
+      "default": "Same race-proven frame. Choose the groupset that fits your goals and budget."
+    },
+    {
+      "type": "header",
+      "content": "Reviews / social proof"
+    },
+    {
+      "type": "text",
+      "id": "reviews_heading",
+      "label": "Heading",
+      "default": "Raced. Reviewed. Repeated."
+    },
+    {
+      "type": "html",
+      "id": "reviews_embed",
+      "label": "Reviews embed (Fera.ai, optional)",
+      "info": "Paste a Fera.ai widget here to replace the manual review blocks below."
+    },
+    {
+      "type": "header",
+      "content": "Sizing reassurance"
+    },
+    {
+      "type": "select",
+      "id": "sizing_tool",
+      "label": "Sizing tool",
+      "default": "fit_finder",
+      "options": [
+        {
+          "value": "fit_finder",
+          "label": "Fit Finder (pad X/Y)"
+        },
+        {
+          "value": "size_calc",
+          "label": "Size Calculator (height)"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "sizing_heading",
+      "label": "Heading",
+      "default": "Not sure of your size?"
+    },
+    {
+      "type": "textarea",
+      "id": "sizing_text",
+      "label": "Text",
+      "default": "Answer a few quick questions and we'll recommend your fit in under a minute."
+    },
+    {
+      "type": "url",
+      "id": "octane_quiz_url",
+      "label": "Octane AI quiz URL"
+    },
+    {
+      "type": "text",
+      "id": "octane_cta_label",
+      "label": "Quiz button label",
+      "default": "Find my size"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_fit_calculator",
+      "label": "Show the A2 Fit Finder calculator",
+      "default": false,
+      "info": "Embeds the height/inseam \u2192 frame-size calculator (use on SP). Confirm fit_coords in snippets/a2-fit-calculator.liquid match current SP geometry before publishing."
+    },
+    {
+      "type": "header",
+      "content": "Email capture (Klaviyo)"
+    },
+    {
+      "type": "text",
+      "id": "email_heading",
+      "label": "Heading",
+      "default": "Not ready to buy? Get the SP Buyer's Guide."
+    },
+    {
+      "type": "textarea",
+      "id": "email_text",
+      "label": "Text",
+      "default": "Specs, sizing and a straight-talk financing breakdown \u2014 straight to your inbox."
+    },
+    {
+      "type": "text",
+      "id": "email_cta_label",
+      "label": "Button label",
+      "default": "Send the guide"
+    },
+    {
+      "type": "text",
+      "id": "email_success",
+      "label": "Success message",
+      "default": "You're in \u2014 check your inbox for the guide."
+    },
+    {
+      "type": "text",
+      "id": "email_source",
+      "label": "Klaviyo custom_source",
+      "default": "SP Performance LP"
+    },
+    {
+      "type": "text",
+      "id": "klaviyo_company_id",
+      "label": "Klaviyo public API key (company id)",
+      "default": "KLAVIYO_COMPANY_ID"
+    },
+    {
+      "type": "text",
+      "id": "klaviyo_list_id",
+      "label": "Klaviyo list id",
+      "default": "KLAVIYO_LIST_ID"
+    },
+    {
+      "type": "header",
+      "content": "Final CTA"
+    },
+    {
+      "type": "text",
+      "id": "final_heading",
+      "label": "Heading",
+      "default": "Ready to build yours?"
+    },
+    {
+      "type": "textarea",
+      "id": "final_text",
+      "label": "Text",
+      "default": "Pick your groupset and see your monthly or pre-tax price."
+    }
   ],
   "blocks": [
     {
       "type": "proof",
       "name": "Proof point",
       "settings": [
-        { "type": "image_picker", "id": "photo", "label": "Card photo", "info": "Optional image across the top of the card." },
-        { "type": "select", "id": "icon", "label": "Icon", "default": "none", "options": [
-          { "value": "none", "label": "None" },
-          { "value": "wind", "label": "Wind / aero" },
-          { "value": "feather", "label": "Feather / light" },
-          { "value": "sliders", "label": "Sliders / fit" },
-          { "value": "shield", "label": "Shield / warranty" },
-          { "value": "dollar", "label": "Dollar / value" }
-        ], "info": "Built-in icon. A custom icon image below overrides it." },
-        { "type": "image_picker", "id": "image", "label": "Icon (optional)" },
-        { "type": "text", "id": "metric", "label": "Metric (optional)", "default": "−18%" },
-        { "type": "text", "id": "title", "label": "Title", "default": "Wind-tunnel aero" },
-        { "type": "textarea", "id": "text", "label": "Text", "default": "Tube shapes refined for real-world yaw, not just a spec sheet." }
+        {
+          "type": "image_picker",
+          "id": "photo",
+          "label": "Card photo",
+          "info": "Optional image across the top of the card."
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "default": "none",
+          "options": [
+            {
+              "value": "none",
+              "label": "None"
+            },
+            {
+              "value": "wind",
+              "label": "Wind / aero"
+            },
+            {
+              "value": "feather",
+              "label": "Feather / light"
+            },
+            {
+              "value": "sliders",
+              "label": "Sliders / fit"
+            },
+            {
+              "value": "shield",
+              "label": "Shield / warranty"
+            },
+            {
+              "value": "dollar",
+              "label": "Dollar / value"
+            }
+          ],
+          "info": "Built-in icon. A custom icon image below overrides it."
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Icon (optional)"
+        },
+        {
+          "type": "text",
+          "id": "metric",
+          "label": "Metric (optional)",
+          "default": "\u221218%"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Wind-tunnel aero"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "Tube shapes refined for real-world yaw, not just a spec sheet."
+        }
       ]
     },
     {
       "type": "build",
       "name": "Build",
       "settings": [
-        { "type": "product", "id": "product", "label": "Product (groupset build)" },
-        { "type": "text", "id": "name_override", "label": "Name override (optional)" },
-        { "type": "text", "id": "price_override", "label": "Price label override (optional)" }
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product (groupset build)"
+        },
+        {
+          "type": "text",
+          "id": "name_override",
+          "label": "Name override (optional)"
+        },
+        {
+          "type": "text",
+          "id": "price_override",
+          "label": "Price label override (optional)"
+        },
+        {
+          "type": "text",
+          "id": "colorway",
+          "label": "Colorway photo",
+          "info": "Shows the first product photo whose alt text contains this (e.g. Matte Black, Glossy White, Cascade Blue). Empty = featured image."
+        }
       ]
     },
     {
       "type": "review",
       "name": "Review",
       "settings": [
-        { "type": "range", "id": "rating", "label": "Rating", "min": 1, "max": 5, "step": 1, "default": 5, "unit": "/5" },
-        { "type": "textarea", "id": "quote", "label": "Quote", "default": "Beat my PR and my budget. Genuinely faster than bikes twice the price." },
-        { "type": "text", "id": "author", "label": "Author", "default": "Verified rider" },
-        { "type": "text", "id": "detail", "label": "Detail", "default": "70.3 age-grouper" }
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5,
+          "unit": "/5"
+        },
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Quote",
+          "default": "Beat my PR and my budget. Genuinely faster than bikes twice the price."
+        },
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Author",
+          "default": "Verified rider"
+        },
+        {
+          "type": "text",
+          "id": "detail",
+          "label": "Detail",
+          "default": "70.3 age-grouper"
+        }
+      ]
+    },
+    {
+      "type": "persona",
+      "name": "Rider profile",
+      "settings": [
+        {
+          "type": "text",
+          "id": "tag",
+          "label": "Tag",
+          "info": "Short eyebrow, e.g. 'New to triathlon'."
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Who this is"
+        },
+        {
+          "type": "text",
+          "id": "pick",
+          "label": "Recommended build"
+        },
+        {
+          "type": "textarea",
+          "id": "upgrade",
+          "label": "Upgrade tip"
+        },
+        {
+          "type": "text",
+          "id": "cta_label",
+          "label": "CTA label"
+        },
+        {
+          "type": "url",
+          "id": "cta_url",
+          "label": "CTA link"
+        }
       ]
     }
   ],
@@ -465,18 +868,79 @@
     {
       "name": "A2 Line Landing Page",
       "blocks": [
-        { "type": "proof", "settings": { "metric": "−18%", "title": "Wind-tunnel aero", "text": "Tube shapes refined for real-world yaw, not just a spec sheet." } },
-        { "type": "proof", "settings": { "metric": "1,180g", "title": "Light where it counts", "text": "A stiff, race-ready frame that climbs and accelerates." } },
-        { "type": "proof", "settings": { "metric": "Fit-first", "title": "Dialed geometry", "text": "Aggressive when you want it, sustainable for the whole race." } },
-        { "type": "build", "settings": { "name_override": "Shimano 105", "price_override": "From $3,115" } },
-        { "type": "build", "settings": { "name_override": "SRAM Rival AXS", "price_override": "From $4,999" } },
-        { "type": "build", "settings": { "name_override": "SRAM Force AXS", "price_override": "From $7,199" } },
-        { "type": "build", "settings": { "name_override": "SRAM Red AXS", "price_override": "From $8,999" } },
-        { "type": "review", "settings": {} },
-        { "type": "review", "settings": { "quote": "Shipped fast, built perfectly, and the financing made it a no-brainer.", "detail": "Full-distance triathlete" } },
-        { "type": "review", "settings": { "quote": "Used my HSA through Truemed and saved hundreds. Wish I'd known sooner.", "detail": "First tri bike" } }
+        {
+          "type": "proof",
+          "settings": {
+            "metric": "\u221218%",
+            "title": "Wind-tunnel aero",
+            "text": "Tube shapes refined for real-world yaw, not just a spec sheet."
+          }
+        },
+        {
+          "type": "proof",
+          "settings": {
+            "metric": "1,180g",
+            "title": "Light where it counts",
+            "text": "A stiff, race-ready frame that climbs and accelerates."
+          }
+        },
+        {
+          "type": "proof",
+          "settings": {
+            "metric": "Fit-first",
+            "title": "Dialed geometry",
+            "text": "Aggressive when you want it, sustainable for the whole race."
+          }
+        },
+        {
+          "type": "build",
+          "settings": {
+            "name_override": "Shimano 105",
+            "price_override": "From $3,115"
+          }
+        },
+        {
+          "type": "build",
+          "settings": {
+            "name_override": "SRAM Rival AXS",
+            "price_override": "From $4,999"
+          }
+        },
+        {
+          "type": "build",
+          "settings": {
+            "name_override": "SRAM Force AXS",
+            "price_override": "From $7,199"
+          }
+        },
+        {
+          "type": "build",
+          "settings": {
+            "name_override": "SRAM Red AXS",
+            "price_override": "From $8,999"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {}
+        },
+        {
+          "type": "review",
+          "settings": {
+            "quote": "Shipped fast, built perfectly, and the financing made it a no-brainer.",
+            "detail": "Full-distance triathlete"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "quote": "Used my HSA through Truemed and saved hundreds. Wish I'd known sooner.",
+            "detail": "First tri bike"
+          }
+        }
       ]
     }
   ]
 }
 {% endschema %}
+

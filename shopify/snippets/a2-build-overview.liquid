@@ -22,9 +22,20 @@
       <a class="a2-build" href="{{ _url }}"
          data-a2-cta data-a2-event="{{ event | default: 'build_select' }}"
          data-a2-cta-id="build-{{ forloop.index }}" {{ b.shopify_attributes }}>
-        {%- if p.featured_image -%}
+        {%- liquid
+          assign _img = p.featured_image
+          if b.settings.colorway != blank
+            for im in p.images
+              if im.alt contains b.settings.colorway
+                assign _img = im
+                break
+              endif
+            endfor
+          endif
+        -%}
+        {%- if _img -%}
           <div class="a2-build__media">
-            {{ p.featured_image | image_url: width: 600 | image_tag:
+            {{ _img | image_url: width: 600 | image_tag:
                loading: 'lazy', widths: '300,600', sizes: '(min-width:940px) 25vw, 50vw',
                alt: _name }}
           </div>
