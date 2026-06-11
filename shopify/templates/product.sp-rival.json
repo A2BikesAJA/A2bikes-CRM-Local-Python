@@ -18,8 +18,8 @@
           "type": "trust",
           "settings": {
             "icon": "shield-check",
-            "title": "Designed by ex-Cervélo engineers",
-            "sub": "Kevin Quan, who designed the Cervélo P-Series, drew this frame."
+            "title": "Designed by ex-Cerv\u00e9lo engineers",
+            "sub": "Kevin Quan, who designed the Cerv\u00e9lo P-Series, drew this frame."
           }
         },
         "t2": {
@@ -50,7 +50,7 @@
           "type": "hotspot",
           "settings": {
             "image_index": 1,
-            "label": "Kammtail tube shapes — aero without UCI-only weirdness",
+            "label": "Kammtail tube shapes \u2014 aero without UCI-only weirdness",
             "x": 34,
             "y": 58
           }
@@ -68,7 +68,7 @@
           "type": "hotspot",
           "settings": {
             "image_index": 1,
-            "label": "SAGS cockpit — 140mm of fit adjustment",
+            "label": "SAGS cockpit \u2014 140mm of fit adjustment",
             "x": 78,
             "y": 30
           }
@@ -86,17 +86,17 @@
       ],
       "settings": {
         "bc_home": "Home",
-        "bc_col": "Triathlon — SP",
+        "bc_col": "Triathlon \u2014 SP",
         "bc_col_url": "",
         "build_collection": "sp",
         "build_label": "Groupset",
-        "kicker": "SP Triathlon · SRAM Rival AXS build",
+        "kicker": "SP Triathlon \u00b7 SRAM Rival AXS build",
         "subtitle": "Carbon triathlon & time-trial bike",
-        "rating_stars": "★★★★★",
+        "rating_stars": "\u2605\u2605\u2605\u2605\u2605",
         "rating_value": "4.8",
         "rating_count": "",
         "reviews_anchor": "#sppdp-reviews",
-        "price_note": "USD · ships free in the continental US",
+        "price_note": "USD \u00b7 ships free in the continental US",
         "affirm_months": 12,
         "affirm_apr": "0% APR",
         "affirm_url": "/pages/financing-hsa-fsa",
@@ -105,14 +105,14 @@
         "gallery_caption": "Hover the numbered points to explore the frame tech.",
         "show_hotspots": true,
         "edu_1_title": "Toray T700 carbon",
-        "edu_1_desc": "Hand-laid layup — the same fiber class as superbikes costing 3× more.",
+        "edu_1_desc": "Hand-laid layup \u2014 the same fiber class as superbikes costing 3\u00d7 more.",
         "edu_2_title": "SAGS adjustable cockpit",
         "edu_2_desc": "140mm fore/aft pad range. Dial your aero fit without a new stem.",
         "edu_3_title": "Race-day storage",
         "edu_3_desc": "Down-tube and top-tube mounts for nutrition and tools, built in.",
         "size_help_label": "Find your size",
         "size_help_url": "",
-        "cta_prefix": "Add to cart —",
+        "cta_prefix": "Add to cart \u2014",
         "demo_note": "7-day home demo",
         "consult_label": "Or book a free fit consult",
         "consult_url": "",
@@ -125,9 +125,9 @@
         "r1": {
           "type": "review",
           "settings": {
-            "stars": "★★★★★",
-            "result": "First 70.3 · 5:42",
-            "quote": "My first carbon tri bike. I'm not a pro — I just wanted to stop getting dropped on the bike leg. It fit out of the box once I used their sizing call, and I genuinely felt faster.",
+            "stars": "\u2605\u2605\u2605\u2605\u2605",
+            "result": "First 70.3 \u00b7 5:42",
+            "quote": "My first carbon tri bike. I'm not a pro \u2014 I just wanted to stop getting dropped on the bike leg. It fit out of the box once I used their sizing call, and I genuinely felt faster.",
             "name": "Marcus T.",
             "context": "Age-grouper, Columbus OH",
             "verified": false
@@ -136,8 +136,8 @@
         "r2": {
           "type": "review",
           "settings": {
-            "stars": "★★★★★",
-            "result": "3rd AG · Olympic",
+            "stars": "\u2605\u2605\u2605\u2605\u2605",
+            "result": "3rd AG \u00b7 Olympic",
             "quote": "Honest take: assembly took me about an hour and the headset needed patience. But for the money there's nothing close. The SAGS cockpit let me get low without buying parts.",
             "name": "Dana R.",
             "context": "2nd season, Boulder CO",
@@ -147,9 +147,9 @@
         "r3": {
           "type": "review",
           "settings": {
-            "stars": "★★★★☆",
+            "stars": "\u2605\u2605\u2605\u2605\u2606",
             "result": "New to tri",
-            "quote": "Shopped the Cervélo and QR at my local shop and walked out because of the price. Glad I waited. Just works, and support actually answered when I had a routing question.",
+            "quote": "Shopped the Cerv\u00e9lo and QR at my local shop and walked out because of the price. Glad I waited. Just works, and support actually answered when I had a routing question.",
             "name": "Priya S.",
             "context": "Beginner, Austin TX",
             "verified": false
@@ -162,10 +162,10 @@
         "r3"
       ],
       "settings": {
-        "kicker": "Owner reviews · athlete to athlete",
+        "kicker": "Owner reviews \u00b7 athlete to athlete",
         "heading": "What SP riders actually say",
         "score": "4.8",
-        "stars": "★★★★★",
+        "stars": "\u2605\u2605\u2605\u2605\u2605",
         "count": "96",
         "recommend": "97%",
         "show_summary": false
@@ -184,7 +184,7 @@
             "a2_style": "bold",
             "comp1": "$5,999",
             "comp2": "$7,157",
-            "comp3": "—"
+            "comp3": "\u2014"
           }
         },
         "c2": {
@@ -196,7 +196,7 @@
             "a2_style": "normal",
             "comp1": "Carbon (aero)",
             "comp2": "Carbon (aero)",
-            "comp3": "—"
+            "comp3": "\u2014"
           }
         },
         "c3": {
@@ -208,19 +208,19 @@
             "a2_style": "normal",
             "comp1": "105 Di2",
             "comp2": "105 Di2",
-            "comp3": "—"
+            "comp3": "\u2014"
           }
         },
         "c4": {
           "type": "row",
           "settings": {
             "label": "Fit adjustability",
-            "a2": "SAGS cockpit — 140mm range",
+            "a2": "SAGS cockpit \u2014 140mm range",
             "a2_source": "manual",
             "a2_style": "normal",
             "comp1": "Adjustable aerobar",
             "comp2": "Adjustable aerobar",
-            "comp3": "—"
+            "comp3": "\u2014"
           }
         },
         "c5": {
@@ -232,7 +232,7 @@
             "a2_style": "yes",
             "comp1": "Online",
             "comp2": "Online",
-            "comp3": "—"
+            "comp3": "\u2014"
           }
         },
         "c6": {
@@ -244,19 +244,19 @@
             "a2_style": "yes",
             "comp1": "6-year",
             "comp2": "Limited",
-            "comp3": "—"
+            "comp3": "\u2014"
           }
         },
         "c7": {
           "type": "row",
           "settings": {
             "label": "Where you buy",
-            "a2": "Direct — 7-day home demo",
+            "a2": "Direct \u2014 7-day home demo",
             "a2_source": "manual",
             "a2_style": "normal",
             "comp1": "Direct",
             "comp2": "Made-to-order (~2 wk)",
-            "comp3": "—"
+            "comp3": "\u2014"
           }
         },
         "c8": {
@@ -268,7 +268,7 @@
             "a2_style": "muted",
             "comp1": "Integrated hydration & storage; established",
             "comp2": "Made-to-order; onboard storage",
-            "comp3": "—"
+            "comp3": "\u2014"
           }
         },
         "cshift": {
@@ -296,7 +296,7 @@
       "settings": {
         "kicker": "Honest comparison",
         "heading": "How this build compares",
-        "note": "We're a younger brand, so here's an honest, like-for-like look at this build vs the Canyon Speedmax and QR X-PR — matched on groupset and on a carbon wheelset where our build ships carbon (US list, June 2026). Where they beat us, we say so.",
+        "note": "We're a younger brand, so here's an honest, like-for-like look at this build vs the Canyon Speedmax and QR X-PR \u2014 matched on groupset and on a carbon wheelset where our build ships carbon (US list, June 2026). Where they beat us, we say so.",
         "pick_label": "Best value",
         "col_a2_name": "A2 SP",
         "col_a2_sub": "This build",
@@ -315,14 +315,14 @@
           "type": "group",
           "settings": {
             "title": "Frame & fork",
-            "rows": "Material | Hand-laid Toray T700 carbon fiber\nFrame weight | 1,250 g (size M, painted)\nTube profiles | Truncated-airfoil (kammtail) down tube, seat tube & fork\nRouting | Fully internal cable & hose\nDesigner | Kevin Quan (former Cervélo P-Series engineer)"
+            "rows": "Material | Hand-laid Toray T700 carbon fiber\nFrame weight | 1,250 g (size M, painted)\nTube profiles | Truncated-airfoil (kammtail) down tube, seat tube & fork\nRouting | Fully internal cable & hose\nDesigner | Kevin Quan (former Cerv\u00e9lo P-Series engineer)"
           }
         },
         "g2": {
           "type": "group",
           "settings": {
             "title": "Wheels & tires",
-            "rows": "Axles | 12mm thru-axle, front & rear\nUpgrade path | Accepts standard wheelsets — many owners add deep aero wheels for race day"
+            "rows": "Axles | 12mm thru-axle, front & rear\nUpgrade path | Accepts standard wheelsets \u2014 many owners add deep aero wheels for race day"
           }
         },
         "g3": {
@@ -336,14 +336,14 @@
           "type": "group",
           "settings": {
             "title": "Geometry & sizing",
-            "rows": "Sizes | Small · Medium · Large · XL\nRider range | ~5'1\" to 6'4\" (155–193 cm)\nSizing help | Free remote fit call + size calculator; free exchanges"
+            "rows": "Sizes | Small \u00b7 Medium \u00b7 Large \u00b7 XL\nRider range | ~5'1\" to 6'4\" (155\u2013193 cm)\nSizing help | Free remote fit call + size calculator; free exchanges"
           }
         },
         "g5": {
           "type": "group",
           "settings": {
             "title": "In the box & assembly",
-            "rows": "Pre-assembly | Ships 92% assembled\nYou install | Seatpost, cockpit, and brake dial-in — take your time with the included torque wrench\nTypical setup time | Under an hour with the included video guide\nPrefer a shop? | Most local shops finish the build for $50–150"
+            "rows": "Pre-assembly | Ships 92% assembled\nYou install | Seatpost, cockpit, and brake dial-in \u2014 take your time with the included torque wrench\nTypical setup time | Under an hour with the included video guide\nPrefer a shop? | Most local shops finish the build for $50\u2013150"
           }
         }
       },
@@ -388,10 +388,34 @@
         "divider_style": "none",
         "section_padding": "section--vertical-padding-top-bottom"
       }
+    },
+    "media": {
+      "type": "sppdp-media",
+      "blocks": {
+        "clip_rider_1": {
+          "type": "clip",
+          "settings": {
+            "clip_url": "https://cdn.shopify.com/videos/c/vp/63b15b92bf494804ba199693fd7c14d0/63b15b92bf494804ba199693fd7c14d0.SD-480p-0.9Mbps-86223727.mp4",
+            "clip_poster": "shopify://shop_images/a2-sp-rider-ugc-poster.jpg",
+            "name": "SP owner",
+            "caption": "Race-week setup, in his own words"
+          }
+        }
+      },
+      "block_order": [
+        "clip_rider_1"
+      ],
+      "settings": {
+        "kicker": "See it move",
+        "heading": "Ridden, not rendered",
+        "autoplay": true,
+        "strip_heading": "From riders, not our studio"
+      }
     }
   },
   "order": [
     "main",
+    "media",
     "reviews",
     "reviews_app",
     "compare",
