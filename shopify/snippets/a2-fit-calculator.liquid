@@ -40,6 +40,7 @@
     border: 1px solid var(--a2-border); background: var(--a2-bg); color: var(--a2-fg); font-size: 1rem;
   }
   .a2-fit-calc input:focus-visible { outline: 3px solid var(--a2-accent-2); outline-offset: 2px; }
+  .a2-fit-calc input.a2fc-short { width: 70px; }
   .a2-fit-calc .fitCalc__div_fit_options { display: flex; flex-wrap: wrap; gap: 20px; margin-top: 1.5em; }
   .a2-fit-calc .fitCalc__div_fitOption { flex: 1 1 220px; border: 1px solid var(--a2-border); border-radius: 12px; padding: 16px; }
   .a2-fit-calc .fitCalc__div_fitOption:empty,
@@ -92,7 +93,15 @@
             <label class="a2fc-build__opt"><input type="radio" name="a2fcUnits" value="in" checked onchange="a2fcUnitsChanged()"><span>inches</span></label>
             <label class="a2fc-build__opt"><input type="radio" name="a2fcUnits" value="cm" onchange="a2fcUnitsChanged()"><span>cm</span></label>
           </div>
-          <div class="fitCalc__row"><label for="fitCalc__input_height">Height</label><input type="number" step="any" inputmode="decimal" id="fitCalc__input_height" placeholder="70"> <span class="a2fcUnit">in</span></div>
+          <div class="fitCalc__row" id="a2fcHeightImperial">
+            <label for="fitCalc__input_height_ft">Height</label>
+            <input type="number" step="1" inputmode="numeric" id="fitCalc__input_height_ft" class="a2fc-short" placeholder="5"> <span>ft</span>
+            <input type="number" step="any" inputmode="decimal" id="fitCalc__input_height_in" class="a2fc-short" placeholder="10"> <span>in</span>
+          </div>
+          <div class="fitCalc__row" id="a2fcHeightMetric" style="display:none;">
+            <label for="fitCalc__input_height">Height</label>
+            <input type="number" step="any" inputmode="decimal" id="fitCalc__input_height" placeholder="178"> <span>cm</span>
+          </div>
           <div class="fitCalc__row"><label for="fitCalc__input_inseam">Inseam</label><input type="number" step="any" inputmode="decimal" id="fitCalc__input_inseam" placeholder="32"> <span class="a2fcUnit">in</span></div>
           <button class="fitCalcButton" type="button" onclick="buttonPress(false)">Find fit</button>
         </form>
@@ -143,14 +152,24 @@ if (!window.__a2fcInit) {
     } else if (fitKnown == false) {
       var unitEl = document.querySelector('input[name="a2fcUnits"]:checked');
       var unit = unitEl ? unitEl.value : "in";
-      var hRaw = parseFloat(document.getElementById("fitCalc__input_height").value),
-          iRaw = parseFloat(document.getElementById("fitCalc__input_inseam").value);
-      if (isNaN(hRaw) || isNaN(iRaw)) {
-        document.getElementById("op1p").innerHTML = "Please enter your height and inseam.";
+      var height, inseam;
+      var iRaw = parseFloat(document.getElementById("fitCalc__input_inseam").value);
+      if (unit === "in") {
+        var hFt = parseFloat(document.getElementById("fitCalc__input_height_ft").value);
+        var hIn = parseFloat(document.getElementById("fitCalc__input_height_in").value);
+        if (isNaN(hFt) && isNaN(hIn)) { document.getElementById("op1p").innerHTML = "Please enter your height (feet and inches)."; return; }
+        height = ((isNaN(hFt) ? 0 : hFt) * 12 + (isNaN(hIn) ? 0 : hIn)) * 25.4;
+        inseam = iRaw * 25.4;
+      } else {
+        var hCm = parseFloat(document.getElementById("fitCalc__input_height").value);
+        if (isNaN(hCm)) { document.getElementById("op1p").innerHTML = "Please enter your height in centimeters."; return; }
+        height = hCm * 10;
+        inseam = iRaw * 10;
+      }
+      if (isNaN(iRaw)) {
+        document.getElementById("op1p").innerHTML = "Please enter your inseam.";
         return;
       }
-      var factor = unit === "in" ? 25.4 : 10;
-      var height = hRaw * factor, inseam = iRaw * factor;
       if (height < 1200 || height > 2200 || inseam < 500 || inseam > 1200 || inseam >= height) {
         document.getElementById("op1p").innerHTML = "Those numbers look off — double-check your height and inseam (" + (unit === "in" ? "in inches" : "in centimeters") + ").";
         return;
@@ -189,8 +208,9 @@ if (!window.__a2fcInit) {
   function a2fcUnitsChanged() {
     var unitEl = document.querySelector('input[name="a2fcUnits"]:checked');
     var isIn = !unitEl || unitEl.value === "in";
+    document.getElementById("a2fcHeightImperial").style.display = isIn ? "flex" : "none";
+    document.getElementById("a2fcHeightMetric").style.display = isIn ? "none" : "flex";
     document.querySelectorAll(".a2fcUnit").forEach(function (el) { el.textContent = isIn ? "in" : "cm"; });
-    document.getElementById("fitCalc__input_height").placeholder = isIn ? "70" : "178";
     document.getElementById("fitCalc__input_inseam").placeholder = isIn ? "32" : "81";
   }
 
