@@ -483,6 +483,12 @@ BATCH D STEP 1 DEPLOYED (June 10/11): new `sections/sppdp-media.liquid`
    migration is a separate post-publish project (install v6 unpublished,
    re-deploy custom layer from repo, restyle, second swap). Never update
    the theme in place.
+   GEOMETRY BLOCKER CLEARED (June 11): owner supplied both SP fit sheets
+   (V0.01). `a2-fit-calculator.liquid` rewritten: dual config (Metron
+   Alloy for 105/Rival; Si013 for Force/Red) with build toggle, sizes
+   S–XL, stems 78/93/108mm, riser stack 0–70mm; bases extracted from the
+   sheets' vector (PDF) / calibrated raster (JPEG) charts; deployed +
+   checksum-verified. PDP Size Calculator v2 (height-based) untouched.
    DRIFT EVENT (June 11 ~00:14 UTC): a stale theme-editor save overwrote
    templates/product.sp-shimano.json ~3 min after the media deploy,
    removing BOTH the new media section AND the earlier Affirm product

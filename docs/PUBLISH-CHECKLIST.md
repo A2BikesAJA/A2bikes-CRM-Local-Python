@@ -10,11 +10,12 @@ inputs land. Theme: "Why A2 — DRAFT" `176492183716` replaces live
 ## Phase 1 — Inputs (this week, parallel; nothing else is blocked on these except where noted)
 
 ### AJ
-- [ ] **Fit Finder geometry (HARD BLOCKER).** Current SP + Rogue pad-stack/
-      pad-reach (X/Y) ranges per size **Small/Medium/Large/XL**. Today the
-      calculator runs 2021 Speed Phreak numbers with XS/S/M/L labels — wrong
-      sizes, wrong fit advice, on every PDP and the homepage. ⚙ wired same day
-      it arrives.
+- [x] **Fit Finder geometry — DONE June 11.** AJ supplied both V0.01 fit
+      sheets (Metron Alloy = 105/Rival; Si013 = Force/Red). Geometry extracted
+      from the sheet charts, wired into the Fit Finder with a build toggle
+      (sizes S–XL, 78/93/108mm stems, 0–70mm risers), deployed + verified.
+      Remaining nuance: Rogue uses the height-based Size Calculator v2 (no pad
+      sheet needed).
 - [ ] **Claim citations.** Confirm before they face traffic:
       - "Best Beginner Triathlon Bike — Triathlete Magazine" → exactly which years?
       - "Five-time winner" (Why A2) → verify or cut.
