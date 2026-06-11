@@ -489,6 +489,15 @@ BATCH D STEP 1 DEPLOYED (June 10/11): new `sections/sppdp-media.liquid`
    S–XL, stems 78/93/108mm, riser stack 0–70mm; bases extracted from the
    sheets' vector (PDF) / calibrated raster (JPEG) charts; deployed +
    checksum-verified. PDP Size Calculator v2 (height-based) untouched.
+   POSITIONING DECISION (June 11, owner): the Rogue is ROAD, not gravel —
+   ALL gravel references removed site-wide (theme templates/sections,
+   homepage, Why A2, collection landing, all Rogue PDP templates, the
+   4 Rogue product descriptions [LIVE content], size-guide heading, and
+   the size-calc label). LP page handle renamed
+   `rogue-road-gravel` → `rogue-road` (page 152875237540) with a 301
+   redirect created; internal links updated. NOTE: the LIVE theme's own
+   template copies still say gravel — fully resolved at publish-swap.
+   Card tiles: warm sand #f4ede1, no mix-blend (it tinted white bikes).
    DRIFT EVENT (June 11 ~00:14 UTC): a stale theme-editor save overwrote
    templates/product.sp-shimano.json ~3 min after the media deploy,
    removing BOTH the new media section AND the earlier Affirm product
