@@ -41,7 +41,15 @@
   .a2-fit-calc input:focus-visible { outline: 3px solid var(--a2-accent-2); outline-offset: 2px; }
   .a2-fit-calc .fitCalc__div_fit_options { display: flex; flex-wrap: wrap; gap: 20px; margin-top: 1.5em; }
   .a2-fit-calc .fitCalc__div_fitOption { flex: 1 1 220px; border: 1px solid var(--a2-border); border-radius: 12px; padding: 16px; }
-  .a2-fit-calc .fitCalc__div_fitOption:empty { display: none; }
+  .a2-fit-calc .fitCalc__div_fitOption:empty,
+  .a2-fit-calc .fitCalc__div_fitOption:has(> p:empty) { display: none; }
+  .a2-fit-calc .a2fc-build { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin: 0 0 14px; }
+  .a2-fit-calc .a2fc-build__title { font-weight: 700; margin-right: 2px; }
+  .a2-fit-calc label.a2fc-build__opt { width: auto; cursor: pointer; }
+  .a2-fit-calc .a2fc-build__opt input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .a2-fit-calc .a2fc-build__opt span { display: inline-block; padding: .5em 1.1em; border: 2px solid var(--a2-border); border-radius: 999px; line-height: 1.2; white-space: nowrap; transition: border-color .12s ease, background .12s ease; }
+  .a2-fit-calc .a2fc-build__opt input:checked + span { border-color: var(--a2-accent); background: var(--a2-accent); color: var(--a2-accent-fg); font-weight: 700; }
+  .a2-fit-calc .a2fc-build__opt input:focus-visible + span { outline: 3px solid var(--a2-accent-2); outline-offset: 2px; }
   .a2-fit-calc #padyxdisplaybox { margin-top: 1em; }
   .a2-fit-calc .a2fc-chart-container { position: relative; width: 100%; max-width: 880px; margin-top: 1.5em; }
   .a2-fit-calc canvas { max-width: 100%; }
@@ -56,10 +64,10 @@
   <div id="fitfinder" style="display:none;">
     <h3>Fit Finder</h3>
     <div id="fitPath" style="display:block;">
-      <div class="fitCalc__row" style="margin-bottom:10px;">
-        <strong>Your build:</strong>
-        <label style="margin-left:10px;"><input type="radio" name="a2fcBuild" value="metron" checked> Shimano 105 / Rival</label>
-        <label style="margin-left:10px;"><input type="radio" name="a2fcBuild" value="si013"> Force / Red</label>
+      <div class="a2fc-build" role="radiogroup" aria-label="Your build">
+        <span class="a2fc-build__title">Your build:</span>
+        <label class="a2fc-build__opt"><input type="radio" name="a2fcBuild" value="metron" checked><span>Shimano 105 / Rival</span></label>
+        <label class="a2fc-build__opt"><input type="radio" name="a2fcBuild" value="si013"><span>Force / Red</span></label>
       </div>
       <p class="a2-fit-calc__intro">Do you already know your Pad X / Y?</p>
       <div class="fitCalc__div_fitKnown_buttons">
