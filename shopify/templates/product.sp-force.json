@@ -116,7 +116,10 @@
         "demo_note": "7-day home demo",
         "consult_label": "Or book a free fit consult",
         "consult_url": "",
-        "show_sticky": true
+        "show_sticky": true,
+        "edu_1_image": "shopify://shop_images/sp-edu-carbon-frame.jpg",
+        "edu_2_image": "shopify://shop_images/sp-edu-sags-cockpit.jpg",
+        "edu_3_image": "shopify://shop_images/sp-edu-storage-mounts.jpg"
       }
     },
     "reviews": {
