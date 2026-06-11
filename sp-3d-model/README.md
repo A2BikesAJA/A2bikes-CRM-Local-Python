@@ -8,27 +8,27 @@ logos — embeddable on the website / Shopify product page.
 | Step | State |
 |---|---|
 | Conversion pipeline (STEP → GLB, matte black PBR) | ✅ Verified working (`convert_to_glb.py`) |
-| Web viewer (spin/flip/zoom + mobile AR) | ✅ Ready (`viewer/index.html`, open locally to test with `sample.glb`) |
+| Web viewer (spin/flip/zoom + mobile AR) | ✅ Ready (`viewer/index.html`, loads `sp_assembled.glb`) |
 | Logo decal textures (from A2-001 brand kit) | ✅ Prepared (`assets/decals/`) |
-| Frameset geometry | ⚠️ Blocked — see below |
-| Component models (wheels, drivetrain, cockpit) | ⏳ Pending source files |
+| Frameset (frame, fork, storage boxes, hardware) | ✅ From Shapr3D STEP export |
+| Wheels (60mm spoked front + full disc rear, tires, rotors, DA cassette) | ✅ Mated to dropouts (`assemble_sp.py`) |
+| Saddle + 3D A2 logo badge (mirrored both sides) | ✅ Placed |
+| Seatpost | ⚠️ Provisional generated aero post — replace with real A2SP geometry |
+| Cockpit (TriMax base bar + extensions + SAGS stem) | ⏳ Need Shapr3D export |
+| Crank/chainring, chain, derailleurs, brake calipers, pedals | ⏳ Need Shapr3D export or manufacturer CAD |
 
-## The geometry blocker
+## Assembly
 
-The supplied `KQS_4015_v1.x_t` is a **Parasolid** transmit file (exported from
-Onshape, Parasolid v33). Parasolid is Siemens' proprietary kernel format — no
-open-source tool can read it; only software licensing the Parasolid kernel
-(Onshape, SolidWorks, NX, Shapr3D) can.
+`assemble_sp.py` mates the separately exported Shapr3D STEP files into one
+bike: the wheels export shares the frameset's scale, so a single Rz(90°) +
+translation lands both axles on the dropouts (wheelbase 1.001 m). Saddle and
+logo placement, material classification (incl. Russian part names from the
+source component library: карбон = carbon rim, резина = tire rubber), and the
+provisional seatpost live in that script. Output: `viewer/sp_assembled.glb`
+(7.9 MB, 85 parts). Renders in `renders/`.
 
-**Fix is a 30-second re-export** from the same Onshape document:
-right-click the tab → **Export** → format **STEP** (AP242 or AP214) — or even
-better, **GLTF**, which skips conversion entirely. Either format drops
-straight into this pipeline.
-
-The old SP product page embedded a Shapr3D web viewer
-(`collaborate.shapr3d.com/v/FrVULlErVUnIQvSBbTjN5`), so a fuller SP assembly
-may already exist in Shapr3D — Shapr3D exports STEP/OBJ/USDZ directly and may
-include components beyond the frameset.
+Note: the original `KQS_4015_v1.x_t` Parasolid file is unreadable outside
+licensed CAD kernels — the Shapr3D STEP exports replaced it.
 
 ## Component plan (to match the production SP)
 
