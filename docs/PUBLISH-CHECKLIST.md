@@ -22,8 +22,11 @@ inputs land. Theme: "Why A2 — DRAFT" `176492183716` replaces live
       - "4.8★ / 96 reviews / 97% would recommend" on PDPs → 4.53★/96 is what the
         recovered Fera data supports store-wide; approve softer copy or give a
         defensible per-product number.
-- [ ] **Affirm cart-drawer public key** (theme-editor toggle) so $/mo follows
-      shoppers into the cart.
+- [x] **Affirm cart drawer — DONE June 11.** AJ confirmed the publishable key;
+      the drawer now shows the Affirm monthly line under the subtotal
+      (settings-driven in the Quick Cart section, updates on quantity change).
+      `sections/quick-cart.liquid` is now repo-tracked — include it in the v6
+      migration diff.
 - [ ] **Approve the consolidation kill-list** (executed at publish, step 4.6):
       - finance, finance-your-bike, financing-your-bike, ride-now-pay-later,
         financing-and-installments → 301 → `/pages/financing-hsa-fsa`
