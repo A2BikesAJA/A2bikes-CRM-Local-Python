@@ -97,25 +97,39 @@ def wheel_material(name, mesh):
     return "hardware"             # hub, axle, spokes, nipples
 
 
+# SP geometry chart (size L): ST angle 78deg, BB drop 70mm, wheelbase 1005mm.
+# BB lands at (-0.010, 0.005); measured seat tube axis runs from BB through
+# the mast top at (-0.122, 0.44), slope dx/dz = -0.257 (~75.6deg actual mast).
+BB = np.array([-0.010, 0.005])
+SEAT_AXIS_DXDZ = -0.257
+SADDLE_RAIL_POS = (-0.158, 0.712)  # ~720mm at 78deg effective from BB
+
+
 def aero_seatpost():
-    """Provisional aero post: 50x26 mm ellipse, z 0.42 -> 0.665, slight slant."""
+    """Provisional aero post along the seat tube axis, with clamp head.
+
+    Replace with the production A2SP-Richey geometry when available.
+    """
     n = 40
     t = np.linspace(0, 2 * np.pi, n, endpoint=False)
-    prof = np.stack([0.025 * np.cos(t), 0.013 * np.sin(t)], axis=1)
-    z0, z1 = 0.42, 0.665
-    cx = lambda z: -0.122 + 0.05 * (z - 0.44)
-    rings = [np.column_stack([prof[:, 0] + cx(z), prof[:, 1], np.full(n, z)])
-             for z in (z0, z1)]
+    # airfoil-ish: 54mm chord, 27mm wide, slightly blunt nose
+    px = 0.027 * np.cos(t) - 0.006 * np.cos(2 * t)
+    py = 0.0135 * np.sin(t)
+    z0, z1 = 0.40, 0.705
+    cx = lambda z: -0.122 + SEAT_AXIS_DXDZ * (z - 0.44)
+    rings = [np.column_stack([px + cx(z), py, np.full(n, z)]) for z in (z0, z1)]
     V = np.vstack(rings)
     F = []
     for i in range(n):
         j = (i + 1) % n
         F += [[i, j, n + i], [j, n + j, n + i]]
-    # cap top
     top = len(V)
     V = np.vstack([V, [cx(z1), 0, z1]])
     F += [[n + i, n + (i + 1) % n, top] for i in range(n)]
-    return trimesh.Trimesh(vertices=V, faces=np.array(F))
+    post = trimesh.Trimesh(vertices=V, faces=np.array(F))
+    clamp = trimesh.creation.box(extents=[0.055, 0.034, 0.035])
+    clamp.apply_translation([cx(z1) - 0.01, 0, z1 + 0.005])
+    return trimesh.util.concatenate([post, clamp])
 
 
 def build(indir: Path) -> trimesh.Scene:
@@ -140,7 +154,9 @@ def build(indir: Path) -> trimesh.Scene:
     smm = trimesh.util.concatenate([m.copy() for _, m in sparts])
     smm.apply_transform(Ts)
     b = smm.bounds
-    Tp = Tr(-0.10 - (b[0][0] + b[1][0]) / 2, -(b[0][1] + b[1][1]) / 2, 0.675 - b[0][2])
+    Tp = Tr(SADDLE_RAIL_POS[0] - (b[0][0] + b[1][0]) / 2,
+            -(b[0][1] + b[1][1]) / 2,
+            SADDLE_RAIL_POS[1] - b[0][2])
     for k, m in sparts:
         m.apply_transform(Tp @ Ts)
         add(f"saddle/{k}", m, "saddle")
