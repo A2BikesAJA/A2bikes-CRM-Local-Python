@@ -83,7 +83,7 @@
         "edu_2_title": "Tri-Ready",
         "edu_2_desc": "Tri-ready \u2014 add clip-on aero extensions for extra aerodynamic gains, plus wireless SRAM Blips you can place anywhere on your bars for shifting from any position.",
         "edu_3_title": "Wide Tire Ability",
-        "edu_3_desc": "Clearance for tires up to 35 mm \u2014 road-bike speed when you want it, gravel grip when the pavement ends.",
+        "edu_3_desc": "Clearance for tires up to 35 mm \u2014 race-day speed or all-day comfort on the same frame.",
         "show_affirm_line": true,
         "affirm_url": "/pages/financing-hsa-fsa",
         "edu_1_image": "shopify://shop_images/rogue-edu-carbon-frame-v2.jpg",
@@ -98,8 +98,8 @@
           "type": "review",
           "settings": {
             "stars": "\u2605\u2605\u2605\u2605\u2605",
-            "result": "Road + gravel",
-            "quote": "One bike for everything. I race it, ride gravel on the weekend, and commute on it. Fit was dialed in out of the box after their sizing call.",
+            "result": "Daily + race day",
+            "quote": "One bike for everything. I race it, train on it, and commute on it. Fit was dialed in out of the box after their sizing call.",
             "name": "Marcus T.",
             "context": "All-rounder, Columbus OH",
             "verified": false

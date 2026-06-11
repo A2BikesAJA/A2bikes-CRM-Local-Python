@@ -267,7 +267,7 @@
         "text": {
           "type": "text",
           "settings": {
-            "text": "<p>Starting at only <strong>$2,699.</strong></p><p><strong>A Road Bike. A Training Partner. Built for Triathletes.</strong></p><p>The Rogue is a perfected blend of aerodynamics and endurance. It is the only bike you need for twisted tarmac, gravel escapes, and hard interval training. Trusted by both triathletes and roadies, the Rogue was built to break records. </p><h5></h5>",
+            "text": "<p>Starting at only <strong>$2,699.</strong></p><p><strong>A Road Bike. A Training Partner. Built for Triathletes.</strong></p><p>The Rogue is a perfected blend of aerodynamics and endurance. It is the only bike you need for twisted tarmac, long escapes, and hard interval training. Trusted by both triathletes and roadies, the Rogue was built to break records. </p><h5></h5>",
             "text_font_class": "fs-body-100"
           }
         }
@@ -484,7 +484,7 @@
             "image": "shopify://shop_images/Rogue_black_and_silver_forest.jpg",
             "focal_point": "image_presentation",
             "title": "Conquer Any Road.",
-            "text": "<p>The Rogue is an aerodynamic race bike, disguised as an off-road tackler. Road first, with the capabilities of dirt or gravel if you wanted. </p>"
+            "text": "<p>The Rogue is an aerodynamic race bike, built to handle far more than race day. Road first, with the capability for rougher routes when you want it. </p>"
           }
         },
         "image_LwGxnJ": {
@@ -674,7 +674,7 @@
         "subheading_VrYrrA": {
           "type": "subheading",
           "settings": {
-            "subheading": "Inspired by the undying spirit of the Pacific Northwest and the cascading beauty of the Rogue River, this bike offers versatility like none other. With aero endurance geometry and 35mm* tire clearance, the Rogue adapts effortlessly to any tarmac road or gravel path. Available in 1x or 2x mechanical and electronic builds.",
+            "subheading": "Inspired by the undying spirit of the Pacific Northwest and the cascading beauty of the Rogue River, this bike offers versatility like none other. With aero endurance geometry and 35mm* tire clearance, the Rogue adapts effortlessly to smooth tarmac or broken pavement. Available in 1x or 2x mechanical and electronic builds.",
             "subheading_tag": "h3",
             "subheading_font_class": "fs-heading-6-base"
           }
@@ -769,7 +769,7 @@
         "accent_JWPAge": {
           "type": "accent",
           "settings": {
-            "accent": "Road? Gravel? Both."
+            "accent": "One road bike. Every route."
           }
         },
         "heading_zbR3gn": {

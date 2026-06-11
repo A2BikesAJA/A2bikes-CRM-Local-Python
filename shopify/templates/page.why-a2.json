@@ -113,12 +113,12 @@
           "type": "product",
           "settings": {
             "image": "shopify://shop_images/P1011937-Edit.jpg",
-            "badge": "Road & Gravel",
+            "badge": "Road",
             "name": "Rogue",
             "product": "rogue-shimano-105",
             "price": "$2,699",
-            "body": "One bike for road and gravel — fast on pavement, capable when the pavement ends.",
-            "link": "/pages/rogue-road-gravel"
+            "body": "One road bike for everything — light, fast and ready for any route.",
+            "link": "/pages/rogue-road"
           }
         }
       },

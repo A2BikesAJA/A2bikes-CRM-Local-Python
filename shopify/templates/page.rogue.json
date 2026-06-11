@@ -9,7 +9,7 @@
             "icon": "sliders",
             "metric": "All-road",
             "title": "One bike, every surface",
-            "text": "Tarmac, back roads and gravel \u2014 clearance and geometry that don't make you choose.",
+            "text": "Smooth tarmac or broken back roads \u2014 clearance and geometry that don't make you choose.",
             "photo": "shopify://shop_images/rogue-edu-wide-tire-v2.jpg"
           }
         },
@@ -69,7 +69,7 @@
           "type": "review",
           "settings": {
             "rating": 5,
-            "quote": "Fast enough for the group ride, capable enough for the gravel detour home.",
+            "quote": "Fast enough for the group ride, capable enough for the long way home.",
             "author": "Verified rider",
             "detail": "All-road convert"
           }
@@ -97,9 +97,9 @@
           "settings": {
             "tag": "First serious bike",
             "title": "One bike for everything",
-            "text": "You want one carbon bike for group rides, fitness, light gravel and maybe a first event \u2014 versatility, not a garage full of bikes.",
+            "text": "You want one carbon bike for group rides, fitness, long weekends and maybe a first event \u2014 versatility, not a garage full of bikes.",
             "pick": "Rogue \u00b7 Shimano 105",
-            "upgrade": "The stock setup covers tarmac and gravel \u2014 swap tires, not bikes. Use the size calculator below to nail your frame size.",
+            "upgrade": "The stock setup covers fast group rides and rough roads \u2014 swap tires, not bikes. Use the size calculator below to nail your frame size.",
             "cta_label": "See the 105 build",
             "cta_url": "/products/rogue-shimano-105"
           }
@@ -148,7 +148,7 @@
         "line": "rogue",
         "eyebrow": "A2 Bikes \u00b7 Rogue",
         "heading": "One bike for every road you can find.",
-        "subheading": "The Rogue all-road: carbon versatility for tarmac, back roads and gravel \u2014 built for value-conscious riders who refuse to compromise.",
+        "subheading": "The Rogue all-road: carbon versatility for tarmac and back roads \u2014 built for value-conscious riders who refuse to ride slow.",
         "price_from": "From about $94/mo with Affirm \u2014 or buy it pre-tax with HSA/FSA.",
         "cta_label": "Build Your Rogue",
         "hero_alt": "A2 Rogue all-road bike on an open road",
