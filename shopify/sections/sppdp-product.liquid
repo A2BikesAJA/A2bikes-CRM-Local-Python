@@ -439,6 +439,20 @@
     update();
   })();
   </script>
+  {%- if section.settings.show_affirm_line and section.settings.affirm_public_key != blank -%}
+  <script>
+  (function(){
+    /* Affirm promotional-messaging loader (financing widget, not analytics).
+       Guarded so it no-ops if the Affirm app block/embed already loaded it. */
+    if (window.affirm || window._affirm_config) {
+      if (window.affirm && window.affirm.ui && window.affirm.ui.refresh) window.affirm.ui.refresh();
+      return;
+    }
+    window._affirm_config = { public_api_key: {{ section.settings.affirm_public_key | json }}, script: "https://cdn1.affirm.com/js/v2/affirm.js" };
+    (function(m,g,n,d,a,e,h,c){var b=m[n]||{},k=document.createElement(e),p=document.getElementsByTagName(e)[0],l=function(a,b,c){return function(){a[b]._.push([c,arguments])}};b[d]=l(b,d,"set");var f=b[d];b[a]={};b[a]._=[];f._=[];b._=[];b[a][h]=l(b,a,h);b[c]=function(){b._.push([h,arguments])};a=0;for(c="set add save post open empty reset on off trigger ready setProduct".split(" ");a<c.length;a++)f[c[a]]=l(b,d,c[a]);a=0;for(c=["get","token","url","items"];a<c.length;a++)f[c[a]]=function(){};k.async=!0;k.src=g[e];p.parentNode.insertBefore(k,p);delete g[e];f(m[n]);m[n]=b})(window._affirm_config,{script:window._affirm_config.script},"affirm","checkout","ui","script","ready","jsReady");
+  })();
+  </script>
+  {%- endif -%}
 </div>
 {% schema %}
 {
@@ -566,6 +580,13 @@
       "label": "Show built-in Affirm line",
       "info": "Turn off if you add the official Affirm app block (below) so you don't show both.",
       "default": false
+    },
+    {
+      "type": "text",
+      "id": "affirm_public_key",
+      "label": "Affirm public API key",
+      "info": "Loads Affirm's as-low-as messaging for the built-in line. Leave empty if the Affirm app block/embed already loads affirm.js on this page.",
+      "default": "WSAUD4RQEGCMBW2I"
     },
     {
       "type": "header",
