@@ -210,7 +210,7 @@ def build(indir: Path) -> trimesh.Scene:
         m.merge_vertices()        # weld for smooth vertex normals
         nv_out += len(m.vertices)
         m.apply_transform(R)
-        if k == FRAME_PART:
+        if k == FRAME_PART and "--no-decal" not in sys.argv:
             frame_with_decal(scene, m, indir)
         else:
             add(k, m, mat)
