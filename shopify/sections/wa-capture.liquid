@@ -9,6 +9,17 @@
 
         {%- if section.settings.klaviyo_form_id != blank -%}
           <div class="klaviyo-form-{{ section.settings.klaviyo_form_id }}"></div>
+          {%- if section.settings.klaviyo_company_id != blank -%}
+          <script>
+            (function () {
+              if (document.querySelector('script[src*="static.klaviyo.com/onsite/js/klaviyo.js"]')) return;
+              var s = document.createElement('script');
+              s.async = true;
+              s.src = 'https://static.klaviyo.com/onsite/js/klaviyo.js?company_id={{ section.settings.klaviyo_company_id }}';
+              document.head.appendChild(s);
+            })();
+          </script>
+          {%- endif -%}
         {%- else -%}
           <form class="wa-form" novalidate>
             <input type="email" name="email" placeholder="you@email.com" aria-label="Email address" required>
@@ -34,6 +45,7 @@
     { "type": "text", "id": "heading", "label": "Heading", "default": "Sizing a triathlon bike is harder than it should be." },
     { "type": "textarea", "id": "sub", "label": "Subhead", "default": "Get our free guide and we'll help you dial in the right frame size, fit, and setup — before you ever click buy." },
     { "type": "text", "id": "klaviyo_form_id", "label": "Klaviyo form ID (e.g. Wq8aBc) — blank shows placeholder" },
+    { "type": "text", "id": "klaviyo_company_id", "label": "Klaviyo company ID", "default": "YejYTH", "info": "Used to self-load klaviyo.js for the embedded form. Skipped automatically if the Klaviyo app already loads it." },
     { "type": "text", "id": "trust", "label": "Trust line", "default": "No spam. Unsubscribe anytime." }
   ],
   "presets": [{ "name": "Why A2 · Email capture" }]

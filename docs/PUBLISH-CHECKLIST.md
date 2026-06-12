@@ -39,8 +39,11 @@ inputs land. Theme: "Why A2 — DRAFT" `176492183716` replaces live
       affected files standardized to "$99 flat shipping to the lower 48"
       (AK/HI extra where compared), deployed + checksum-verified. Zero
       "ships free" strings remain in the theme.
-- [ ] **Klaviyo sign-up form ID** for Why A2 capture (or approve the built-in
-      fallback that's live now).
+- [x] **Klaviyo sign-up form ID — DONE June 12.** AJ supplied form `WDFJLq`;
+      wired into the Why A2 page AND homepage capture sections (replaces the
+      built-in fallback). The section now self-loads klaviyo.js (company
+      YejYTH) when a form ID is set, skipping if the Klaviyo app already
+      loads it. Verify the form renders logged-out at publish QA.
 
 ### Darren
 - [ ] **Upload the big videos** (admin → Content → Files — they exceed what
