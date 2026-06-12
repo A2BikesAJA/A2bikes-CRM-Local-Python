@@ -9,7 +9,7 @@ logos — embeddable on the website / Shopify product page.
 |---|---|
 | Complete bike model (size M): frame, fork, cockpit, seatpost, saddle, Dura-Ace drivetrain, wheels, calipers | ✅ `viewer/sp_final.glb` (12 MB, 162 parts) built by `build_master.py` |
 | Matte black colorway + material classification | ✅ Per A2-001 style guide |
-| 3D A2 logo badge on the down tube (both sides) | ✅ Placed (gray; swap to red/white in `MAT["logo"]`) |
+| A2 logo baked as decal texture on the down tube (both sides, full-color per production photos) | ✅ |
 | Web viewer (spin/flip/zoom + mobile AR) | ✅ `viewer/index.html` |
 | Logo decal textures (from A2-001 brand kit) | ✅ `assets/decals/` |
 
