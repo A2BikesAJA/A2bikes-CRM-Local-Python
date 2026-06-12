@@ -36,6 +36,8 @@ scene.view_settings.view_transform = "Filmic"
 scene.view_settings.look = "Medium High Contrast"
 
 bpy.ops.import_scene.gltf(filepath=GLB)
+# the importer nests everything under root empties: those are what we spin
+import_roots = [ob for ob in bpy.data.objects if ob.parent is None]
 
 # matte paint: kill the broad clearcoat-like sheen glTF defaults give
 for m in bpy.data.materials:
@@ -67,10 +69,10 @@ diag = max(maxs[i] - mins[i] for i in range(3))
 pivot = bpy.data.objects.new("pivot", None)
 scene.collection.objects.link(pivot)
 pivot.location = (cx, cy, cz)
-for ob in list(bpy.data.objects):
-    if ob.type == "MESH" and ob.parent is None:
-        ob.parent = pivot
-        ob.matrix_parent_inverse = pivot.matrix_world.inverted()
+bpy.context.view_layer.update()
+for ob in import_roots:
+    ob.parent = pivot
+    ob.matrix_parent_inverse = pivot.matrix_world.inverted()
 
 # white world
 world = bpy.data.worlds.new("studio")
