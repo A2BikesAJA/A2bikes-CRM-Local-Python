@@ -45,24 +45,27 @@ inputs land. Theme: "Why A2 — DRAFT" `176492183716` replaces live
       YejYTH) when a form ID is set, skipping if the Klaviyo app already
       loads it. Verify the form renders logged-out at publish QA.
 
-### Darren
+### Darren (assets only — owner direction June 12: no coding/admin tasks)
 - [ ] **Upload the big videos** (admin → Content → Files — they exceed what
       Claude's pipe can move): `SP Website Header_4.mp4` (hero loop),
       `A2 SP UGC No Music.mov`, Brennen captioned cut, Carolyn/Kaitlin clips,
-      `All Road Bike Reel.mp4` (Rogue). Then in the theme editor, open an SP
-      product → "SP PDP · Video & UGC" → pick the hero file. (Or just upload —
-      ⚙ Claude wires CDN URLs once files exist.)
+      `All Road Bike Reel.mp4` (Rogue). Just upload — ⚙ Claude wires CDN URLs
+      once files exist.
 - [ ] **Athlete quotes** (#17): Kinley Bollinger + 1–2 creators (Carolyn /
       Kaitlin / Brennen), with permission to publish name + photo. ⚙ unhides
       the Why A2 athletes section same day.
-- [ ] **Fera prep** (app re-enables only at publish, per AJ): open a ticket to
+
+### AJ (moved from Darren June 12)
+- [ ] **Fera prep** (app re-enables only at publish): open a ticket to
       strike the 12 flagged fake reviews ("Ben"/"Lars", Apr–May 2025 — list in
       `docs/UGC-ASSET-INVENTORY.md`), and confirm dashboard access for full
       review text.
-
-### Either of you (theme code editor — API can't delete files)
 - [ ] Delete `sections/why-a2.liquid` and the five `sections/a2-test-*.liquid`
-      stubs from the DRAFT theme.
+      stubs from the DRAFT theme (theme code editor — API can't delete files).
+      Alternative: ⚙ Claude can blank them via the API so they're inert and
+      invisible in the editor; the file delete then becomes cosmetic.
+
+### Everyone
 - [ ] **Close any open theme-editor tabs when you're done each day.** A stale
       tab's Save silently reverts deployed work (it erased the media section
       once already).
