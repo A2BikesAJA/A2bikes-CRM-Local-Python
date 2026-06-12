@@ -527,9 +527,10 @@ BATCH D STEP 1 DEPLOYED (June 10/11): new `sections/sppdp-media.liquid`
    with leg-ratio + riding-position (relaxed/balanced/aggressive)
    nudges; scoring penalizes flipped stems (+10) and off-band frames
    (+15) so in-band riders always get their published size as Option 1
-   (sim-verified across 11 rider profiles). Bar width shown as GUIDANCE
-   only (38–40/40–42/42/42–44 c-c) — no published stock bar spec; OWNER
-   TO CONFIRM stock bar widths + max spacer stack (35mm assumed).
+   (sim-verified across 11 rider profiles). Owner confirmed (June 12,
+   later same day): stock bar widths 400/420/420/440mm c-c by size and
+   the 35mm max spacer assumption — both now stated as stock spec in
+   the calculator (note: bar widths are NOT in the geometry guide page).
    Klaviyo form WDFJLq + self-loading klaviyo.js wired into Why A2 +
    homepage capture (company YejYTH). NOTE: archived products `rogue`,
    `rogue-apex-axs`, `rogue-white-draft` still contain gravel copy —
