@@ -175,7 +175,8 @@
         "hero_image_mobile": "shopify://shop_images/rogue-lp-hero-mobile.jpg",
         "sizing_tool": "rogue_fit",
         "personas_heading": "Which rider are you?",
-        "personas_sub": "Three kinds of riders buy the Rogue. Find your build in 20 seconds."
+        "personas_sub": "Three kinds of riders buy the Rogue. Find your build in 20 seconds.",
+        "show_fit_calculator": true
       }
     }
   },
