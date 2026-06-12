@@ -29,18 +29,28 @@ except ImportError:
 
 BASE_BLACK = (20, 20, 22)
 
+
+def lin(srgb255):
+    """glTF baseColorFactor is linear; convert sRGB 0-255 to linear 0-1."""
+    out = []
+    for c in srgb255:
+        s = c / 255.0
+        out.append(s / 12.92 if s <= 0.04045 else ((s + 0.055) / 1.055) ** 2.4)
+    return out + [1.0]
+
+
 MAT = {
-    "matte_black": dict(name="A2 Matte Black", baseColorFactor=[20, 20, 22, 255],
+    "matte_black": dict(name="A2 Matte Black", baseColorFactor=lin(BASE_BLACK),
                         metallicFactor=0.1, roughnessFactor=0.6),
-    "carbon": dict(name="Carbon Satin", baseColorFactor=[38, 38, 42, 255],
+    "carbon": dict(name="Carbon Satin", baseColorFactor=lin([38, 38, 42]),
                    metallicFactor=0.35, roughnessFactor=0.4),
-    "rubber": dict(name="Tire Rubber", baseColorFactor=[26, 26, 26, 255],
+    "rubber": dict(name="Tire Rubber", baseColorFactor=lin([26, 26, 26]),
                    metallicFactor=0.0, roughnessFactor=0.92),
-    "steel": dict(name="Drivetrain Steel", baseColorFactor=[140, 140, 145, 255],
+    "steel": dict(name="Drivetrain Steel", baseColorFactor=lin([140, 140, 145]),
                   metallicFactor=0.95, roughnessFactor=0.3),
-    "hardware": dict(name="Component Black", baseColorFactor=[32, 32, 35, 255],
+    "hardware": dict(name="Component Black", baseColorFactor=lin([32, 32, 35]),
                      metallicFactor=0.5, roughnessFactor=0.4),
-    "foam": dict(name="Pad/Saddle", baseColorFactor=[22, 22, 22, 255],
+    "foam": dict(name="Pad/Saddle", baseColorFactor=lin([22, 22, 22]),
                  metallicFactor=0.0, roughnessFactor=0.88),
 }
 
@@ -68,8 +78,16 @@ WIN_X0, WIN_Z0, WIN_SIDE = -0.71, 0.21, 0.92
 DECAL_CX, DECAL_CZ, DECAL_W, DECAL_ANGLE = -0.05, 0.50, 0.16, 41.0
 
 
+OVERRIDES = {
+    "COMPOUND_10": ("rubber", 1.0),         # rear disc tire halves
+    "COMPOUND_11": ("rubber", 1.0),
+}
+
+
 def classify(name):
     lowered = name.lower()
+    if name in OVERRIDES:
+        return OVERRIDES[name]
     if name in FOAM_PARTS:
         return ("foam", 0.6)
     for pat, spec in RULES:
@@ -139,7 +157,9 @@ def frame_with_decal(scene, mesh, indir: Path):
         ul = (V[:, 0] - WIN_X0) / WIN_SIDE
         if side == "left":
             ul = 1.0 - ul
-        vv = 1.0 - (V[:, 2] - WIN_Z0) / WIN_SIDE
+        # trimesh flips V on GLB export (OpenGL bottom-up vs glTF top-down);
+        # assign bottom-up here so the stored glTF V matches the PIL texture.
+        vv = (V[:, 2] - WIN_Z0) / WIN_SIDE
         uv = np.column_stack([ul, vv])
         mat = trimesh.visual.material.PBRMaterial(
             name=f"A2 Matte Black Decal {side}",
