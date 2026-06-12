@@ -75,7 +75,9 @@ TEX = 1024
 WIN_X0, WIN_Z0, WIN_SIDE = -0.71, 0.21, 0.92
 # decal on the down tube: world center, width, rise angle of the tube
 # (tube side-skin measured from COMPOUND_3: z = 0.54 + 0.87*x, depth ~75mm)
-DECAL_CX, DECAL_CZ, DECAL_W, DECAL_ANGLE = -0.05, 0.50, 0.16, 41.0
+# Position matches the production "SP Red Black" photo: upper third of the
+# tube, just below the frame storage, ascending toward the head tube.
+DECAL_CX, DECAL_CZ, DECAL_W, DECAL_ANGLE = 0.035, 0.567, 0.16, 41.0
 
 
 OVERRIDES = {
@@ -137,10 +139,10 @@ def decal_texture(indir: Path, side: str) -> Image.Image:
     w_px = int(DECAL_W / WIN_SIDE * TEX)
     h_px = int(w_px * logo.height / logo.width)
     logo = logo.resize((w_px, h_px), Image.LANCZOS)
-    angle = DECAL_ANGLE if side == "right" else -DECAL_ANGLE
+    angle = -DECAL_ANGLE if side == "right" else DECAL_ANGLE
     logo = logo.rotate(angle, expand=True, resample=Image.BICUBIC)
     ul = (DECAL_CX - WIN_X0) / WIN_SIDE
-    if side == "left":
+    if side == "right":
         ul = 1.0 - ul
     vc = 1.0 - (DECAL_CZ - WIN_Z0) / WIN_SIDE
     cx, cy = int(ul * TEX), int(vc * TEX)
@@ -159,8 +161,8 @@ def frame_with_decal(scene, mesh, indir: Path):
     V, F = np.asarray(mesh.vertices), mesh.faces
     for _ in range(2):
         cent = V[F].mean(axis=1)
-        near = ((cent[:, 0] > DECAL_CX - 0.18) & (cent[:, 0] < DECAL_CX + 0.18)
-                & (cent[:, 2] > DECAL_CZ - 0.15) & (cent[:, 2] < DECAL_CZ + 0.15))
+        near = ((cent[:, 0] > DECAL_CX - 0.12) & (cent[:, 0] < DECAL_CX + 0.12)
+                & (cent[:, 2] > DECAL_CZ - 0.10) & (cent[:, 2] < DECAL_CZ + 0.10))
         V, F = trimesh.remesh.subdivide(V, F, face_index=np.nonzero(near)[0])
     mesh = trimesh.Trimesh(vertices=V, faces=F, process=False)
     fn = mesh.face_normals
@@ -172,7 +174,7 @@ def frame_with_decal(scene, mesh, indir: Path):
         sub = mesh.submesh([np.nonzero(mask)[0]], append=True)
         Vs = np.asarray(sub.vertices)
         ul = (Vs[:, 0] - WIN_X0) / WIN_SIDE
-        if side == "left":
+        if side == "right":
             ul = 1.0 - ul
         # trimesh flips V on GLB export (OpenGL bottom-up vs glTF top-down);
         # assign bottom-up here so the stored glTF V matches the PIL texture.
@@ -185,7 +187,7 @@ def frame_with_decal(scene, mesh, indir: Path):
         sub.visual = trimesh.visual.TextureVisuals(uv=uv, material=mat)
         scene.add_geometry(sub, geom_name=f"{FRAME_PART}_{side}")
     rest = mesh.submesh([np.nonzero(~(side_r | side_l))[0]], append=True)
-    rest = decimate(rest, 0.75)   # mostly inner shell; keeps GLB under
+    rest = decimate(rest, 0.58)   # mostly inner shell; keeps GLB under
     rest.visual = trimesh.visual.TextureVisuals(
         material=trimesh.visual.material.PBRMaterial(**MAT["matte_black"]))
     scene.add_geometry(rest, geom_name=f"{FRAME_PART}_rest")
