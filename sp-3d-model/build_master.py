@@ -149,17 +149,34 @@ def decal_texture(indir: Path, side: str) -> Image.Image:
 
 
 def frame_with_decal(scene, mesh, indir: Path):
-    """Split the frame by side, planar-UV each half, bake the logo decal."""
+    """Bake the logo onto side-facing frame surfaces only.
+
+    Planar projection would smear the decal around the tube's leading edge
+    onto front-facing surfaces; restricting by face normal makes the logo
+    terminate at the curve like a real applied decal. The mesh is subdivided
+    once so the side/front partition follows the curvature closely.
+    """
+    V, F = np.asarray(mesh.vertices), mesh.faces
+    for _ in range(2):
+        cent = V[F].mean(axis=1)
+        near = ((cent[:, 0] > DECAL_CX - 0.18) & (cent[:, 0] < DECAL_CX + 0.18)
+                & (cent[:, 2] > DECAL_CZ - 0.15) & (cent[:, 2] < DECAL_CZ + 0.15))
+        V, F = trimesh.remesh.subdivide(V, F, face_index=np.nonzero(near)[0])
+    mesh = trimesh.Trimesh(vertices=V, faces=F, process=False)
+    fn = mesh.face_normals
     cent_y = mesh.triangles_center[:, 1]
-    for side, mask in (("right", cent_y >= 0), ("left", cent_y < 0)):
+    CENTER_Y = 0.07          # the assembly's center plane is offset from y=0
+    side_r = (fn[:, 1] > 0.35) & (cent_y >= CENTER_Y)
+    side_l = (fn[:, 1] < -0.35) & (cent_y < CENTER_Y)
+    for side, mask in (("right", side_r), ("left", side_l)):
         sub = mesh.submesh([np.nonzero(mask)[0]], append=True)
-        V = np.asarray(sub.vertices)
-        ul = (V[:, 0] - WIN_X0) / WIN_SIDE
+        Vs = np.asarray(sub.vertices)
+        ul = (Vs[:, 0] - WIN_X0) / WIN_SIDE
         if side == "left":
             ul = 1.0 - ul
         # trimesh flips V on GLB export (OpenGL bottom-up vs glTF top-down);
         # assign bottom-up here so the stored glTF V matches the PIL texture.
-        vv = (V[:, 2] - WIN_Z0) / WIN_SIDE
+        vv = (Vs[:, 2] - WIN_Z0) / WIN_SIDE
         uv = np.column_stack([ul, vv])
         mat = trimesh.visual.material.PBRMaterial(
             name=f"A2 Matte Black Decal {side}",
@@ -167,6 +184,11 @@ def frame_with_decal(scene, mesh, indir: Path):
             metallicFactor=0.1, roughnessFactor=0.6)
         sub.visual = trimesh.visual.TextureVisuals(uv=uv, material=mat)
         scene.add_geometry(sub, geom_name=f"{FRAME_PART}_{side}")
+    rest = mesh.submesh([np.nonzero(~(side_r | side_l))[0]], append=True)
+    rest = decimate(rest, 0.75)   # mostly inner shell; keeps GLB under
+    rest.visual = trimesh.visual.TextureVisuals(
+        material=trimesh.visual.material.PBRMaterial(**MAT["matte_black"]))
+    scene.add_geometry(rest, geom_name=f"{FRAME_PART}_rest")
 
 
 def build(indir: Path) -> trimesh.Scene:
