@@ -171,6 +171,10 @@ def build(indir: Path) -> trimesh.Scene:
         else:
             add(k, m, mat)
     print(f"decimation: {nv_in} -> {nv_out} vertices")
+    # glTF is Y-up; the build runs in CAD Z-up. Pitch the whole scene over.
+    Rx = np.eye(4)
+    Rx[1:3, 1:3] = [[0, 1], [-1, 0]]   # z -> y (up), y -> -z
+    scene.apply_transform(Rx)
     return scene
 
 
