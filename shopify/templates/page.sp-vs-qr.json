@@ -97,7 +97,7 @@
           "type": "row",
           "settings": {
             "label": "Shipping",
-            "a2_value": "$99 flat to anywhere in the contiguous USA (AK/HI extra)",
+            "a2_value": "$99 flat to the lower 48 (AK/HI extra)",
             "competitor_value": "Verify on manufacturer site",
             "highlight": false
           }
