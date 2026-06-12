@@ -127,6 +127,63 @@
             "cta_label": "See the Force build",
             "cta_url": "/products/sp-sram-force"
           }
+        },
+        "gear_short": {
+          "type": "gear",
+          "settings": {
+            "tag": "Sprint & Olympic",
+            "title": "Short course: pure speed",
+            "text": "Short races are decided on raw bike speed \u2014 every watt and every transition second counts.",
+            "cta_label": "Shop race wheels",
+            "cta_url": "/collections/wheelsets-and-upgrades",
+            "item1_label": "Carbon race wheels",
+            "item1_why": "The biggest aero upgrade you can make \u2014 add a wheelset with your bike and the discount applies automatically in the cart.",
+            "item1_url": "/collections/wheelsets-and-upgrades",
+            "item2_label": "XLab Torpedo Versa 200",
+            "item2_why": "Drink without sitting up \u2014 hydration that lives between your arms.",
+            "item2_url": "/products/xlab-torpedo-versa-200",
+            "item3_label": "Look Keo Classic pedals",
+            "item3_why": "Race-ready clipless from day one.",
+            "item3_url": "/products/look-keo-classic-pedals"
+          }
+        },
+        "gear_long": {
+          "type": "gear",
+          "settings": {
+            "tag": "70.3 & full distance",
+            "title": "Long course: carry everything, lose nothing",
+            "text": "Half and full distance is a fueling contest on wheels \u2014 storage and hydration matter as much as aero.",
+            "cta_label": "Shop long-course gear",
+            "cta_url": "/collections/hydration-and-storage-accessories",
+            "item1_label": "XLab Aero TT System",
+            "item1_why": "Rear-mounted hydration that keeps you in position through hour five.",
+            "item1_url": "/products/x-lab-aero-tt-system",
+            "item2_label": "Hydration & storage",
+            "item2_why": "Top-tube and frame storage for race-day fueling, all in one place.",
+            "item2_url": "/collections/hydration-and-storage-accessories",
+            "item3_label": "Race bundles",
+            "item3_why": "Race-week setups in a single add to cart.",
+            "item3_url": "/collections/race-bundles"
+          }
+        },
+        "gear_train": {
+          "type": "gear",
+          "settings": {
+            "tag": "Training & data",
+            "title": "Train smarter between races",
+            "text": "The riders who PR are the ones who measure. Build the feedback loop.",
+            "cta_label": "Shop computers & power",
+            "cta_url": "/collections/bike-computers-and-power-meters",
+            "item1_label": "Garmin Rally power pedals",
+            "item1_why": "Train and pace your races with real power numbers.",
+            "item1_url": "/products/garmin-rally-rs100-200",
+            "item2_label": "Bike computers",
+            "item2_why": "Hammerhead Karoo and Garmin head units that turn rides into data.",
+            "item2_url": "/collections/bike-computers-and-power-meters",
+            "item3_label": "Garmin Varia radar",
+            "item3_why": "Know what's behind you on long solo training rides.",
+            "item3_url": "/products/garmin-varia-rear-bike-radar"
+          }
         }
       },
       "block_order": [
@@ -140,6 +197,9 @@
         "build_rival",
         "build_force",
         "build_red",
+        "gear_short",
+        "gear_long",
+        "gear_train",
         "rev1",
         "rev2",
         "rev3"
@@ -186,7 +246,9 @@
         "hero_image_mobile": "shopify://shop_images/sp-lp-hero-mobile.jpg",
         "sizing_tool": "fit_finder",
         "personas_heading": "Which rider are you?",
-        "personas_sub": "Three kinds of athletes buy the SP. Find your build in 20 seconds."
+        "personas_sub": "Three kinds of athletes buy the SP. Find your build in 20 seconds.",
+        "gear_heading": "Gear up for your race",
+        "gear_sub": "The right upgrades depend on the race you're training for. Start here."
       }
     }
   },

@@ -201,6 +201,44 @@
     </div>
   </div>
 
+  {%- comment -%} 4b. GEAR BY RIDING TYPE {%- endcomment -%}
+  {%- assign gear_blocks = section.blocks | where: 'type', 'gear' -%}
+  {%- if gear_blocks.size > 0 -%}
+    <div class="a2-section a2-wrap a2-gear">
+      {%- if section.settings.gear_heading != blank -%}<h2 class="a2-h2 a2-center">{{ section.settings.gear_heading }}</h2>{%- endif -%}
+      {%- if section.settings.gear_sub != blank -%}<p class="a2-lead a2-center">{{ section.settings.gear_sub }}</p>{%- endif -%}
+      <div class="a2-gear__grid">
+        {%- for b in gear_blocks -%}
+          <div class="a2-gear__card" {{ b.shopify_attributes }}>
+            {%- if b.settings.tag != blank -%}<span class="a2-gear__tag">{{ b.settings.tag }}</span>{%- endif -%}
+            {%- if b.settings.title != blank -%}<h3 class="a2-gear__title">{{ b.settings.title }}</h3>{%- endif -%}
+            {%- if b.settings.text != blank -%}<p class="a2-gear__text">{{ b.settings.text }}</p>{%- endif -%}
+            <ul class="a2-gear__items">
+              {%- for i in (1..3) -%}
+                {%- assign k_label = 'item' | append: i | append: '_label' -%}
+                {%- assign k_why = 'item' | append: i | append: '_why' -%}
+                {%- assign k_url = 'item' | append: i | append: '_url' -%}
+                {%- if b.settings[k_label] != blank -%}
+                  <li class="a2-gear__item">
+                    {%- if b.settings[k_url] != blank -%}
+                      <a href="{{ b.settings[k_url] }}" data-a2-cta data-a2-event="gear_select" data-a2-cta-id="gear-{{ forloop.parentloop.index }}-{{ i }}">{{ b.settings[k_label] }}</a>
+                    {%- else -%}
+                      <span class="a2-gear__item-label">{{ b.settings[k_label] }}</span>
+                    {%- endif -%}
+                    {%- if b.settings[k_why] != blank -%}<span class="a2-gear__why">{{ b.settings[k_why] }}</span>{%- endif -%}
+                  </li>
+                {%- endif -%}
+              {%- endfor -%}
+            </ul>
+            {%- if b.settings.cta_label != blank and b.settings.cta_url != blank -%}
+              <a class="a2-gear__cta" href="{{ b.settings.cta_url }}" data-a2-cta data-a2-event="gear_select" data-a2-cta-id="gear-cta-{{ forloop.index }}">{{ b.settings.cta_label }} &rarr;</a>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+
   {%- comment -%} 5. REVIEWS / SOCIAL PROOF {%- endcomment -%}
   {%- assign review_blocks = section.blocks | where: 'type', 'review' -%}
   {%- if section.settings.reviews_embed != blank or review_blocks.size > 0 -%}
@@ -864,6 +902,83 @@
           "label": "CTA link"
         }
       ]
+    },
+    {
+      "type": "gear",
+      "name": "Gear path",
+      "settings": [
+        {
+          "type": "text",
+          "id": "tag",
+          "label": "Tag",
+          "info": "Riding type, e.g. 'Sprint & Olympic'."
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Intro"
+        },
+        {
+          "type": "text",
+          "id": "item1_label",
+          "label": "Item 1 name"
+        },
+        {
+          "type": "text",
+          "id": "item1_why",
+          "label": "Item 1 why"
+        },
+        {
+          "type": "url",
+          "id": "item1_url",
+          "label": "Item 1 link"
+        },
+        {
+          "type": "text",
+          "id": "item2_label",
+          "label": "Item 2 name"
+        },
+        {
+          "type": "text",
+          "id": "item2_why",
+          "label": "Item 2 why"
+        },
+        {
+          "type": "url",
+          "id": "item2_url",
+          "label": "Item 2 link"
+        },
+        {
+          "type": "text",
+          "id": "item3_label",
+          "label": "Item 3 name"
+        },
+        {
+          "type": "text",
+          "id": "item3_why",
+          "label": "Item 3 why"
+        },
+        {
+          "type": "url",
+          "id": "item3_url",
+          "label": "Item 3 link"
+        },
+        {
+          "type": "text",
+          "id": "cta_label",
+          "label": "CTA label"
+        },
+        {
+          "type": "url",
+          "id": "cta_url",
+          "label": "CTA link"
+        }
+      ]
     }
   ],
   "presets": [
@@ -945,4 +1060,5 @@
   ]
 }
 {% endschema %}
+
 
