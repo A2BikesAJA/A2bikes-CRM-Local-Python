@@ -7,25 +7,36 @@ logos — embeddable on the website / Shopify product page.
 
 | Step | State |
 |---|---|
-| Conversion pipeline (STEP → GLB, matte black PBR) | ✅ Verified working (`convert_to_glb.py`) |
-| Web viewer (spin/flip/zoom + mobile AR) | ✅ Ready (`viewer/index.html`, loads `sp_assembled.glb`) |
-| Logo decal textures (from A2-001 brand kit) | ✅ Prepared (`assets/decals/`) |
-| Frameset (frame, fork, storage boxes, hardware) | ✅ From Shapr3D STEP export |
-| Wheels (60mm spoked front + full disc rear, tires, rotors, DA cassette) | ✅ Mated to dropouts (`assemble_sp.py`) |
-| Saddle + 3D A2 logo badge (mirrored both sides) | ✅ Placed |
-| Seatpost | ⚠️ Provisional generated aero post — replace with real A2SP geometry |
-| Cockpit (TriMax base bar + extensions + SAGS stem) | ⏳ Need Shapr3D export |
-| Crank/chainring, chain, derailleurs, brake calipers, pedals | ⏳ Need Shapr3D export or manufacturer CAD |
+| Complete bike model (size M): frame, fork, cockpit, seatpost, saddle, Dura-Ace drivetrain, wheels, calipers | ✅ `viewer/sp_final.glb` (12 MB, 162 parts) built by `build_master.py` |
+| Matte black colorway + material classification | ✅ Per A2-001 style guide |
+| 3D A2 logo badge on the down tube (both sides) | ✅ Placed (gray; swap to red/white in `MAT["logo"]`) |
+| Web viewer (spin/flip/zoom + mobile AR) | ✅ `viewer/index.html` |
+| Logo decal textures (from A2-001 brand kit) | ✅ `assets/decals/` |
 
-## Assembly
+## Pipeline
 
-`assemble_sp.py` mates the separately exported Shapr3D STEP files into one
-bike: the wheels export shares the frameset's scale, so a single Rz(90°) +
-translation lands both axles on the dropouts (wheelbase 1.001 m). Saddle and
-logo placement, material classification (incl. Russian part names from the
-source component library: карбон = carbon rim, резина = tire rubber), and the
-provisional seatpost live in that script. Output: `viewer/sp_assembled.glb`
-(7.9 MB, 85 parts). Renders in `renders/`.
+The master source is `SP Component.step` — a complete Shapr3D assembly of the
+size M SP (geometry confirmed against the SP geometry chart: 972 mm wheelbase,
+78° ST, 70 mm BB drop). Build:
+
+```bash
+pip install cadquery-ocp cascadio trimesh fast-simplification pillow numpy
+python convert_to_glb.py "SP Component.step" sp_component.glb   # tessellate
+python build_master.py <dir> viewer/sp_final.glb                # materials, logo, decimation
+```
+
+`build_master.py` classifies materials per part name (Russian/Chinese factory
+part names: карбон = carbon, резина = tire rubber, 立管/座管 = seat tube/post),
+decimates heavy meshes (chain 153k verts → ~38k; thin surfaces like the rear
+disc are exempt), rotates the bike +x forward, and places the 3D logo badge.
+
+`assemble_sp.py` is the earlier piecewise path (frameset + wheels + saddle as
+separate exports) — kept for reference; superseded by the master assembly.
+
+Source files live in Drive: "design files for Claude" (large ones split into
+5 MB `.part.*` chunks — reassemble with `cat name.part.* > name`). Also there:
+`Dura Ace Tri Group.step` (standalone groupset) and `Size S SP 2.zip` (size S
+frame/fork/seatpost OBJs) — unused, available if a size S variant is wanted.
 
 Note: the original `KQS_4015_v1.x_t` Parasolid file is unreadable outside
 licensed CAD kernels — the Shapr3D STEP exports replaced it.
