@@ -506,6 +506,28 @@ BATCH D STEP 1 DEPLOYED (June 10/11): new `sections/sppdp-media.liquid`
    already-open editor tab will clobber it on save — have the owner
    refresh/close editor tabs before saving, and re-verify checksums if a
    template's updatedAt moves without a matching session action.
+   LP UPGRADE PASS (June 11–12): both LPs gained rider-profile segmentation
+   (Newbie / Amateur / Returning-vet persona bands with build picks +
+   upgrade paths), gear-by-riding-type bands (3 items each, all linking
+   live products), uniform build cards (light #f6f3ec square tiles,
+   contain-fit, multiply blend; Force = Cascade Blue per owner), and a NEW
+   `snippets/a2-rogue-fit-calc.liquid` (height bands from the published
+   Rogue geometry, inseam tiebreak, 0.883×inseam saddle start, borderline
+   dual cards, `rogue_fit_result` dataLayer event; `sizing_tool` select on
+   the LP engine: fit_finder | size_calc | rogue_fit). Affirm cart drawer:
+   publishable key WSAUD4RQEGCMBW2I, monthly line under subtotal,
+   `quick-cart.liquid` now repo-tracked.
+   OWNER CONFIRMATIONS (June 12): claims APPROVED as written (Triathlete
+   years, "five-time winner", 4.8★/96/97% stat copy); consolidation
+   kill-list APPROVED (canonicals assumed: about-new, buying-process-2-0 —
+   one-line veto window before publish-day execution); shipping CONFIRMED
+   at $99 flat to the lower 48. The confirmation exposed a contradiction:
+   8 buy boxes said "ships free in the continental US" and the Apex legacy
+   template said "free over $5,000". Standardized 12 files (sppdp-product
+   + sppdp-main defaults, spc-faq, 4 SP build templates, page.sp-pdp,
+   page.sp-compare, page.sp-vs-qr "(AK/HI extra)", product.json,
+   product.rogue-apex) to "$99 flat shipping to the lower 48" — deployed +
+   checksum-verified, zero "ships free" strings remain (commit 84ccf8f).
 
 ## 6. Deploy pipeline (the reliable way) + gotchas
 

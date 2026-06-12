@@ -16,23 +16,29 @@ inputs land. Theme: "Why A2 — DRAFT" `176492183716` replaces live
       (sizes S–XL, 78/93/108mm stems, 0–70mm risers), deployed + verified.
       Remaining nuance: Rogue uses the height-based Size Calculator v2 (no pad
       sheet needed).
-- [ ] **Claim citations.** Confirm before they face traffic:
-      - "Best Beginner Triathlon Bike — Triathlete Magazine" → exactly which years?
-      - "Five-time winner" (Why A2) → verify or cut.
-      - "4.8★ / 96 reviews / 97% would recommend" on PDPs → 4.53★/96 is what the
-        recovered Fera data supports store-wide; approve softer copy or give a
-        defensible per-product number.
+- [x] **Claim citations — APPROVED June 12.** AJ confirmed: the Triathlete
+      Magazine years and "five-time winner" stand as written, and the
+      "4.8★ / 96 reviews / 97% would recommend" stat copy is confirmed as-is.
+      No copy changes needed; nothing left to do here.
 - [x] **Affirm cart drawer — DONE June 11.** AJ confirmed the publishable key;
       the drawer now shows the Affirm monthly line under the subtotal
       (settings-driven in the Quick Cart section, updates on quantity change).
       `sections/quick-cart.liquid` is now repo-tracked — include it in the v6
       migration diff.
-- [ ] **Approve the consolidation kill-list** (executed at publish, step 4.6):
+- [x] **Consolidation kill-list — APPROVED June 12** (executes at publish,
+      step 4.6):
       - finance, finance-your-bike, financing-your-bike, ride-now-pay-later,
         financing-and-installments → 301 → `/pages/financing-hsa-fsa`
-      - about → about-new (pick canonical)
-      - buying-process vs buying-process-2-0 (pick canonical)
-- [ ] **Verify the shipping promise** ($99 / 3–5 days) used in PDP copy.
+      - about → 301 → about-new (canonical: **about-new**, assumed — veto
+        before publish day if you'd rather keep `about`)
+      - buying-process → 301 → buying-process-2-0 (canonical:
+        **buying-process-2-0**, assumed — same one-line veto window)
+- [x] **Shipping promise — CONFIRMED June 12: $99 flat to the lower 48.**
+      Audit found 8 buy boxes still saying "ships free in the continental US"
+      plus a "free over $5,000" line on the Apex legacy template. All 12
+      affected files standardized to "$99 flat shipping to the lower 48"
+      (AK/HI extra where compared), deployed + checksum-verified. Zero
+      "ships free" strings remain in the theme.
 - [ ] **Klaviyo sign-up form ID** for Why A2 capture (or approve the built-in
       fallback that's live now).
 
@@ -61,7 +67,8 @@ inputs land. Theme: "Why A2 — DRAFT" `176492183716` replaces live
 ## Phase 2 — Claude's prep (⚙ as inputs land)
 - [ ] Wire Fit Finder coords + size labels; verify on every PDP + homepage modal.
 - [ ] Insert athlete quotes; unhide `wa-athletes`; set `klaviyo_form_id`.
-- [ ] Apply approved claim copy everywhere (PDP rating line, Why A2, compare).
+- [x] Apply approved claim copy everywhere — no-op: AJ approved the existing
+      copy as written (June 12), so what's deployed is already the approved copy.
 - [ ] Wire uploaded videos into SP hero slots; add media band to Rogue
       templates once the Rogue reel is up.
 - [ ] Full checksum audit: every repo file matches the draft theme byte-for-byte.
