@@ -10,9 +10,9 @@
   152362090660): stack/reach + head angle 72° (S/M) / 73° (L/XL); stock
   stems 90/90/100/110 mm and cranks 165/170/172.5/175 mm by size.
 
-  Assumptions (flagged to the owner, keep honest in copy): ±6° stem, stem
-  swaps 70–120 mm, up to 35 mm of spacers under the stem. Bar width is
-  GUIDANCE only (no published stock spec) — match shoulder width. The
+  ±6° stem with 70–120 mm swaps; up to 35 mm of spacers under the stem
+  (owner-confirmed June 12). Stock bar widths 400/420/420/440 mm c-c by
+  size (owner-confirmed June 12, not in the geometry guide). The
   height/inseam path estimates the target by interpolating between
   per-size anchor points derived from the published size bands (stock
   stem, mid spacer stack), nudged by leg ratio and riding-posture choice.
@@ -111,7 +111,7 @@
       <div class="a2-rfc__option"><p id="a2rfcOp3"></p></div>
     </div>
 
-    <p class="a2-rfc__note" id="a2rfcNote" style="display:none;">Built on the published Rogue geometry. Assumes a &plusmn;6&deg; stem with 70&ndash;120&nbsp;mm swaps and up to 35&nbsp;mm of spacers under the stem; stock stems are 90&thinsp;/&thinsp;90&thinsp;/&thinsp;100&thinsp;/&thinsp;110&nbsp;mm and stock cranks 165&thinsp;/&thinsp;170&thinsp;/&thinsp;172.5&thinsp;/&thinsp;175&nbsp;mm by size. Bar-width suggestions are typical for riders your size &mdash; the final call is your shoulder width (center to center). Saddle height (0.883&nbsp;&times;&nbsp;inseam) is a starting point &mdash; fine-tune on your first rides. Free size exchanges either way.</p>
+    <p class="a2-rfc__note" id="a2rfcNote" style="display:none;">Built on the published Rogue geometry, with a &plusmn;6&deg; stem (70&ndash;120&nbsp;mm swaps) and up to 35&nbsp;mm of spacers under the stem. Stock by size: stems 90&thinsp;/&thinsp;90&thinsp;/&thinsp;100&thinsp;/&thinsp;110&nbsp;mm, cranks 165&thinsp;/&thinsp;170&thinsp;/&thinsp;172.5&thinsp;/&thinsp;175&nbsp;mm, handlebars 40&thinsp;/&thinsp;42&thinsp;/&thinsp;42&thinsp;/&thinsp;44&nbsp;cm center-to-center. If your shoulders run wide or narrow for your height, ask us about a bar-width swap. Saddle height (0.883&nbsp;&times;&nbsp;inseam) is a starting point &mdash; fine-tune on your first rides. Free size exchanges either way.</p>
 
     <div id="a2rfcChartBox"><div class="a2-rfc__chart-container"><canvas id="a2rfcChart"></canvas></div></div>
   </div>
@@ -122,12 +122,12 @@ if (!window.__a2rfcInit) {
   window.__a2rfcInit = true;
 
   // Rogue All-Road Geometry Guide (page 152362090660), mm and degrees.
-  // bar = width guidance only (no published stock spec); crank = stock.
+  // bar = stock width c-c (owner-confirmed June 12); crank = stock.
   var A2_ROGUE = {
-    S:  { name: "Small",  reach: 378, stack: 521, hta: 72, stockStem: 90,  crank: "165",   bar: "38–40 cm", hMin: 1600, hMax: 1675 },
-    M:  { name: "Medium", reach: 381, stack: 535, hta: 72, stockStem: 90,  crank: "170",   bar: "40–42 cm", hMin: 1700, hMax: 1780 },
-    L:  { name: "Large",  reach: 386, stack: 550, hta: 73, stockStem: 100, crank: "172.5", bar: "42 cm",        hMin: 1800, hMax: 1880 },
-    XL: { name: "XL",     reach: 390, stack: 567, hta: 73, stockStem: 110, crank: "175",   bar: "42–44 cm", hMin: 1900, hMax: 1960 }
+    S:  { name: "Small",  reach: 378, stack: 521, hta: 72, stockStem: 90,  crank: "165",   bar: "40 cm", hMin: 1600, hMax: 1675 },
+    M:  { name: "Medium", reach: 381, stack: 535, hta: 72, stockStem: 90,  crank: "170",   bar: "42 cm", hMin: 1700, hMax: 1780 },
+    L:  { name: "Large",  reach: 386, stack: 550, hta: 73, stockStem: 100, crank: "172.5", bar: "42 cm", hMin: 1800, hMax: 1880 },
+    XL: { name: "XL",     reach: 390, stack: 567, hta: 73, stockStem: 110, crank: "175",   bar: "44 cm", hMin: 1900, hMax: 1960 }
   };
   var frame_key = ["S", "M", "L", "XL"];
   var stem_lengths = [70, 80, 90, 100, 110, 120];
@@ -320,7 +320,7 @@ if (!window.__a2rfcInit) {
       "<br><b>Spacers under stem:</b> " + c.spacers + "mm" +
       "<br><b>Bar position (HX / HY):</b> " + c.hx + " / " + c.hy + "mm" +
       "<br><b>Crank arms (stock):</b> " + g.crank + "mm" +
-      "<br><b>Bar width guide:</b> " + g.bar + " c-c" +
+      "<br><b>Handlebar (stock):</b> " + g.bar + " c-c" +
       "<br><b>Distance from your fit point:</b> " + Math.round(c.error) + "mm<br>";
   }
 
