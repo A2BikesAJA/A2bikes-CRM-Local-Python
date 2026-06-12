@@ -517,6 +517,23 @@ BATCH D STEP 1 DEPLOYED (June 10/11): new `sections/sppdp-media.liquid`
    the LP engine: fit_finder | size_calc | rogue_fit). Affirm cart drawer:
    publishable key WSAUD4RQEGCMBW2I, monthly line under subtotal,
    `quick-cart.liquid` now repo-tracked.
+   ROGUE FIT CALC v2 (June 12, owner request): rebuilt on the SP Fit
+   Finder architecture — fit point = handlebar HX/HY (BB to bar clamp),
+   exhaustive search over frame × stem (70–120mm, ±6° flip) × spacers
+   (0–35mm), three options on three frames + Chart.js scatter. Geometry
+   from the published guide (head angle 72°/72°/73°/73°, stock stems
+   90/90/100/110, cranks 165/170/172.5/175). Height/inseam path
+   interpolates per-size anchors pinned to the published height bands,
+   with leg-ratio + riding-position (relaxed/balanced/aggressive)
+   nudges; scoring penalizes flipped stems (+10) and off-band frames
+   (+15) so in-band riders always get their published size as Option 1
+   (sim-verified across 11 rider profiles). Bar width shown as GUIDANCE
+   only (38–40/40–42/42/42–44 c-c) — no published stock bar spec; OWNER
+   TO CONFIRM stock bar widths + max spacer stack (35mm assumed).
+   Klaviyo form WDFJLq + self-loading klaviyo.js wired into Why A2 +
+   homepage capture (company YejYTH). NOTE: archived products `rogue`,
+   `rogue-apex-axs`, `rogue-white-draft` still contain gravel copy —
+   fine while archived, fix before any reactivation.
    OWNER CONFIRMATIONS (June 12): claims APPROVED as written (Triathlete
    years, "five-time winner", 4.8★/96/97% stat copy); consolidation
    kill-list APPROVED (canonicals assumed: about-new, buying-process-2-0 —
