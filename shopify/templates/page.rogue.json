@@ -160,7 +160,7 @@
         "builds_subheading": "Same versatile Rogue frame. Choose the groupset that fits your riding and budget.",
         "reviews_heading": "Loved on every surface",
         "sizing_heading": "Not sure of your size?",
-        "sizing_text": "Answer a few quick questions and we'll recommend your Rogue fit in under a minute.",
+        "sizing_text": "Enter your height and inseam \u2014 we'll recommend your Rogue frame size from the real geometry chart, plus a saddle-height starting point for your first ride.",
         "email_heading": "Not ready to buy? Get the Rogue guide.",
         "email_text": "Specs, sizing and a straight-talk financing breakdown \u2014 straight to your inbox.",
         "email_cta_label": "Send the Rogue guide",
@@ -173,7 +173,7 @@
         "klaviyo_list_id": "Riv6B2",
         "hero_image": "shopify://shop_images/rogue-lp-hero-road.jpg",
         "hero_image_mobile": "shopify://shop_images/rogue-lp-hero-mobile.jpg",
-        "sizing_tool": "size_calc",
+        "sizing_tool": "rogue_fit",
         "personas_heading": "Which rider are you?",
         "personas_sub": "Three kinds of riders buy the Rogue. Find your build in 20 seconds."
       }

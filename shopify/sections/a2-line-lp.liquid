@@ -244,7 +244,9 @@
       {%- endif -%}
     </div>
     {%- if section.settings.show_fit_calculator -%}
-      {%- if section.settings.sizing_tool == 'size_calc' -%}
+      {%- if section.settings.sizing_tool == 'rogue_fit' -%}
+        <div style="margin-top:20px">{% render 'a2-rogue-fit-calc' %}</div>
+      {%- elsif section.settings.sizing_tool == 'size_calc' -%}
         <div style="margin-top:20px">{% render 'a2-size-calc', default_bike: section.settings.line %}</div>
       {%- else -%}
         <div style="margin-top:20px">{% render 'a2-fit-calculator' %}</div>
