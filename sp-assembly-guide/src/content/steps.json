@@ -275,7 +275,7 @@
       "substeps": [
         "M-CHECK: starting at the front wheel, work the 'M' shape across the bike — front wheel, fork/headset, bars, frame, saddle, drivetrain, rear wheel.",
         "Squeeze both brake levers — they should feel firm and the bike should not roll.",
-        "Set tire pressure with a gauge to the range printed on the tire sidewall.",
+        "Set tire pressure with a gauge. Use the range printed on the tire sidewall — but if your rims are hookless, never go above the rim's maximum, even if the tire allows more.",
         "Re-check the critical torques: seatpost binder, saddle clamp, basebar, extensions, thru-axle, and pedals.",
         "Lift each wheel and spin it — listen for rotor rub or anything loose."
       ],
@@ -290,8 +290,9 @@
         { "fastener": "Re-verify: pedals", "nm": "34.5–40", "inlb": "305–354", "critical": false, "anchor": [0, 0.27, 0.2] }
       ],
       "tools": ["4mm hex", "5mm hex", "6mm hex", "Torque wrench (2–20 N·m)", "Floor pump with gauge"],
-      "warnings": ["Do not ride until brakes feel firm and all critical bolts are confirmed at spec."],
-      "commonMistakes": ["Inflating to the maximum on the pump rather than the range printed on the tire."],
+      "hazards": ["ZIPP HOOKLESS WHEELS: never exceed the maximum tire pressure printed on the rim. Zipp hookless road wheels are rated to a maximum of 72.5 psi (5.0 bar). Over-inflating a hookless rim can blow the tire off the rim. When the tire's max and the rim's max differ, always use the LOWER number."],
+      "warnings": ["Do not ride until brakes feel firm and all critical bolts are confirmed at spec.", "Hookless rims require tubeless-compatible tires — do not fit a non-tubeless or hooked-only tire."],
+      "commonMistakes": ["Inflating to the maximum on the pump rather than the correct range.", "Reading only the tire's max pressure and ignoring a lower hookless rim limit."],
       "durationMin": 8,
       "videoTimestamp": null
     },

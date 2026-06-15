@@ -11,12 +11,14 @@ const single = process.env.SINGLE === "1";
 // path or served from a subdirectory / CDN.
 export default defineConfig({
   base: "./",
+  assetsInclude: ["**/*.glb"],
   plugins: [react(), ...(single ? [viteSingleFile()] : [])],
   build: {
     target: "es2020",
     chunkSizeWarningLimit: 2500,
     ...(single
-      ? { outDir: "dist-single" }
+      ? // inline the GLB as a base64 data URI so the one-file build works offline
+        { outDir: "dist-single", assetsInlineLimit: Number.MAX_SAFE_INTEGER }
       : {
           rollupOptions: {
             output: {

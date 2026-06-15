@@ -27,6 +27,16 @@ pedals 34.5–40 N·m. (Reference-only specs not surfaced as steps: rotor-to-hub
 | `steps.json → meta.support.email` | Support email | A2 customer-support email address |
 | `steps.json → meta.support.url` | Contact URL | A2 support / contact page URL |
 
+## Tire pressure — CONFIRM the hookless figure
+
+Step 8 carries a first-class hazard: "Zipp hookless road wheels are rated to a
+maximum of 72.5 psi (5.0 bar)." 72.5 psi / 5.0 bar is Zipp's published hookless
+road maximum and the ETRTO hookless standard — but **A2 must confirm it matches
+the exact Zipp wheelsets specced on the SP** (e.g. 303 S / 404), since a
+specific model could differ. The customer-facing instruction ("use the lower of
+the tire max and the rim max printed on the rim") is safe regardless; only the
+cited number needs confirming. Edit in `steps.json → safety-check → hazards`.
+
 ## Brand colors — RECOMMENDED
 
 | Where | Field | Current | Needed |

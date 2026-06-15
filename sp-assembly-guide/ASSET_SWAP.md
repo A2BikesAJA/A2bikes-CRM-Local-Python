@@ -1,21 +1,34 @@
-# ASSET_SWAP — dropping the real CAD model in for the parametric one
+# ASSET_SWAP — the CAD model and how to regenerate it
 
-The app ships with a stylized **parametric** SP built from code. When a proper
-GLB export of the KQS CAD is ready, the app loads it automatically with **zero
-code changes** — as long as it satisfies the contract below.
+The app now loads the **real CAD model** from `src/assets/sp.glb`
+(meshopt-compressed, ~2.2 MB) and wraps each contract-named node in the `<Part>`
+system (highlight / ghost / hide / explode all work). If the GLB ever fails to
+load, it falls back to the code-drawn parametric model.
 
-## How the swap works
+## Current model & how it was made
 
-`src/three/BikeModel.tsx` does a `HEAD` request for `public/assets/sp.glb` on
-load:
+`tools/make_assembly_glb.py` builds `src/assets/sp.glb` from the master Shapr3D
+assembly (`sp_component.glb`). It:
+- assigns a PBR material per mesh by name (matte-black production colorway),
+- classifies every mesh into one of the 21 contract part groups,
+- remaps into the guide coordinate convention (below) and bakes transforms,
+- decimates heavy meshes, names each node `<id>__<n>`, exports GLB.
 
-- **File present & valid** → it loads the GLB and wraps each contract-named node
-  in the same `<Part>` system the parametric model uses (highlight / ghost /
-  hide / explode all work identically).
-- **File absent or fails to parse** → it falls back to the parametric model.
+Then compress with meshopt (decodes offline, no CDN — important for the
+single-file build):
 
-So the entire swap is: **put `sp.glb` in `public/assets/` and rebuild.** No code
-edit required.
+```bash
+python tools/make_assembly_glb.py sp_component.glb sp_raw.glb
+npx --yes @gltf-transform/cli meshopt sp_raw.glb src/assets/sp.glb
+npm run build
+```
+
+## Regenerating from new CAD
+
+If A2 ships a new/cleaner CAD export, either (a) re-run the tool above after
+updating the name→part classification in `make_assembly_glb.py`, or (b) export a
+GLB whose node names already match the contract (`<id>` or `<id>__<n>`) and drop
+it at `src/assets/sp.glb`. Then `npm run build`. No app code changes.
 
 ## The part-naming contract (NON-NEGOTIABLE)
 

@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useStore } from "../state/store";
-import { ColorwayToggle } from "./ColorwayToggle";
 import { HelpFooter } from "./Footer";
 import { persistenceMode } from "../lib/storage";
 import type { BuildId } from "../lib/types";
@@ -40,9 +39,6 @@ export function Landing() {
             </button>
           ))}
         </div>
-
-        <div className="field-label">Frame color</div>
-        <ColorwayToggle />
 
         <div className="field-label">Tools you'll need</div>
         <ul className="tools-list">
