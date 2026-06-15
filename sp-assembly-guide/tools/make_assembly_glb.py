@@ -100,26 +100,20 @@ def to_guide(verts):
     return np.column_stack([-cy + 0.27, cz + 0.02, cx - 0.07])
 
 
-# We ship the model UNCOMPRESSED (no meshopt/draco) so it needs no decoder and
-# loads reliably everywhere, including from file://. To stay under the 8 MB
-# budget we decimate ONLY large, smooth meshes (frame, chain, cassette, bars)
-# and leave thin/detailed parts — especially wheel spokes — fully intact, since
-# decimating thin geometry turns it into shards.
-# never decimate these (thin spokes / small hardware), regardless of size
-NO_DECIMATE = ("dt competition", "nipple", "spoke")
-# per-group vertex cap: the frame keeps more detail than everything else.
-GROUP_CAP = {"frame": 14000, "fork": 9000}
-DEFAULT_CAP = 6000
+# We ship the model meshopt-compressed (decodes offline, no CDN). Because
+# meshopt compresses ~4x, we keep ALL visible parts at full resolution — the
+# frame especially, since decimating it produced shard artifacts. Only the two
+# massive, visually-forgiving meshes (chain links, cassette) are reduced, and we
+# recompute normals afterward so they still shade correctly.
+DECIMATE_NAMES = ("chain ", "cs-r9200")
+DECIMATE_CAP = 18000
 
 
 def keep_for(name, nv, grp):
     n = name.lower()
-    if any(s in n for s in NO_DECIMATE):
-        return 1.0
-    cap = GROUP_CAP.get(grp, DEFAULT_CAP)
-    if nv <= cap:
-        return 1.0
-    return max(0.1, cap / nv)
+    if any(s in n for s in DECIMATE_NAMES) and nv > DECIMATE_CAP:
+        return DECIMATE_CAP / nv
+    return 1.0
 
 
 def decimate(mesh, keep):
@@ -130,7 +124,9 @@ def decimate(mesh, keep):
         np.asarray(mesh.faces, np.int64),
         target_reduction=1.0 - keep,
     )
-    return trimesh.Trimesh(vertices=v, faces=f, process=False)
+    out = trimesh.Trimesh(vertices=v, faces=f, process=False)
+    out.fix_normals()  # recompute so decimated faces shade correctly
+    return out
 
 
 def main():
