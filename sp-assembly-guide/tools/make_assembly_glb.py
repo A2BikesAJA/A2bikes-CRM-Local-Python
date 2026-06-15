@@ -100,17 +100,26 @@ def to_guide(verts):
     return np.column_stack([-cy + 0.27, cz + 0.02, cx - 0.07])
 
 
-# decimation target ratio per group (1.0 = keep all)
-KEEP = {
-    "chain": 0.10,
-    "frame": 0.35,
-    "fork": 0.6,
-    "rear_wheel": 0.5,
-    "front_wheel": 0.5,
-    "cockpit_basebar": 0.4,
-    "crankset": 0.4,
-    "rear_derailleur": 0.5,
-}
+# We ship the model UNCOMPRESSED (no meshopt/draco) so it needs no decoder and
+# loads reliably everywhere, including from file://. To stay under the 8 MB
+# budget we decimate ONLY large, smooth meshes (frame, chain, cassette, bars)
+# and leave thin/detailed parts — especially wheel spokes — fully intact, since
+# decimating thin geometry turns it into shards.
+# never decimate these (thin spokes / small hardware), regardless of size
+NO_DECIMATE = ("dt competition", "nipple", "spoke")
+# per-group vertex cap: the frame keeps more detail than everything else.
+GROUP_CAP = {"frame": 14000, "fork": 9000}
+DEFAULT_CAP = 6000
+
+
+def keep_for(name, nv, grp):
+    n = name.lower()
+    if any(s in n for s in NO_DECIMATE):
+        return 1.0
+    cap = GROUP_CAP.get(grp, DEFAULT_CAP)
+    if nv <= cap:
+        return 1.0
+    return max(0.1, cap / nv)
 
 
 def decimate(mesh, keep):
@@ -136,7 +145,7 @@ def main():
         m.apply_transform(T)
         c = m.bounds.mean(0)
         grp = group_for(name, c)
-        m = decimate(m, KEEP.get(grp, 1.0))
+        m = decimate(m, keep_for(name, len(m.vertices), grp))
         m.vertices = to_guide(np.asarray(m.vertices))
         m.visual = trimesh.visual.TextureVisuals(material=MATS[material_for(name)])
         idx = counts.get(grp, 0)

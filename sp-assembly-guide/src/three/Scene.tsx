@@ -1,6 +1,6 @@
 import { Suspense, useEffect, useState } from "react";
 import { Canvas } from "@react-three/fiber";
-import { ContactShadows, Environment, Lightformer, AdaptiveDpr } from "@react-three/drei";
+import { ContactShadows, Environment, Lightformer, AdaptiveDpr, Loader } from "@react-three/drei";
 import { ACESFilmicToneMapping } from "three";
 import { BikeModel } from "./BikeModel";
 import { CameraRig } from "./CameraRig";
@@ -18,6 +18,7 @@ export function Scene() {
   }, []);
 
   return (
+    <>
     <Canvas
       shadows
       dpr={[1, 2]} // cap pixel ratio at 2
@@ -61,5 +62,15 @@ export function Scene() {
       <CameraRig />
       <AdaptiveDpr pixelated />
     </Canvas>
+    {/* DOM overlay: shows model load progress; surfaces a hung/failed load
+        instead of a silent blank canvas. */}
+    <Loader
+      containerStyles={{ background: "rgba(238,241,244,0.85)" }}
+      innerStyles={{ width: "180px" }}
+      barStyles={{ background: "#1e4d78" }}
+      dataStyles={{ color: "#4a525b", fontFamily: "Inter, sans-serif", fontSize: "12px" }}
+      dataInterpolation={(p) => `Loading 3D model… ${p.toFixed(0)}%`}
+    />
+    </>
   );
 }
