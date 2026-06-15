@@ -88,7 +88,11 @@
       "focusParts": ["seatpost", "saddle"],
       "hiddenParts": [],
       "explode": { "saddle": [0, 0.5, 0], "seatpost": [0, 0.32, 0] },
-      "camera": { "position": [1.0, 1.2, 1.7], "target": [-0.1, 0.66, 0], "fov": 42 },
+      "camera": { "position": [0.62, 1.32, 1.15], "target": [-0.07, 0.82, 0], "fov": 40 },
+      "annotations": [
+        { "at": [-0.08, 1.08, 0.03], "dir": [0, -1, 0], "label": "Slide post in, set height" },
+        { "at": [-0.06, 0.64, 0.07], "dir": [0, -1, 0], "label": "Tighten binder", "emphasis": true }
+      ],
       "torque": [
         {
           "fastener": "Frame seatpost binder / wedge",
@@ -132,7 +136,11 @@
       "focusParts": ["cockpit_basebar", "extensions", "stem_topcap"],
       "hiddenParts": [],
       "explode": { "cockpit_basebar": [0, 0.26, 0], "extensions": [0.22, 0.14, 0], "stem_topcap": [0, 0.34, 0] },
-      "camera": { "position": [1.9, 1.0, 1.3], "target": [0.52, 0.72, 0], "fov": 42 },
+      "camera": { "position": [1.35, 1.18, 1.0], "target": [0.5, 0.82, 0], "fov": 40 },
+      "annotations": [
+        { "at": [0.52, 1.02, 0.05], "dir": [0, -1, 0], "label": "Seat bars on stem" },
+        { "at": [0.42, 0.92, 0.04], "dir": [0, -1, 0], "label": "Snug top cap (2–3 N·m)" }
+      ],
       "torque": [
         { "fastener": "Basebar clamp bolts", "nm": "5–6", "inlb": "44–53", "critical": true, "anchor": [0.5, 0.74, 0.05] },
         { "fastener": "Extension clamps", "nm": "5–6", "inlb": "44–53", "critical": true, "anchor": [0.66, 0.78, 0.05] },
@@ -163,7 +171,11 @@
       "focusParts": ["front_wheel", "thru_axle_front"],
       "hiddenParts": [],
       "explode": { "front_wheel": [0.1, -0.42, 0], "thru_axle_front": [0, 0, 0.36] },
-      "camera": { "position": [1.7, 0.5, 1.7], "target": [0.59, 0.34, 0], "fov": 42 },
+      "camera": { "position": [1.35, 0.72, 1.05], "target": [0.57, 0.34, 0], "fov": 42 },
+      "annotations": [
+        { "at": [0.57, 0.1, 0.04], "dir": [0, 1, 0], "label": "Lift wheel into dropouts" },
+        { "at": [0.57, 0.34, 0.34], "dir": [0, 0, -1], "label": "Insert & tighten axle" }
+      ],
       "torque": [
         {
           "fastener": "Front thru-axle",
@@ -199,7 +211,11 @@
       "focusParts": ["pedal_left", "pedal_right"],
       "hiddenParts": [],
       "explode": { "pedal_left": [0, 0, -0.3], "pedal_right": [0, 0, 0.3] },
-      "camera": { "position": [0.5, 0.4, 1.6], "target": [0, 0.27, 0], "fov": 46 },
+      "camera": { "position": [0.55, 0.62, 1.0], "target": [0, 0.27, 0.05], "fov": 44 },
+      "annotations": [
+        { "at": [0, 0.27, 0.36], "dir": [0, 0, -1], "label": "Right pedal: normal thread" },
+        { "at": [0.0, 0.45, 0.18], "dir": [0, -1, 0], "label": "LEFT pedal = REVERSE thread", "emphasis": true }
+      ],
       "torque": [
         { "fastener": "Pedals (both)", "nm": "34.5–40", "inlb": "305–354", "critical": false, "anchor": [0, 0.27, 0.2] }
       ],
@@ -228,7 +244,10 @@
       "focusParts": ["rear_derailleur", "chain"],
       "hiddenParts": [],
       "explode": {},
-      "camera": { "position": [-0.7, 0.45, 1.4], "target": [-0.35, 0.3, 0.05], "fov": 46 },
+      "camera": { "position": [0.15, 0.7, 1.05], "target": [-0.4, 0.3, 0.05], "fov": 42 },
+      "annotations": [
+        { "at": [-0.41, 0.48, 0.08], "dir": [0, -1, 0], "label": "Shift through all gears" }
+      ],
       "torque": [],
       "tools": ["2.5mm hex", "4mm hex"],
       "warnings": ["Keep fingers clear of the chain and chainrings while turning the cranks."],

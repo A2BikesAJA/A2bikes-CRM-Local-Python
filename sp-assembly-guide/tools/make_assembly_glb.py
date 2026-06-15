@@ -95,9 +95,15 @@ def group_for(name, c):
 
 
 def to_guide(verts):
-    """Component coords -> guide coords (x fwd, y up, z drive)."""
+    """Component coords -> guide coords (x fwd, y up, z drive).
+
+    Note the z term is negated: this mirrors the bike laterally so the drive
+    side (chainrings / cassette / derailleur) faces the default +z camera, which
+    is the standard drive-side product view. Mirroring flips triangle winding,
+    so callers must reverse face order (see main()).
+    """
     cx, cy, cz = verts[:, 0], verts[:, 1], verts[:, 2]
-    return np.column_stack([-cy + 0.27, cz + 0.02, cx - 0.07])
+    return np.column_stack([-cy + 0.27, cz + 0.02, -(cx - 0.07)])
 
 
 # We ship the model meshopt-compressed (decodes offline, no CDN). Because
@@ -143,6 +149,7 @@ def main():
         grp = group_for(name, c)
         m = decimate(m, keep_for(name, len(m.vertices), grp))
         m.vertices = to_guide(np.asarray(m.vertices))
+        m.faces = np.fliplr(m.faces)  # restore winding after the lateral mirror
         m.visual = trimesh.visual.TextureVisuals(material=MATS[material_for(name)])
         idx = counts.get(grp, 0)
         counts[grp] = idx + 1

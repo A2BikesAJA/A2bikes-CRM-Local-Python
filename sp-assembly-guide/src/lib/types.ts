@@ -16,6 +16,18 @@ export interface TorqueSpec {
   anchor?: Vec3;
 }
 
+/** A directional arrow drawn in 3D to show what to do at a spot on the bike. */
+export interface Annotation {
+  /** Arrowhead tip position in model space (the spot the action happens). */
+  at: Vec3;
+  /** Direction the action moves (unit-ish); the arrow points along it. */
+  dir: Vec3;
+  /** Short imperative label, e.g. "Slide in", "Thread in", "Tighten". */
+  label: string;
+  /** Optional emphasis (reverse-thread, carbon, etc.) → red treatment. */
+  emphasis?: boolean;
+}
+
 /** Build-specific content shown only when the matching build is selected. */
 export type BuildId = "shimano-105-mech" | "shimano-di2" | "sram-axs";
 
@@ -37,6 +49,7 @@ export interface Step {
   /** Per-part explode offset in model metres; falls back to INSERTION_AXIS. */
   explode: Partial<Record<PartId, Vec3>>;
   camera: { position: Vec3; target: Vec3; fov: number };
+  annotations?: Annotation[];
   torque: TorqueSpec[];
   tools: string[];
   warnings: string[];

@@ -519,6 +519,23 @@ h4 {
   padding: 1px 5px;
 }
 
+/* ── Action arrows (3D Html labels) ───────────────────────── */
+.action-pin {
+  background: var(--accent);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  padding: 4px 9px;
+  border-radius: 999px;
+  white-space: nowrap;
+  box-shadow: var(--shadow);
+  transform: translateZ(0);
+}
+.action-pin.is-emph {
+  background: var(--danger);
+}
+
 /* ── Landing screen ───────────────────────────────────────── */
 .landing {
   position: absolute;

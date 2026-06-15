@@ -5,6 +5,7 @@ import { ACESFilmicToneMapping } from "three";
 import { BikeModel } from "./BikeModel";
 import { CameraRig } from "./CameraRig";
 import { TorqueLabels } from "./TorqueLabels";
+import { Arrows } from "./Arrows";
 import { useStore } from "../state/store";
 
 export function Scene() {
@@ -51,6 +52,7 @@ export function Scene() {
           resolution={512}
         />
         <TorqueLabels />
+        <Arrows />
         {/* Procedural studio IBL — no external HDR fetch, fully offline. */}
         <Environment resolution={256} environmentIntensity={0.6}>
           <Lightformer intensity={2} position={[0, 3, 2]} scale={[6, 3, 1]} />
