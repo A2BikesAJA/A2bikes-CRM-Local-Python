@@ -1,0 +1,322 @@
+{
+  "meta": {
+    "product": "A2 Bikes SP",
+    "torqueFooter": "Where a component maker's printed spec differs from the value shown, the printed spec wins. Use a calibrated torque wrench.",
+    "support": {
+      "email": "<<CONFIRM: A2 support email>>",
+      "url": "<<CONFIRM: A2 support / contact URL>>"
+    }
+  },
+  "builds": [
+    { "id": "shimano-105-mech", "label": "Shimano 105 (mechanical)" },
+    { "id": "shimano-di2", "label": "Shimano Di2 (electronic)" },
+    { "id": "sram-axs", "label": "SRAM AXS (electronic)" }
+  ],
+  "toolsMaster": [
+    "2.5mm hex",
+    "3mm hex",
+    "4mm hex",
+    "5mm hex",
+    "6mm hex",
+    "8mm hex",
+    "T25 Torx",
+    "Torque wrench (2–20 N·m)",
+    "Pedal wrench (15mm) or 8mm hex",
+    "Carbon assembly paste",
+    "Grease",
+    "Floor pump with gauge"
+  ],
+  "steps": [
+    {
+      "id": "unbox-inventory",
+      "order": 1,
+      "title": "Unbox & inventory",
+      "summary": "Open the box and confirm every part and tool is present before you start.",
+      "substeps": [
+        "Place the box on a clean, flat surface and open from the top.",
+        "Lift the frame out by the front triangle — never by the rear derailleur or cockpit.",
+        "Locate the parts kit: pedals, thru-axles, accessory pouch, and the printed torque card.",
+        "Tick each item off the checklist below before continuing."
+      ],
+      "parts": ["frame", "fork", "rear_wheel", "front_wheel", "seatpost", "saddle", "cockpit_basebar", "extensions", "crankset", "rear_derailleur", "chain", "front_rotor", "rear_rotor", "front_caliper", "rear_caliper"],
+      "focusParts": [],
+      "hiddenParts": [],
+      "explode": {},
+      "camera": { "position": [2.3, 1.15, 2.5], "target": [0, 0.5, 0], "fov": 40 },
+      "torque": [],
+      "tools": [],
+      "warnings": ["Do not discard packaging until assembly is complete and verified."],
+      "commonMistakes": ["Lifting the bike by the rear derailleur can bend the hanger and ruin shifting."],
+      "durationMin": 6,
+      "videoTimestamp": null
+    },
+    {
+      "id": "remove-packaging",
+      "order": 2,
+      "title": "Remove protective packaging",
+      "summary": "Strip foam, zip ties, and frame protection without scratching the finish.",
+      "substeps": [
+        "Cut zip ties carefully with the flush side of the cutters against the foam, not the frame.",
+        "Remove foam tubes from the down tube, fork legs, and chainstays.",
+        "Peel off any low-tack protective film; leave permanent frame protection (chainstay guard) in place.",
+        "Set the bike in a workstand if you have one, clamping the seatpost — never the frame tubes."
+      ],
+      "parts": ["frame", "fork"],
+      "focusParts": ["frame"],
+      "hiddenParts": [],
+      "explode": {},
+      "camera": { "position": [2.1, 1.0, 2.3], "target": [0, 0.5, 0], "fov": 42 },
+      "torque": [],
+      "tools": [],
+      "warnings": ["Never clamp a carbon frame tube in a workstand — clamp the seatpost only."],
+      "commonMistakes": ["Pulling zip ties tight against the frame before cutting can scratch the clearcoat."],
+      "durationMin": 3,
+      "videoTimestamp": null
+    },
+    {
+      "id": "install-seatpost",
+      "order": 3,
+      "title": "Install the seatpost & saddle",
+      "summary": "Set the aero seatpost to height and torque the saddle clamp — carbon, so torque matters.",
+      "substeps": [
+        "Apply a thin film of carbon assembly paste to the seatpost where it enters the frame.",
+        "Slide the seatpost in and set it to your saddle height (mark it for next time).",
+        "Tighten the frame seatpost binder to the value printed on the binder (see callout — A2 to confirm before this guide ships).",
+        "Level the saddle and tighten the saddle clamp bolts evenly to 5–6 N·m."
+      ],
+      "parts": ["frame", "seatpost", "saddle", "seatpost_binder"],
+      "focusParts": ["seatpost", "saddle"],
+      "hiddenParts": [],
+      "explode": { "saddle": [0, 0.5, 0], "seatpost": [0, 0.32, 0] },
+      "camera": { "position": [1.0, 1.2, 1.7], "target": [-0.1, 0.66, 0], "fov": 42 },
+      "torque": [
+        {
+          "fastener": "Frame seatpost binder / wedge",
+          "nm": null,
+          "inlb": null,
+          "critical": true,
+          "note": "See printed value on frame binder — A2 to confirm",
+          "anchor": [-0.12, 0.5, 0.05]
+        },
+        {
+          "fastener": "Saddle clamp",
+          "nm": "5–6",
+          "inlb": "44–53",
+          "critical": true,
+          "anchor": [-0.1, 0.72, 0.04]
+        }
+      ],
+      "tools": ["4mm hex", "Torque wrench (2–20 N·m)", "Carbon assembly paste"],
+      "warnings": ["Carbon contact point — never exceed the stated torque.", "Carbon assembly paste is required to prevent slipping at safe torque."],
+      "hazards": [],
+      "commonMistakes": [
+        "Skipping carbon paste and then over-tightening to stop slipping — this cracks the post.",
+        "Tightening one saddle-clamp bolt fully before the other; alternate in small increments."
+      ],
+      "durationMin": 5,
+      "videoTimestamp": null
+    },
+    {
+      "id": "install-cockpit",
+      "order": 4,
+      "title": "Install the cockpit / basebar",
+      "summary": "Mount the aero basebar and extensions, then set headset preload with the top cap.",
+      "substeps": [
+        "Fit the basebar to the stem and start all clamp bolts by hand.",
+        "Tighten the basebar clamp bolts evenly to 5–6 N·m in a cross pattern.",
+        "Set the extensions to your reach and tighten their clamps to 5–6 N·m.",
+        "Snug the compression top cap to 2–3 N·m to remove headset play — this sets preload, not clamping force.",
+        "Align the stem to the front wheel and tighten the steerer clamp bolts last."
+      ],
+      "parts": ["frame", "fork", "cockpit_basebar", "extensions", "stem_topcap"],
+      "focusParts": ["cockpit_basebar", "extensions", "stem_topcap"],
+      "hiddenParts": [],
+      "explode": { "cockpit_basebar": [0, 0.26, 0], "extensions": [0.22, 0.14, 0], "stem_topcap": [0, 0.34, 0] },
+      "camera": { "position": [1.9, 1.0, 1.3], "target": [0.52, 0.72, 0], "fov": 42 },
+      "torque": [
+        { "fastener": "Basebar clamp bolts", "nm": "5–6", "inlb": "44–53", "critical": true, "anchor": [0.5, 0.74, 0.05] },
+        { "fastener": "Extension clamps", "nm": "5–6", "inlb": "44–53", "critical": true, "anchor": [0.66, 0.78, 0.05] },
+        { "fastener": "Compression top cap", "nm": "2–3", "inlb": "18–27", "critical": false, "note": "Sets headset preload, not clamping force", "anchor": [0.46, 0.66, 0.0] }
+      ],
+      "tools": ["4mm hex", "5mm hex", "Torque wrench (2–20 N·m)", "Carbon assembly paste"],
+      "warnings": ["Carbon contact points — never exceed the stated torque."],
+      "commonMistakes": [
+        "Cranking the top cap to clamp the stem — the top cap only sets bearing preload; the steerer clamp bolts do the clamping.",
+        "Forgetting to align the bar square to the front wheel before final torque."
+      ],
+      "durationMin": 8,
+      "videoTimestamp": null
+    },
+    {
+      "id": "install-front-wheel",
+      "order": 5,
+      "title": "Install the front wheel",
+      "summary": "Seat the wheel in the fork dropouts, guide the rotor into the caliper, and tighten the thru-axle.",
+      "substeps": [
+        "Make sure the brake pads are not contaminated; keep fingers and oil off the rotor.",
+        "Guide the rotor squarely into the slot between the brake pads as you seat the wheel.",
+        "Push the wheel fully into the dropouts so it is centred.",
+        "Thread the thru-axle in and tighten it to the spec printed on the axle or hub.",
+        "Spin the wheel and confirm there is no rotor rub; re-seat if it ticks."
+      ],
+      "parts": ["frame", "fork", "front_wheel", "front_rotor", "front_caliper", "thru_axle_front"],
+      "focusParts": ["front_wheel", "thru_axle_front"],
+      "hiddenParts": [],
+      "explode": { "front_wheel": [0.1, -0.42, 0], "thru_axle_front": [0, 0, 0.36] },
+      "camera": { "position": [1.7, 0.5, 1.7], "target": [0.59, 0.34, 0], "fov": 42 },
+      "torque": [
+        {
+          "fastener": "Front thru-axle",
+          "nm": null,
+          "inlb": null,
+          "critical": false,
+          "note": "Tighten to the spec printed on the axle / hub",
+          "anchor": [0.59, 0.34, 0.12]
+        }
+      ],
+      "tools": ["6mm hex", "Torque wrench (2–20 N·m)"],
+      "warnings": ["Keep brake fluid, oil, and fingers off the rotor and pads — contamination ruins braking."],
+      "commonMistakes": [
+        "Forcing the axle before the rotor is aligned in the caliper, bending the rotor.",
+        "Not seating the wheel fully in the dropouts, leaving it off-centre."
+      ],
+      "durationMin": 6,
+      "videoTimestamp": null
+    },
+    {
+      "id": "install-pedals",
+      "order": 6,
+      "title": "Install the pedals",
+      "summary": "Thread the pedals into the crank arms — the left pedal is reverse-threaded.",
+      "substeps": [
+        "Grease the pedal threads lightly.",
+        "Identify left (L) and right (R) — they are stamped on the spindle.",
+        "Right pedal: thread in clockwise (normal direction) on the drive side.",
+        "Left pedal: thread in COUNTER-clockwise — it is reverse-threaded.",
+        "Tighten both pedals to 34.5–40 N·m."
+      ],
+      "parts": ["crankset", "pedal_left", "pedal_right"],
+      "focusParts": ["pedal_left", "pedal_right"],
+      "hiddenParts": [],
+      "explode": { "pedal_left": [0, 0, -0.3], "pedal_right": [0, 0, 0.3] },
+      "camera": { "position": [0.5, 0.4, 1.6], "target": [0, 0.27, 0], "fov": 46 },
+      "torque": [
+        { "fastener": "Pedals (both)", "nm": "34.5–40", "inlb": "305–354", "critical": false, "anchor": [0, 0.27, 0.2] }
+      ],
+      "tools": ["Pedal wrench (15mm) or 8mm hex", "Torque wrench (2–20 N·m)", "Grease"],
+      "hazards": ["The LEFT pedal is REVERSE-THREADED — it tightens counter-clockwise. Forcing it the normal way will strip the crank arm."],
+      "warnings": ["Cross-threading a pedal destroys the crank arm — start every thread by hand."],
+      "commonMistakes": [
+        "Installing the left pedal the normal direction and stripping the threads.",
+        "Mixing up left and right — check the L / R stamp on the spindle."
+      ],
+      "durationMin": 4,
+      "videoTimestamp": null
+    },
+    {
+      "id": "drivetrain-check",
+      "order": 7,
+      "title": "Drivetrain check",
+      "summary": "Confirm shifting works across the full range; electronic builds need a battery check.",
+      "substeps": [
+        "Lift the rear wheel (or use a workstand) and turn the cranks by hand.",
+        "Shift through every gear, easiest to hardest and back.",
+        "Watch that the chain moves cleanly with no skipping or hesitation.",
+        "If shifting is off, the rear derailleur may need minor barrel-adjuster tuning — see your build's notes."
+      ],
+      "parts": ["frame", "crankset", "rear_derailleur", "chain", "rear_wheel"],
+      "focusParts": ["rear_derailleur", "chain"],
+      "hiddenParts": [],
+      "explode": {},
+      "camera": { "position": [-0.7, 0.45, 1.4], "target": [-0.35, 0.3, 0.05], "fov": 46 },
+      "torque": [],
+      "tools": ["2.5mm hex", "4mm hex"],
+      "warnings": ["Keep fingers clear of the chain and chainrings while turning the cranks."],
+      "conditional": [
+        {
+          "builds": ["shimano-105-mech"],
+          "heading": "Shimano 105 (mechanical) tuning",
+          "body": [
+            "Fine-tune with the barrel adjuster at the rear derailleur or shifter.",
+            "If the chain hesitates shifting to a larger cog, turn the barrel adjuster counter-clockwise a quarter turn.",
+            "If it hesitates to a smaller cog, turn it clockwise a quarter turn."
+          ]
+        },
+        {
+          "builds": ["shimano-di2"],
+          "heading": "Shimano Di2 (electronic) check",
+          "body": [
+            "Press the shift buttons — you should feel and hear the motor actuate.",
+            "Check the battery charge by holding the function button; the LED shows charge state.",
+            "Charge with the supplied Di2 charger if the LED is red.",
+            "Micro-adjust via the junction box / E-Tube app if the index is slightly off."
+          ]
+        },
+        {
+          "builds": ["sram-axs"],
+          "heading": "SRAM AXS (electronic) check",
+          "body": [
+            "Confirm the derailleur battery is charged — the LED flashes green when good, red when low.",
+            "Charge low batteries on the supplied AXS charger, or swap front/rear batteries.",
+            "Pair / micro-adjust with the AXS app if shifting is slightly off.",
+            "Press the function button and shift with the paddle to confirm response."
+          ]
+        }
+      ],
+      "commonMistakes": ["Assuming a shifting problem is the derailleur when the rear wheel simply isn't seated straight from Step 5."],
+      "durationMin": 7,
+      "videoTimestamp": null
+    },
+    {
+      "id": "safety-check",
+      "order": 8,
+      "title": "Pre-ride safety check",
+      "summary": "Run an M-check, set tire pressure, and re-confirm every critical bolt before riding.",
+      "substeps": [
+        "M-CHECK: starting at the front wheel, work the 'M' shape across the bike — front wheel, fork/headset, bars, frame, saddle, drivetrain, rear wheel.",
+        "Squeeze both brake levers — they should feel firm and the bike should not roll.",
+        "Set tire pressure with a gauge to the range printed on the tire sidewall.",
+        "Re-check the critical torques: seatpost binder, saddle clamp, basebar, extensions, thru-axle, and pedals.",
+        "Lift each wheel and spin it — listen for rotor rub or anything loose."
+      ],
+      "parts": ["frame", "fork", "front_wheel", "rear_wheel", "seatpost", "saddle", "cockpit_basebar", "extensions"],
+      "focusParts": [],
+      "hiddenParts": [],
+      "explode": {},
+      "camera": { "position": [2.2, 1.0, 2.2], "target": [0, 0.5, 0], "fov": 40 },
+      "torque": [
+        { "fastener": "Re-verify: saddle clamp", "nm": "5–6", "inlb": "44–53", "critical": true, "anchor": [-0.1, 0.72, 0.04] },
+        { "fastener": "Re-verify: basebar clamp", "nm": "5–6", "inlb": "44–53", "critical": true, "anchor": [0.5, 0.74, 0.05] },
+        { "fastener": "Re-verify: pedals", "nm": "34.5–40", "inlb": "305–354", "critical": false, "anchor": [0, 0.27, 0.2] }
+      ],
+      "tools": ["4mm hex", "5mm hex", "6mm hex", "Torque wrench (2–20 N·m)", "Floor pump with gauge"],
+      "warnings": ["Do not ride until brakes feel firm and all critical bolts are confirmed at spec."],
+      "commonMistakes": ["Inflating to the maximum on the pump rather than the range printed on the tire."],
+      "durationMin": 8,
+      "videoTimestamp": null
+    },
+    {
+      "id": "first-rides",
+      "order": 9,
+      "title": "First rides",
+      "summary": "Bedding-in matters — re-check critical torques after your first couple of rides.",
+      "substeps": [
+        "Keep your first ride short and local; stop and listen for new creaks or rubbing.",
+        "After the first 2–3 rides, re-check the critical torques (seatpost, saddle, cockpit, pedals, thru-axle).",
+        "Bed in disc brakes with several firm stops from moderate speed in a safe area.",
+        "Register your bike and review the warranty info in your owner's manual."
+      ],
+      "parts": ["frame", "fork", "front_wheel", "rear_wheel"],
+      "focusParts": [],
+      "hiddenParts": [],
+      "explode": {},
+      "camera": { "position": [2.3, 1.15, 2.5], "target": [0, 0.5, 0], "fov": 40 },
+      "torque": [],
+      "tools": ["4mm hex", "5mm hex", "Torque wrench (2–20 N·m)"],
+      "warnings": ["Carbon parts can loosen slightly as they bed in — the post-first-ride re-check is not optional."],
+      "commonMistakes": ["Skipping the re-torque after the first rides, then chasing a creak that is just a loose bolt."],
+      "durationMin": 2,
+      "videoTimestamp": null
+    }
+  ]
+}
