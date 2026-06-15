@@ -212,7 +212,10 @@ def main():
         out.add_geometry(m, geom_name=f"{grp}__{idx}", node_name=f"{grp}__{idx}")
         vtotal += len(m.vertices)
 
-    add_logo_decals(out, np.vstack(frame_pts), counts)
+    # Logo decal intentionally NOT applied to the assembly-guide model: a flat
+    # decal quad floated/showed its background in WebGL. The instructional model
+    # ships clean matte black; the website spinner keeps its baked-in logo.
+    _ = frame_pts  # collected but unused here
     print("group counts:", dict(sorted(counts.items())))
     print("total vertices:", vtotal)
     data = out.export(file_type="glb")
