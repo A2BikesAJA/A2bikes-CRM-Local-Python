@@ -33,11 +33,18 @@ const ensure = (h) => {
 };
 
 doc.steps.forEach((step, i) => {
-  ensure(120);
+  ensure(360);
   pdf.fillColor(INK).font("Helvetica-Bold").fontSize(14)
     .text(`${i + 1}.  ${step.title}`);
   pdf.fillColor(MUTE).font("Helvetica-Oblique").fontSize(10).text(step.summary);
   pdf.moveDown(0.3);
+
+  // CAD-rendered instructional image (rendered by tools/render_steps.py)
+  const imgPath = path.join(dir, "step-images", `step_${String(i + 1).padStart(2, "0")}.png`);
+  if (fs.existsSync(imgPath)) {
+    pdf.image(imgPath, { width: 380 });
+    pdf.moveDown(0.5);
+  }
 
   (step.hazards || []).forEach((h) => {
     pdf.fillColor(RED).font("Helvetica-Bold").fontSize(10).text(`!  ${h}`);
