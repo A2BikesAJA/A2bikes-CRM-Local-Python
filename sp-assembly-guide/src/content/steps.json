@@ -123,10 +123,11 @@
       "id": "install-cockpit",
       "order": 4,
       "title": "Install the cockpit / basebar",
-      "summary": "Mount the aero basebar and extensions, then set headset preload with the top cap.",
+      "summary": "Mount the basebar, set the extensions and headset preload — and tighten the faceplate bolts in a star pattern so the bars can't slip while riding.",
       "substeps": [
-        "Fit the basebar to the stem and start all clamp bolts by hand.",
-        "Tighten the basebar clamp bolts evenly to 5–6 N·m in a cross pattern.",
+        "Fit the basebar into the stem faceplate and start all four faceplate bolts by hand.",
+        "Tighten the faceplate bolts in a STAR pattern — upper-left first, then lower-right, then upper-right, then lower-left. Go a little at a time and repeat the sequence; do NOT fully tighten one bolt before the others.",
+        "Keep the gap between faceplate and stem EVEN at the top and bottom as you go, finishing all four at 5–6 N·m.",
         "Set the extensions to your reach and tighten their clamps to 5–6 N·m.",
         "Snug the compression top cap to 2–3 N·m to remove headset play — this sets preload, not clamping force.",
         "Align the stem to the front wheel and tighten the steerer clamp bolts last."
@@ -137,17 +138,20 @@
       "explode": { "cockpit_basebar": [0, 0.26, 0], "extensions": [0.22, 0.14, 0], "stem_topcap": [0, 0.34, 0] },
       "camera": { "position": [1.35, 1.18, 1.0], "target": [0.5, 0.82, 0], "fov": 40 },
       "annotations": [
-        { "at": [0.52, 1.02, 0.05], "dir": [0, -1, 0], "label": "Seat bars on stem" },
+        { "at": [0.47, 0.80, 0.06], "dir": [0, -1, 0], "label": "Faceplate bolts — STAR pattern", "emphasis": true },
         { "at": [0.42, 0.92, 0.04], "dir": [0, -1, 0], "label": "Snug top cap (2–3 N·m)" }
       ],
+      "diagram": "faceplate_star",
       "torque": [
-        { "fastener": "Basebar clamp bolts", "nm": "5–6", "inlb": "44–53", "critical": true, "anchor": [0.5, 0.74, 0.05] },
+        { "fastener": "Stem faceplate bolts (star pattern)", "nm": "5–6", "inlb": "44–53", "critical": true, "anchor": [0.5, 0.74, 0.05] },
         { "fastener": "Extension clamps", "nm": "5–6", "inlb": "44–53", "critical": true, "anchor": [0.66, 0.78, 0.05] },
         { "fastener": "Compression top cap", "nm": "2–3", "inlb": "18–27", "critical": false, "note": "Sets headset preload, not clamping force", "anchor": [0.46, 0.66, 0.0] }
       ],
       "tools": ["4mm hex", "5mm hex", "Torque wrench (2–20 N·m)", "Carbon assembly paste"],
-      "warnings": ["Carbon contact points — never exceed the stated torque."],
+      "hazards": ["MOST IMPORTANT STEP — bar-slip risk. Tighten the four faceplate bolts in a STAR pattern (upper-left → lower-right → upper-right → lower-left), a little at a time, keeping the top and bottom gaps even. Tightening one bolt fully at a time, or unevenly, can let the bars rotate while you ride."],
+      "warnings": ["Carbon contact points — never exceed the stated torque.", "Confirm the top and bottom faceplate gaps are equal before your first ride."],
       "commonMistakes": [
+        "Tightening one faceplate bolt all the way before the others — always alternate in the star sequence in small steps.",
         "Cranking the top cap to clamp the stem — the top cap only sets bearing preload; the steerer clamp bolts do the clamping.",
         "Forgetting to align the bar square to the front wheel before final torque."
       ],

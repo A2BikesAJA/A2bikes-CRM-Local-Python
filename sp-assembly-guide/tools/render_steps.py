@@ -112,8 +112,10 @@ cam_data.sensor_fit = "VERTICAL"
 
 acc01 = tuple(c / 255 for c in ACCENT)
 fontB = ImageFont.truetype(TTF_B, 34)
+fontMb = ImageFont.truetype(TTF_B, 28)
 fontM = ImageFont.truetype(TTF, 26)
 fontS = ImageFont.truetype(TTF, 22)
+fontXs = ImageFont.truetype(TTF, 18)
 
 
 def project(p_gltf):
@@ -129,17 +131,41 @@ def draw_arrow(d, tail, tip, color):
         d.line([tip, (tip[0] + 26 * math.cos(a), tip[1] + 26 * math.sin(a))], fill=color, width=7)
 
 
+def draw_faceplate_star(d):
+    """Inset schematic of the 4 faceplate bolts + the star tightening order."""
+    bx0, by0, bx1, by1 = 832, 26, 1174, 322
+    d.rounded_rectangle([bx0, by0, bx1, by1], radius=14, fill=(255, 255, 255), outline=INK, width=3)
+    d.text((bx0 + 18, by0 + 12), "Faceplate bolt order", font=fontMb, fill=INK)
+    # faceplate body
+    fx0, fy0, fx1, fy1 = bx0 + 70, by0 + 64, bx1 - 70, by1 - 70
+    d.rounded_rectangle([fx0, fy0, fx1, fy1], radius=10, fill=(225, 229, 234), outline=(150, 156, 163), width=2)
+    UL, UR = (fx0, fy0), (fx1, fy0)
+    LL, LR = (fx0, fy1), (fx1, fy1)
+    seq = [("1", UL), ("2", LR), ("3", UR), ("4", LL)]  # star order from upper-left
+    # criss-cross arrows in sequence
+    for (_, a), (_, b) in zip(seq, seq[1:]):
+        draw_arrow(d, a, b, RED)
+    for num, (x, y) in seq:
+        d.ellipse([x - 26, y - 26, x + 26, y + 26], fill=ACCENT, outline=(255, 255, 255), width=3)
+        tb = d.textbbox((0, 0), num, font=fontMb)
+        d.text((x - (tb[2] - tb[0]) / 2, y - (tb[3] - tb[1]) / 2 - 4), num, font=fontMb, fill=(255, 255, 255))
+    d.text((bx0 + 18, by1 - 40), "Start upper-left · repeat in small steps", font=fontXs, fill=INK)
+
+
 for step in STEPS:
     n = step["order"]
     # (3D emission highlight removed — the 2D arrow + tight framing convey the
     #  action more reliably and keep the matte-black finish true.)
 
-    # camera
+    # camera — zoom in tight for detail steps, stay wide for overviews
     pos = step["camera"]["position"]; tgt = step["camera"]["target"]
-    cam.location = g2b(pos)
-    direction = g2b(tgt) - cam.location
+    detail = bool(step.get("annotations") or step.get("focusParts"))
+    zoom = 0.6 if detail else 1.0          # pull camera closer to the target
+    posv, tgtv = g2b(pos), g2b(tgt)
+    cam.location = tgtv + (posv - tgtv) * zoom
+    direction = tgtv - cam.location
     cam.rotation_euler = direction.to_track_quat("-Z", "Y").to_euler()
-    cam_data.angle_y = math.radians(step["camera"]["fov"] + 10)
+    cam_data.angle_y = math.radians(step["camera"]["fov"] + (3 if detail else 8))
     bpy.context.view_layer.update()
 
     path = os.path.join(OUT, f"step_{n:02d}.png")
@@ -162,6 +188,9 @@ for step in STEPS:
             ly = max(tly - 40, 8)
             d.rectangle([lx - 8, ly - 4, lx + tw + 8, ly + 30], fill=col)
             d.text((lx, ly), label, font=fontS, fill=(255, 255, 255))
+
+    if step.get("diagram") == "faceplate_star":
+        draw_faceplate_star(d)
 
     # caption bar
     bar_h = 96

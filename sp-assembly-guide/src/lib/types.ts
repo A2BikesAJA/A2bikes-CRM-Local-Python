@@ -50,6 +50,8 @@ export interface Step {
   explode: Partial<Record<PartId, Vec3>>;
   camera: { position: Vec3; target: Vec3; fov: number };
   annotations?: Annotation[];
+  /** Optional schematic overlay drawn in the PDF render, e.g. "faceplate_star". */
+  diagram?: string;
   torque: TorqueSpec[];
   tools: string[];
   warnings: string[];
