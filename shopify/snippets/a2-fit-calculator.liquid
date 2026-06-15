@@ -13,6 +13,14 @@
   Envelopes extracted from the sheet vector/raster charts; sizes S-XL; three
   A2 SP stems (78/93/108mm); 0-70mm riser stack in 5mm steps; pad fore/aft
   ±16mm (Metron clip-ons) or ±64mm (Si013 rails).
+
+  Fix June 2026: the height/inseam path now gates the recommended frame to
+  the rider's height band (same S-XL ranges as the PDP Size Calculator), and
+  the search is scored by fit error PLUS an "edge" penalty. Pad X/Y alone can
+  be reached by a small frame slammed to the limit of its stem/spacer/pad
+  range (especially the wide-range Si013 cockpit), which previously let a
+  6'2" rider be recommended a Small. The gate fixes the frame; Pad X/Y then
+  dials in the stem/spacer/pad WITHIN it.
 {%- endcomment -%}
 
 {% raw %}
@@ -136,7 +144,7 @@ if (!window.__a2fcInit) {
   }
 
   function buttonPress(fitKnown) {
-    var fit;
+    var fit, searchOpts = {};
     if (fitKnown == true) {
       if (document.getElementById("padx").value == "" || document.getElementById("pady").value == "") {
         document.getElementById("op1p").innerHTML = "Please enter your pad X/Y.";
@@ -179,18 +187,34 @@ if (!window.__a2fcInit) {
         userpadx: 0.29 * height + (0.42 - saddle / height) * 500,
         userpady: 0.35 * height - (0.42 - saddle / height) * 400
       };
+      // Gate the recommended frame by the rider's height (same S-XL bands as
+      // the PDP Size Calculator). Pad X/Y alone can be reached by a small
+      // frame slammed to the limit of its stem/spacer/pad range, so without
+      // this a tall rider could be told to ride a Small. The Pad X/Y math
+      // then dials in the stem/spacer/pad WITHIN the right frame.
+      var totalIn = height / 25.4;
+      var bandFrame = a2fcBandFrame(totalIn);
+      // The height band is a hard floor — we never recommend smaller than it
+      // (sizing too small is exactly the bug being fixed). A longer-than-
+      // average inseam may open the next size UP, matching the PDP calculator.
+      var allowed = [bandFrame];
+      var bi = frame_key.indexOf(bandFrame);
+      var inseamDelta = (inseam / 25.4) - a2fcAvgInseam(totalIn);
+      if (inseamDelta > 1.5 && bi >= 0 && bi < frame_key.length - 1) { allowed.push(frame_key[bi + 1]); }
+      searchOpts.allowed = allowed;
     }
 
     fit_array = buildFitArray(a2fcConfigKey());
-    fit = findCombinations(fit.userpadx, fit.userpady, fit_array);
+    fit = findCombinations(fit.userpadx, fit.userpady, fit_array, searchOpts);
 
-    document.getElementById("op1p").innerHTML = "<h3>Option 1</h3>" + stringCombination(fit.options[0]);
-    document.getElementById("op2p").innerHTML = "<h3>Option 2</h3>" + stringCombination(fit.options[1]);
-    document.getElementById("op3p").innerHTML = "<h3>Option 3</h3>" + stringCombination(fit.options[2]);
+    var rec = fit.options[0];
+    document.getElementById("op1p").innerHTML = "<h3>Recommended &mdash; Size " + rec.frame + "</h3>" + stringCombination(rec);
+    document.getElementById("op2p").innerHTML = fit.options[1] ? "<h3>Alternate &mdash; Size " + fit.options[1].frame + "</h3>" + stringCombination(fit.options[1]) : "";
+    document.getElementById("op3p").innerHTML = fit.options[2] ? "<h3>Alternate &mdash; Size " + fit.options[2].frame + "</h3>" + stringCombination(fit.options[2]) : "";
     document.getElementById("padyxdisplaybox").innerHTML =
       "<h4>Pad Y: " + String(Math.round(fit.userpady)) + "mm<br>Pad Center X: " + String(Math.round(fit.userpadx)) + "mm</h4>";
 
-    if (window.a2dl) { window.a2dl("fit_calculator_result", { recommended_frame: fit.options[0].frame }); }
+    if (window.a2dl) { window.a2dl("fit_calculator_result", { recommended_frame: rec.frame }); }
   }
 
   function beginFit(fitKnown) {
@@ -272,6 +296,16 @@ if (!window.__a2fcInit) {
   var frame_key = ["S", "M", "L", "XL"];
   var fit_array = [];
 
+  // SP frame by rider height (inches) — same bands as the PDP Size Calculator.
+  function a2fcBandFrame(totalIn) {
+    if (totalIn < 66.5) { return "S"; }   // 63-66"
+    if (totalIn < 70.5) { return "M"; }   // 67-70"
+    if (totalIn < 74.5) { return "L"; }   // 71-74"
+    return "XL";                          // 75"+
+  }
+  var sp_avg_inseam = { 63: 29.5, 64: 30, 65: 30.5, 66: 31, 67: 31.5, 68: 32, 69: 32.5, 70: 33, 71: 33.5, 72: 34, 73: 34.5, 74: 35, 75: 35.5, 76: 36, 77: 36.5 };
+  function a2fcAvgInseam(totalIn) { return sp_avg_inseam[Math.round(totalIn)] || 32; }
+
   function a2fcConfigKey() {
     var el = document.querySelector('input[name="a2fcBuild"]:checked');
     return el ? el.value : "metron";
@@ -279,6 +313,10 @@ if (!window.__a2fcInit) {
 
   function buildFitArray(cfgKey) {
     var cfg = fit_configs[cfgKey], arr = [];
+    // Limits of this build's adjustment range, for the edge penalty below.
+    var maxStemX = 0, maxPad = 0, maxSp = spacer_steps[spacer_steps.length - 1];
+    for (var s = 0; s < cfg.stems.length; s++) { if (cfg.stems[s][0] > maxStemX) { maxStemX = cfg.stems[s][0]; } }
+    for (var p = 0; p < cfg.pads.length; p++) { if (Math.abs(cfg.pads[p]) > maxPad) { maxPad = Math.abs(cfg.pads[p]); } }
     for (var i = 0; i < frame_key.length; i++) {
       for (var j = 0; j < cfg.stems.length; j++) {
         for (var k = 0; k < spacer_steps.length; k++) {
@@ -288,6 +326,12 @@ if (!window.__a2fcInit) {
               stem: cfg.stems[j][2],
               pedSpacers: spacer_steps[k],
               pad: cfg.pads[m],
+              // How hard this setup leans on the limits of the adjustment
+              // range (tall spacer tower / longest stem / extreme pad offset).
+              // Keeps the search from picking a maxed-out small frame.
+              edge: 18 * (maxSp ? spacer_steps[k] / maxSp : 0) +
+                    10 * (maxStemX ? cfg.stems[j][0] / maxStemX : 0) +
+                    8 * (maxPad ? Math.abs(cfg.pads[m]) / maxPad : 0),
               padx: Math.round(cfg.sizes[frame_key[i]][0] + cfg.stems[j][0] + cfg.pads[m]),
               pady: Math.round(cfg.sizes[frame_key[i]][1] + cfg.stems[j][1] + spacer_steps[k])
             });
@@ -298,27 +342,30 @@ if (!window.__a2fcInit) {
     return arr;
   }
 
-  function findCombinations(padx, pady, fit_data) {
+  function findCombinations(padx, pady, fit_data, opts) {
+    opts = opts || {};
+    var allowed = opts.allowed || null; // array of frame keys, or null = any frame
     var combinations = fit_data;
     var fit = { userpady: pady, userpadx: padx };
     for (var i = combinations.length - 1; i >= 0; i--) {
-      combinations[i].error = ((combinations[i].padx - fit.userpadx) ** 2 + (combinations[i].pady - fit.userpady) ** 2) ** 0.5;
+      var c = combinations[i];
+      c.error = ((c.padx - fit.userpadx) ** 2 + (c.pady - fit.userpady) ** 2) ** 0.5;
+      // Rank by fit error PLUS an edge penalty, so a maxed-out setup loses to
+      // a centered one. When a height band is known, frames outside it are
+      // pushed to the bottom (kept only as fallback alternates).
+      c.score = c.error + c.edge + (allowed && allowed.indexOf(c.frame) === -1 ? 9999 : 0);
     }
     fit.options = [combinations[0], combinations[1], combinations[2]];
     for (var i = combinations.length - 1; i >= 0; i--) {
-      if (combinations[i].error < fit.options[0].error) { fit.options[0] = combinations[i]; }
+      if (combinations[i].score < fit.options[0].score) { fit.options[0] = combinations[i]; }
     }
     for (var i = combinations.length - 1; i >= 0; i--) {
-      if (combinations[i].error < fit.options[1].error && combinations[i].frame != fit.options[0].frame) { fit.options[1] = combinations[i]; }
+      if (combinations[i].score < fit.options[1].score && combinations[i].frame != fit.options[0].frame) { fit.options[1] = combinations[i]; }
     }
     for (var i = combinations.length - 1; i >= 0; i--) {
-      if (combinations[i].error < fit.options[2].error && combinations[i].frame != fit.options[0].frame && combinations[i].frame != fit.options[1].frame) { fit.options[2] = combinations[i]; }
+      if (combinations[i].score < fit.options[2].score && combinations[i].frame != fit.options[0].frame && combinations[i].frame != fit.options[1].frame) { fit.options[2] = combinations[i]; }
     }
-    fit.options.sort(function (a, b) { return a.pedSpacers - b.pedSpacers; });
-    fit.options[0].description = "Least pedestal spacer stack option.";
-    fit.options[1].description = "Most room for adjustment.";
-    fit.options[2].description = "Largest pedestal spacer stack option.";
-    fit.options.sort(function (a, b) { return a.error - b.error; });
+    fit.options.sort(function (a, b) { return a.score - b.score; });
     fit.userpadx = Math.round(fit.userpadx * 10) / 10;
     fit.userpady = Math.round(fit.userpady * 10) / 10;
     showChart(fit);
