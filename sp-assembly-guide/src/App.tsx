@@ -5,6 +5,7 @@ import { StepPanel } from "./components/StepPanel";
 import { NavBar } from "./components/NavBar";
 import { BottomSheet } from "./components/BottomSheet";
 import { UnitToggle } from "./components/UnitToggle";
+import { PrintView } from "./components/PrintView";
 import { useStore } from "./state/store";
 import { useIsDesktop } from "./hooks/useMediaQuery";
 
@@ -44,6 +45,14 @@ export function App() {
           A<sup>2</sup> BIKES — SP
         </span>
         <span className="topbar__spacer" />
+        <button
+          className="icon-btn"
+          onClick={() => window.print()}
+          aria-label="Print or save as PDF"
+          title="Print / Save as PDF"
+        >
+          ⎙ PDF
+        </button>
         {started && (
           <>
             <UnitToggle />
@@ -92,6 +101,7 @@ export function App() {
       </div>
 
       {!started && <Landing />}
+      <PrintView />
     </div>
   );
 }

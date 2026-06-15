@@ -64,6 +64,24 @@ All instructional content is readable in the step panel without the 3D view
 (3D is enhancement). Keyboard nav (←/→, R = reset view), `prefers-reduced-motion`
 jump-cuts animations, pixel ratio capped at 2, AdaptiveDpr under load.
 
+## Analytics (GA4)
+
+Off by default. To enable, build with a measurement ID:
+
+```bash
+VITE_GA4_ID=G-XXXXXXXXXX npm run build
+```
+
+With no ID, no script loads and no events fire. When set, every `trackEvent`
+(`guide_start`, `step_view`, `unit_toggle`, …) forwards to GA4 (`src/lib/ga4.ts`).
+
+## Printable PDF
+
+Two ways, both from the same `steps.json`:
+- In the app: the **⎙ PDF** button (top bar) opens the browser print dialog with
+  a clean, text-only document (`@media print` + `PrintView.tsx`) — "Save as PDF".
+- Generate a file: `node tools/make_pdf.mjs A2-SP-Assembly-Guide.pdf`.
+
 ## Embedding on Shopify
 
 Build, host `dist/` (any static host / the store's Files CDN), then embed:

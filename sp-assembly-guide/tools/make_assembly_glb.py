@@ -11,11 +11,15 @@ Source: the master Shapr3D assembly (sp_component.glb, ~160 nodes). This:
 
 Usage: python make_assembly_glb.py <sp_component.glb> <out sp.glb>
 """
+import os
 import re
 import sys
 import numpy as np
 import trimesh
 from trimesh.visual.material import PBRMaterial
+from PIL import Image
+
+LOGO_PNG = os.path.join(os.path.dirname(os.path.abspath(__file__)), "a2_logo.png")
 
 try:
     import fast_simplification
@@ -135,10 +139,60 @@ def decimate(mesh, keep):
     return out
 
 
+def add_logo_decals(out, frame_pts, counts):
+    """Add the A2 logo as a flush decal quad on each side of the down tube.
+
+    The quad is placed on the sampled frame surface (not floating) and textured
+    with the logo PNG (transparent background → only the logo shows over the
+    matte frame). Grouped under `frame__logo*` so it highlights with the frame.
+    """
+    logo = Image.open(LOGO_PNG).convert("RGBA")
+    aspect = logo.width / logo.height
+    W = 0.20
+    H = W / aspect
+
+    # down-tube region (guide coords): upper-forward run from BB to head tube
+    box = frame_pts[
+        (frame_pts[:, 0] > 0.08) & (frame_pts[:, 0] < 0.40) &
+        (frame_pts[:, 1] > 0.30) & (frame_pts[:, 1] < 0.48)
+    ]
+    if len(box) < 20:
+        center = np.array([0.24, 0.38])
+        zsurf = 0.05
+    else:
+        center = box[:, :2].mean(0)
+        zsurf = float(np.percentile(np.abs(box[:, 2]), 88))
+
+    t = np.array([0.93, 0.37, 0.0])  # down-tube axis (up-forward)
+    for side in (1, -1):
+        n = np.array([0.0, 0.0, float(side)])
+        hdir = np.cross(n, t)
+        hdir /= np.linalg.norm(hdir)
+        c = np.array([center[0], center[1], side * (zsurf + 0.004)])
+        quad = np.array([
+            c - t * (W / 2) - hdir * (H / 2),
+            c + t * (W / 2) - hdir * (H / 2),
+            c + t * (W / 2) + hdir * (H / 2),
+            c - t * (W / 2) + hdir * (H / 2),
+        ])
+        faces = np.array([[0, 1, 2], [0, 2, 3]])
+        # mirror U on the non-drive side so the logo reads correctly from outside
+        uv = (np.array([[0, 0], [1, 0], [1, 1], [0, 1]], float) if side > 0
+              else np.array([[1, 0], [0, 0], [0, 1], [1, 1]], float))
+        m = trimesh.Trimesh(vertices=quad, faces=faces, process=False)
+        mat = PBRMaterial(name="A2 Logo", baseColorTexture=logo, alphaMode="BLEND",
+                          metallicFactor=0.0, roughnessFactor=0.5, doubleSided=True)
+        m.visual = trimesh.visual.TextureVisuals(uv=uv, material=mat)
+        idx = counts.get("frame", 0)
+        counts["frame"] = idx + 1
+        out.add_geometry(m, geom_name=f"frame__{idx}", node_name=f"frame__{idx}")
+
+
 def main():
     src = trimesh.load(SRC, force="scene")
     out = trimesh.Scene()
     counts, vtotal = {}, 0
+    frame_pts = []
     for name, geo in src.geometry.items():
         if not isinstance(geo, trimesh.Trimesh):
             continue
@@ -151,10 +205,14 @@ def main():
         m.vertices = to_guide(np.asarray(m.vertices))
         m.faces = np.fliplr(m.faces)  # restore winding after the lateral mirror
         m.visual = trimesh.visual.TextureVisuals(material=MATS[material_for(name)])
+        if grp == "frame":
+            frame_pts.append(np.asarray(m.vertices))
         idx = counts.get(grp, 0)
         counts[grp] = idx + 1
         out.add_geometry(m, geom_name=f"{grp}__{idx}", node_name=f"{grp}__{idx}")
         vtotal += len(m.vertices)
+
+    add_logo_decals(out, np.vstack(frame_pts), counts)
     print("group counts:", dict(sorted(counts.items())))
     print("total vertices:", vtotal)
     data = out.export(file_type="glb")

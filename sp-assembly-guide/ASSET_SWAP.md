@@ -14,7 +14,9 @@ assembly (`sp_component.glb`). It:
 - remaps into the guide coordinate convention (below) and bakes transforms,
 - decimates heavy meshes, names each node `<id>__<n>`, exports GLB.
 
-Then compress with meshopt (decodes offline, no CDN — important for the
+It also bakes the A2 logo decal onto the down tube (both sides) from
+`tools/a2_logo.png` — a flush, alpha-textured quad, so it matches the website
+spinner. Then compress with meshopt (decodes offline, no CDN — important for the
 single-file build):
 
 ```bash
