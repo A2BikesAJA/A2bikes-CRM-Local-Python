@@ -81,7 +81,7 @@
       "substeps": [
         "Apply a thin film of carbon assembly paste to the seatpost where it enters the frame.",
         "Slide the seatpost in and set it to your saddle height (mark it for next time).",
-        "Tighten the frame seatpost binder to the value printed on the binder (see callout — A2 to confirm before this guide ships).",
+        "Tighten the frame seatpost binder to 5 N·m.",
         "Level the saddle and tighten the saddle clamp bolts evenly to 5–6 N·m."
       ],
       "parts": ["frame", "seatpost", "saddle", "seatpost_binder"],
@@ -96,10 +96,9 @@
       "torque": [
         {
           "fastener": "Frame seatpost binder / wedge",
-          "nm": null,
-          "inlb": null,
+          "nm": "5",
+          "inlb": "44",
           "critical": true,
-          "note": "See printed value on frame binder — A2 to confirm",
           "anchor": [-0.12, 0.5, 0.05]
         },
         {

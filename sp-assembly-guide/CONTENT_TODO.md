@@ -4,11 +4,11 @@ Every item below renders as a visible placeholder in the app today. Nothing
 here is a guessed value. Replace each in `src/content/steps.json` (or `theme.ts`
 where noted) and delete the line.
 
-## Torque values — REQUIRED before customer release
+## Torque values
 
-| Where | Field | Current placeholder | Needed |
-|------|-------|---------------------|--------|
-| Step 3 — Install seatpost & saddle | Frame seatpost binder / wedge | `nm: null` → renders "See printed value on frame binder — A2 to confirm" | The actual binder/wedge spec, or confirm "use value printed on the binder" is the intended customer instruction |
+- ✅ Frame seatpost binder / wedge — confirmed by A2 at **5 N·m** (≈44 in-lb).
+
+No outstanding torque placeholders.
 
 All other torque values in the guide are A2-confirmed or come from the SP
 owner's manual Appendix D and are already populated:
