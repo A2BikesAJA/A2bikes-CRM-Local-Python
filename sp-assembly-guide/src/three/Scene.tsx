@@ -1,4 +1,4 @@
-import { Suspense } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { ContactShadows, Environment, Lightformer, AdaptiveDpr } from "@react-three/drei";
 import { ACESFilmicToneMapping } from "three";
@@ -6,11 +6,16 @@ import { BikeModel } from "./BikeModel";
 import { CameraRig } from "./CameraRig";
 import { TorqueLabels } from "./TorqueLabels";
 import { useStore } from "../state/store";
-import { usePrefersReducedMotion } from "../hooks/useMediaQuery";
 
 export function Scene() {
   const requestFrame = useStore((s) => s.requestFrame);
-  const reduced = usePrefersReducedMotion();
+  // Pause the render loop entirely while the tab is hidden (battery/GPU).
+  const [running, setRunning] = useState(true);
+  useEffect(() => {
+    const onVis = () => setRunning(!document.hidden);
+    document.addEventListener("visibilitychange", onVis);
+    return () => document.removeEventListener("visibilitychange", onVis);
+  }, []);
 
   return (
     <Canvas
@@ -18,8 +23,7 @@ export function Scene() {
       dpr={[1, 2]} // cap pixel ratio at 2
       gl={{ antialias: true, toneMapping: ACESFilmicToneMapping, powerPreference: "high-performance" }}
       camera={{ position: [2.3, 1.15, 2.5], fov: 40, near: 0.1, far: 100 }}
-      // pause the render loop when nothing is animating to save battery/GPU
-      frameloop={reduced ? "demand" : "always"}
+      frameloop={running ? "always" : "never"}
     >
       <color attach="background" args={["#eef1f4"]} />
       <hemisphereLight intensity={0.55} groundColor="#d8dde3" color="#ffffff" />
