@@ -5,3 +5,5 @@ dist/
 .vite/
 
 *.tsbuildinfo
+dist-single/
+A2-SP-Assembly-Guide.html
