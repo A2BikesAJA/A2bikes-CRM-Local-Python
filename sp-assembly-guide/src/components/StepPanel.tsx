@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { useStore, substepKey } from "../state/store";
 import { TorqueCard } from "./TorqueCard";
 import { UnitToggle } from "./UnitToggle";
+import { capture } from "../lib/capture";
 
 export function StepPanel() {
   const step = useStore((s) => s.currentStep());
@@ -10,8 +12,12 @@ export function StepPanel() {
   const torqueFooter = useStore((s) => s.doc.meta.torqueFooter);
   const index = useStore((s) => s.index);
   const total = useStore((s) => s.steps.length);
+  const [feedback, setFeedback] = useState<Record<string, "up" | "down">>({});
 
   if (!step) return null;
+
+  const sentFeedback = feedback[step.id];
+  const isLast = index === total - 1;
 
   const conditional = (step.conditional ?? []).filter(
     (c) => build && c.builds.includes(build)
@@ -113,6 +119,46 @@ export function StepPanel() {
             ))}
           </ul>
         </details>
+      )}
+
+      {/* Per-step feedback */}
+      <div className="feedback">
+        {sentFeedback ? (
+          <span className="feedback__thanks">Thanks for the feedback ✓</span>
+        ) : (
+          <>
+            <span className="feedback__q">Was this step clear?</span>
+            <button
+              className="feedback__btn"
+              aria-label="Yes, this step was clear"
+              onClick={() => {
+                setFeedback((f) => ({ ...f, [step.id]: "up" }));
+                capture("step_feedback", { step: step.id, helpful: true });
+              }}
+            >
+              👍
+            </button>
+            <button
+              className="feedback__btn"
+              aria-label="No, this step was not clear"
+              onClick={() => {
+                setFeedback((f) => ({ ...f, [step.id]: "down" }));
+                capture("step_feedback", { step: step.id, helpful: false });
+              }}
+            >
+              👎
+            </button>
+          </>
+        )}
+      </div>
+
+      {isLast && (
+        <button
+          className="btn btn--primary finish-btn"
+          onClick={() => capture("completed", { build })}
+        >
+          ✓ Mark assembly complete
+        </button>
       )}
     </div>
   );

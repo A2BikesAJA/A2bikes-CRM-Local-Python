@@ -6,7 +6,23 @@ import type { Unit } from "../lib/units";
 import { loadUnit, saveUnit } from "../lib/units";
 import { getItem, setItem } from "../lib/storage";
 import { trackEvent } from "../lib/analytics";
+import { capture } from "../lib/capture";
 import type { ColorwayId } from "../three/theme";
+
+export interface Registration {
+  name: string;
+  email: string;
+  order: string;
+  serial: string;
+}
+const REG_KEY = "sp-guide:registration";
+function loadReg(): Registration {
+  try {
+    return { name: "", email: "", order: "", serial: "", ...JSON.parse(getItem(REG_KEY) || "{}") };
+  } catch {
+    return { name: "", email: "", order: "", serial: "" };
+  }
+}
 
 const doc = stepsDoc as unknown as StepsDoc;
 
@@ -45,6 +61,7 @@ interface GuideState {
   build: BuildId | null;
   colorway: ColorwayId;
   unit: Unit;
+  registration: Registration;
   done: Record<string, boolean>;
   /** Set when the user manually orbits, so the camera rig stops auto-driving. */
   userControlling: boolean;
@@ -63,6 +80,7 @@ interface GuideState {
   goTo: (index: number) => void;
   setUnit: (u: Unit) => void;
   setColorway: (c: ColorwayId) => void;
+  setRegistration: (patch: Partial<Registration>) => void;
   toggleSubstep: (stepId: string, idx: number) => void;
   setUserControlling: (v: boolean) => void;
   resetView: () => void;
@@ -82,6 +100,7 @@ export const useStore = create<GuideState>((set, get) => ({
   build: loadBuild(),
   colorway: loadColor(),
   unit: loadUnit(),
+  registration: loadReg(),
   done: loadDone(),
   userControlling: false,
   resetViewNonce: 0,
@@ -91,7 +110,11 @@ export const useStore = create<GuideState>((set, get) => ({
 
   start: (build) => {
     setItem(BUILD_KEY, build);
-    trackEvent("guide_start", { build });
+    const reg = get().registration;
+    capture("guide_start", { build });
+    if (reg.email) {
+      capture("registration", { build, ...reg });
+    }
     set({ build, started: true, index: 0, userControlling: false });
   },
 
@@ -101,7 +124,7 @@ export const useStore = create<GuideState>((set, get) => ({
     const { index, steps } = get();
     if (index < steps.length - 1) {
       const ni = index + 1;
-      trackEvent("step_view", { step: steps[ni].id, index: ni });
+      capture("step_view", { step: steps[ni].id, index: ni });
       set({ index: ni, userControlling: false });
     }
   },
@@ -110,7 +133,7 @@ export const useStore = create<GuideState>((set, get) => ({
     const { index, steps } = get();
     if (index > 0) {
       const ni = index - 1;
-      trackEvent("step_view", { step: steps[ni].id, index: ni });
+      capture("step_view", { step: steps[ni].id, index: ni });
       set({ index: ni, userControlling: false });
     }
   },
@@ -118,7 +141,7 @@ export const useStore = create<GuideState>((set, get) => ({
   goTo: (index) => {
     const { steps } = get();
     if (index >= 0 && index < steps.length) {
-      trackEvent("step_view", { step: steps[index].id, index });
+      capture("step_view", { step: steps[index].id, index });
       set({ index, userControlling: false });
     }
   },
@@ -133,6 +156,12 @@ export const useStore = create<GuideState>((set, get) => ({
     setItem(COLOR_KEY, c);
     trackEvent("colorway", { colorway: c });
     set({ colorway: c });
+  },
+
+  setRegistration: (patch) => {
+    const registration = { ...get().registration, ...patch };
+    setItem(REG_KEY, JSON.stringify(registration));
+    set({ registration });
   },
 
   toggleSubstep: (stepId, idx) => {

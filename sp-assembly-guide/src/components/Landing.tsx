@@ -8,6 +8,8 @@ export function Landing() {
   const doc = useStore((s) => s.doc);
   const start = useStore((s) => s.start);
   const savedBuild = useStore((s) => s.build);
+  const registration = useStore((s) => s.registration);
+  const setRegistration = useStore((s) => s.setRegistration);
   const [build, setBuild] = useState<BuildId | null>(savedBuild);
 
   return (
@@ -39,6 +41,41 @@ export function Landing() {
             </button>
           ))}
         </div>
+
+        <div className="field-label">Register your SP (recommended for warranty)</div>
+        <div className="reg-grid">
+          <input
+            className="reg-input"
+            placeholder="Full name"
+            autoComplete="name"
+            value={registration.name}
+            onChange={(e) => setRegistration({ name: e.target.value })}
+          />
+          <input
+            className="reg-input"
+            type="email"
+            placeholder="Email"
+            autoComplete="email"
+            value={registration.email}
+            onChange={(e) => setRegistration({ email: e.target.value })}
+          />
+          <input
+            className="reg-input"
+            placeholder="Order # (e.g. #7748)"
+            value={registration.order}
+            onChange={(e) => setRegistration({ order: e.target.value })}
+          />
+          <input
+            className="reg-input"
+            placeholder="Frame serial #"
+            value={registration.serial}
+            onChange={(e) => setRegistration({ serial: e.target.value })}
+          />
+        </div>
+        <p className="reg-note">
+          Registering activates your warranty and lets us help faster. Optional —
+          you can start without it.
+        </p>
 
         <div className="field-label">Tools you'll need</div>
         <ul className="tools-list">

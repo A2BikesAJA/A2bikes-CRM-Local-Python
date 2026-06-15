@@ -3,6 +3,7 @@
 interface ImportMetaEnv {
   readonly VITE_DISABLE_PERSISTENCE?: string;
   readonly VITE_GA4_ID?: string;
+  readonly VITE_CAPTURE_URL?: string;
 }
 interface ImportMeta {
   readonly env: ImportMetaEnv;
