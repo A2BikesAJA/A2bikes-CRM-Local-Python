@@ -535,6 +535,22 @@ BATCH D STEP 1 DEPLOYED (June 10/11): new `sections/sppdp-media.liquid`
    homepage capture (company YejYTH). NOTE: archived products `rogue`,
    `rogue-apex-axs`, `rogue-white-draft` still contain gravel copy —
    fine while archived, fix before any reactivation.
+   SP FIT FINDER BUG FIXED (June 15): owner reported a 6'2"/32" rider
+   getting "Small." Root cause: the Pad X/Y nearest-combination search
+   treats frame size as just another adjustable — a Small slammed to its
+   stem/spacer/pad limits reaches the same pad point as a tall rider
+   (severe on the wide-range Si013/Force-Red cockpit: ±64mm pad, 70mm
+   spacers). Fix in `a2-fit-calculator.liquid`: the height/inseam path now
+   gates the recommended frame to the rider's height band (same S-XL
+   ranges as the PDP Size Calculator — height is a hard floor; a long
+   inseam may open the next size UP, never down), and the search scores by
+   fit error PLUS an edge penalty (18×spacer + 10×stem + 8×pad, normalized)
+   so maxed-out setups lose. The expert "I know my Pad X/Y" path uses the
+   edge penalty too. Verified via a DOM-stub harness running the shipped
+   JS: 6'2"/32 → L and 6'4"/34 → XL on both builds; expert (560,645) → L
+   (was S). Deployed + checksum-verified (ff5391c2…). NOTE: the underlying
+   height→PadX/Y formula is the 2021 Speed Phreak model; the band gate is
+   what guarantees a sane frame regardless of that formula's drift.
    OWNER CONFIRMATIONS (June 12): claims APPROVED as written (Triathlete
    years, "five-time winner", 4.8★/96/97% stat copy); consolidation
    kill-list APPROVED (canonicals assumed: about-new, buying-process-2-0 —
