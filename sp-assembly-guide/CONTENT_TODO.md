@@ -20,12 +20,11 @@ pedals 34.5–40 N·m. (Reference-only specs not surfaced as steps: rotor-to-hub
 > customer to use the spec printed on the axle/hub. The manual's legacy
 > 30–42 N·m QR axle-nut figure is deliberately **not shown anywhere**.
 
-## Support contact — REQUIRED (the two `<<CONFIRM>>` values)
+## Support contact
 
-| Where | Field | Needed |
-|------|-------|--------|
-| `steps.json → meta.support.email` | Support email | A2 customer-support email address |
-| `steps.json → meta.support.url` | Contact URL | A2 support / contact page URL |
+- ✅ Email confirmed: **info@a2bikes.com**
+- Contact URL set to **https://a2bikes.com** — repoint to a dedicated contact/
+  support page if A2 prefers.
 
 ## Tire pressure — CONFIRM the hookless figure
 

@@ -3,8 +3,8 @@
     "product": "A2 Bikes SP",
     "torqueFooter": "Where a component maker's printed spec differs from the value shown, the printed spec wins. Use a calibrated torque wrench.",
     "support": {
-      "email": "<<CONFIRM: A2 support email>>",
-      "url": "<<CONFIRM: A2 support / contact URL>>"
+      "email": "info@a2bikes.com",
+      "url": "https://a2bikes.com"
     }
   },
   "builds": [
