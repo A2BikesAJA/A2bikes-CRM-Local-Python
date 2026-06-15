@@ -1,0 +1,10 @@
+node_modules/
+dist/
+*.local
+.DS_Store
+.vite/
+
+*.tsbuildinfo
+dist-single/
+A2-SP-Assembly-Guide.html
+A2-SP-Assembly-Guide.pdf

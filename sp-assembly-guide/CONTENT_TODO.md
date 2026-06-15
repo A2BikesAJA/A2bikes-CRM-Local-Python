@@ -1,0 +1,51 @@
+# CONTENT_TODO — values A2 must confirm before this guide ships
+
+Every item below renders as a visible placeholder in the app today. Nothing
+here is a guessed value. Replace each in `src/content/steps.json` (or `theme.ts`
+where noted) and delete the line.
+
+## Torque values
+
+- ✅ Frame seatpost binder / wedge — confirmed by A2 at **5 N·m** (≈44 in-lb).
+
+No outstanding torque placeholders.
+
+All other torque values in the guide are A2-confirmed or come from the SP
+owner's manual Appendix D and are already populated:
+cockpit clamps 5–6 N·m · saddle clamp 5–6 N·m · top cap 2–3 N·m ·
+pedals 34.5–40 N·m. (Reference-only specs not surfaced as steps: rotor-to-hub
+4–7, caliper mount 6–9, RD mount 8–10, RD cable pinch 4–5, RD pulley 3–4.)
+
+> The front thru-axle intentionally shows **no number** — it instructs the
+> customer to use the spec printed on the axle/hub. The manual's legacy
+> 30–42 N·m QR axle-nut figure is deliberately **not shown anywhere**.
+
+## Support contact
+
+- ✅ Email confirmed: **info@a2bikes.com**
+- Contact URL set to **https://a2bikes.com** — repoint to a dedicated contact/
+  support page if A2 prefers.
+
+## Tire pressure — CONFIRM the hookless figure
+
+Step 8 carries a first-class hazard: "Zipp hookless road wheels are rated to a
+maximum of 72.5 psi (5.0 bar)." 72.5 psi / 5.0 bar is Zipp's published hookless
+road maximum and the ETRTO hookless standard — but **A2 must confirm it matches
+the exact Zipp wheelsets specced on the SP** (e.g. 303 S / 404), since a
+specific model could differ. The customer-facing instruction ("use the lower of
+the tire max and the rim max printed on the rim") is safe regardless; only the
+cited number needs confirming. Edit in `steps.json → safety-check → hazards`.
+
+## Brand colors — RECOMMENDED
+
+| Where | Field | Current | Needed |
+|------|-------|---------|--------|
+| `src/three/theme.ts → COLORWAYS.oswego.frame` | Oswego Blue hex | `#1e4d78` (approx) | Exact A2 PMS / hex |
+| `src/three/theme.ts → COLORWAYS.summit.frame` | Summit Grey hex | `#5b6168` (approx) | Exact A2 PMS / hex |
+
+## Optional / later
+
+- `videoTimestamp` on each step is reserved for deep-linking the official A2
+  assembly video. Populate with second offsets when the video exists.
+- Per-build drivetrain tuning copy (Step 7) is written to general best practice;
+  have a mechanic confirm it matches A2's preferred customer guidance.

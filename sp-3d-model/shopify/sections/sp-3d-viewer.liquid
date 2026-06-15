@@ -1,0 +1,47 @@
+{% comment %}
+  A2 Bikes — SP 3D viewer section.
+  Install: Admin -> Online Store -> Themes -> Edit code -> Sections ->
+  Add a new section named "sp-3d-viewer" and paste this file.
+  Then add the "SP 3D Viewer" section to any page in the theme customizer.
+{% endcomment %}
+
+<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+
+<div class="sp-3d-viewer page-width" style="padding:{{ section.settings.padding }}px 0;">
+  {% if section.settings.heading != blank %}
+    <h2 style="text-align:center;letter-spacing:.12em;">{{ section.settings.heading }}</h2>
+  {% endif %}
+  <model-viewer
+      src="{{ section.settings.glb_url | default: 'https://cdn.shopify.com/s/files/1/2232/8463/files/sp_final.glb' }}"
+      alt="{{ section.settings.heading | default: 'A2 Bikes SP — interactive 3D model' }}"
+      style="width:100%;height:{{ section.settings.height }}vh;min-height:420px;background:{{ section.settings.background }};border-radius:8px;--progress-bar-color:#EB1C2D;"
+      camera-controls
+      auto-rotate
+      auto-rotate-delay="1500"
+      rotation-per-second="20deg"
+      interaction-prompt="when-focused"
+      shadow-intensity="1"
+      shadow-softness="0.8"
+      exposure="1.05"
+      environment-image="neutral"
+      ar ar-modes="webxr scene-viewer quick-look">
+  </model-viewer>
+  {% if section.settings.caption != blank %}
+    <p style="text-align:center;color:#7D858C;font-size:14px;">{{ section.settings.caption }}</p>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "SP 3D Viewer",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "THE SP / A² BIKES" },
+    { "type": "text", "id": "glb_url", "label": "GLB model URL", "default": "https://cdn.shopify.com/s/files/1/2232/8463/files/sp_final.glb" },
+    { "type": "text", "id": "caption", "label": "Caption", "default": "Drag to spin · pinch to zoom · view in AR on mobile" },
+    { "type": "range", "id": "height", "label": "Viewer height (vh)", "min": 40, "max": 90, "step": 5, "default": 70 },
+    { "type": "color", "id": "background", "label": "Background", "default": "#f4f4f5" },
+    { "type": "range", "id": "padding", "label": "Vertical padding", "min": 0, "max": 80, "step": 8, "default": 32 }
+  ],
+  "presets": [ { "name": "SP 3D Viewer" } ]
+}
+{% endschema %}
