@@ -46,14 +46,20 @@ inputs land. Theme: "Why A2 — DRAFT" `176492183716` replaces live
       loads it. Verify the form renders logged-out at publish QA.
 
 ### Darren (assets only — owner direction June 12: no coding/admin tasks)
-- [ ] **Upload the big videos** (admin → Content → Files — they exceed what
-      Claude's pipe can move): `SP Website Header_4.mp4` (hero loop),
-      `A2 SP UGC No Music.mov`, Brennen captioned cut, Carolyn/Kaitlin clips,
-      `All Road Bike Reel.mp4` (Rogue). Just upload — ⚙ Claude wires CDN URLs
-      once files exist.
-- [ ] **Athlete quotes** (#17): Kinley Bollinger + 1–2 creators (Carolyn /
-      Kaitlin / Brennen), with permission to publish name + photo. ⚙ unhides
-      the Why A2 athletes section same day.
+- [x] **Big videos uploaded — DONE June 13.** Darren uploaded the full set
+      to admin → Content → Files (SP Website Header_2 & _4, A2 SP UGC No
+      Music, Brennen Pro Tips + Race Day, Carolyn, Kaitlin, Markus, plus many
+      Rogue edits). ⚙ SP PDP hero (Header_4) wired into all four SP build
+      templates (autoplay loop), deployed + verified. STILL ⚙: expand the SP
+      UGC strip (curation list below) and add a Rogue media band once AJ
+      greenlights. MORE COMING: Darren has Travis + Kinley race clips
+      (with captions) in the next week or two.
+- [x] **Athlete quotes — DONE June 15.** Kinley, Brennen, Kaitlin quotes
+      wired into the Why A2 athletes section (un-hidden, deployed + verified).
+      Quotes lightly tidied (review headlines/typos) — AJ to confirm or revert
+      to verbatim. STILL NEEDED: athlete PHOTOS (none supplied — placeholder
+      shows) and the per-athlete race/achievement subline (left blank pending
+      AJ; do not publish unverified results).
 
 ### AJ (moved from Darren June 12)
 - [ ] **Fera prep** (app re-enables only at publish): open a ticket to
