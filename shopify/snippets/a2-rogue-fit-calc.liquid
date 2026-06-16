@@ -49,6 +49,9 @@
   .a2-rfc__option:empty,
   .a2-rfc__option:has(> p:empty) { display: none; }
   .a2-rfc__display { margin-top: 1em; }
+  .a2-rfc__explain { margin: 0 0 1.1em; max-width: 70ch; font-size: .95rem; line-height: 1.5; opacity: .9; }
+  .a2-rfc__drop { margin-top: .8em; padding: 12px 14px; border: 1px solid var(--a2-border); border-left: 3px solid var(--a2-accent); border-radius: 10px; font-size: .92rem; line-height: 1.45; }
+  .a2-rfc__drop span { display: block; margin-top: 6px; font-size: .85rem; opacity: .8; }
   .a2-rfc__note { font-size: .85rem; opacity: .75; margin-top: 14px; max-width: 760px; }
   .a2-rfc__chart-container { position: relative; width: 100%; max-width: 880px; margin-top: 1.5em; }
   .a2-rfc canvas { max-width: 100%; }
@@ -62,6 +65,7 @@
 
   <div id="a2rfcFinder" style="display:none;">
     <h3>Rogue Fit Calculator</h3>
+    <p class="a2-rfc__explain">This finds your handlebar position &mdash; bar reach (HX) and bar stack (HY) relative to the bottom bracket &mdash; then matches the frame, stem, and spacers that get you there. On a road bike the feel comes from your <b>bar drop</b>: how far the saddle sits above the bars. <b>More drop</b> is racier and more aero but asks more of your back and flexibility; <b>less drop</b> (or bars level with the saddle) is a more upright, all-day endurance position. The Rogue goes either way with a stem or spacer change &mdash; we aim for a sporty-but-sustainable starting point.</p>
     <p class="a2-rfc__intro">Do you already know your handlebar position (HX / HY) from a bike fit?</p>
     <div class="a2-rfc__paths">
       <button class="a2rfcButton" type="button" onclick="a2rfcBegin(false)">No &mdash; use my measurements</button>
@@ -266,7 +270,8 @@ if (!window.__a2rfcInit) {
       var saddle = 0.883 * inseam;
       document.getElementById("a2rfcDisplay").innerHTML =
         "<h4>Estimated bar stack (HY): " + Math.round(target.hy) + "mm<br>Estimated bar reach (HX): " + Math.round(target.hx) + "mm<br>" +
-        "Saddle height starting point: " + Math.round(saddle) + "mm (" + Math.round(saddle / 25.4 * 10) / 10 + "″)</h4>";
+        "Saddle height starting point: " + Math.round(saddle) + "mm (" + Math.round(saddle / 25.4 * 10) / 10 + "″)</h4>" +
+        "<div class=\"a2-rfc__drop\"><b>How aggressive is this?</b> Use the Position toggle above &mdash; <b>Relaxed</b> raises the bars (more upright, all-day comfort), <b>Aggressive</b> lowers them (racier and more aero). On the road, less bar drop trades a little aerodynamics for a lot more comfort. Fine-tune with spacers or a stem flip, and confirm with a pro fit.</div>";
     }
 
     fit_array = buildFitArray();
