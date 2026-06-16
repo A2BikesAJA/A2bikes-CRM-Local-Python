@@ -61,6 +61,9 @@
   .a2-fit-calc .a2fc-build__opt input:checked + span { border-color: var(--a2-accent); background: var(--a2-accent); color: var(--a2-accent-fg); font-weight: 700; }
   .a2-fit-calc .a2fc-build__opt input:focus-visible + span { outline: 3px solid var(--a2-accent-2); outline-offset: 2px; }
   .a2-fit-calc #padyxdisplaybox { margin-top: 1em; }
+  .a2-fit-calc__explain { margin: 0 0 1.2em; max-width: 70ch; font-size: .95rem; line-height: 1.5; opacity: .9; }
+  .a2-fit-calc__drop { margin-top: .8em; padding: 12px 14px; border: 1px solid var(--a2-border); border-left: 3px solid var(--a2-accent); border-radius: 10px; font-size: .92rem; line-height: 1.45; }
+  .a2-fit-calc__drop span { display: block; margin-top: 6px; font-size: .85rem; opacity: .8; }
   .a2-fit-calc .a2fc-chart-container { position: relative; width: 100%; max-width: 880px; margin-top: 1.5em; }
   .a2-fit-calc canvas { max-width: 100%; }
   @media (max-width: 600px) { .a2-fit-calc label { width: 90px; } }
@@ -73,6 +76,7 @@
 
   <div id="fitfinder" style="display:none;">
     <h3>Fit Finder</h3>
+    <p class="a2-fit-calc__explain">This finds your aerobar <b>Pad X / Y</b> — where your forearms rest relative to the bottom bracket — then matches the frame, stem, spacers, and pad position that put you there. The number that sets how the bike <em>feels</em> is the <b>drop</b>: the height from the top of your saddle down to the top of the elbow pads. <b>More drop</b> is faster and more aero but a more aggressive position to hold; <b>less drop</b> (or pads level with / above the saddle) is more comfortable, trading a little aerodynamics. We aim for a balanced starting point — go to a smaller frame or fewer spacers for more drop, a larger frame or more spacers for less.</p>
     <div id="fitPath" style="display:block;">
       <div class="a2fc-build" role="radiogroup" aria-label="Your build">
         <span class="a2fc-build__title">Your build:</span>
@@ -144,7 +148,7 @@ if (!window.__a2fcInit) {
   }
 
   function buttonPress(fitKnown) {
-    var fit, searchOpts = {};
+    var fit, searchOpts = {}, saddleMM = 0;
     if (fitKnown == true) {
       if (document.getElementById("padx").value == "" || document.getElementById("pady").value == "") {
         document.getElementById("op1p").innerHTML = "Please enter your pad X/Y.";
@@ -183,6 +187,7 @@ if (!window.__a2fcInit) {
         return;
       }
       var saddle = 0.9 * inseam;
+      saddleMM = saddle;
       fit = {
         userpadx: 0.29 * height + (0.42 - saddle / height) * 500,
         userpady: 0.35 * height - (0.42 - saddle / height) * 400
@@ -211,10 +216,32 @@ if (!window.__a2fcInit) {
     document.getElementById("op1p").innerHTML = "<h3>Recommended &mdash; Size " + rec.frame + "</h3>" + stringCombination(rec);
     document.getElementById("op2p").innerHTML = fit.options[1] ? "<h3>Alternate &mdash; Size " + fit.options[1].frame + "</h3>" + stringCombination(fit.options[1]) : "";
     document.getElementById("op3p").innerHTML = fit.options[2] ? "<h3>Alternate &mdash; Size " + fit.options[2].frame + "</h3>" + stringCombination(fit.options[2]) : "";
-    document.getElementById("padyxdisplaybox").innerHTML =
-      "<h4>Pad Y: " + String(Math.round(fit.userpady)) + "mm<br>Pad Center X: " + String(Math.round(fit.userpadx)) + "mm</h4>";
+
+    var box = "<h4>Pad Y: " + String(Math.round(fit.userpady)) + "mm<br>Pad Center X: " + String(Math.round(fit.userpadx)) + "mm</h4>";
+    if (saddleMM) {
+      // Drop = top of saddle down to top of the elbow pads (both measured up
+      // from the BB). Positive = pads below the saddle (aggressive / aero);
+      // small or negative = pads near/above the saddle (comfort-first).
+      var drop = Math.round(saddleMM - rec.pady);
+      box += "<div class=\"a2-fit-calc__drop\"><b>Saddle-to-pad drop: " + drop + "mm</b> &mdash; " + a2fcDropDesc(drop) +
+        "<br><span>Saddle height starts around " + Math.round(saddleMM) + "mm (" + (Math.round(saddleMM / 25.4 * 10) / 10) +
+        "&Prime;). More drop is faster but more aggressive; less or positive drop is more comfortable, trading a little aero. " +
+        "Want it racier? Drop a frame size or pull spacers. Want it comfier? Size up, add spacers, or raise the pads. Confirm with a pro fit before race day.</span></div>";
+    }
+    document.getElementById("padyxdisplaybox").innerHTML = box;
 
     if (window.a2dl) { window.a2dl("fit_calculator_result", { recommended_frame: rec.frame }); }
+  }
+
+  // Plain-language read on the saddle-to-pad drop (mm) for an SP triathlon fit.
+  // Guidance only — a professional bike fit is the final word.
+  function a2fcDropDesc(drop) {
+    if (drop >= 160) { return "a very aggressive, maximally aero position"; }
+    if (drop >= 120) { return "an aggressive, aero position"; }
+    if (drop >= 70) { return "a balanced position &mdash; aero but sustainable"; }
+    if (drop >= 30) { return "a relaxed, comfort-first position"; }
+    if (drop >= 0) { return "a very relaxed, comfort-first position"; }
+    return "an upright position &mdash; pads above the saddle";
   }
 
   function beginFit(fitKnown) {
