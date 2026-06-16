@@ -551,6 +551,20 @@ BATCH D STEP 1 DEPLOYED (June 10/11): new `sections/sppdp-media.liquid`
    (was S). Deployed + checksum-verified (ff5391c2…). NOTE: the underlying
    height→PadX/Y formula is the 2021 Speed Phreak model; the band gate is
    what guarantees a sane frame regardless of that formula's drift.
+   PDP CALCULATOR SWAP (June 16, owner request): the PDP buy box used the
+   height-based Size Calculator v2 (a2-size-calc); owner wanted the advanced
+   calcs instead. `sppdp-product.liquid` now renders the Pad X/Y Fit Finder
+   (a2-fit-calculator) on SP PDPs and the Rogue Fit Calculator
+   (a2-rogue-fit-calc) on Rogue PDPs, handle-aware via `calc_bike`. KEY
+   GOTCHA: the advanced calcs use FIXED element IDs + a global init guard, so
+   they can't be rendered twice on one page. The old size calc was output
+   TWICE (desktop gallery + mobile gallery) — safe only because a2-size-calc
+   is multi-instance-aware. Fix: render the advanced calc ONCE in a new
+   full-width `.sppdp-fitband` band below the main grid (after </main>),
+   removed both gallery outputs. The advanced calcs rely on LP CSS vars
+   (--a2-accent etc.) absent on the PDP, so the band supplies the light
+   palette locally. a2-size-calc still used on the LPs + homepage hero.
+   Deployed + checksum-verified (e89211ce).
    OWNER CONFIRMATIONS (June 12): claims APPROVED as written (Triathlete
    years, "five-time winner", 4.8★/96/97% stat copy); consolidation
    kill-list APPROVED (canonicals assumed: about-new, buying-process-2-0 —
