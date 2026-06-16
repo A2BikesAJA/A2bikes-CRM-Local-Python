@@ -137,30 +137,29 @@
     },
     "athletes": {
       "type": "wa-athletes",
-      "disabled": true,
       "blocks": {
         "a1": {
           "type": "athlete",
           "settings": {
-            "quote": "[Add Kinley's quote here]",
+            "quote": "This bike is a machine. It's beautiful, expertly crafted, and is seamless to build and ride. I have nothing but good to say. Rival AXS is my first electronic groupset, and I've been loving it!",
             "name": "Kinley Bollinger",
-            "race": "1st Overall — Ironman 70.3 Puerto Rico · 4:40:39"
+            "race": ""
           }
         },
         "a2": {
           "type": "athlete",
           "settings": {
-            "quote": "[Athlete quote]",
-            "name": "[Athlete name]",
-            "race": "[Race / achievement]"
+            "quote": "Finding a ride that's fast enough to race and comfortable enough to put long hours in on is no small feat — but A2's design and customizability has it made. Suffice to say I cannot wait to see what we can do this year on the race course.",
+            "name": "Brennen Smith",
+            "race": ""
           }
         },
         "a3": {
           "type": "athlete",
           "settings": {
-            "quote": "[Athlete quote]",
-            "name": "[Athlete name]",
-            "race": "[Race / achievement]"
+            "quote": "A2 made the process of getting a new bike so much easier, at a great price! They are so easy to contact and very responsive. I love the bike — it works great and it is very speedy (all my rides have been faster). I can't wait to race with it!",
+            "name": "Kaitlin Carew",
+            "race": ""
           }
         }
       },
