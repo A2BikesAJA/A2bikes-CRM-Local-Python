@@ -45,14 +45,23 @@
 -%}
 {%- capture size_calc_details -%}
   {%- if section.settings.show_size_calc -%}
-  <details class="sppdp-sizecalc">
-    <summary class="sppdp-sizecalc__cta">
-      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 22c1.1 0 2-.9 2-2h-4a2 2 0 0 0 2 2z"/><line x1="2" y1="4" x2="22" y2="4"/><line x1="4" y1="4" x2="4" y2="16"/><line x1="20" y1="4" x2="20" y2="16"/><line x1="12" y1="4" x2="12" y2="8"/><path d="M4 16l8 -4 8 4"/></svg>
-      <span>{{ section.settings.size_calc_cta | default: 'Find your perfect bike size here' }}</span>
-      <svg class="sppdp-sizecalc__chev" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 9l6 6 6-6"/></svg>
-    </summary>
-    <div class="sppdp-sizecalc__body">{% render 'a2-size-calc', default_bike: calc_bike %}</div>
-  </details>
+  <section class="pdp-wrap sppdp-fitband" aria-label="Find your size">
+    <div class="sppdp-fitband__head">
+      <span class="sppdp-fitband__kicker">{{ section.settings.size_calc_cta | default: 'Find your size' }}</span>
+      <h2 class="sppdp-fitband__title">{% if calc_bike == 'rogue' %}Dial in your Rogue fit{% else %}Dial in your SP fit{% endif %}</h2>
+    </div>
+    {%- if calc_bike == 'rogue' -%}
+      {% render 'a2-rogue-fit-calc' %}
+    {%- else -%}
+      {% render 'a2-fit-calculator' %}
+    {%- endif -%}
+  </section>
+  <style>
+    .sppdp-fitband{ margin:30px auto 6px; --a2-bg:#ffffff; --a2-fg:#14181d; --a2-border:rgba(15,20,25,.14); --a2-accent:#b4122e; --a2-accent-2:#14181d; --a2-accent-fg:#ffffff; --a2-font-display:"Bahnschrift","DIN Condensed","Oswald","Arial Narrow",system-ui,sans-serif; }
+    .sppdp-fitband__head{ margin-bottom:14px; }
+    .sppdp-fitband__kicker{ display:block; text-transform:uppercase; letter-spacing:.14em; font-size:.72rem; color:#b4122e; }
+    .sppdp-fitband__title{ margin:.12em 0 0; font-size:clamp(1.4rem,2.6vw,2rem); }
+  </style>
   {%- endif -%}
 {%- endcapture -%}
 <div class="sppdp" id="sppdp-pdp-{{ section.id }}">
@@ -119,7 +128,6 @@
           {%- endif -%}
         {%- endfor -%}
       </div>
-      {{ size_calc_details }}
     </section>
 
     <!-- MOBILE SWIPE GALLERY -->
@@ -137,7 +145,6 @@
           <span{% if forloop.first %} class="on"{% endif %} data-gallery-dot></span>
         {%- endfor -%}
       </div>
-      {{ size_calc_details }}
     </section>
 
     <!-- BUY BOX -->
@@ -304,6 +311,8 @@
       {%- endif -%}
     </aside>
   </main>
+
+  {{ size_calc_details }}
 
   {%- if section.settings.show_sticky -%}
   <div class="sticky-buy" data-sticky-buy>
