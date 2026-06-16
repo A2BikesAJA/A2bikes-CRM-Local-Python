@@ -391,10 +391,46 @@
             "name": "SP owner",
             "caption": "Race-week setup, in his own words"
           }
+        },
+        "clip_brennen": {
+          "type": "clip",
+          "settings": {
+            "clip_url": "https://cdn.shopify.com/videos/c/vp/28798c9052d54fc19dccbda3269f9e82/28798c9052d54fc19dccbda3269f9e82.SD-480p-1.5Mbps-86420240.mp4",
+            "name": "Brennen Smith",
+            "caption": "Pro setup tips (captioned)"
+          }
+        },
+        "clip_carolyn": {
+          "type": "clip",
+          "settings": {
+            "clip_url": "https://cdn.shopify.com/videos/c/vp/a550e789b16a4af78ec7cd28d3236a1f/a550e789b16a4af78ec7cd28d3236a1f.SD-480p-1.5Mbps-86420410.mp4",
+            "name": "Carolyn",
+            "caption": "On race day"
+          }
+        },
+        "clip_kaitlin": {
+          "type": "clip",
+          "settings": {
+            "clip_url": "https://cdn.shopify.com/videos/c/vp/e08cfcebb5ef43e39946fb2fc83c9505/e08cfcebb5ef43e39946fb2fc83c9505.SD-480p-1.5Mbps-86420411.mp4",
+            "name": "Kaitlin Carew",
+            "caption": "Race-day setup"
+          }
+        },
+        "clip_markus": {
+          "type": "clip",
+          "settings": {
+            "clip_url": "https://cdn.shopify.com/videos/c/vp/8bc7b95c2ae940eebb08148b9c099899/8bc7b95c2ae940eebb08148b9c099899.SD-480p-1.5Mbps-86420840.mp4",
+            "name": "Markus",
+            "caption": "On the SP"
+          }
         }
       },
       "block_order": [
-        "clip_rider_1"
+        "clip_rider_1",
+        "clip_brennen",
+        "clip_carolyn",
+        "clip_kaitlin",
+        "clip_markus"
       ],
       "settings": {
         "kicker": "Real rider footage",

@@ -1,5 +1,14 @@
 {
   "sections": {
+    "media": {
+      "type": "sppdp-media",
+      "settings": {
+        "kicker": "Real ride footage",
+        "heading": "See the Rogue in action",
+        "hero_url": "https://cdn.shopify.com/videos/c/vp/90ce1c61c27347c49d39b87c18ddf512/90ce1c61c27347c49d39b87c18ddf512.HD-720p-4.5Mbps-56112418.mp4",
+        "autoplay": true
+      }
+    },
     "main": {
       "type": "sppdp-product",
       "blocks": {
@@ -330,6 +339,7 @@
   },
   "order": [
     "main",
+    "media",
     "reviews",
     "reviews_app",
     "compare",
