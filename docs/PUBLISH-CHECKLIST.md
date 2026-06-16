@@ -50,10 +50,13 @@ inputs land. Theme: "Why A2 — DRAFT" `176492183716` replaces live
       to admin → Content → Files (SP Website Header_2 & _4, A2 SP UGC No
       Music, Brennen Pro Tips + Race Day, Carolyn, Kaitlin, Markus, plus many
       Rogue edits). ⚙ SP PDP hero (Header_4) wired into all four SP build
-      templates (autoplay loop), deployed + verified. STILL ⚙: expand the SP
-      UGC strip (curation list below) and add a Rogue media band once AJ
-      greenlights. MORE COMING: Darren has Travis + Kinley race clips
-      (with captions) in the next week or two.
+      templates (autoplay loop), deployed + verified. SP UGC strip expanded
+      to 5 clips (rider + Brennen/Carolyn/Kaitlin/Markus) and a Rogue PDP
+      media band added (Rogue Header reel, hero-only) — all 8 PDPs deployed +
+      verified June 16. MORE COMING: Darren has Travis + Kinley race clips
+      (with captions) in the next week or two — slot into the SP strip when
+      they land. Spare clips not yet placed: A2 SP UGC No Music, Brennen Race
+      Day, the 15s/30s cuts, SP Website Header_2, other Rogue edits.
 - [x] **Athlete quotes — DONE June 15.** Kinley, Brennen, Kaitlin quotes
       wired into the Why A2 athletes section (un-hidden, deployed + verified).
       Quotes lightly tidied (review headlines/typos) — AJ to confirm or revert
