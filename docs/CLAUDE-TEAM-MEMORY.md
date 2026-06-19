@@ -596,6 +596,22 @@ BATCH D STEP 1 DEPLOYED (June 10/11): new `sections/sppdp-media.liquid`
    ≥0.48 inseam/height ratio), a2rfcExplain (road-framed fitter copy),
    single result card (op2/op3 emptied), chart plots the one rec, known-HX/HY
    path biases up on a ≤12mm tie. All three files deployed + verified.
+   DRIFT + NARROW-CALC FIX (June 19): owner reported the SP PDP size
+   calculator "constrained in a very narrow container." Root cause = the
+   documented drift gotcha: sppdp-product.liquid had been edited directly in
+   the theme (Claude suite / editor) AFTER my deploy — deployed checksum
+   9c57e9e… ≠ repo. The direct edit MOVED the band from after </main>
+   (full-width) into the LEFT gallery column ("fill the space beside the buy
+   box") but omitted grid-column, so the band fell into the gallery's 76px
+   thumbnail-rail track (.gallery is `grid-template-columns:76px 1fr`).
+   Resolution: reconciled the repo to the live layout (kept the gallery
+   placement — it's a reasonable use of the gap) and added the missing
+   `.gallery > .sppdp-fitband{ grid-column:1 / -1; width:100%; max-width:none;
+   margin:0 }`. The two calc snippets did NOT drift. Deployed + verified
+   (2e5aca5a). Lesson reinforced: re-check deployed checksum vs repo when a
+   render looks wrong — direct theme edits keep happening. If owner prefers
+   the calc full-width BELOW the grid instead, flip the band back after
+   </main> with the pdp-wrap class.
    OWNER CONFIRMATIONS (June 12): claims APPROVED as written (Triathlete
    years, "five-time winner", 4.8★/96/97% stat copy); consolidation
    kill-list APPROVED (canonicals assumed: about-new, buying-process-2-0 —
