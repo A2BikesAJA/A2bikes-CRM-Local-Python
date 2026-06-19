@@ -361,6 +361,12 @@
     #sppdp-pdp-{{ section.id }} .is-unavailable{ opacity:.45; }
     #sppdp-pdp-{{ section.id }} .size-pill.is-unavailable{ text-decoration:line-through; border-style:dashed; }
     #sppdp-pdp-{{ section.id }} .affirm-app{ margin-top:2px; }
+    /* Affirm's ALA template renders "…with Affirm.See if you qualify" with no
+       space before the trailing CTA (Affirm controls that text). Nudge a gap
+       in front of the trailing link/trigger so it reads "Affirm. See if…". */
+    #sppdp-pdp-{{ section.id }} .affirm-as-low-as > a:last-child,
+    #sppdp-pdp-{{ section.id }} .affirm-as-low-as > span:last-child,
+    #sppdp-pdp-{{ section.id }} .affirm-as-low-as .affirm-modal-trigger:last-child{ margin-left:.28em; }
     /* Size calculator nested in the left/gallery column: span the FULL column
        (the gallery is a 76px-rail + 1fr grid, so without this it collapses into
        the 76px thumbnail track) and drop the auto-centering so it fills the
