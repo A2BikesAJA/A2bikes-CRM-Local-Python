@@ -45,7 +45,7 @@
 -%}
 {%- capture size_calc_details -%}
   {%- if section.settings.show_size_calc -%}
-  <section class="pdp-wrap sppdp-fitband" id="find-your-fit" aria-label="Find your size">
+  <section class="sppdp-fitband" id="find-your-fit" aria-label="Find your size">
     <div class="sppdp-fitband__head">
       <span class="sppdp-fitband__kicker">{{ section.settings.size_calc_cta | default: 'Find your size' }}</span>
       <h2 class="sppdp-fitband__title">{% if calc_bike == 'rogue' %}Which Rogue size am I?{% else %}Which SP size am I?{% endif %}</h2>
@@ -57,7 +57,7 @@
     {%- endif -%}
   </section>
   <style>
-    .sppdp-fitband{ margin:30px auto 6px; scroll-margin-top:80px; --a2-bg:#ffffff; --a2-fg:#14181d; --a2-border:rgba(15,20,25,.14); --a2-accent:#b4122e; --a2-accent-2:#14181d; --a2-accent-fg:#ffffff; --a2-font-display:"Bahnschrift","DIN Condensed","Oswald","Arial Narrow",system-ui,sans-serif; }
+    .sppdp-fitband{ margin:22px 0 6px; scroll-margin-top:80px; --a2-bg:#ffffff; --a2-fg:#14181d; --a2-border:rgba(15,20,25,.14); --a2-accent:#b4122e; --a2-accent-2:#14181d; --a2-accent-fg:#ffffff; --a2-font-display:"Bahnschrift","DIN Condensed","Oswald","Arial Narrow",system-ui,sans-serif; }
     .sppdp-fitband__head{ margin-bottom:14px; }
     .sppdp-fitband__kicker{ display:block; text-transform:uppercase; letter-spacing:.14em; font-size:.72rem; color:#b4122e; }
     .sppdp-fitband__title{ margin:.12em 0 .6em; font-size:clamp(1.4rem,2.6vw,2rem); }
@@ -151,6 +151,8 @@
           {%- endif -%}
         {%- endfor -%}
       </div>
+
+      {{ size_calc_details }}
     </section>
 
     <!-- MOBILE SWIPE GALLERY -->
@@ -345,8 +347,6 @@
     </aside>
   </main>
 
-  {{ size_calc_details }}
-
   {%- if section.settings.show_sticky -%}
   <div class="sticky-buy" data-sticky-buy>
     <div class="sticky-buy__info">
@@ -361,6 +361,11 @@
     #sppdp-pdp-{{ section.id }} .is-unavailable{ opacity:.45; }
     #sppdp-pdp-{{ section.id }} .size-pill.is-unavailable{ text-decoration:line-through; border-style:dashed; }
     #sppdp-pdp-{{ section.id }} .affirm-app{ margin-top:2px; }
+    /* Size calculator nested in the left/gallery column: span the FULL column
+       (the gallery is a 76px-rail + 1fr grid, so without this it collapses into
+       the 76px thumbnail track) and drop the auto-centering so it fills the
+       space beside the taller buy box. */
+    #sppdp-pdp-{{ section.id }} .gallery > .sppdp-fitband{ grid-column:1 / -1; width:100%; max-width:none; margin-left:0; margin-right:0; }
     #sppdp-pdp-{{ section.id }} .build-switch{ display:flex; flex-direction:column; gap:9px; margin-top:14px; }
     #sppdp-pdp-{{ section.id }} .build-pills{ display:flex; gap:8px; flex-wrap:wrap; }
     #sppdp-pdp-{{ section.id }} .build-pill{ display:inline-flex; align-items:center; min-height:42px; padding:0 14px; border:1.5px solid var(--line); border-radius:8px; font-size:.9rem; font-weight:600; color:var(--ink); text-decoration:none; transition:border-color .15s, background .15s, color .15s; }
