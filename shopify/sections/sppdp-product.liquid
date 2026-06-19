@@ -49,7 +49,6 @@
     <div class="sppdp-fitband__head">
       <span class="sppdp-fitband__kicker">{{ section.settings.size_calc_cta | default: 'Find your size' }}</span>
       <h2 class="sppdp-fitband__title">{% if calc_bike == 'rogue' %}Which Rogue size am I?{% else %}Which SP size am I?{% endif %}</h2>
-      <p class="sppdp-fitband__sub">Answer two quick measurements and we'll recommend your exact frame size &mdash; and explain why.</p>
     </div>
     {%- if calc_bike == 'rogue' -%}
       {% render 'a2-rogue-fit-calc' %}
@@ -61,8 +60,7 @@
     .sppdp-fitband{ margin:30px auto 6px; scroll-margin-top:80px; --a2-bg:#ffffff; --a2-fg:#14181d; --a2-border:rgba(15,20,25,.14); --a2-accent:#b4122e; --a2-accent-2:#14181d; --a2-accent-fg:#ffffff; --a2-font-display:"Bahnschrift","DIN Condensed","Oswald","Arial Narrow",system-ui,sans-serif; }
     .sppdp-fitband__head{ margin-bottom:14px; }
     .sppdp-fitband__kicker{ display:block; text-transform:uppercase; letter-spacing:.14em; font-size:.72rem; color:#b4122e; }
-    .sppdp-fitband__title{ margin:.12em 0 0; font-size:clamp(1.4rem,2.6vw,2rem); }
-    .sppdp-fitband__sub{ margin:.3em 0 0; font-size:.95rem; opacity:.8; max-width:60ch; }
+    .sppdp-fitband__title{ margin:.12em 0 .6em; font-size:clamp(1.4rem,2.6vw,2rem); }
     .sppdp-fitband.is-flash{ animation:sppdpFitFlash 1.4s ease; }
     @keyframes sppdpFitFlash{ 0%,100%{ box-shadow:0 0 0 0 rgba(180,18,46,0); } 25%{ box-shadow:0 0 0 4px rgba(180,18,46,.18); } }
   </style>
@@ -77,8 +75,13 @@
         if(finder && getComputedStyle(finder).display === 'none'){
           var t = band.querySelector('#togglefit button, #a2rfcToggleBox button'); if(t) t.click();
         }
-        band.scrollIntoView({ behavior:'smooth', block:'start' });
-        band.classList.remove('is-flash'); void band.offsetWidth; band.classList.add('is-flash');
+        // Open first, then scroll AFTER the reflow settles (two frames) so the
+        // expanded calculator doesn't overshoot. Land ~88px above the band top.
+        requestAnimationFrame(function(){ requestAnimationFrame(function(){
+          var y = window.pageYOffset + band.getBoundingClientRect().top - 88;
+          window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+          band.classList.remove('is-flash'); void band.offsetWidth; band.classList.add('is-flash');
+        }); });
       });
     })();
   </script>

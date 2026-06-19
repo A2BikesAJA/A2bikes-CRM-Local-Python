@@ -52,6 +52,16 @@
   .a2-rfc__explain { margin: 0 0 1.1em; max-width: 70ch; font-size: .95rem; line-height: 1.5; opacity: .9; }
   .a2-rfc__drop { margin-top: .8em; padding: 12px 14px; border: 1px solid var(--a2-border); border-left: 3px solid var(--a2-accent); border-radius: 10px; font-size: .92rem; line-height: 1.45; }
   .a2-rfc__drop span { display: block; margin-top: 6px; font-size: .85rem; opacity: .8; }
+  .a2-rfc .a2rfc-why { margin: .2em 0 .8em; font-size: .93rem; line-height: 1.55; }
+  .a2-rfc .a2rfc-why--exch { opacity: .72; font-size: .85rem; }
+  .a2-rfc .a2rfc-start { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; padding: 18px 20px; border: 2px solid var(--a2-accent); border-radius: 14px; background: var(--a2-bg); background: color-mix(in srgb, var(--a2-accent) 7%, var(--a2-bg)); }
+  .a2-rfc .a2rfc-start__ico svg { width: 34px; height: 34px; stroke: var(--a2-accent); fill: none; stroke-width: 1.7; display: block; }
+  .a2-rfc .a2rfc-start__copy { display: flex; flex-direction: column; gap: 2px; flex: 1 1 220px; }
+  .a2-rfc .a2rfc-start__copy b { font-family: var(--a2-font-display); font-size: 1.18rem; line-height: 1.1; }
+  .a2-rfc .a2rfc-start__copy span { font-size: .88rem; opacity: .8; line-height: 1.4; }
+  .a2-rfc .a2rfc-start__btn { flex: 0 0 auto; }
+  .a2-rfc .a2-rfc__option h3 { margin: 0 0 .5em; }
+  .a2-rfc .a2rfc-setup { font-size: .9rem; line-height: 1.55; padding-top: 8px; border-top: 1px solid var(--a2-border); opacity: .9; }
   .a2-rfc__note { font-size: .85rem; opacity: .75; margin-top: 14px; max-width: 760px; }
   .a2-rfc__chart-container { position: relative; width: 100%; max-width: 880px; margin-top: 1.5em; }
   .a2-rfc canvas { max-width: 100%; }
@@ -60,7 +70,14 @@
 
 <div class="a2-rfc" id="a2-rogue-fit">
   <div id="a2rfcToggleBox" style="display:block;">
-    <button class="a2rfcButton" type="button" onclick="a2rfcToggle()">Find my Rogue size</button>
+    <div class="a2rfc-start">
+      <span class="a2rfc-start__ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="7" width="19" height="10" rx="2"/><path d="M6.5 7v3M10 7v4M13.5 7v3M17 7v4"/></svg></span>
+      <div class="a2rfc-start__copy">
+        <b>Find your size</b>
+        <span>Answer two quick measurements &mdash; we&rsquo;ll recommend your exact Rogue size and explain why.</span>
+      </div>
+      <button class="a2rfcButton a2rfc-start__btn" type="button" onclick="a2rfcToggle()">Find my size</button>
+    </div>
   </div>
 
   <div id="a2rfcFinder" style="display:none;">
@@ -213,7 +230,7 @@ if (!window.__a2rfcInit) {
   }
 
   function a2rfcGo(fitKnown) {
-    var target;
+    var target, recInfo = null, heightMM = 0, inseamMM = 0;
     if (fitKnown) {
       if (document.getElementById("a2rfc_hx").value == "" || document.getElementById("a2rfc_hy").value == "") {
         document.getElementById("a2rfcOp1").innerHTML = "Please enter your HX and HY.";
@@ -263,10 +280,8 @@ if (!window.__a2rfcInit) {
       }
       var postureEl = document.querySelector('input[name="a2rfcPosture"]:checked');
       target = a2rfcTargetFromBody(height, inseam, postureEl ? postureEl.value : "balanced");
-      for (var b = 0; b < frame_key.length; b++) {
-        var bg = A2_ROGUE[frame_key[b]];
-        if (height >= bg.hMin && height <= bg.hMax) { target.bandFrame = frame_key[b]; break; }
-      }
+      heightMM = height; inseamMM = inseam;
+      recInfo = a2rfcRecommendFrame(height, inseam);
       var saddle = 0.883 * inseam;
       document.getElementById("a2rfcDisplay").innerHTML =
         "<h4>Estimated bar stack (HY): " + Math.round(target.hy) + "mm<br>Estimated bar reach (HX): " + Math.round(target.hx) + "mm<br>" +
@@ -275,27 +290,87 @@ if (!window.__a2rfcInit) {
     }
 
     fit_array = buildFitArray();
-    var fit = findCombinations(target.hx, target.hy, fit_array, target.bandFrame || null);
+    var fit = findCombinations(target.hx, target.hy, fit_array, recInfo ? [recInfo.frame] : null);
 
-    document.getElementById("a2rfcOp1").innerHTML = "<h3>Option 1</h3>" + stringCombination(fit.options[0]);
-    document.getElementById("a2rfcOp2").innerHTML = "<h3>Option 2</h3>" + stringCombination(fit.options[1]);
-    document.getElementById("a2rfcOp3").innerHTML = "<h3>Option 3</h3>" + stringCombination(fit.options[2]);
+    var rec = fit.options[0], recFrame = rec.frame;
+    if (!recInfo) {
+      // Expert HX/HY path: no height to gate on. Bias UP on a near-tie with a
+      // larger frame (owner rule: size up when between).
+      for (var oi = 1; oi < fit.options.length; oi++) {
+        var alt = fit.options[oi];
+        if (frame_key.indexOf(alt.frame) > frame_key.indexOf(rec.frame) && (alt.error - rec.error) <= 12) { rec = alt; recFrame = alt.frame; }
+      }
+    }
+    var names = { S: "Small", M: "Medium", L: "Large", XL: "XL" };
+
+    document.getElementById("a2rfcOp1").innerHTML =
+      "<h3>Your size: the " + (names[recFrame] || recFrame) + "</h3>" + a2rfcExplain(recInfo, recFrame, heightMM) + stringCombination(rec);
+    document.getElementById("a2rfcOp2").innerHTML = "";
+    document.getElementById("a2rfcOp3").innerHTML = "";
     document.getElementById("a2rfcNote").style.display = "block";
 
-    if (window.a2dl) { window.a2dl("rogue_fit_result", { recommended_frame: fit.options[0].frame }); }
+    showChart(fit, rec);
+    if (window.a2dl) { window.a2dl("rogue_fit_result", { recommended_frame: recFrame }); }
   }
 
-  function findCombinations(hx, hy, fit_data, bandFrame) {
+  // ONE recommended frame from height + inseam, sized UP when between sizes.
+  // Rogue height bands (mm) live on A2_ROGUE (hMin/hMax). Callers handle the
+  // out-of-range (< 1575 / > 1985) "talk to our fit team" cases first.
+  function a2rfcRecommendFrame(heightMM, inseamMM) {
+    var order = ["S", "M", "L", "XL"];
+    var idx = -1, between = false, reason = "in-band";
+    for (var i = 0; i < order.length; i++) {
+      var g = A2_ROGUE[order[i]];
+      if (heightMM >= g.hMin && heightMM <= g.hMax) { idx = i; break; }
+    }
+    if (idx === -1) {
+      if (heightMM < A2_ROGUE[order[0]].hMin) { idx = 0; }
+      else if (heightMM > A2_ROGUE[order[order.length - 1]].hMax) { idx = order.length - 1; }
+      else {
+        for (var j = 0; j < order.length - 1; j++) {
+          if (heightMM > A2_ROGUE[order[j]].hMax && heightMM < A2_ROGUE[order[j + 1]].hMin) { idx = j + 1; between = true; reason = "boundary"; break; }
+        }
+      }
+    } else if (idx < order.length - 1) {
+      if (heightMM >= A2_ROGUE[order[idx]].hMax - 20) { idx += 1; between = true; reason = "boundary"; }
+      else if (inseamMM / heightMM >= 0.48) { idx += 1; between = true; reason = "inseam"; }
+    }
+    return { frame: order[idx], idx: idx, between: between, reason: reason,
+             fromFrame: between && idx > 0 ? order[idx - 1] : null };
+  }
+
+  // Stock fitter-style explanation, road-framed; adapts to size + why we sized up.
+  function a2rfcExplain(recInfo, frame, heightMM) {
+    var names = { S: "Small", M: "Medium", L: "Large", XL: "XL" };
+    var name = names[frame] || frame;
+    if (!recInfo) {
+      return "<p class=\"a2rfc-why\">Matched to the bar position you entered: the <b>" + name + "</b> places it in the middle of its range, leaving room to fine-tune with the stem and spacers. Between two sizes we go with the larger &mdash; it's easier to bring a bigger frame lower than to stretch a small one.</p>";
+    }
+    var totalIn = heightMM / 25.4;
+    var ft = Math.floor(totalIn / 12), inch = Math.round(totalIn - ft * 12);
+    if (inch >= 12) { ft += 1; inch -= 12; }
+    var html = "<p class=\"a2rfc-why\">At <b>" + ft + "&prime;" + inch + "&Prime;</b>, the <b>" + name + "</b> is the frame whose stack and reach put the bars where your body wants them &mdash; with the standover clearance you need and room to fine-tune height with the stem and spacers instead of running out of adjustment.";
+    if (recInfo.between && recInfo.reason === "boundary") {
+      html += " You're right between the " + (names[recInfo.fromFrame] || recInfo.fromFrame) + " and the " + name + ", so we size up: a slightly larger road frame is easily brought lower with the stem and spacers, but a too-small frame leaves you cramped and forces a long stem that dulls the steering.";
+    } else if (recInfo.between && recInfo.reason === "inseam") {
+      html += " Your legs are long for your height, so the " + name + " gives you the standover clearance and saddle height they want.";
+    } else {
+      html += " Your proportions land squarely in the " + name + "'s range.";
+    }
+    html += "</p><p class=\"a2rfc-why a2rfc-why--exch\">Use the Position toggle for a racier or more upright feel &mdash; and free size exchanges if it's not perfect.</p>";
+    return html;
+  }
+
+  function findCombinations(hx, hy, fit_data, allowed) {
     var combinations = fit_data;
     var fit = { userhx: hx, userhy: hy };
-    // score = true distance + nudges: flipped stems are a fallback (not a
-    // first recommendation), and when the rider's height sits inside a
-    // published size band that frame should win unless it's genuinely far.
+    // score = true distance + a flipped-stem penalty (a fallback, not a first
+    // pick); frames outside the allowed set are pushed to the bottom.
     for (var i = combinations.length - 1; i >= 0; i--) {
       combinations[i].error = ((combinations[i].hx - hx) ** 2 + (combinations[i].hy - hy) ** 2) ** 0.5;
       combinations[i].score = combinations[i].error +
         (combinations[i].stemAngle > 0 ? 10 : 0) +
-        (bandFrame && combinations[i].frame != bandFrame ? 15 : 0);
+        (allowed && allowed.indexOf(combinations[i].frame) === -1 ? 9999 : 0);
     }
     fit.options = [combinations[0], combinations[1], combinations[2]];
     for (var i = combinations.length - 1; i >= 0; i--) {
@@ -307,12 +382,7 @@ if (!window.__a2rfcInit) {
     for (var i = combinations.length - 1; i >= 0; i--) {
       if (combinations[i].score < fit.options[2].score && combinations[i].frame != fit.options[0].frame && combinations[i].frame != fit.options[1].frame) { fit.options[2] = combinations[i]; }
     }
-    fit.options.sort(function (a, b) { return a.spacers - b.spacers; });
-    fit.options[0].description = "Least spacer stack option.";
-    fit.options[1].description = "Most room for adjustment.";
-    fit.options[2].description = "Largest spacer stack option.";
     fit.options.sort(function (a, b) { return a.score - b.score; });
-    showChart(fit);
     return fit;
   }
 
@@ -320,13 +390,10 @@ if (!window.__a2rfcInit) {
     var g = A2_ROGUE[c.frame];
     var stem = c.stemLen + "mm · " + (c.stemAngle < 0 ? "−6°" : "+6° (flipped up)");
     if (c.stemLen === g.stockStem) { stem += " — stock length"; }
-    return "<b>Frame:</b> Rogue " + g.name +
-      "<br><b>Stem:</b> " + stem +
-      "<br><b>Spacers under stem:</b> " + c.spacers + "mm" +
-      "<br><b>Bar position (HX / HY):</b> " + c.hx + " / " + c.hy + "mm" +
-      "<br><b>Crank arms (stock):</b> " + g.crank + "mm" +
-      "<br><b>Handlebar (stock):</b> " + g.bar + " c-c" +
-      "<br><b>Distance from your fit point:</b> " + Math.round(c.error) + "mm<br>";
+    return "<div class=\"a2rfc-setup\"><b>Starting setup</b><br>" +
+      "Frame: Rogue " + g.name + " &middot; " + stem + " &middot; " + c.spacers + "mm spacers<br>" +
+      "Stock cranks " + g.crank + "mm &middot; stock bars " + g.bar + " c-c<br>" +
+      "Bar position (HX / HY): " + c.hx + " / " + c.hy + "mm</div>";
   }
 
   function a2rfcBegin(fitKnown) {
@@ -366,7 +433,7 @@ if (!window.__a2rfcInit) {
     document.head.appendChild(s);
   }
 
-  function showChart(fit) {
+  function showChart(fit, rec) {
     a2rfcEnsureChart(function () {
       var colors = { frame_s: "#5b5be0", frame_m: "#e8527e", frame_l: "#f29a3c", frame_xl: "#cbe23c" };
       var fit_points = { S: [], M: [], L: [], XL: [] };
@@ -377,10 +444,8 @@ if (!window.__a2rfcInit) {
       new Chart(ctx, {
         type: "scatter",
         data: { datasets: [
-          { pointRadius: 6, pointBackgroundColor: "#111", backgroundColor: "#111", label: "Your fit point", showLine: false, data: [{ x: fit.userhx, y: fit.userhy }] },
-          { pointRadius: 5, pointBackgroundColor: "blue", backgroundColor: "blue", label: "Option 1", showLine: false, data: [{ x: fit.options[0].hx, y: fit.options[0].hy }] },
-          { pointRadius: 5, pointBackgroundColor: "orange", backgroundColor: "orange", label: "Option 2", showLine: false, data: [{ x: fit.options[1].hx, y: fit.options[1].hy }] },
-          { pointRadius: 5, pointBackgroundColor: "red", backgroundColor: "red", label: "Option 3", showLine: false, data: [{ x: fit.options[2].hx, y: fit.options[2].hy }] },
+          { pointRadius: 7, pointBackgroundColor: "#111", backgroundColor: "#111", label: "Your fit point", showLine: false, data: [{ x: fit.userhx, y: fit.userhy }] },
+          { pointRadius: 6, pointBackgroundColor: "#1F8A4C", backgroundColor: "#1F8A4C", label: "Your " + rec.frame + " setup", showLine: false, data: [{ x: rec.hx, y: rec.hy }] },
           { pointRadius: 2, pointBackgroundColor: colors.frame_s, backgroundColor: colors.frame_s, label: "Size S", showLine: false, data: fit_points["S"] },
           { pointRadius: 2, pointBackgroundColor: colors.frame_m, backgroundColor: colors.frame_m, label: "Size M", showLine: false, data: fit_points["M"] },
           { pointRadius: 2, pointBackgroundColor: colors.frame_l, backgroundColor: colors.frame_l, label: "Size L", showLine: false, data: fit_points["L"] },

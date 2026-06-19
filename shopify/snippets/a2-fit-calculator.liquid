@@ -68,6 +68,12 @@
   .a2-fit-calc .a2fc-why--exch { opacity: .72; font-size: .85rem; }
   .a2-fit-calc .a2fc-setup { font-size: .9rem; line-height: 1.55; padding-top: 8px; border-top: 1px solid var(--a2-border); opacity: .9; }
   .a2-fit-calc__div_fitOption h3 { margin: 0 0 .5em; }
+  .a2-fit-calc .a2fc-start { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; padding: 18px 20px; border: 2px solid var(--a2-accent); border-radius: 14px; background: var(--a2-bg); background: color-mix(in srgb, var(--a2-accent) 7%, var(--a2-bg)); }
+  .a2-fit-calc .a2fc-start__ico svg { width: 34px; height: 34px; stroke: var(--a2-accent); fill: none; stroke-width: 1.7; display: block; }
+  .a2-fit-calc .a2fc-start__copy { display: flex; flex-direction: column; gap: 2px; flex: 1 1 220px; }
+  .a2-fit-calc .a2fc-start__copy b { font-family: var(--a2-font-display); font-size: 1.18rem; line-height: 1.1; }
+  .a2-fit-calc .a2fc-start__copy span { font-size: .88rem; opacity: .8; line-height: 1.4; }
+  .a2-fit-calc .a2fc-start__btn { flex: 0 0 auto; }
   .a2-fit-calc .a2fc-chart-container { position: relative; width: 100%; max-width: 880px; margin-top: 1.5em; }
   .a2-fit-calc canvas { max-width: 100%; }
   @media (max-width: 600px) { .a2-fit-calc label { width: 90px; } }
@@ -75,7 +81,14 @@
 
 <div class="a2-fit-calc" id="a2-fit-calc">
   <div id="togglefit" style="display:block;">
-    <button class="fitCalcButton" type="button" onclick="toggleFit()">Find my size</button>
+    <div class="a2fc-start">
+      <span class="a2fc-start__ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="7" width="19" height="10" rx="2"/><path d="M6.5 7v3M10 7v4M13.5 7v3M17 7v4"/></svg></span>
+      <div class="a2fc-start__copy">
+        <b>Find your size</b>
+        <span>Answer two quick measurements &mdash; we&rsquo;ll recommend your exact frame size and explain why.</span>
+      </div>
+      <button class="fitCalcButton a2fc-start__btn" type="button" onclick="toggleFit()">Find my size</button>
+    </div>
   </div>
 
   <div id="fitfinder" style="display:none;">
