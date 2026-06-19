@@ -340,6 +340,8 @@
           {%- endcomment -%}
           {%- if placeholder != true and prod.available and prod.price >= 50000 -%}
             <p class="affirm-as-low-as fs-body-50" data-page-type="category" data-amount="{{ prod.price }}"></p>
+            {%- comment -%} Affirm renders "…Affirm.See if you qualify" with no space before the CTA; nudge a gap in. {%- endcomment -%}
+            <style>.affirm-as-low-as > a:last-child,.affirm-as-low-as > span:last-child,.affirm-as-low-as .affirm-modal-trigger:last-child{margin-left:.28em}</style>
           {%- endif -%}
         {% elsif price_content_type == 'custom' %}
           {% if prod.price_varies and prod.price == 0 %}
