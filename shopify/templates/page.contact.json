@@ -99,7 +99,14 @@
             "width": "half",
             "option_1": "Email",
             "option_2": "Phone call",
-            "option_3": "Text message"
+            "option_3": "Text message",
+            "option_4": "",
+            "option_5": "",
+            "option_6": "",
+            "option_7": "",
+            "option_8": "",
+            "option_9": "",
+            "option_10": ""
           }
         },
         "best_time": {
@@ -112,7 +119,12 @@
             "option_2": "Morning (8am–12pm)",
             "option_3": "Midday (12–3pm)",
             "option_4": "Afternoon (3–6pm)",
-            "option_5": "Evening (6–8pm)"
+            "option_5": "Evening (6–8pm)",
+            "option_6": "",
+            "option_7": "",
+            "option_8": "",
+            "option_9": "",
+            "option_10": ""
           }
         },
         "text_area": {
