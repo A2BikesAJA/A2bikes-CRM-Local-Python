@@ -326,7 +326,7 @@
           <button type="submit" class="btn btn--primary btn-addcart" data-atc{% unless cur.available %} disabled{% endunless %}><span class="btn-label">{% if cur.available %}{{ section.settings.cta_prefix }}{{ cur.price | money_without_trailing_zeros }}{% else %}Sold out{% endif %}</span></button>
           <div class="cta-sub">
             <span class="demo"><svg viewBox="0 0 24 24"><path d="M3 12l2-7h14l2 7M5 12h14v5a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2z"/></svg>{{ section.settings.demo_note }}</span>
-            <a href="{{ section.settings.consult_url | default: '#' }}" data-buybox-end>{{ section.settings.consult_label }}</a>
+            <a href="{{ section.settings.consult_url | default: '/pages/contact-a2-bikes' }}" data-buybox-end>{{ section.settings.consult_label }}</a>
           </div>
         </div>
       </form>
