@@ -565,6 +565,26 @@ BATCH D STEP 1 DEPLOYED (June 10/11): new `sections/sppdp-media.liquid`
    (--a2-accent etc.) absent on the PDP, so the band supplies the light
    palette locally. a2-size-calc still used on the LPs + homepage hero.
    Deployed + checksum-verified (e89211ce).
+   SP FIT FINDER v3 (June 16, owner): three fixes. (1) PROMINENCE — a bold
+   "Not sure of your size?" CTA with a ruler icon under the size pills on
+   the PDP (sppdp-product.liquid), plus the size help-link, both
+   data-fitjump: a global delegated handler smooth-scrolls to the fit band
+   (id="find-your-fit") and auto-opens the finder (clicks #togglefit /
+   #a2rfcToggleBox), with a flash highlight. Band heading reworked to
+   "Which SP size am I?" + subhead. (2) ONE recommendation, no alternates:
+   replaced the height-band gate + 3 cross-frame option cards with a single
+   a2fcRecommendFrame(height,inseam) that picks ONE frame and sizes UP when
+   between (near top of band within 0.75", in a band gap, or long inseam);
+   op2/op3 cards emptied; chart now plots just "Your fit point" + the one
+   recommended setup. Owner-confirmed bug: 6'3"/33" was showing XL + L + M
+   (M physically impossible) — now XL alone. Known-Pad-X/Y path keeps the
+   search but biases up on a near-tie (<=12mm) with a larger frame. (3)
+   EXPLANATION — a2fcExplain() returns fitter-grade copy (stack/reach
+   mid-range, not maxing out stem/spacers, standover/saddle, size-up
+   rationale) that varies by size, boundary/inseam reason, and inseam-vs-
+   average; stringCombination replaced by a cleaner a2fcSetupHtml. Research:
+   triathlete.com / proscloset tri-fit sizing (stack & reach over labels,
+   pad position mid-range). Both files deployed + checksum-verified.
    OWNER CONFIRMATIONS (June 12): claims APPROVED as written (Triathlete
    years, "five-time winner", 4.8★/96/97% stat copy); consolidation
    kill-list APPROVED (canonicals assumed: about-new, buying-process-2-0 —
