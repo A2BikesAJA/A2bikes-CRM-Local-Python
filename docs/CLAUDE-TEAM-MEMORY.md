@@ -585,6 +585,17 @@ BATCH D STEP 1 DEPLOYED (June 10/11): new `sections/sppdp-media.liquid`
    average; stringCombination replaced by a cleaner a2fcSetupHtml. Research:
    triathlete.com / proscloset tri-fit sizing (stack & reach over labels,
    pad position mid-range). Both files deployed + checksum-verified.
+   FIT CALC POLISH (June 16): (a) scroll fix — the PDP "Find your fit" CTA
+   was overshooting; now opens the finder, waits two rAFs for reflow, then
+   window.scrollTo ~88px above the band (no scrollIntoView overshoot).
+   (b) The "Find my size" toggle on BOTH calcs is now a bordered callout box
+   (.a2fc-start / .a2rfc-start) with a ruler icon + one-line prompt so the
+   action is obvious; PDP band subhead removed (the box carries the prompt).
+   (c) Rogue calc mirrored to the SP: a2rfcRecommendFrame (height+inseam, one
+   frame, sizes UP when between via the published Rogue height bands + a
+   ≥0.48 inseam/height ratio), a2rfcExplain (road-framed fitter copy),
+   single result card (op2/op3 emptied), chart plots the one rec, known-HX/HY
+   path biases up on a ≤12mm tie. All three files deployed + verified.
    OWNER CONFIRMATIONS (June 12): claims APPROVED as written (Triathlete
    years, "five-time winner", 4.8★/96/97% stat copy); consolidation
    kill-list APPROVED (canonicals assumed: about-new, buying-process-2-0 —
