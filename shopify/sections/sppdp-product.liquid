@@ -45,10 +45,11 @@
 -%}
 {%- capture size_calc_details -%}
   {%- if section.settings.show_size_calc -%}
-  <section class="pdp-wrap sppdp-fitband" aria-label="Find your size">
+  <section class="pdp-wrap sppdp-fitband" id="find-your-fit" aria-label="Find your size">
     <div class="sppdp-fitband__head">
       <span class="sppdp-fitband__kicker">{{ section.settings.size_calc_cta | default: 'Find your size' }}</span>
-      <h2 class="sppdp-fitband__title">{% if calc_bike == 'rogue' %}Dial in your Rogue fit{% else %}Dial in your SP fit{% endif %}</h2>
+      <h2 class="sppdp-fitband__title">{% if calc_bike == 'rogue' %}Which Rogue size am I?{% else %}Which SP size am I?{% endif %}</h2>
+      <p class="sppdp-fitband__sub">Answer two quick measurements and we'll recommend your exact frame size &mdash; and explain why.</p>
     </div>
     {%- if calc_bike == 'rogue' -%}
       {% render 'a2-rogue-fit-calc' %}
@@ -57,11 +58,30 @@
     {%- endif -%}
   </section>
   <style>
-    .sppdp-fitband{ margin:30px auto 6px; --a2-bg:#ffffff; --a2-fg:#14181d; --a2-border:rgba(15,20,25,.14); --a2-accent:#b4122e; --a2-accent-2:#14181d; --a2-accent-fg:#ffffff; --a2-font-display:"Bahnschrift","DIN Condensed","Oswald","Arial Narrow",system-ui,sans-serif; }
+    .sppdp-fitband{ margin:30px auto 6px; scroll-margin-top:80px; --a2-bg:#ffffff; --a2-fg:#14181d; --a2-border:rgba(15,20,25,.14); --a2-accent:#b4122e; --a2-accent-2:#14181d; --a2-accent-fg:#ffffff; --a2-font-display:"Bahnschrift","DIN Condensed","Oswald","Arial Narrow",system-ui,sans-serif; }
     .sppdp-fitband__head{ margin-bottom:14px; }
     .sppdp-fitband__kicker{ display:block; text-transform:uppercase; letter-spacing:.14em; font-size:.72rem; color:#b4122e; }
     .sppdp-fitband__title{ margin:.12em 0 0; font-size:clamp(1.4rem,2.6vw,2rem); }
+    .sppdp-fitband__sub{ margin:.3em 0 0; font-size:.95rem; opacity:.8; max-width:60ch; }
+    .sppdp-fitband.is-flash{ animation:sppdpFitFlash 1.4s ease; }
+    @keyframes sppdpFitFlash{ 0%,100%{ box-shadow:0 0 0 0 rgba(180,18,46,0); } 25%{ box-shadow:0 0 0 4px rgba(180,18,46,.18); } }
   </style>
+  <script>
+    (function(){
+      if(window.__a2FitJump) return; window.__a2FitJump = true;
+      document.addEventListener('click', function(e){
+        var a = e.target.closest('[data-fitjump]'); if(!a) return;
+        e.preventDefault();
+        var band = document.getElementById('find-your-fit'); if(!band) return;
+        var finder = band.querySelector('#fitfinder, #a2rfcFinder');
+        if(finder && getComputedStyle(finder).display === 'none'){
+          var t = band.querySelector('#togglefit button, #a2rfcToggleBox button'); if(t) t.click();
+        }
+        band.scrollIntoView({ behavior:'smooth', block:'start' });
+        band.classList.remove('is-flash'); void band.offsetWidth; band.classList.add('is-flash');
+      });
+    })();
+  </script>
   {%- endif -%}
 {%- endcapture -%}
 <div class="sppdp" id="sppdp-pdp-{{ section.id }}">
@@ -255,7 +275,11 @@
             <div class="optgroup__label">
               <span class="lbl">{{ option.name }}</span>
               {%- if odown == 'size' -%}
+                {%- if section.settings.show_size_calc -%}
+                <a class="help-link" href="#find-your-fit" data-fitjump><svg viewBox="0 0 24 24"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M12 12v9M12 12L4 7.5M12 12l8-4.5"/></svg>{{ section.settings.size_help_label | default: 'Find your size' }}</a>
+                {%- else -%}
                 <a class="help-link" href="{{ section.settings.size_help_url | default: '#sppdp-specs' }}"><svg viewBox="0 0 24 24"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M12 12v9M12 12L4 7.5M12 12l8-4.5"/></svg>{{ section.settings.size_help_label }}</a>
+                {%- endif -%}
               {%- elsif odown == 'color' or odown == 'colour' or odown == 'colorway' -%}
                 <span class="val"><b data-swatch-name>{{ option.selected_value }}</b></span>
               {%- endif -%}
@@ -282,6 +306,12 @@
               </div>
               {%- if odown == 'size' -%}
                 <div class="optgroup__label"><span class="val" data-size-val>Selected: <b>{{ option.selected_value }}</b></span></div>
+                {%- if section.settings.show_size_calc -%}
+                <a class="sppdp-fitcta" href="#find-your-fit" data-fitjump>
+                  <span class="sppdp-fitcta__ico"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="7" width="19" height="10" rx="2"/><path d="M6.5 7v3M10 7v4M13.5 7v3M17 7v4"/></svg></span>
+                  <span class="sppdp-fitcta__txt"><b>Not sure of your size?</b><span>Find your fit in 30 seconds &mdash; two quick measurements &darr;</span></span>
+                </a>
+                {%- endif -%}
               {%- endif -%}
             {%- endif -%}
           </div>
@@ -344,6 +374,13 @@
     #sppdp-pdp-{{ section.id }} .wheel-upsell__save{ color:#1F8A4C; }
     #sppdp-pdp-{{ section.id }} .wheel-upsell__note{ font-size:.8rem; color:var(--muted); line-height:1.4; }
     #sppdp-pdp-{{ section.id }} .wheel-upsell__note a{ color:var(--accent); font-weight:600; white-space:nowrap; }
+    #sppdp-pdp-{{ section.id }} .sppdp-fitcta{ display:flex; align-items:center; gap:11px; margin:10px 0 2px; padding:11px 14px; border:1.5px solid var(--accent); border-radius:10px; background:rgba(180,18,46,.05); color:var(--ink); text-decoration:none; transition:background .15s ease; }
+    #sppdp-pdp-{{ section.id }} .sppdp-fitcta:hover{ background:rgba(180,18,46,.11); }
+    #sppdp-pdp-{{ section.id }} .sppdp-fitcta__ico{ flex:0 0 auto; }
+    #sppdp-pdp-{{ section.id }} .sppdp-fitcta__ico svg{ width:24px; height:24px; stroke:var(--accent); fill:none; stroke-width:1.7; }
+    #sppdp-pdp-{{ section.id }} .sppdp-fitcta__txt{ display:flex; flex-direction:column; line-height:1.25; }
+    #sppdp-pdp-{{ section.id }} .sppdp-fitcta__txt b{ font-size:.95rem; color:var(--ink); }
+    #sppdp-pdp-{{ section.id }} .sppdp-fitcta__txt span{ font-size:.82rem; color:var(--accent); font-weight:600; }
   </style>
   <script>
   (function(){

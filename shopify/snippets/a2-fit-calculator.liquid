@@ -64,6 +64,10 @@
   .a2-fit-calc__explain { margin: 0 0 1.2em; max-width: 70ch; font-size: .95rem; line-height: 1.5; opacity: .9; }
   .a2-fit-calc__drop { margin-top: .8em; padding: 12px 14px; border: 1px solid var(--a2-border); border-left: 3px solid var(--a2-accent); border-radius: 10px; font-size: .92rem; line-height: 1.45; }
   .a2-fit-calc__drop span { display: block; margin-top: 6px; font-size: .85rem; opacity: .8; }
+  .a2-fit-calc .a2fc-why { margin: .2em 0 .8em; font-size: .93rem; line-height: 1.55; }
+  .a2-fit-calc .a2fc-why--exch { opacity: .72; font-size: .85rem; }
+  .a2-fit-calc .a2fc-setup { font-size: .9rem; line-height: 1.55; padding-top: 8px; border-top: 1px solid var(--a2-border); opacity: .9; }
+  .a2-fit-calc__div_fitOption h3 { margin: 0 0 .5em; }
   .a2-fit-calc .a2fc-chart-container { position: relative; width: 100%; max-width: 880px; margin-top: 1.5em; }
   .a2-fit-calc canvas { max-width: 100%; }
   @media (max-width: 600px) { .a2-fit-calc label { width: 90px; } }
@@ -148,7 +152,7 @@ if (!window.__a2fcInit) {
   }
 
   function buttonPress(fitKnown) {
-    var fit, searchOpts = {}, saddleMM = 0;
+    var fit, searchOpts = {}, saddleMM = 0, recInfo = null, totalIn = 0, inseamIn = 0, inseamDelta = 0;
     if (fitKnown == true) {
       if (document.getElementById("padx").value == "" || document.getElementById("pady").value == "") {
         document.getElementById("op1p").innerHTML = "Please enter your pad X/Y.";
@@ -192,45 +196,51 @@ if (!window.__a2fcInit) {
         userpadx: 0.29 * height + (0.42 - saddle / height) * 500,
         userpady: 0.35 * height - (0.42 - saddle / height) * 400
       };
-      // Gate the recommended frame by the rider's height (same S-XL bands as
-      // the PDP Size Calculator). Pad X/Y alone can be reached by a small
-      // frame slammed to the limit of its stem/spacer/pad range, so without
-      // this a tall rider could be told to ride a Small. The Pad X/Y math
-      // then dials in the stem/spacer/pad WITHIN the right frame.
-      var totalIn = height / 25.4;
-      var bandFrame = a2fcBandFrame(totalIn);
-      // The height band is a hard floor — we never recommend smaller than it
-      // (sizing too small is exactly the bug being fixed). A longer-than-
-      // average inseam may open the next size UP, matching the PDP calculator.
-      var allowed = [bandFrame];
-      var bi = frame_key.indexOf(bandFrame);
-      var inseamDelta = (inseam / 25.4) - a2fcAvgInseam(totalIn);
-      if (inseamDelta > 1.5 && bi >= 0 && bi < frame_key.length - 1) { allowed.push(frame_key[bi + 1]); }
-      searchOpts.allowed = allowed;
+      // ONE size, sized UP when between (owner rule): a too-small frame can
+      // never be made big enough and forces a long stem + tall spacer tower
+      // that wreck handling, while a slightly large frame is easily brought
+      // down with the stem and pads. The frame is chosen from height + inseam;
+      // the Pad X/Y search then dials in the stem/spacer/pad WITHIN that frame.
+      totalIn = height / 25.4;
+      inseamIn = inseam / 25.4;
+      inseamDelta = inseamIn - a2fcAvgInseam(totalIn);
+      recInfo = a2fcRecommendFrame(totalIn, inseamIn);
+      searchOpts.allowed = [recInfo.frame];
     }
 
     fit_array = buildFitArray(a2fcConfigKey());
     fit = findCombinations(fit.userpadx, fit.userpady, fit_array, searchOpts);
 
-    var rec = fit.options[0];
-    document.getElementById("op1p").innerHTML = "<h3>Recommended &mdash; Size " + rec.frame + "</h3>" + stringCombination(rec);
-    document.getElementById("op2p").innerHTML = fit.options[1] ? "<h3>Alternate &mdash; Size " + fit.options[1].frame + "</h3>" + stringCombination(fit.options[1]) : "";
-    document.getElementById("op3p").innerHTML = fit.options[2] ? "<h3>Alternate &mdash; Size " + fit.options[2].frame + "</h3>" + stringCombination(fit.options[2]) : "";
+    var rec = fit.options[0], recFrame = rec.frame;
+    if (!recInfo) {
+      // Expert "I know my Pad X/Y" path: no height to gate on. Bias UP on a
+      // near-tie with a larger frame (owner rule: size up when between).
+      for (var oi = 1; oi < fit.options.length; oi++) {
+        var alt = fit.options[oi];
+        if (frame_key.indexOf(alt.frame) > frame_key.indexOf(rec.frame) && (alt.error - rec.error) <= 12) { rec = alt; recFrame = alt.frame; }
+      }
+    }
+    var sizeNames = { S: "Small", M: "Medium", L: "Large", XL: "XL" };
+    var recName = sizeNames[recFrame] || recFrame;
 
-    var box = "<h4>Pad Y: " + String(Math.round(fit.userpady)) + "mm<br>Pad Center X: " + String(Math.round(fit.userpadx)) + "mm</h4>";
+    document.getElementById("op1p").innerHTML =
+      "<h3>Your size: the " + recName + "</h3>" + a2fcExplain(recInfo, recFrame, totalIn, inseamIn, inseamDelta) + a2fcSetupHtml(rec);
+    document.getElementById("op2p").innerHTML = "";
+    document.getElementById("op3p").innerHTML = "";
+
+    var box = "<h4>Target pad stack (Y): " + String(Math.round(fit.userpady)) + "mm<br>Target pad reach (X): " + String(Math.round(fit.userpadx)) + "mm</h4>";
     if (saddleMM) {
-      // Drop = top of saddle down to top of the elbow pads (both measured up
-      // from the BB). Positive = pads below the saddle (aggressive / aero);
-      // small or negative = pads near/above the saddle (comfort-first).
+      // Drop = top of saddle down to top of the elbow pads (both up from BB).
       var drop = Math.round(saddleMM - rec.pady);
       box += "<div class=\"a2-fit-calc__drop\"><b>Saddle-to-pad drop: " + drop + "mm</b> &mdash; " + a2fcDropDesc(drop) +
         "<br><span>Saddle height starts around " + Math.round(saddleMM) + "mm (" + (Math.round(saddleMM / 25.4 * 10) / 10) +
         "&Prime;). More drop is faster but more aggressive; less or positive drop is more comfortable, trading a little aero. " +
-        "Want it racier? Drop a frame size or pull spacers. Want it comfier? Size up, add spacers, or raise the pads. Confirm with a pro fit before race day.</span></div>";
+        "On your " + recName + " you tune this with the pads and spacers &mdash; no size change needed. Confirm with a pro fit before race day.</span></div>";
     }
     document.getElementById("padyxdisplaybox").innerHTML = box;
 
-    if (window.a2dl) { window.a2dl("fit_calculator_result", { recommended_frame: rec.frame }); }
+    showChart(fit, rec);
+    if (window.a2dl) { window.a2dl("fit_calculator_result", { recommended_frame: recFrame }); }
   }
 
   // Plain-language read on the saddle-to-pad drop (mm) for an SP triathlon fit.
@@ -270,7 +280,7 @@ if (!window.__a2fcInit) {
     el.style.display = (el.style.display == "block") ? "none" : "block";
   }
 
-  function showChart(fit) {
+  function showChart(fit, rec) {
     a2fcEnsureChart(function () {
       var colors = { frame_s: "#5b5be0", frame_m: "#e8527e", frame_l: "#f29a3c", frame_xl: "#cbe23c" };
       var fit_points = { S: [], M: [], L: [], XL: [] };
@@ -281,10 +291,8 @@ if (!window.__a2fcInit) {
       new Chart(ctx, {
         type: "scatter",
         data: { datasets: [
-          { pointRadius: 6, pointBackgroundColor: "#111", backgroundColor: "#111", label: "Your fit point", showLine: false, data: [{ x: fit.userpadx, y: fit.userpady }] },
-          { pointRadius: 5, pointBackgroundColor: "blue", backgroundColor: "blue", label: "Option 1", showLine: false, data: [{ x: fit.options[0].padx, y: fit.options[0].pady }] },
-          { pointRadius: 5, pointBackgroundColor: "orange", backgroundColor: "orange", label: "Option 2", showLine: false, data: [{ x: fit.options[1].padx, y: fit.options[1].pady }] },
-          { pointRadius: 5, pointBackgroundColor: "red", backgroundColor: "red", label: "Option 3", showLine: false, data: [{ x: fit.options[2].padx, y: fit.options[2].pady }] },
+          { pointRadius: 7, pointBackgroundColor: "#111", backgroundColor: "#111", label: "Your fit point", showLine: false, data: [{ x: fit.userpadx, y: fit.userpady }] },
+          { pointRadius: 6, pointBackgroundColor: "#1F8A4C", backgroundColor: "#1F8A4C", label: "Your " + rec.frame + " setup", showLine: false, data: [{ x: rec.padx, y: rec.pady }] },
           { pointRadius: 2, pointBackgroundColor: colors.frame_s, backgroundColor: colors.frame_s, label: "Size S", showLine: false, data: fit_points["S"] },
           { pointRadius: 2, pointBackgroundColor: colors.frame_m, backgroundColor: colors.frame_m, label: "Size M", showLine: false, data: fit_points["M"] },
           { pointRadius: 2, pointBackgroundColor: colors.frame_l, backgroundColor: colors.frame_l, label: "Size L", showLine: false, data: fit_points["L"] },
@@ -332,6 +340,65 @@ if (!window.__a2fcInit) {
   }
   var sp_avg_inseam = { 63: 29.5, 64: 30, 65: 30.5, 66: 31, 67: 31.5, 68: 32, 69: 32.5, 70: 33, 71: 33.5, 72: 34, 73: 34.5, 74: 35, 75: 35.5, 76: 36, 77: 36.5 };
   function a2fcAvgInseam(totalIn) { return sp_avg_inseam[Math.round(totalIn)] || 32; }
+
+  // ONE recommended frame from height + inseam, sized UP when between sizes.
+  // Published SP bands (inches): S 63-66, M 67-70, L 71-74, XL 75-77.
+  function a2fcRecommendFrame(totalIn, inseamIn) {
+    var bands = [
+      { f: "S",  min: 63, max: 66 },
+      { f: "M",  min: 67, max: 70 },
+      { f: "L",  min: 71, max: 74 },
+      { f: "XL", min: 75, max: 77 }
+    ];
+    var delta = inseamIn - a2fcAvgInseam(totalIn);
+    var idx = -1, between = false, reason = "in-band";
+    for (var i = 0; i < bands.length; i++) {
+      if (totalIn >= bands[i].min && totalIn <= bands[i].max) { idx = i; break; }
+    }
+    if (idx === -1) {
+      if (totalIn < bands[0].min) { idx = 0; }
+      else if (totalIn > bands[bands.length - 1].max) { idx = bands.length - 1; }
+      else {
+        // in the gap between two bands -> size UP
+        for (var j = 0; j < bands.length - 1; j++) {
+          if (totalIn > bands[j].max && totalIn < bands[j + 1].min) { idx = j + 1; between = true; reason = "boundary"; break; }
+        }
+      }
+    } else if (idx < bands.length - 1) {
+      if (totalIn >= bands[idx].max - 0.75) { idx += 1; between = true; reason = "boundary"; } // near top of band
+      else if (delta >= 1.5) { idx += 1; between = true; reason = "inseam"; }                  // long legs for height
+    }
+    return { frame: bands[idx].f, idx: idx, between: between, reason: reason,
+             fromFrame: between && idx > 0 ? bands[idx - 1].f : null };
+  }
+
+  // Stock fitter-style explanation; adapts to the size, whether we sized up,
+  // and how the rider's inseam compares to average for their height.
+  function a2fcExplain(recInfo, frame, totalIn, inseamIn, inseamDelta) {
+    var names = { S: "Small", M: "Medium", L: "Large", XL: "XL" };
+    var name = names[frame] || frame;
+    if (!recInfo) {
+      return "<p class=\"a2fc-why\">Matched to the Pad X / Y you entered: the <b>" + name + "</b> places those armrest coordinates near the middle of its cockpit range, so you keep room to fine-tune in every direction. Between two sizes we go with the larger &mdash; you can always bring a bigger frame lower and tighter, but you can't make a small one fit.</p>";
+    }
+    var ft = Math.floor(totalIn / 12), inch = Math.round(totalIn - ft * 12);
+    if (inch >= 12) { ft += 1; inch -= 12; }
+    var ftin = ft + "&prime;" + inch + "&Prime;";
+    var inseamTxt = (Math.round(inseamIn * 10) / 10) + "&Prime;";
+    var html = "<p class=\"a2fc-why\">At <b>" + ftin + "</b> with a <b>" + inseamTxt + "</b> inseam, the <b>" + name + "</b> is the frame whose stack and reach land your aerobar pads in the middle of their range &mdash; low enough to get aero, with room to fine-tune fore/aft and height instead of maxing out the stem or spacer stack.";
+    if (recInfo.between && recInfo.reason === "boundary") {
+      html += " You're right between the " + (names[recInfo.fromFrame] || recInfo.fromFrame) + " and the " + name + ", so we size up. A slightly larger frame comes lower and tighter with the stem and pads, but a too-small frame can never be made big enough &mdash; stretching to reach off a small frame forces a long stem and a tall spacer stack that hurt handling and aerodynamics.";
+    } else if (recInfo.between && recInfo.reason === "inseam") {
+      html += " Your inseam is long for your height, so we size up to the " + name + " for the standover clearance and saddle height your legs want.";
+    } else if (inseamDelta <= -1.5) {
+      html += " Your inseam runs a little short for your height &mdash; more torso than leg &mdash; which the " + name + "&rsquo;s reach suits; you'll set the saddle slightly lower and the cockpit has the range to dial it in.";
+    } else if (inseamDelta >= 1.5) {
+      html += " Your inseam is a touch long for your height, so you have plenty of standover on the " + name + " and will run a taller saddle.";
+    } else {
+      html += " Your proportions are about average for your height, so standover, saddle height and reach all land where the " + name + " is designed to sit.";
+    }
+    html += "</p><p class=\"a2fc-why a2fc-why--exch\">Not sure? Free size exchanges either way &mdash; but for your numbers, the " + name + " is a confident call.</p>";
+    return html;
+  }
 
   function a2fcConfigKey() {
     var el = document.querySelector('input[name="a2fcBuild"]:checked');
@@ -395,15 +462,13 @@ if (!window.__a2fcInit) {
     fit.options.sort(function (a, b) { return a.score - b.score; });
     fit.userpadx = Math.round(fit.userpadx * 10) / 10;
     fit.userpady = Math.round(fit.userpady * 10) / 10;
-    showChart(fit);
     return fit;
   }
 
-  function stringCombination(combination) {
-    return "<b>Pad Y:</b> " + String(combination.pady) + "mm <br><b>Pad Center X:</b> " + String(combination.padx) +
-      "mm <br><b>Frame:</b> " + String(combination.frame) + " <br><b>Stem:</b> " + String(combination.stem) +
-      " <br><b>Pedestal spacers:</b> " + String(combination.pedSpacers) + "mm<br><b>Pad position:</b> " + String(combination.pad) +
-      "<br><b>Distance from desired point:</b> " + String(Math.round(combination.error)) + "mm<br>";
+  function a2fcSetupHtml(c) {
+    return "<div class=\"a2fc-setup\"><b>Starting cockpit setup</b><br>" +
+      "Frame: A2 SP " + c.frame + " &middot; " + c.stem + " stem &middot; " + c.pedSpacers + "mm spacers &middot; armrests " + (c.pad > 0 ? "+" : "") + c.pad + "mm fore/aft<br>" +
+      "Pad stack / reach: " + c.pady + " / " + c.padx + "mm</div>";
   }
 }
 </script>
