@@ -10,9 +10,18 @@ critical path) to respect the documented mobile-speed constraint.
 | 2 | SP vs Quintana Roo | `a2-vs-competitor-lp` | `page.sp-vs-qr.json` | `sp_qr_lp_email_capture` |
 | 3 | Financing / HSA-FSA | `a2-financing-lp` | `page.financing.json` | `financing_lp_email_capture` |
 | 4 | Rogue (road/gravel) | `a2-line-lp` (line = rogue) | `page.rogue.json` | `rogue_lp_email_capture` |
+| 5 | Rogue 4th of July Sale | `a2-rogue-july4` | `page.rogue-july4.json` | — (no email capture) |
 
 > Pages 1 and 4 are the **same section** (`a2-line-lp`), parameterised by the
 > `line` setting. Maintain one section, not two.
+
+> Page 5 is a **standalone campaign section** (`a2-rogue-july4`) recreated from
+> the Claude Design "RogueSaleB" reference. It has no email capture (so no
+> Klaviyo wiring), reuses `a2-lp.js` for CTA attribution + GTM events, and adds
+> a small countdown/copy-code asset (`a2-rogue-july4.js`). Pricing cards bind to
+> the live Rogue products and **compute** the sale price + SAVE from the
+> `Discount %` setting — there are no hardcoded prices. Adjust the discount,
+> promo code, and `Sale end` date in the section settings per the real promo.
 
 ## File map (repo → Shopify theme)
 
@@ -20,6 +29,7 @@ critical path) to respect the documented mobile-speed constraint.
 shopify/assets/a2-lp.css            → assets/a2-lp.css        (shared styles, themed per page)
 shopify/assets/a2-lp.js             → assets/a2-lp.js         (UTM, dataLayer, Klaviyo, Octane, Affirm)
 shopify/assets/a2-cost-example.js   → assets/a2-cost-example.js (Page 3 cost widget, illustrative)
+shopify/assets/a2-rogue-july4.js    → assets/a2-rogue-july4.js (Page 5 countdown + copy-code)
 shopify/snippets/a2-cta.liquid              → snippets/a2-cta.liquid
 shopify/snippets/a2-financing-band.liquid   → snippets/a2-financing-band.liquid
 shopify/snippets/a2-email-capture.liquid    → snippets/a2-email-capture.liquid
@@ -32,6 +42,8 @@ shopify/templates/page.sp-performance.json  → templates/page.sp-performance.js
 shopify/templates/page.sp-vs-qr.json        → templates/page.sp-vs-qr.json
 shopify/templates/page.financing.json       → templates/page.financing.json
 shopify/templates/page.rogue.json           → templates/page.rogue.json
+shopify/sections/a2-rogue-july4.liquid       → sections/a2-rogue-july4.liquid
+shopify/templates/page.rogue-july4.json      → templates/page.rogue-july4.json
 ```
 
 These files have been deployed into the **"Why A2 — DRAFT (preview, do not
