@@ -1,0 +1,29 @@
+{
+  "sections": {
+    "main": {
+      "type": "a2-vs-competitor-lp",
+      "blocks": {
+        "r_price": { "type": "row", "settings": { "label": "Price model", "a2_value": "Direct-to-consumer (no dealer markup)", "competitor_value": "Verify on manufacturer site", "highlight": true } },
+        "r_finance": { "type": "row", "settings": { "label": "Monthly financing", "a2_value": "Affirm at checkout", "competitor_value": "Verify on manufacturer site", "highlight": true } },
+        "r_hsa": { "type": "row", "settings": { "label": "HSA / FSA eligible", "a2_value": "Yes — pre-tax via Truemed", "competitor_value": "Verify on manufacturer site", "highlight": true } },
+        "r_group": { "type": "row", "settings": { "label": "Groupset options", "a2_value": "Shimano 105 / Rival / Force / Red AXS", "competitor_value": "Verify on manufacturer site", "highlight": false } },
+        "r_warranty": { "type": "row", "settings": { "label": "Warranty", "a2_value": "Verify & insert A2 warranty terms", "competitor_value": "Verify on manufacturer site", "highlight": false } },
+        "r_ship": { "type": "row", "settings": { "label": "Shipping", "a2_value": "Verify & insert A2 shipping terms", "competitor_value": "Verify on manufacturer site", "highlight": false } },
+        "why1": { "type": "reason", "settings": { "title": "Direct-to-consumer pricing", "text": "No dealer markup between you and the carbon you're paying for." } },
+        "why2": { "type": "reason", "settings": { "title": "Pay monthly or pre-tax", "text": "Affirm spreads the cost; Truemed lets eligible buyers use HSA/FSA dollars — a real advantage many shoppers never hear about." } },
+        "why3": { "type": "reason", "settings": { "title": "Support that picks up", "text": "Talk to real people before and after the sale." } },
+        "rev1": { "type": "review", "settings": { "rating": 5, "quote": "Cross-shopped the big brands and the SP won on value, full stop.", "author": "Verified rider", "detail": "70.3 age-grouper" } },
+        "rev2": { "type": "review", "settings": { "rating": 5, "quote": "Same race-day performance, thousands less out of pocket.", "author": "Verified rider", "detail": "Returning triathlete" } }
+      },
+      "block_order": ["r_price", "r_finance", "r_hsa", "r_group", "r_warranty", "r_ship", "why1", "why2", "why3", "rev1", "rev2"],
+      "settings": {
+        "heading": "Comparing the SP and Quintana Roo? Here's an honest breakdown.",
+        "subheading": "Same race goals, two different ways to pay for them. Here are the facts — verify everything, then decide.",
+        "competitor_col_label": "Quintana Roo",
+        "financing_price": 4999,
+        "email_source": "SP vs QR LP"
+      }
+    }
+  },
+  "order": ["main"]
+}

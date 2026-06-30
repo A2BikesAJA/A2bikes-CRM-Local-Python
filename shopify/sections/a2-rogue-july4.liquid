@@ -1,0 +1,525 @@
+{%- comment -%}
+  A2 Bikes — Rogue 4th of July Sale landing page
+  ----------------------------------------------------------------------------
+  Campaign landing for the Rogue road bike Independence Day sale (recreated from
+  the Claude Design "RogueSaleB" reference — Direction 1B / "Stars & Stripes
+  Blocks"). Patriotic red/white/blue motif in Saira Condensed (display) + Saira
+  (body) + Space Mono (labels/code). Strategic emphasis: stacking the 15% holiday
+  discount with pre-tax HSA/FSA savings via TrueMed.
+
+  Sections in order: announcement ticker, stripe rule, nav, split hero (kicker +
+  countdown + CTAs + 15% badge), "The Stack" savings block, stripe divider, "How
+  it works · TrueMed" steps, features, pricing grid, reviews, final CTA, footer.
+
+  CONVENTIONS (see CLAUDE.md hard rules):
+    • Reuses assets/a2-lp.js — every CTA carries data-a2-cta + data-a2-event so
+      UTM/click-id attribution is re-appended and a GTM dataLayer event fires.
+      GTM owns GA4/Meta; no pixels are hardcoded here.
+    • Countdown + copy-code are driven by assets/a2-rogue-july4.js (dependency-
+      free, idempotent, no network calls). The countdown target and the promo
+      code are rendered into data-* attributes from SETTINGS.
+    • Prices: each pricing card binds to a real Rogue Product. The sale price and
+      "SAVE" amount are COMPUTED from the live product price × the discount %
+      (a single section setting) — never hardcoded — with optional text
+      overrides for one-off campaign pricing. Image / link / name also pull from
+      the product. The discount %, promo code, sale dates and all savings figures
+      live in settings as illustrative campaign copy.
+    • Colors are exposed as section settings and applied as CSS custom properties
+      on the section wrapper, so the design's var(--x) references theme through.
+{%- endcomment -%}
+
+<script src="{{ 'a2-lp.js' | asset_url }}" defer></script>
+<script src="{{ 'a2-rogue-july4.js' | asset_url }}" defer></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700;800&family=Saira:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap">
+
+{%- liquid
+  assign disc = section.settings.discount_pct | default: 15
+  assign mult = 100 | minus: disc
+  assign promo = section.settings.promo_code | default: 'ROGUE4THSALE'
+  assign pretax = section.settings.pretax_rate | default: 30
+  assign rogue_url = section.settings.shop_url | default: 'https://a2bikes.com/pages/rogue-road'
+  assign truemed_url = section.settings.truemed_url | default: 'https://www.truemed.com/shop/partners/a2-bikes'
+
+  assign hero_img = section.settings.hero_image_url
+  if section.settings.hero_image != blank
+    assign hero_img = section.settings.hero_image | image_url: width: 1600
+  endif
+
+  # "The Stack" example: compute from a bound product (defaults to Rogue 105)
+  assign ex_p = section.settings.example_product
+  assign ex_base_d = section.settings.example_price_fallback | default: 2699
+  if ex_p != blank
+    assign ex_base_d = ex_p.price | divided_by: 100.0
+  endif
+  assign ex_sale_d = ex_base_d | times: mult | divided_by: 100.0 | round
+  assign ex_eff_d = ex_sale_d | times: pretax | divided_by: 100.0
+  assign ex_eff_d = ex_sale_d | minus: ex_eff_d | round
+  assign ex_base_c = ex_base_d | times: 100 | round
+  assign ex_sale_c = ex_sale_d | times: 100 | round
+  assign ex_eff_c = ex_eff_d | times: 100 | round
+-%}
+
+{%- style -%}
+  #a2-rogue-july4 {
+    --paper: {{ section.settings.color_paper | default: '#f4f5f7' }};
+    --ink: {{ section.settings.color_ink | default: '#1f2430' }};
+    --navy: {{ section.settings.color_navy | default: '#283044' }};
+    --muted: {{ section.settings.color_muted | default: '#6b7280' }};
+    --line: {{ section.settings.color_line | default: '#e2e4e9' }};
+    --red: {{ section.settings.color_red | default: '#d4503c' }};
+    --blue: {{ section.settings.color_blue | default: '#3a5bbf' }};
+    /* derived tints used on the navy block (not separately editable) */
+    --red-light: #f0a890;
+    --blue-light: #aebfe8;
+    --red-warm: #e6917c;
+    --on-navy: rgba(255,255,255,.82);
+    --on-navy-dim: rgba(255,255,255,.70);
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Saira', system-ui, -apple-system, Arial, sans-serif;
+    overflow: hidden;
+  }
+  #a2-rogue-july4 a { text-decoration: none; color: inherit; }
+  #a2-rogue-july4 img { display: block; max-width: 100%; }
+  /* richtext wraps content in <p>; neutralize stray margins inside headings */
+  #a2-rogue-july4 h1 p, #a2-rogue-july4 h2 p { margin: 0; }
+  /* accent word: wrap it in bold in the editor and it renders in the accent color */
+  #a2-rogue-july4 .rj-hero h1 strong { color: var(--red); font-weight: inherit; }
+  #a2-rogue-july4 .rj-stack-h2 strong { color: var(--red-light); font-weight: inherit; }
+  #a2-rogue-july4 .rj-wrap { max-width: 1100px; margin: 0 auto; }
+  #a2-rogue-july4 .rj-grid-stack,
+  #a2-rogue-july4 .rj-grid-steps,
+  #a2-rogue-july4 .rj-grid-features,
+  #a2-rogue-july4 .rj-grid-price,
+  #a2-rogue-july4 .rj-grid-reviews { display: grid; gap: 16px; }
+  #a2-rogue-july4 .rj-grid-stack    { grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); }
+  #a2-rogue-july4 .rj-grid-steps    { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
+  #a2-rogue-july4 .rj-grid-features { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 18px; }
+  #a2-rogue-july4 .rj-grid-price    { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+  #a2-rogue-july4 .rj-grid-reviews  { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+  #a2-rogue-july4 .rj-hero { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); align-items: stretch; }
+  #a2-rogue-july4 .rj-cta { transition: transform .15s ease, filter .15s ease, background-color .15s ease; }
+  #a2-rogue-july4 .rj-cta:hover { filter: brightness(.94); transform: translateY(-1px); }
+  #a2-rogue-july4 .rj-copy { cursor: pointer; }
+  #a2-rogue-july4 a:focus-visible,
+  #a2-rogue-july4 button:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; border-radius: 6px; }
+  @keyframes rj-marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+  @keyframes rj-pulse { 0%, 100% { opacity: 1; } 50% { opacity: .25; } }
+  @media (prefers-reduced-motion: reduce) {
+    #a2-rogue-july4 .rj-marquee { animation: none !important; transform: none !important; }
+    #a2-rogue-july4 .rj-dot { animation: none !important; }
+  }
+{%- endstyle -%}
+
+<div id="a2-rogue-july4">
+
+  {%- comment -%} ANNOUNCEMENT TICKER {%- endcomment -%}
+  {%- if section.settings.ticker_items != blank -%}
+    {%- assign ticker = section.settings.ticker_items | split: '|' -%}
+    <div style="background:var(--navy);color:#fff;overflow:hidden;white-space:nowrap;" role="presentation">
+      {%- if section.settings.show_marquee -%}
+        <div class="rj-marquee" style="display:inline-flex;gap:42px;padding:8px 0;font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:.16em;animation:rj-marquee 26s linear infinite;">
+          {%- for pass in (1..2) -%}
+            {%- for item in ticker -%}<span>{{ item | strip | escape }}</span>{%- endfor -%}
+          {%- endfor -%}
+        </div>
+      {%- else -%}
+        <div style="display:flex;justify-content:center;gap:32px;flex-wrap:wrap;padding:8px 16px;font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:.16em;text-align:center;">
+          {%- for item in ticker -%}<span>{{ item | strip | escape }}</span>{%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} STRIPE ACCENT RULE {%- endcomment -%}
+  <div style="height:5px;background:repeating-linear-gradient(90deg, var(--red) 0 40px, var(--paper) 40px 48px, var(--blue) 48px 88px, var(--paper) 88px 96px);" role="presentation"></div>
+
+  {%- comment -%} NAV {%- endcomment -%}
+  <nav style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px clamp(20px,5vw,56px);border-bottom:1px solid var(--line);">
+    <div style="font-family:'Saira Condensed',sans-serif;font-weight:800;font-size:1.5rem;letter-spacing:-.01em;">{{ section.settings.wordmark_pre | default: 'A2' }}<span style="color:var(--red);">.</span>{{ section.settings.wordmark_post | default: 'BIKES' }}</div>
+    <a class="rj-cta" href="{{ rogue_url }}" data-a2-cta data-a2-event="rogue_july4_cta_click" data-a2-cta-id="nav" style="font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.12em;background:var(--navy);color:#fff;padding:10px 16px;border-radius:6px;">{{ section.settings.nav_cta_label | default: 'BUILD YOUR ROGUE →' | escape }}</a>
+  </nav>
+
+  {%- comment -%} HERO (split) {%- endcomment -%}
+  <header class="rj-hero">
+    <div style="padding:clamp(28px,5vw,64px);display:flex;flex-direction:column;justify-content:center;gap:18px;">
+      <div style="display:inline-flex;align-items:center;gap:10px;font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.18em;color:var(--red);">
+        <span class="rj-dot" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--red);animation:rj-pulse 1.6s ease-in-out infinite;"></span>
+        {{ section.settings.hero_kicker | default: 'INDEPENDENCE DAY SALE' | escape }}
+      </div>
+      <h1 style="font-family:'Saira Condensed',sans-serif;font-size:clamp(3rem,13vw,6.4rem);font-weight:800;line-height:.88;letter-spacing:-.01em;text-transform:uppercase;margin:0;">{{ section.settings.hero_heading }}</h1>
+      <p style="max-width:440px;font-size:clamp(1rem,2.4vw,1.18rem);line-height:1.55;color:var(--muted);margin:0;">{{ section.settings.hero_text }}</p>
+
+      {%- comment -%} COUNTDOWN {%- endcomment -%}
+      <div data-a2-countdown="{{ section.settings.sale_end | default: '2026-07-05T23:59:59' }}">
+        <div style="font-family:'Space Mono',monospace;font-size:.64rem;letter-spacing:.18em;color:var(--muted);margin-bottom:9px;">{{ section.settings.countdown_label | default: 'SALE ENDS JULY 5' | escape }}</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          {%- assign cd_cells = 'days,DAYS|hours,HRS|mins,MIN|secs,SEC' | split: '|' -%}
+          {%- for cell in cd_cells -%}
+            {%- assign parts = cell | split: ',' -%}
+            {%- assign key = parts[0] -%}
+            {%- assign cl = parts[1] -%}
+            {%- if key == 'secs' -%}{%- assign cellbg = 'var(--red)' -%}{%- assign labelop = '.85' -%}{%- else -%}{%- assign cellbg = 'var(--navy)' -%}{%- assign labelop = '.7' -%}{%- endif -%}
+            <div style="display:flex;flex-direction:column;align-items:center;min-width:64px;padding:11px 14px;background:{{ cellbg }};color:#fff;border-radius:10px;">
+              <span data-cd="{{ key }}" style="font-family:'Space Mono',monospace;font-size:clamp(1.5rem,5.5vw,2.3rem);font-weight:700;line-height:1;">--</span>
+              <span style="font-size:.55rem;letter-spacing:.16em;opacity:{{ labelop }};margin-top:6px;">{{ cl }}</span>
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+
+      <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
+        <a class="rj-cta" href="{{ rogue_url }}" data-a2-cta data-a2-event="rogue_july4_cta_click" data-a2-cta-id="hero" style="background:var(--red);color:#fff;font-weight:700;padding:14px 26px;border-radius:8px;font-size:1rem;">{{ section.settings.hero_cta_label | default: 'Shop the Rogue →' | escape }}</a>
+        <button type="button" class="rj-copy" data-a2-copy="{{ promo | escape }}" aria-label="Copy promo code {{ promo | escape }}" style="display:inline-flex;align-items:center;gap:10px;background:#fff;color:var(--ink);border:1.5px dashed var(--navy);padding:12px 16px;border-radius:8px;font-family:'Space Mono',monospace;font-size:.86rem;">
+          <span style="font-weight:700;">{{ promo | escape }}</span>
+          <span data-a2-copy-status data-label-idle="{{ section.settings.copy_idle_label | default: 'Tap to copy' | escape }}" aria-live="polite" style="color:var(--blue);font-size:.64rem;letter-spacing:.12em;min-width:72px;text-align:right;">{{ section.settings.copy_idle_label | default: 'Tap to copy' | escape }}</span>
+        </button>
+      </div>
+    </div>
+
+    <div style="position:relative;min-height:clamp(320px,52vw,640px);background:#dfe3ea{% if hero_img != blank %} url('{{ hero_img }}') center/cover{% endif %};">
+      {%- if hero_img != blank -%}<img src="{{ hero_img }}" alt="{{ section.settings.hero_alt | default: 'A2 Rogue all-road bike' | escape }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" fetchpriority="high" width="1600" height="1200">{%- endif -%}
+      {%- if section.settings.show_badge -%}
+        <div aria-hidden="true" style="position:absolute;top:18px;right:18px;background:var(--red);color:#fff;width:clamp(90px,18vw,128px);height:clamp(90px,18vw,128px);border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 10px 30px rgba(0,0,0,.25);transform:rotate(-8deg);">
+          <span style="font-family:'Saira Condensed',sans-serif;font-weight:800;font-size:clamp(1.6rem,5vw,2.4rem);line-height:.9;">{{ disc }}%</span>
+          <span style="font-family:'Space Mono',monospace;font-size:.56rem;letter-spacing:.12em;margin-top:3px;">OFF</span>
+        </div>
+      {%- endif -%}
+    </div>
+  </header>
+
+  {%- comment -%} THE STACK (navy savings block) {%- endcomment -%}
+  <section style="background:var(--navy);color:#fff;padding:clamp(40px,7vw,86px) clamp(20px,5vw,56px);">
+    <div class="rj-wrap">
+      <div style="font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.2em;color:var(--red-warm);margin-bottom:14px;">{{ section.settings.stack_eyebrow | default: 'THE STACK' | escape }}</div>
+      <h2 class="rj-stack-h2" style="font-family:'Saira Condensed',sans-serif;font-size:clamp(2rem,6vw,3.4rem);font-weight:800;letter-spacing:-.01em;line-height:1;max-width:780px;text-transform:uppercase;margin:0;">{{ section.settings.stack_heading }}</h2>
+      <p style="margin:16px 0 0;max-width:640px;color:var(--on-navy);font-size:1.05rem;line-height:1.6;">{{ section.settings.stack_text }}</p>
+      <div class="rj-grid-stack" style="margin-top:32px;">
+        <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:24px;">
+          <div style="font-family:'Saira Condensed',sans-serif;font-size:3rem;font-weight:800;color:var(--red-light);line-height:.9;">{{ disc }}%</div>
+          <div style="margin-top:12px;font-weight:700;">{{ section.settings.stack_card1_title | default: 'Holiday discount' | escape }}</div>
+          <p style="margin:6px 0 0;color:var(--on-navy);font-size:.92rem;line-height:1.5;">{{ section.settings.stack_card1_text }}</p>
+        </div>
+        <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:24px;">
+          <div style="font-family:'Saira Condensed',sans-serif;font-size:3rem;font-weight:800;color:var(--blue-light);line-height:.9;">~{{ pretax }}%</div>
+          <div style="margin-top:12px;font-weight:700;">{{ section.settings.stack_card2_title | default: 'Pre-tax with HSA/FSA' | escape }}</div>
+          <p style="margin:6px 0 0;color:var(--on-navy);font-size:.92rem;line-height:1.5;">{{ section.settings.stack_card2_text }}</p>
+        </div>
+        <div style="background:#fff;color:var(--ink);border-radius:12px;padding:24px;">
+          <div style="font-family:'Space Mono',monospace;font-size:.64rem;letter-spacing:.16em;color:var(--muted);">{{ section.settings.stack_example_label | default: 'EXAMPLE · ROGUE 105' | escape }}</div>
+          <div style="margin-top:14px;display:flex;align-items:baseline;gap:9px;flex-wrap:wrap;">
+            <span style="text-decoration:line-through;color:var(--muted);">{{ ex_base_c | money_without_trailing_zeros }}</span><span aria-hidden="true">→</span><span style="font-weight:700;font-size:1.2rem;">{{ ex_sale_c | money_without_trailing_zeros }}</span>
+          </div>
+          <div style="margin-top:12px;font-family:'Saira Condensed',sans-serif;font-size:2rem;font-weight:800;color:var(--red);line-height:.95;">~{{ ex_eff_c | money_without_trailing_zeros }}</div>
+          <div style="font-size:.82rem;color:var(--muted);">{{ section.settings.stack_example_caption | default: 'effective after HSA/FSA' | escape }}</div>
+        </div>
+      </div>
+      <p style="margin:16px 0 0;font-size:.74rem;color:var(--on-navy-dim);line-height:1.5;">{{ section.settings.stack_fineprint }}</p>
+    </div>
+  </section>
+
+  {%- comment -%} STRIPE DIVIDER {%- endcomment -%}
+  <div style="height:6px;background:repeating-linear-gradient(90deg, var(--red) 0 44px, #fff 44px 52px, var(--blue) 52px 96px, #fff 96px 104px);" role="presentation"></div>
+
+  {%- comment -%} HOW IT WORKS · TRUEMED {%- endcomment -%}
+  <section style="padding:clamp(40px,7vw,86px) clamp(20px,5vw,56px);">
+    <div class="rj-wrap">
+      <div style="font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.2em;color:var(--blue);margin-bottom:14px;">{{ section.settings.steps_eyebrow | default: 'HOW IT WORKS · POWERED BY TRUEMED' | escape }}</div>
+      <h2 style="font-family:'Saira Condensed',sans-serif;font-size:clamp(2rem,5.5vw,3rem);font-weight:800;text-transform:uppercase;letter-spacing:-.01em;margin:0;">{{ section.settings.steps_heading | default: 'HSA/FSA in three steps' | escape }}</h2>
+      <div class="rj-grid-steps" style="margin-top:30px;">
+        {%- for i in (1..3) -%}
+          {%- assign num_key = 'step' | append: i | append: '_num' -%}
+          {%- assign title_key = 'step' | append: i | append: '_title' -%}
+          {%- assign body_key = 'step' | append: i | append: '_text' -%}
+          {%- assign s_num = section.settings[num_key] -%}
+          {%- assign s_title = section.settings[title_key] -%}
+          {%- assign s_body = section.settings[body_key] -%}
+          {%- if s_title != blank -%}
+            <div style="border:1px solid var(--line);border-radius:12px;padding:26px;background:#fff;">
+              <div style="font-family:'Saira Condensed',sans-serif;font-size:2.4rem;font-weight:800;color:var(--red);line-height:.9;">{{ s_num | default: '00' | escape }}</div>
+              <h3 style="margin:12px 0 0;font-size:1.18rem;font-weight:700;">{{ s_title | escape }}</h3>
+              <p style="margin:8px 0 0;color:var(--muted);font-size:.95rem;line-height:1.55;">{{ s_body }}</p>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+      <a href="{{ truemed_url }}" data-a2-cta data-a2-event="truemed_learn_more" data-a2-cta-id="steps_truemed" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:10px;margin-top:24px;color:var(--blue);font-weight:700;border-bottom:2px solid var(--blue);padding-bottom:3px;">{{ section.settings.steps_link_label | default: 'Check your HSA/FSA eligibility with TrueMed →' | escape }}</a>
+    </div>
+  </section>
+
+  {%- comment -%} FEATURES {%- endcomment -%}
+  <section style="padding:0 clamp(20px,5vw,56px) clamp(40px,7vw,86px);">
+    <div class="rj-wrap">
+      <div style="font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.2em;color:var(--red);margin-bottom:14px;">{{ section.settings.features_eyebrow | default: 'THE BIKE' | escape }}</div>
+      <h2 style="font-family:'Saira Condensed',sans-serif;font-size:clamp(2rem,5.5vw,3rem);font-weight:800;text-transform:uppercase;letter-spacing:-.01em;max-width:680px;margin:0;">{{ section.settings.features_heading | default: 'Pro-level carbon, honest price' | escape }}</h2>
+      <div class="rj-grid-features" style="margin-top:30px;">
+        {%- assign feature_blocks = section.blocks | where: 'type', 'feature' -%}
+        {%- for block in feature_blocks -%}
+          {%- liquid
+            assign f_img = block.settings.image_url
+            if block.settings.image != blank
+              assign f_img = block.settings.image | image_url: width: 800
+            endif
+          -%}
+          <article {{ block.shopify_attributes }} style="border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff;">
+            {%- if f_img != blank -%}<img src="{{ f_img }}" alt="{{ block.settings.title | escape }}" style="width:100%;height:200px;object-fit:cover;background:#e6e9ef;" loading="lazy" width="800" height="200">{%- endif -%}
+            <div style="padding:22px;">
+              <h3 style="font-size:1.12rem;font-weight:700;margin:0;">{{ block.settings.title | escape }}</h3>
+              <p style="margin:8px 0 0;color:var(--muted);font-size:.94rem;line-height:1.55;">{{ block.settings.text }}</p>
+            </div>
+          </article>
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} PRICING (navy) {%- endcomment -%}
+  <section style="background:var(--navy);color:#fff;padding:clamp(40px,7vw,86px) clamp(20px,5vw,56px);">
+    <div class="rj-wrap">
+      <div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+        <h2 style="font-family:'Saira Condensed',sans-serif;font-size:clamp(2rem,5.5vw,3rem);font-weight:800;text-transform:uppercase;letter-spacing:-.01em;margin:0;">{{ section.settings.pricing_heading | default: 'Every build, 15% off' | escape }}</h2>
+        <span style="font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:.14em;color:var(--on-navy-dim);">{{ section.settings.pricing_note | default: 'PRICES BEFORE HSA/FSA' | escape }}</span>
+      </div>
+      <div class="rj-grid-price" style="margin-top:28px;">
+        {%- assign price_blocks = section.blocks | where: 'type', 'price' -%}
+        {%- for block in price_blocks -%}
+          {%- liquid
+            assign p = block.settings.product
+            assign b_url = block.settings.url
+            if b_url == blank and p != blank
+              assign b_url = p.url
+            endif
+            if b_url == blank
+              assign b_url = rogue_url
+            endif
+
+            assign b_name = block.settings.name
+            if b_name == blank and p != blank
+              assign b_name = p.title
+            endif
+
+            # base price (dollars) from product, with optional manual override
+            assign base_d = block.settings.price_override
+            if base_d == blank and p != blank
+              assign base_d = p.price | divided_by: 100.0
+            endif
+            assign base_d = base_d | default: 0 | plus: 0
+
+            # sale + save computed from the discount % (whole-dollar), unless overridden
+            assign sale_d = base_d | times: mult | divided_by: 100.0 | round
+            if block.settings.sale_override != blank
+              assign sale_d = block.settings.sale_override | plus: 0
+            endif
+            assign save_d = base_d | minus: sale_d
+
+            assign base_c = base_d | times: 100 | round
+            assign sale_c = sale_d | times: 100 | round
+            assign save_c = save_d | times: 100 | round
+          -%}
+          <div {{ block.shopify_attributes }} style="background:#fff;color:var(--ink);border-radius:12px;padding:24px;display:flex;flex-direction:column;">
+            <div style="font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.16em;color:var(--blue);">{{ block.settings.eyebrow | default: 'ROGUE' | escape }}</div>
+            <h3 style="font-family:'Saira Condensed',sans-serif;margin:6px 0 0;font-size:1.4rem;font-weight:800;text-transform:uppercase;line-height:1;">{{ b_name | escape }}</h3>
+            <p style="margin:6px 0 0;color:var(--muted);font-size:.84rem;line-height:1.45;min-height:38px;">{{ block.settings.tag | escape }}</p>
+            <div style="margin-top:14px;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;">
+              <span style="font-size:.82rem;color:var(--muted);">from</span>
+              <span style="text-decoration:line-through;color:var(--muted);font-size:.92rem;">{{ base_c | money_without_trailing_zeros }}</span>
+            </div>
+            <div style="font-family:'Saira Condensed',sans-serif;font-size:2rem;font-weight:800;line-height:.95;margin-top:2px;">{{ sale_c | money_without_trailing_zeros }}</div>
+            <div style="margin-top:10px;align-self:flex-start;background:rgba(213,90,70,.14);color:var(--red);font-family:'Space Mono',monospace;font-size:.66rem;letter-spacing:.08em;padding:5px 9px;border-radius:6px;">SAVE {{ save_c | money_without_trailing_zeros }}</div>
+            <a class="rj-cta" href="{{ b_url }}" data-a2-cta data-a2-event="rogue_july4_product_click" data-a2-cta-id="{{ b_name | handleize }}" style="margin-top:18px;text-align:center;background:var(--navy);color:#fff;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:1rem;text-transform:uppercase;letter-spacing:.02em;padding:12px;border-radius:8px;">{{ block.settings.cta_label | default: 'Build this →' | escape }}</a>
+          </div>
+        {%- endfor -%}
+      </div>
+      <div style="margin-top:24px;"><a class="rj-cta" href="{{ rogue_url }}" data-a2-cta data-a2-event="rogue_july4_cta_click" data-a2-cta-id="pricing" style="background:var(--red);color:#fff;font-weight:700;padding:15px 26px;border-radius:8px;display:inline-block;">{{ section.settings.pricing_cta_label | default: 'Build your Rogue →' | escape }}</a></div>
+    </div>
+  </section>
+
+  {%- comment -%} REVIEWS {%- endcomment -%}
+  <section style="padding:clamp(40px,7vw,86px) clamp(20px,5vw,56px);">
+    <div class="rj-wrap">
+      <div style="font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.2em;color:var(--muted);margin-bottom:14px;">{{ section.settings.reviews_eyebrow | default: 'PROVEN, NOT PROMISED' | escape }}</div>
+      <h2 style="font-family:'Saira Condensed',sans-serif;font-size:clamp(2rem,5.5vw,3rem);font-weight:800;text-transform:uppercase;letter-spacing:-.01em;margin:0;">{{ section.settings.reviews_heading | default: 'Riders & press agree' | escape }}</h2>
+      <div class="rj-grid-reviews" style="margin-top:28px;">
+        {%- assign review_blocks = section.blocks | where: 'type', 'review' -%}
+        {%- for block in review_blocks -%}
+          <figure {{ block.shopify_attributes }} style="border:1px solid var(--line);border-radius:12px;padding:26px;background:#fff;margin:0;">
+            <div aria-label="5 out of 5 stars" style="color:var(--red);letter-spacing:.1em;">★★★★★</div>
+            <blockquote style="margin:12px 0 0;font-size:1.05rem;line-height:1.5;">{{ block.settings.quote }}</blockquote>
+            <figcaption style="margin-top:14px;font-family:'Space Mono',monospace;font-size:.68rem;letter-spacing:.12em;color:var(--muted);">{{ block.settings.source | escape }}</figcaption>
+          </figure>
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} FINAL CTA (red) {%- endcomment -%}
+  <section style="background:var(--red);color:#fff;padding:clamp(48px,8vw,104px) clamp(20px,5vw,56px);text-align:center;">
+    <div style="max-width:760px;margin:0 auto;">
+      <h2 style="font-family:'Saira Condensed',sans-serif;font-size:clamp(2.4rem,8vw,4.4rem);font-weight:800;text-transform:uppercase;letter-spacing:-.01em;line-height:.92;margin:0;">{{ section.settings.final_heading | default: "Don't miss the 15% window" | escape }}</h2>
+      <p style="margin:16px 0 0;font-size:1.1rem;line-height:1.5;color:rgba(255,255,255,.92);">{{ section.settings.final_text }}</p>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:26px;">
+        <a class="rj-cta" href="{{ rogue_url }}" data-a2-cta data-a2-event="rogue_july4_cta_click" data-a2-cta-id="final" style="background:#fff;color:var(--red);font-weight:700;padding:16px 30px;border-radius:8px;font-size:1.05rem;">{{ section.settings.final_cta_label | default: 'Shop the Rogue →' | escape }}</a>
+        <a class="rj-cta" href="{{ truemed_url }}" data-a2-cta data-a2-event="truemed_learn_more" data-a2-cta-id="final_truemed" target="_blank" rel="noopener" style="border:1.5px solid rgba(255,255,255,.6);color:#fff;font-weight:600;padding:16px 26px;border-radius:8px;">{{ section.settings.final_cta2_label | default: 'Check HSA/FSA eligibility' | escape }}</a>
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} FOOTER {%- endcomment -%}
+  <footer style="background:var(--navy);color:#fff;padding:clamp(28px,5vw,48px) clamp(20px,5vw,56px);display:flex;flex-direction:column;gap:12px;">
+    <div style="font-family:'Saira Condensed',sans-serif;font-weight:800;font-size:1.3rem;">{{ section.settings.wordmark_pre | default: 'A2' }}<span style="color:var(--red);">.</span>{{ section.settings.wordmark_post | default: 'BIKES' }}</div>
+    <p style="color:var(--on-navy-dim);font-size:.74rem;line-height:1.6;max-width:880px;margin:0;">{{ section.settings.legal }}</p>
+  </footer>
+
+</div>
+
+{% schema %}
+{
+  "name": "A2 Rogue July 4 Sale",
+  "tag": "section",
+  "class": "a2-rogue-july4-section",
+  "settings": [
+    { "type": "header", "content": "Offer" },
+    { "type": "range", "id": "discount_pct", "label": "Discount %", "min": 5, "max": 40, "step": 1, "unit": "%", "default": 15, "info": "Drives the badge, every pricing card's sale price + SAVE amount, and the Stack example." },
+    { "type": "text", "id": "promo_code", "label": "Promo code", "default": "ROGUE4THSALE" },
+    { "type": "text", "id": "sale_end", "label": "Sale end (local)", "default": "2026-07-05T23:59:59", "info": "Drives the countdown. Format: YYYY-MM-DDTHH:MM:SS (24h, store's local time)." },
+    { "type": "range", "id": "pretax_rate", "label": "Pre-tax savings % (illustrative)", "min": 10, "max": 45, "step": 1, "unit": "%", "default": 30, "info": "Average HSA/FSA effective savings shown in the Stack block." },
+
+    { "type": "header", "content": "Links" },
+    { "type": "url", "id": "shop_url", "label": "Shop / Build Rogue URL", "info": "Defaults to https://a2bikes.com/pages/rogue-road when blank." },
+    { "type": "url", "id": "truemed_url", "label": "TrueMed partner URL", "info": "Defaults to the A2 TrueMed partner link when blank." },
+
+    { "type": "header", "content": "Brand / colors" },
+    { "type": "text", "id": "wordmark_pre", "label": "Wordmark (before dot)", "default": "A2" },
+    { "type": "text", "id": "wordmark_post", "label": "Wordmark (after dot)", "default": "BIKES" },
+    { "type": "color", "id": "color_paper", "label": "Paper (page bg)", "default": "#f4f5f7" },
+    { "type": "color", "id": "color_ink", "label": "Ink (text)", "default": "#1f2430" },
+    { "type": "color", "id": "color_navy", "label": "Navy (dark blocks)", "default": "#283044" },
+    { "type": "color", "id": "color_muted", "label": "Muted (secondary text)", "default": "#6b7280" },
+    { "type": "color", "id": "color_line", "label": "Line (borders)", "default": "#e2e4e9" },
+    { "type": "color", "id": "color_red", "label": "Red (accent)", "default": "#d4503c" },
+    { "type": "color", "id": "color_blue", "label": "Blue (accent)", "default": "#3a5bbf" },
+
+    { "type": "header", "content": "Announcement ticker" },
+    { "type": "checkbox", "id": "show_marquee", "label": "Scroll the ticker (off = static centered)", "default": true },
+    { "type": "textarea", "id": "ticker_items", "label": "Ticker items (| separated)", "default": "★ FOURTH OF JULY SALE|UP TO 15% OFF EVERY ROGUE|CODE ROGUE4THSALE|JULY 1–5|★ STACK WITH HSA / FSA" },
+
+    { "type": "header", "content": "Nav" },
+    { "type": "text", "id": "nav_cta_label", "label": "Nav button label", "default": "BUILD YOUR ROGUE →" },
+
+    { "type": "header", "content": "Hero" },
+    { "type": "text", "id": "hero_kicker", "label": "Kicker", "default": "INDEPENDENCE DAY SALE" },
+    { "type": "richtext", "id": "hero_heading", "label": "Headline (H1)", "default": "<p>Up to 15% off the <strong>Rogue</strong></p>", "info": "Bold (the B button) the word you want in the red accent color — e.g. \"Rogue\"." },
+    { "type": "richtext", "id": "hero_text", "label": "Sub-paragraph", "default": "<p>One carbon all-road bike for every route — at its lowest price of the year. Then stack pre-tax HSA/FSA savings on top. <strong>July 1–5 only.</strong></p>" },
+    { "type": "text", "id": "countdown_label", "label": "Countdown label", "default": "SALE ENDS JULY 5" },
+    { "type": "text", "id": "hero_cta_label", "label": "Primary CTA label", "default": "Shop the Rogue →" },
+    { "type": "text", "id": "copy_idle_label", "label": "Copy-button idle label", "default": "Tap to copy" },
+    { "type": "image_picker", "id": "hero_image", "label": "Hero image" },
+    { "type": "text", "id": "hero_image_url", "label": "Hero image URL fallback", "default": "https://a2bikes.com/cdn/shop/files/rogue-lp-hero-road.jpg?v=1781217856&width=1600" },
+    { "type": "text", "id": "hero_alt", "label": "Hero image alt text", "default": "A2 Rogue carbon all-road bike on the road" },
+    { "type": "checkbox", "id": "show_badge", "label": "Show the % OFF badge", "default": true },
+
+    { "type": "header", "content": "The Stack (savings block)" },
+    { "type": "text", "id": "stack_eyebrow", "label": "Eyebrow", "default": "THE STACK" },
+    { "type": "richtext", "id": "stack_heading", "label": "Heading (H2)", "default": "<p>15% off now. Up to <strong>~30% more</strong> with pre-tax HSA/FSA.</p>", "info": "Bold (the B button) the phrase you want tinted light-red." },
+    { "type": "richtext", "id": "stack_text", "label": "Body", "default": "<p>A road bike is one of the smartest wellness buys you can make. Through our partner TrueMed, many riders qualify to pay with tax-free HSA/FSA funds — and the holiday discount stacks right on top.</p>" },
+    { "type": "text", "id": "stack_card1_title", "label": "Card 1 title", "default": "Holiday discount" },
+    { "type": "richtext", "id": "stack_card1_text", "label": "Card 1 text", "default": "<p>Code ROGUE4THSALE — every Rogue build, July 1–5.</p>" },
+    { "type": "text", "id": "stack_card2_title", "label": "Card 2 title", "default": "Pre-tax with HSA/FSA" },
+    { "type": "richtext", "id": "stack_card2_text", "label": "Card 2 text", "default": "<p>Average effective savings for eligible riders paying with tax-free funds via TrueMed.</p>" },
+    { "type": "product", "id": "example_product", "label": "Example card — product", "info": "The Stack's example prices compute from this product × the discount %. Defaults to Rogue 105." },
+    { "type": "number", "id": "example_price_fallback", "label": "Example price fallback ($)", "default": 2699, "info": "Used only if no product is selected above." },
+    { "type": "text", "id": "stack_example_label", "label": "Example label", "default": "EXAMPLE · ROGUE 105" },
+    { "type": "text", "id": "stack_example_caption", "label": "Example caption", "default": "effective after HSA/FSA" },
+    { "type": "richtext", "id": "stack_fineprint", "label": "Fine print", "default": "<p>Illustrative only. Pre-tax savings depend on your tax bracket and plan; eligibility and any Letter of Medical Necessity are determined by TrueMed. Not tax advice.</p>" },
+
+    { "type": "header", "content": "How it works · TrueMed" },
+    { "type": "text", "id": "steps_eyebrow", "label": "Eyebrow", "default": "HOW IT WORKS · POWERED BY TRUEMED" },
+    { "type": "text", "id": "steps_heading", "label": "Heading (H2)", "default": "HSA/FSA in three steps" },
+    { "type": "text", "id": "step1_num", "label": "Step 1 number", "default": "01" },
+    { "type": "text", "id": "step1_title", "label": "Step 1 title", "default": "Build & apply the code" },
+    { "type": "richtext", "id": "step1_text", "label": "Step 1 text", "default": "<p>Configure your Rogue and enter <strong>ROGUE4THSALE</strong> for 15% off.</p>" },
+    { "type": "text", "id": "step2_num", "label": "Step 2 number", "default": "02" },
+    { "type": "text", "id": "step2_title", "label": "Step 2 title", "default": "Check eligibility" },
+    { "type": "richtext", "id": "step2_text", "label": "Step 2 text", "default": "<p>Answer a few health questions with TrueMed. Qualify and get a Letter of Medical Necessity in minutes.</p>" },
+    { "type": "text", "id": "step3_num", "label": "Step 3 number", "default": "03" },
+    { "type": "text", "id": "step3_title", "label": "Step 3 title", "default": "Pay tax-free" },
+    { "type": "richtext", "id": "step3_text", "label": "Step 3 text", "default": "<p>Use your HSA/FSA card or get reimbursed — saving an average of ~30% in pre-tax dollars.</p>" },
+    { "type": "text", "id": "steps_link_label", "label": "TrueMed link label", "default": "Check your HSA/FSA eligibility with TrueMed →" },
+
+    { "type": "header", "content": "Features", "info": "Add one 'Feature' block per card." },
+    { "type": "text", "id": "features_eyebrow", "label": "Eyebrow", "default": "THE BIKE" },
+    { "type": "text", "id": "features_heading", "label": "Heading (H2)", "default": "Pro-level carbon, honest price" },
+
+    { "type": "header", "content": "Pricing", "info": "Add one 'Pricing card' block per build. Sale + SAVE compute from the product price × the discount %." },
+    { "type": "text", "id": "pricing_heading", "label": "Heading (H2)", "default": "Every build, 15% off" },
+    { "type": "text", "id": "pricing_note", "label": "Right-aligned note", "default": "PRICES BEFORE HSA/FSA" },
+    { "type": "text", "id": "pricing_cta_label", "label": "Button label", "default": "Build your Rogue →" },
+
+    { "type": "header", "content": "Reviews", "info": "Add one 'Review' block per quote." },
+    { "type": "text", "id": "reviews_eyebrow", "label": "Eyebrow", "default": "PROVEN, NOT PROMISED" },
+    { "type": "text", "id": "reviews_heading", "label": "Heading (H2)", "default": "Riders & press agree" },
+
+    { "type": "header", "content": "Final CTA" },
+    { "type": "text", "id": "final_heading", "label": "Heading (H2)", "default": "Don't miss the 15% window" },
+    { "type": "richtext", "id": "final_text", "label": "Text", "default": "<p>Sale ends July 5. Apply <strong>ROGUE4THSALE</strong> at checkout, then ask about paying pre-tax with HSA/FSA.</p>" },
+    { "type": "text", "id": "final_cta_label", "label": "Primary button label", "default": "Shop the Rogue →" },
+    { "type": "text", "id": "final_cta2_label", "label": "Secondary button label", "default": "Check HSA/FSA eligibility" },
+
+    { "type": "header", "content": "Footer / legal" },
+    { "type": "richtext", "id": "legal", "label": "Legal / disclaimer", "default": "<p>15% off applies to Rogue road bikes with code ROGUE4THSALE, July 1–5, 2026; cannot be combined with other offers. HSA/FSA savings shown are illustrative averages and depend on your plan and tax situation; eligibility and any Letter of Medical Necessity are determined by TrueMed. Financing via Affirm subject to eligibility. This is not tax advice. © 2026 A2 Bikes.</p>" }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "image_url", "label": "Image URL fallback" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Up to 38mm tire clearance" },
+        { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Race on slicks, then chase gravel and back roads on the same frame.</p>" }
+      ]
+    },
+    {
+      "type": "price",
+      "name": "Pricing card",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Product (Rogue build)", "info": "Name, link and 'from' price pull from this product. Sale + SAVE are computed from the discount %." },
+        { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "ROGUE" },
+        { "type": "text", "id": "name", "label": "Name override" },
+        { "type": "text", "id": "tag", "label": "One-line tag", "default": "Mechanical — the do-everything build" },
+        { "type": "number", "id": "price_override", "label": "Base price override ($)", "info": "Leave blank to use the live product price." },
+        { "type": "number", "id": "sale_override", "label": "Sale price override ($)", "info": "Leave blank to compute from the discount %." },
+        { "type": "text", "id": "cta_label", "label": "CTA label", "default": "Build this →" },
+        { "type": "url", "id": "url", "label": "Link override" }
+      ]
+    },
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        { "type": "richtext", "id": "quote", "label": "Quote", "default": "<p>\"This bike is fast. Like, freakishly fast. It also looks cool as hell.\"</p>" },
+        { "type": "text", "id": "source", "label": "Source / attribution", "default": "ESQUIRE" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "A2 Rogue July 4 Sale",
+      "blocks": [
+        { "type": "feature", "settings": { "image_url": "https://a2bikes.com/cdn/shop/files/rogue-edu-wide-tire-v2.jpg?v=1781205879&width=800", "title": "Up to 38mm tire clearance", "text": "<p>Race on slicks, then chase gravel and back roads on the same frame.</p>" } },
+        { "type": "feature", "settings": { "image_url": "https://a2bikes.com/cdn/shop/files/rogue-lp-frame.jpg?v=1781217856&width=800", "title": "Engineered carbon layup", "text": "<p>Light, stiff where it counts, compliant where you want it — built for all-day miles.</p>" } },
+        { "type": "feature", "settings": { "image_url": "https://a2bikes.com/cdn/shop/files/rogue-lp-drivetrain.jpg?v=1781217856&width=800", "title": "Shimano & SRAM builds", "text": "<p>From mechanical 105 to wireless Red AXS — choose the build that fits you.</p>" } },
+        { "type": "price", "settings": { "product": "rogue-shimano-105", "tag": "Mechanical — the do-everything build" } },
+        { "type": "price", "settings": { "product": "rogue-rival-axs", "tag": "Wireless electronic shifting" } },
+        { "type": "price", "settings": { "product": "rogue-sram-force-etap-axs", "tag": "Lighter, faster, pro-grade" } },
+        { "type": "price", "settings": { "product": "rogue-sram-red-axs", "tag": "No-compromise flagship" } },
+        { "type": "review", "settings": { "quote": "<p>\"This bike is fast. Like, freakishly fast. It also looks cool as hell.\"</p>", "source": "ESQUIRE" } },
+        { "type": "review", "settings": { "quote": "<p>\"A wide range of reach, made even more adaptable with intentional adjustability.\"</p>", "source": "TRIATHLETE MAGAZINE" } },
+        { "type": "review", "settings": { "quote": "<p>\"Designed by Kevin Quan, proven at Kona — real engineering at an honest price.\"</p>", "source": "A2 RIDER" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

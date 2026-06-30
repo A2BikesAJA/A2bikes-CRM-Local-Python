@@ -1,0 +1,333 @@
+{%- comment -%}
+  A2 Bikes — Line landing page (SP Performance / Rogue Road-Gravel)
+  ----------------------------------------------------------------------------
+  ONE reusable section for both bike lines. The `line` setting (sp | rogue)
+  drives the palette, the analytics event prefix and the collection fallback.
+  Page 1 (SP Performance) and Page 4 (Rogue) are the SAME section with
+  different settings — see templates/page.sp-performance.json and
+  templates/page.rogue.json.
+
+  Sections in order: hero, 3 proof points, financing band, build overview,
+  reviews, sizing reassurance, email capture, final CTA.
+{%- endcomment -%}
+
+{{ 'a2-lp.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'a2-lp.js' | asset_url }}" defer></script>
+
+{%- liquid
+  assign line = section.settings.line | default: 'sp'
+  assign theme_class = 'a2-lp--sp'
+  assign default_collection = '/collections/sp'
+  if line == 'rogue'
+    assign theme_class = 'a2-lp--rogue'
+    assign default_collection = '/collections/rogue'
+  endif
+
+  assign lp_id = line | append: '_lp'
+  assign cta_event = lp_id | append: '_cta_click'
+  assign email_event = lp_id | append: '_email_capture'
+
+  # Primary CTA routing: build-selector URL -> first build's PDP -> line collection
+  assign primary_href = section.settings.build_selector_url
+  if primary_href == blank
+    for b in section.blocks
+      if b.type == 'build' and b.settings.product != blank
+        assign primary_href = b.settings.product.url
+        break
+      endif
+    endfor
+  endif
+  if primary_href == blank
+    assign primary_href = default_collection
+  endif
+-%}
+
+{%- if section.settings.use_theme_fonts -%}
+  {%- style -%}
+    #shopify-section-{{ section.id }} .a2-lp {
+      --a2-font-display: {{ section.settings.heading_font.family }}, {{ section.settings.heading_font.fallback_families }};
+      --a2-font-body: {{ section.settings.body_font.family }}, {{ section.settings.body_font.fallback_families }};
+    }
+    {{ section.settings.heading_font | font_face: font_display: 'swap' }}
+    {{ section.settings.body_font | font_face: font_display: 'swap' }}
+  {%- endstyle -%}
+{%- endif -%}
+
+<section class="a2-lp {{ theme_class }}" id="a2-{{ line }}-lp" aria-label="{{ section.settings.heading | escape }}">
+
+  {%- comment -%} 1. HERO {%- endcomment -%}
+  <header class="a2-hero a2-section{% unless section.settings.hero_image %} a2-hero--plain{% endunless %}">
+    {%- if section.settings.hero_image -%}
+      <div class="a2-hero__media">
+        {%- if section.settings.hero_image_mobile -%}
+          <picture>
+            <source media="(max-width: 749px)" srcset="{{ section.settings.hero_image_mobile | image_url: width: 1000 }}">
+            <img src="{{ section.settings.hero_image | image_url: width: 1800 }}"
+                 alt="{{ section.settings.hero_alt | escape }}" fetchpriority="high"
+                 width="1800" height="1012" decoding="async">
+          </picture>
+        {%- else -%}
+          <img src="{{ section.settings.hero_image | image_url: width: 1800 }}"
+               alt="{{ section.settings.hero_alt | escape }}" fetchpriority="high"
+               width="1800" height="1012" decoding="async">
+        {%- endif -%}
+      </div>
+      <div class="a2-hero__scrim"></div>
+    {%- endif -%}
+    <div class="a2-wrap">
+      <div class="a2-hero__inner">
+        {%- if section.settings.eyebrow != blank -%}<p class="a2-eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
+        <h1 class="a2-h1">{{ section.settings.heading | default: 'The fastest value in the field.' }}</h1>
+        {%- if section.settings.subheading != blank -%}<p class="a2-lead">{{ section.settings.subheading }}</p>{%- endif -%}
+        {%- if section.settings.price_from != blank -%}<p class="a2-hero__price">{{ section.settings.price_from }}</p>{%- endif -%}
+        <div class="a2-cta-row">
+          {% render 'a2-cta', label: section.settings.cta_label, href: primary_href, event: cta_event, cta_id: 'hero-primary', id: 'a2-hero-cta' %}
+        </div>
+      </div>
+    </div>
+  </header>
+
+  {%- comment -%} 2. PROOF POINTS {%- endcomment -%}
+  {%- assign proof_blocks = section.blocks | where: 'type', 'proof' -%}
+  {%- if proof_blocks.size > 0 -%}
+    <div class="a2-section a2-wrap">
+      {%- if section.settings.proof_heading != blank -%}<h2 class="a2-h2 a2-center">{{ section.settings.proof_heading }}</h2>{%- endif -%}
+      <div class="a2-proof-grid">
+        {%- for b in proof_blocks -%}
+          <div class="a2-proof" {{ b.shopify_attributes }}>
+            {%- if b.settings.image -%}
+              <img class="a2-proof__icon" src="{{ b.settings.image | image_url: width: 88 }}" alt="" loading="lazy" width="44" height="44" decoding="async">
+            {%- endif -%}
+            {%- if b.settings.metric != blank -%}<div class="a2-proof__metric">{{ b.settings.metric }}</div>{%- endif -%}
+            <h3 class="a2-h3">{{ b.settings.title }}</h3>
+            {%- if b.settings.text != blank -%}<p class="a2-muted">{{ b.settings.text }}</p>{%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} 3. FINANCING BAND {%- endcomment -%}
+  <div class="a2-band">
+    <div class="a2-wrap a2-section">
+      {%- if section.settings.band_heading != blank -%}<h2 class="a2-h2 a2-center">{{ section.settings.band_heading }}</h2>{%- endif -%}
+      {% render 'a2-financing-band',
+         price: section.settings.financing_price,
+         price_label: section.settings.financing_price_label,
+         affirm_heading: section.settings.affirm_heading,
+         truemed_heading: section.settings.truemed_heading,
+         truemed_text: section.settings.truemed_text,
+         truemed_url: section.settings.truemed_url,
+         note: section.settings.financing_note %}
+    </div>
+  </div>
+
+  {%- comment -%} 4. BUILD OVERVIEW {%- endcomment -%}
+  <div class="a2-section a2-wrap a2-builds">
+    {% render 'a2-build-overview',
+       builds: section.blocks,
+       heading: section.settings.builds_heading,
+       subheading: section.settings.builds_subheading,
+       event: cta_event,
+       fallback: default_collection %}
+    <div class="a2-cta-row" style="margin-top:28px">
+      {% render 'a2-cta', label: section.settings.cta_label, href: primary_href, event: cta_event, cta_id: 'builds-primary' %}
+    </div>
+  </div>
+
+  {%- comment -%} 5. REVIEWS / SOCIAL PROOF {%- endcomment -%}
+  {%- assign review_blocks = section.blocks | where: 'type', 'review' -%}
+  {%- if section.settings.reviews_embed != blank or review_blocks.size > 0 -%}
+    <div class="a2-section a2-wrap a2-reviews">
+      {%- if section.settings.reviews_heading != blank -%}<h2 class="a2-h2 a2-center">{{ section.settings.reviews_heading }}</h2>{%- endif -%}
+      {%- if section.settings.reviews_embed != blank -%}
+        {{ section.settings.reviews_embed }}
+      {%- else -%}
+        <div class="a2-reviews__grid">
+          {%- for b in review_blocks -%}
+            {%- assign r = b.settings.rating | default: 5 -%}
+            <figure class="a2-review" {{ b.shopify_attributes }}>
+              <div class="a2-review__stars" aria-label="{{ r }} out of 5 stars">
+                {%- for i in (1..5) -%}{% if i <= r %}&#9733;{% else %}&#9734;{% endif %}{%- endfor -%}
+              </div>
+              <blockquote class="a2-review__quote">{{ b.settings.quote }}</blockquote>
+              <figcaption class="a2-review__author">{{ b.settings.author }}{% if b.settings.detail != blank %} &middot; <span class="a2-muted">{{ b.settings.detail }}</span>{% endif %}</figcaption>
+            </figure>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} 6. SIZING REASSURANCE (Fit Finder calculator / Octane AI quiz) {%- endcomment -%}
+  <div class="a2-section a2-wrap">
+    <div class="a2-sizing">
+      <div>
+        <h2 class="a2-h2">{{ section.settings.sizing_heading | default: 'Not sure of your size?' }}</h2>
+        {%- if section.settings.sizing_text != blank -%}<p class="a2-lead">{{ section.settings.sizing_text }}</p>{%- endif -%}
+      </div>
+      {%- if section.settings.octane_quiz_url != blank -%}
+        <div class="a2-cta-row">
+          <button type="button" class="a2-cta a2-cta--secondary"
+                  data-a2-octane
+                  data-a2-octane-url="{{ section.settings.octane_quiz_url }}"
+                  data-a2-source="{{ lp_id }}-sizing">
+            {{ section.settings.octane_cta_label | default: 'Find my size' }}
+          </button>
+        </div>
+      {%- endif -%}
+    </div>
+    {%- if section.settings.show_fit_calculator -%}
+      <div style="margin-top:20px">{% render 'a2-fit-calculator' %}</div>
+    {%- endif -%}
+  </div>
+
+  {%- comment -%} 7. EMAIL CAPTURE FALLBACK {%- endcomment -%}
+  <div class="a2-section a2-wrap">
+    {% render 'a2-email-capture',
+       heading: section.settings.email_heading,
+       text: section.settings.email_text,
+       cta_label: section.settings.email_cta_label,
+       success_text: section.settings.email_success,
+       company_id: section.settings.klaviyo_company_id,
+       list_id: section.settings.klaviyo_list_id,
+       event: email_event,
+       source: section.settings.email_source,
+       uid: section.id %}
+  </div>
+
+  {%- comment -%} 8. FINAL CTA {%- endcomment -%}
+  <div class="a2-section a2-wrap a2-final">
+    <h2 class="a2-h2">{{ section.settings.final_heading | default: 'Ready to build yours?' }}</h2>
+    {%- if section.settings.final_text != blank -%}<p class="a2-lead">{{ section.settings.final_text }}</p>{%- endif -%}
+    <div class="a2-cta-row">
+      {% render 'a2-cta', label: section.settings.cta_label, href: primary_href, event: cta_event, cta_id: 'final-primary' %}
+    </div>
+  </div>
+
+</section>
+
+{% schema %}
+{
+  "name": "A2 Line Landing Page",
+  "tag": "section",
+  "class": "a2-lp-section",
+  "settings": [
+    { "type": "header", "content": "Line & type" },
+    { "type": "select", "id": "line", "label": "Bike line", "options": [
+      { "value": "sp", "label": "SP (triathlon — aero/dark theme)" },
+      { "value": "rogue", "label": "Rogue (road/gravel — earthy theme)" }
+    ], "default": "sp",
+      "info": "Drives palette, the collection fallback (/collections/sp or /collections/rogue) and analytics event prefix (sp_lp_* or rogue_lp_*)." },
+    { "type": "checkbox", "id": "use_theme_fonts", "label": "Use custom fonts below", "default": false,
+      "info": "Off = built-in technical display stack (no extra font download). On = use the fonts picked here." },
+    { "type": "font_picker", "id": "heading_font", "label": "Heading font", "default": "assistant_n4" },
+    { "type": "font_picker", "id": "body_font", "label": "Body font", "default": "assistant_n4" },
+
+    { "type": "header", "content": "Hero" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "A2 Bikes · SP" },
+    { "type": "text", "id": "heading", "label": "Headline", "default": "Podium speed. Without the podium price." },
+    { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "Carbon triathlon performance engineered to win on race day and make sense on your budget." },
+    { "type": "text", "id": "price_from", "label": "Price-anchored line", "default": "From about $63/mo with Affirm — or pre-tax with HSA/FSA.",
+      "info": "Lead with a monthly figure, not the sticker price." },
+    { "type": "text", "id": "cta_label", "label": "Primary CTA label", "default": "Build Your SP" },
+    { "type": "image_picker", "id": "hero_image", "label": "Hero image (desktop)" },
+    { "type": "image_picker", "id": "hero_image_mobile", "label": "Hero image (mobile, optional)" },
+    { "type": "text", "id": "hero_alt", "label": "Hero image alt text", "default": "A2 SP triathlon bike at speed" },
+
+    { "type": "header", "content": "Routing / build selector" },
+    { "type": "url", "id": "build_selector_url", "label": "Build-selector URL",
+      "info": "Leave blank to fall back to the first build's product page, then to the line collection." },
+
+    { "type": "header", "content": "Proof points", "info": "Add 3 'Proof point' blocks." },
+    { "type": "text", "id": "proof_heading", "label": "Heading", "default": "Built to be faster" },
+
+    { "type": "header", "content": "Financing band (Affirm + Truemed)" },
+    { "type": "text", "id": "band_heading", "label": "Band heading", "default": "A $4k bike is more attainable than you think" },
+    { "type": "number", "id": "financing_price", "label": "Representative price ($) for Affirm estimate", "default": 3115 },
+    { "type": "text", "id": "financing_price_label", "label": "Affirm fallback text", "default": "Split it into easy monthly payments with Affirm." },
+    { "type": "text", "id": "affirm_heading", "label": "Affirm heading", "default": "Ride now, pay monthly" },
+    { "type": "text", "id": "truemed_heading", "label": "Truemed heading", "default": "Buy it with pre-tax HSA/FSA dollars" },
+    { "type": "textarea", "id": "truemed_text", "label": "Truemed text", "default": "Most triathletes don't know a bike can qualify for HSA/FSA spending through Truemed's medical-necessity pathway — an effective discount of roughly 30%." },
+    { "type": "url", "id": "truemed_url", "label": "Truemed flow URL" },
+    { "type": "textarea", "id": "financing_note", "label": "Fine print", "default": "Estimates are illustrative, not an offer of credit or tax advice. Rates and eligibility are determined by Affirm and Truemed." },
+
+    { "type": "header", "content": "Build overview", "info": "Add 4 'Build' blocks (one per groupset)." },
+    { "type": "text", "id": "builds_heading", "label": "Heading", "default": "Four builds. Four price points." },
+    { "type": "textarea", "id": "builds_subheading", "label": "Subheading", "default": "Same race-proven frame. Choose the groupset that fits your goals and budget." },
+
+    { "type": "header", "content": "Reviews / social proof" },
+    { "type": "text", "id": "reviews_heading", "label": "Heading", "default": "Raced. Reviewed. Repeated." },
+    { "type": "html", "id": "reviews_embed", "label": "Reviews embed (Fera.ai, optional)",
+      "info": "Paste a Fera.ai widget here to replace the manual review blocks below." },
+
+    { "type": "header", "content": "Sizing reassurance" },
+    { "type": "text", "id": "sizing_heading", "label": "Heading", "default": "Not sure of your size?" },
+    { "type": "textarea", "id": "sizing_text", "label": "Text", "default": "Answer a few quick questions and we'll recommend your fit in under a minute." },
+    { "type": "url", "id": "octane_quiz_url", "label": "Octane AI quiz URL" },
+    { "type": "text", "id": "octane_cta_label", "label": "Quiz button label", "default": "Find my size" },
+    { "type": "checkbox", "id": "show_fit_calculator", "label": "Show the A2 Fit Finder calculator", "default": false, "info": "Embeds the height/inseam → frame-size calculator (use on SP). Confirm fit_coords in snippets/a2-fit-calculator.liquid match current SP geometry before publishing." },
+
+    { "type": "header", "content": "Email capture (Klaviyo)" },
+    { "type": "text", "id": "email_heading", "label": "Heading", "default": "Not ready to buy? Get the SP Buyer's Guide." },
+    { "type": "textarea", "id": "email_text", "label": "Text", "default": "Specs, sizing and a straight-talk financing breakdown — straight to your inbox." },
+    { "type": "text", "id": "email_cta_label", "label": "Button label", "default": "Send the guide" },
+    { "type": "text", "id": "email_success", "label": "Success message", "default": "You're in — check your inbox for the guide." },
+    { "type": "text", "id": "email_source", "label": "Klaviyo custom_source", "default": "SP Performance LP" },
+    { "type": "text", "id": "klaviyo_company_id", "label": "Klaviyo public API key (company id)", "default": "KLAVIYO_COMPANY_ID" },
+    { "type": "text", "id": "klaviyo_list_id", "label": "Klaviyo list id", "default": "KLAVIYO_LIST_ID" },
+
+    { "type": "header", "content": "Final CTA" },
+    { "type": "text", "id": "final_heading", "label": "Heading", "default": "Ready to build yours?" },
+    { "type": "textarea", "id": "final_text", "label": "Text", "default": "Pick your groupset and see your monthly or pre-tax price." }
+  ],
+  "blocks": [
+    {
+      "type": "proof",
+      "name": "Proof point",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Icon (optional)" },
+        { "type": "text", "id": "metric", "label": "Metric (optional)", "default": "−18%" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Wind-tunnel aero" },
+        { "type": "textarea", "id": "text", "label": "Text", "default": "Tube shapes refined for real-world yaw, not just a spec sheet." }
+      ]
+    },
+    {
+      "type": "build",
+      "name": "Build",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Product (groupset build)" },
+        { "type": "text", "id": "name_override", "label": "Name override (optional)" },
+        { "type": "text", "id": "price_override", "label": "Price label override (optional)" }
+      ]
+    },
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        { "type": "range", "id": "rating", "label": "Rating", "min": 1, "max": 5, "step": 1, "default": 5, "unit": "/5" },
+        { "type": "textarea", "id": "quote", "label": "Quote", "default": "Beat my PR and my budget. Genuinely faster than bikes twice the price." },
+        { "type": "text", "id": "author", "label": "Author", "default": "Verified rider" },
+        { "type": "text", "id": "detail", "label": "Detail", "default": "70.3 age-grouper" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "A2 Line Landing Page",
+      "blocks": [
+        { "type": "proof", "settings": { "metric": "−18%", "title": "Wind-tunnel aero", "text": "Tube shapes refined for real-world yaw, not just a spec sheet." } },
+        { "type": "proof", "settings": { "metric": "1,180g", "title": "Light where it counts", "text": "A stiff, race-ready frame that climbs and accelerates." } },
+        { "type": "proof", "settings": { "metric": "Fit-first", "title": "Dialed geometry", "text": "Aggressive when you want it, sustainable for the whole race." } },
+        { "type": "build", "settings": { "name_override": "Shimano 105", "price_override": "From $3,115" } },
+        { "type": "build", "settings": { "name_override": "SRAM Rival AXS", "price_override": "From $4,999" } },
+        { "type": "build", "settings": { "name_override": "SRAM Force AXS", "price_override": "From $7,199" } },
+        { "type": "build", "settings": { "name_override": "SRAM Red AXS", "price_override": "From $8,999" } },
+        { "type": "review", "settings": {} },
+        { "type": "review", "settings": { "quote": "Shipped fast, built perfectly, and the financing made it a no-brainer.", "detail": "Full-distance triathlete" } },
+        { "type": "review", "settings": { "quote": "Used my HSA through Truemed and saved hundreds. Wish I'd known sooner.", "detail": "First tri bike" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

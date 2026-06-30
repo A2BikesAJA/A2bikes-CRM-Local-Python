@@ -1,0 +1,35 @@
+{
+  "sections": {
+    "main": {
+      "type": "a2-financing-lp",
+      "blocks": {
+        "a1": { "type": "step", "settings": { "group": "affirm", "text": "Choose your build and add it to your cart." } },
+        "a2": { "type": "step", "settings": { "group": "affirm", "text": "Pick Affirm at checkout and select your monthly terms." } },
+        "a3": { "type": "step", "settings": { "group": "affirm", "text": "Get a quick decision — ride now, pay over time." } },
+        "t1": { "type": "step", "settings": { "group": "truemed", "text": "Start the quick Truemed eligibility check." } },
+        "t2": { "type": "step", "settings": { "group": "truemed", "text": "If eligible, receive a Letter of Medical Necessity." } },
+        "t3": { "type": "step", "settings": { "group": "truemed", "text": "Pay with your HSA/FSA card — or reimburse yourself, pre-tax." } },
+        "p1": { "type": "price_option", "settings": { "label": "SP — Shimano 105 ($3,115)", "amount": "3115" } },
+        "p2": { "type": "price_option", "settings": { "label": "SP — SRAM Rival AXS ($4,999)", "amount": "4999" } },
+        "p3": { "type": "price_option", "settings": { "label": "SP — SRAM Force AXS ($7,199)", "amount": "7199" } },
+        "p4": { "type": "price_option", "settings": { "label": "SP — SRAM Red AXS ($8,999)", "amount": "8999" } },
+        "p5": { "type": "price_option", "settings": { "label": "Rogue — Shimano 105 ($2,699)", "amount": "2699" } },
+        "f1": { "type": "faq", "settings": { "question": "Can I really use my HSA/FSA on a bike?", "answer": "<p>In many cases, yes. Truemed evaluates eligibility and, where appropriate, issues a Letter of Medical Necessity so you can use pre-tax funds. Eligibility is individual — Truemed confirms it.</p>" } },
+        "f2": { "type": "faq", "settings": { "question": "What happens at checkout?", "answer": "<p>Choose Affirm to pay monthly, or use your HSA/FSA card after completing Truemed's eligibility step. Standard returns still apply.</p>" } },
+        "f3": { "type": "faq", "settings": { "question": "Is the monthly estimate a quote?", "answer": "<p>No. On-page figures are illustrative. Your real rate and terms come from Affirm at checkout.</p>" } }
+      },
+      "block_order": ["a1", "a2", "a3", "t1", "t2", "t3", "p1", "p2", "p3", "p4", "p5", "f1", "f2", "f3"],
+      "settings": {
+        "heading": "Ride now, pay monthly — or use pre-tax dollars.",
+        "subheading": "A carbon A2 is more attainable than the sticker suggests. Here's how riders actually pay for one.",
+        "hero_example": "Entry SP from about $108/mo with Affirm — far less with pre-tax HSA/FSA.",
+        "financing_price": 4100,
+        "calc_apr": "0.15",
+        "calc_term": 36,
+        "calc_tax_rate": "0.30",
+        "email_source": "Financing LP"
+      }
+    }
+  },
+  "order": ["main"]
+}

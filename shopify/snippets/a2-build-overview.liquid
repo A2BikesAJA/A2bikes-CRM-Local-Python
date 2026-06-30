@@ -1,0 +1,44 @@
+{%- comment -%}
+  A2 Bikes — 4-build (groupset) overview grid.
+  Each card is driven by a `build` block whose `product` setting points at a real
+  PDP, so title / image / price / link come straight from the catalog and stay
+  correct. This grid IS the on-page build selector fallback when no dedicated
+  build-selector section is wired up.
+  Params:
+    builds    (array)   section.blocks (filtered to type == 'build')
+    heading   (string)
+    subheading(string)
+    event     (string)  dataLayer event for a card click
+    fallback  (string)  href used if a card's product is unset (e.g. /collections/sp)
+{%- endcomment -%}
+<h2 class="a2-h2">{{ heading | default: 'Choose your build' }}</h2>
+{%- if subheading != blank -%}<p class="a2-lead">{{ subheading }}</p>{%- endif -%}
+<div class="a2-builds__grid">
+  {%- for b in builds -%}
+    {%- if b.type == 'build' -%}
+      {%- assign p = b.settings.product -%}
+      {%- assign _url = p.url | default: fallback | default: '#' -%}
+      {%- assign _name = b.settings.name_override | default: p.title | default: 'Build' -%}
+      <a class="a2-build" href="{{ _url }}"
+         data-a2-cta data-a2-event="{{ event | default: 'build_select' }}"
+         data-a2-cta-id="build-{{ forloop.index }}" {{ b.shopify_attributes }}>
+        {%- if p.featured_image -%}
+          <div class="a2-build__media">
+            {{ p.featured_image | image_url: width: 600 | image_tag:
+               loading: 'lazy', widths: '300,600', sizes: '(min-width:940px) 25vw, 50vw',
+               alt: _name }}
+          </div>
+        {%- endif -%}
+        <div class="a2-build__body">
+          <span class="a2-build__name">{{ _name }}</span>
+          {%- if b.settings.price_override != blank -%}
+            <span class="a2-build__price">{{ b.settings.price_override }}</span>
+          {%- elsif p != blank -%}
+            <span class="a2-build__price">From {{ p.price | money }}</span>
+          {%- endif -%}
+          <span class="a2-build__cta">Build this &rarr;</span>
+        </div>
+      </a>
+    {%- endif -%}
+  {%- endfor -%}
+</div>

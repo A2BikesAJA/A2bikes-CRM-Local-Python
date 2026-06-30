@@ -1,0 +1,35 @@
+{
+  "sections": {
+    "main": {
+      "type": "a2-line-lp",
+      "blocks": {
+        "proof_aero": { "type": "proof", "settings": { "metric": "Aero-first", "title": "Wind-tunnel shaped", "text": "Tube profiles tuned for real-world yaw, not just a flattering spec sheet." } },
+        "proof_weight": { "type": "proof", "settings": { "metric": "Race-light", "title": "Light where it counts", "text": "A stiff, responsive frame that holds speed and climbs when the course turns up." } },
+        "proof_geo": { "type": "proof", "settings": { "metric": "Fit-first", "title": "Dialed geometry", "text": "Aggressive when you want it, sustainable enough to run strong off the bike." } },
+        "build_105": { "type": "build", "settings": { "product": "sp-shimano-105n", "name_override": "SP · Shimano 105" } },
+        "build_rival": { "type": "build", "settings": { "product": "sp-sram-rival-1", "name_override": "SP · SRAM Rival AXS" } },
+        "build_force": { "type": "build", "settings": { "product": "sp-sram-force", "name_override": "SP · SRAM Force AXS" } },
+        "build_red": { "type": "build", "settings": { "product": "sp-sram-red-axs", "name_override": "SP · SRAM Red AXS" } },
+        "rev1": { "type": "review", "settings": { "rating": 5, "quote": "Beat my PR and my budget. Genuinely faster than bikes twice the price.", "author": "Verified rider", "detail": "70.3 age-grouper" } },
+        "rev2": { "type": "review", "settings": { "rating": 5, "quote": "Shipped fast, built perfectly, and the financing made it a no-brainer.", "author": "Verified rider", "detail": "Full-distance triathlete" } },
+        "rev3": { "type": "review", "settings": { "rating": 5, "quote": "Used my HSA through Truemed and saved hundreds. Wish I'd known sooner.", "author": "Verified rider", "detail": "First tri bike" } }
+      },
+      "block_order": ["proof_aero", "proof_weight", "proof_geo", "build_105", "build_rival", "build_force", "build_red", "rev1", "rev2", "rev3"],
+      "settings": {
+        "line": "sp",
+        "eyebrow": "A2 Bikes · SP",
+        "heading": "Podium speed. Without the podium price.",
+        "subheading": "Carbon triathlon performance engineered to win on race day and make sense on your budget.",
+        "price_from": "From about $108/mo with Affirm — or buy it pre-tax with HSA/FSA.",
+        "cta_label": "Build Your SP",
+        "hero_alt": "A2 SP triathlon bike at speed",
+        "financing_price": 3115,
+        "email_source": "SP Performance LP",
+        "sizing_heading": "Not sure of your size?",
+        "sizing_text": "Use the A2 Fit Finder — enter your height and inseam and we'll recommend your frame size and cockpit setup.",
+        "show_fit_calculator": true
+      }
+    }
+  },
+  "order": ["main"]
+}
