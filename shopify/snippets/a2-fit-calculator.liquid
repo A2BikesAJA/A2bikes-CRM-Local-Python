@@ -203,6 +203,21 @@ if (!window.__a2fcInit) {
         document.getElementById("op1p").innerHTML = "Those numbers look off — double-check your height and inseam (" + (unit === "in" ? "in inches" : "in centimeters") + ").";
         return;
       }
+      // Hard fence: the SP fits riders ~5'3"–6'5" (63"–77"). Outside that, DO
+      // NOT recommend a size — route them to the fit team instead.
+      var totalInGate = height / 25.4;
+      // epsilon guards the exact 5'3" / 6'5" boundaries against mm round-trip error
+      if (totalInGate < 62.95 || totalInGate > 77.05) {
+        var gft = Math.floor(totalInGate / 12), gin = Math.round(totalInGate - gft * 12);
+        if (gin >= 12) { gft += 1; gin -= 12; }
+        document.getElementById("op1p").innerHTML =
+          "<h3>Let's find your fit personally</h3><p class=\"a2fc-why\">The SP is built for riders about <b>5&prime;3&Prime; to 6&prime;5&Prime;</b>. At <b>" + gft + "&prime;" + gin + "&Prime;</b> you're outside our stock size range, so we don't want to guess your fit &mdash; <a href=\"/pages/contact-a2-bikes\">talk to our fit team</a> and we'll find the right setup (or the right bike) for you.</p>";
+        document.getElementById("op2p").innerHTML = "";
+        document.getElementById("op3p").innerHTML = "";
+        document.getElementById("padyxdisplaybox").innerHTML = "";
+        if (window.a2dl) { window.a2dl("fit_calculator_result", { recommended_frame: "out_of_range" }); }
+        return;
+      }
       var saddle = 0.9 * inseam;
       saddleMM = saddle;
       fit = {
