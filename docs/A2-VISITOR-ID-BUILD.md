@@ -115,7 +115,7 @@ auto-identifies logged-in customers and re-fires from `sessionStorage`.
 |---|---|---|---|---|
 | 1 | Exit-intent capture (+ $X off) | `exit_intent` | **built + staged (disabled)** | discount **amount + code**, Klaviyo list id, final copy |
 | 2 | Email-gate Fit Calculator | `fit_calculator` | **built + staged** | none — owner confirmed geometry current; soft gate chosen |
-| 3 | Save-your-build on PDPs | `save_build` | not started | — |
+| 3 | Save-your-build on PDPs | `save_build` | **built + staged** | needs a Klaviyo "Saved Build" flow + list to actually send the quote email |
 | 4 | Email flows as identity machines | `newsletter`/`klaviyo_form` | not started | Klaviyo flow coordination |
 | 5 | Push the Octane quiz | `quiz` | not started | quiz placement prominence |
 | 6 | Back-in-stock / price-drop | `restock_alert` | not started | verify existing `snippets/a2-restock-alert.liquid` |
@@ -150,6 +150,27 @@ auto-identifies logged-in customers and re-fires from `sessionStorage`.
   follow-up if we want to gate that surface too. The `a2-size-calc.liquid`
   out-of-range lead form also does not yet call `a2_identify` (only Klaviyo) —
   small follow-up to tag it `fit_calculator`.
+
+### Play 3 — Save your build / email me the quote (this build)
+- New snippet `shopify/snippets/a2-save-build.liquid` (self-contained; a2-lp.js
+  is NOT on PDPs). Rendered on bike PDPs by `sections/sppdp-product.liquid`
+  right after the Add-to-Cart form, gated by section setting `enable_save_build`
+  (default on), with `sb_klaviyo_company` (default `YejYTH`) + `sb_klaviyo_list`.
+- Reads the live build from `window.A2_FIT_CTX` (model/build/productTitle/url) +
+  the buy-box DOM: `[data-price]` (live price), the active `.build-pill`
+  (groupset), and selected options `[data-opt][aria-pressed="true"]`.
+- On submit: `a2_identify(email,"save_build")` + `a2IdentifyVisitor` + Klaviyo
+  subscription (custom_source `save_build`) with the build in profile properties
+  + a "Saved Build" Klaviyo event + `dataLayer` `save_build_email_capture`.
+- Staged to draft `176605397156` via staged-upload pipeline; checksums verified:
+  snippet `5103078a7ada602d61dacf4388ff078d`, `sppdp-product.liquid`
+  `c3256c31c03eb7255baf776fee82c2bc`. Verbatim copy of the section verified
+  byte-identical to live before the 2-line edit.
+- **Owner to-do (not a code blocker):** build a Klaviyo flow triggered by the
+  `save_build` list (or the "Saved Build" event) that emails the spec + price,
+  so the "check your inbox" promise is fulfilled. Set `sb_klaviyo_list` to that
+  list. Note `A2_FIT_CTX.price` is the base product price; the emailed quote uses
+  the live `[data-price]` DOM value scraped at submit.
 
 ### Play 1 — exit-intent
 - Preview (same theme): `https://a2bikes.com/?preview_theme_id=176605397156`
