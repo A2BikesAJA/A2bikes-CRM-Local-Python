@@ -114,7 +114,7 @@ auto-identifies logged-in customers and re-fires from `sessionStorage`.
 | # | Play | Source string | Status | Owner decisions blocking launch |
 |---|---|---|---|---|
 | 1 | Exit-intent capture (+ $X off) | `exit_intent` | **built + staged (disabled)** | discount **amount + code**, Klaviyo list id, final copy |
-| 2 | Email-gate Fit Calculator | `fit_calculator` | not started | **confirm current SP geometry (S/M/L/XL, not 2021 XS–L)** |
+| 2 | Email-gate Fit Calculator | `fit_calculator` | **built + staged** | none — owner confirmed geometry current; soft gate chosen |
 | 3 | Save-your-build on PDPs | `save_build` | not started | — |
 | 4 | Email flows as identity machines | `newsletter`/`klaviyo_form` | not started | Klaviyo flow coordination |
 | 5 | Push the Octane quiz | `quiz` | not started | quiz placement prominence |
@@ -123,10 +123,36 @@ auto-identifies logged-in customers and re-fires from `sessionStorage`.
 | 8 | Zoho chat asks email early | `chat` | not started | — |
 | 9 | Financing prequal step | `save_build`/new | not started | — |
 
-### Play 1 — exit-intent (this build)
-- **Staged draft theme:** `176605397156` — "A2 Visitor-ID — Exit Intent (draft,
-  do not publish)" (duplicate of the 07‑18 live theme). Preview:
-  `https://a2bikes.com/?preview_theme_id=176605397156`
+### Shared staged draft theme
+- **Draft theme `176605397156`** — "A2 Visitor-ID — Plays 1–2 (draft, do not
+  publish)" (duplicate of the 07‑18 live theme) now holds **both** Play 1 and
+  Play 2. Preview: `https://a2bikes.com/?preview_theme_id=176605397156`
+  New plays stage into this same theme so the owner can preview/publish one theme.
+
+### Play 2 — email-gate the Fit Calculator (this build)
+- Finished the existing redesign `shopify/snippets/a2-fit-engine.liquid`
+  (rendered on SP/Rogue PDPs by `sections/sppdp-product.liquid`, `#find-your-fit`
+  drawer). Two surgical changes, verbatim copy verified byte-identical to live
+  before editing:
+  1. **CRM wiring:** `sendFit()` now calls `window.a2_identify(email,
+     "fit_calculator")` before the existing Klaviyo "Requested Fit Results" +
+     `a2dl` calls. This is what makes fit captures show on the scoreboard.
+  2. **Soft gate (owner-approved):** verdict (recommended size) stays visible;
+     the full breakdown (pad/bar coords, drop, setup) + chart blur-lock behind
+     the email submit, revealed on success. Blur-lock (no DOM removal). Toggle
+     `A2FE_GATE` (`"soft"`/`"off"`) at the top of the IIFE. Covers both inline
+     and drawer mounts.
+- Staged to draft `176605397156` via the staged-upload pipeline
+  (`stagedUploadsCreate` → `curl PUT` → `themeFilesUpsert` URL body); checksum
+  verified `c33d603a7dc866e9368395a36e96e564` == local md5.
+- **Notes / follow-ups:** the older inline Pad X/Y `a2-fit-calculator.liquid`
+  (on line LPs via `a2-line-lp.liquid`) still has NO email capture — separate
+  follow-up if we want to gate that surface too. The `a2-size-calc.liquid`
+  out-of-range lead form also does not yet call `a2_identify` (only Klaviyo) —
+  small follow-up to tag it `fit_calculator`.
+
+### Play 1 — exit-intent
+- Preview (same theme): `https://a2bikes.com/?preview_theme_id=176605397156`
   Both files verified byte-identical via `checksumMd5`:
   `sections/a2-exit-intent.liquid` = `e1a8b60b3d8cdb422a1b90a205b4b374`,
   `sections/overlay-group.json` = `af383db96059a53f81cd50fdbada1f55`.
