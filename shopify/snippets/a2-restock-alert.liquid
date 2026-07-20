@@ -1,0 +1,234 @@
+{%- comment -%}
+  A2 Bikes — "new color drop" teaser for (near) sold-out SP PDPs.
+
+  A brand-accurate, self-contained signup card: ink spotlight panel, crimson
+  (#b4122e) accents, condensed display type — matches the SP PDP, NOT the LP
+  teal palette. The hero graphic is a strip of the real SP colorway swatches
+  ending in a pulsing crimson "?" mystery chip (a new colorway, unrevealed).
+
+  NOT a pre-order and makes no dated promise: email only, no cart/reserve, and
+  "we'll tell you when it drops" is a commitment to notify, not to deliver.
+
+  Wiring: posts to Klaviyo via assets/a2-lp.js (event-delegated submit on
+  form[data-a2-klaviyo-form]; needs data-a2-company / -list / -event / -source /
+  -success, an input[type=email], optional [data-a2-hp] honeypot, [data-a2-msg]).
+  Klaviyo profile properties captured on signup (segmentable, no hard question):
+    - "SP Restock Interest" = product title (data-a2-props, from PDP context)
+    - "SP Restock Size"     = optional size pick ([data-a2-prop] radio group)
+  a2-lp.js merges data-a2-props (static JSON) with any [data-a2-prop] field.
+  a2-lp.js must be loaded on the product template. No a2-lp.css dependency —
+  all styling is inlined and scoped to .a2-drop.
+
+  Renders ONLY when product.metafields.custom.restock_alert (boolean) is true —
+  an explicit owner-controlled per-product toggle (the two live SP builds still
+  carry 1–2 stray units, so we do NOT gate on product.available). Flip it off
+  once the drop is live.
+
+  Copy is metafield-driven (Admin → product → Metafields), with defaults:
+    custom.restock_alert    (boolean)  master on/off — required true to show
+    custom.restock_eyebrow  (text)     default 'New colorways · late summer'
+    custom.restock_heading  (text)     default 'Something new is on the way'
+    custom.restock_body     (text)     default new-colorway tease line
+
+  Klaviyo: company YejYTH · list TpVuRM ("SP Drop — Notify Me (Late Summer 2026)").
+{%- endcomment -%}
+{%- assign _p = product -%}
+{%- if _p.metafields.custom.restock_alert -%}
+  {%- assign _eyebrow = _p.metafields.custom.restock_eyebrow | default: 'New colorways · late summer' -%}
+  {%- assign _heading = _p.metafields.custom.restock_heading | default: 'Something new is on the way' -%}
+  {%- assign _body = _p.metafields.custom.restock_body | default: 'New SP colorways arrive late summer. Want first look? Drop your email and we’ll tell you the moment they’re live.' -%}
+  {%- assign _sizes = '' -%}
+  {%- for opt in _p.options_with_values -%}
+    {%- assign _optname = opt.name | downcase -%}
+    {%- if _optname == 'size' -%}{%- assign _sizes = opt.values -%}{%- endif -%}
+  {%- endfor -%}
+  {%- if _sizes == blank -%}{%- assign _sizes = 'Small,Medium,Large,XL' | split: ',' -%}{%- endif -%}
+  <style>
+    .a2-drop{
+      --drop-accent:#b4122e; --drop-accent-2:#e5322b; --drop-ink:#12161b;
+      --drop-fg:#f6f8fa; --drop-muted:rgba(246,248,250,.66); --drop-line:rgba(246,248,250,.14);
+      --drop-font:"Bahnschrift","DIN Condensed","Oswald","Arial Narrow",system-ui,sans-serif;
+      margin:18px 0 6px;
+    }
+    .a2-drop *{ box-sizing:border-box; }
+    .a2-drop__card{
+      position:relative; overflow:hidden; isolation:isolate;
+      border-radius:16px; padding:clamp(18px,3.4vw,26px);
+      background:
+        radial-gradient(120% 90% at 100% 0%, rgba(180,18,46,.30), transparent 55%),
+        linear-gradient(158deg,#1b2129 0%, #12161b 60%, #0e1216 100%);
+      border:1px solid var(--drop-line);
+      box-shadow:0 18px 40px -22px rgba(0,0,0,.7);
+      color:var(--drop-fg);
+    }
+    .a2-drop__glow{
+      position:absolute; z-index:-1; top:-40%; right:-25%; width:70%; height:120%;
+      background:radial-gradient(closest-side, rgba(229,50,43,.35), transparent 70%);
+      filter:blur(14px); animation:a2dropGlow 6s ease-in-out infinite;
+    }
+    /* Colorway swatch strip — real SP gradients + a mystery "?" chip */
+    .a2-drop__chips{ position:relative; display:flex; gap:8px; margin-bottom:16px; overflow:hidden; }
+    .a2-drop__chip{
+      flex:1 1 0; min-width:0; height:38px; border-radius:9px; background:var(--c,#333);
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.10), 0 4px 10px -6px rgba(0,0,0,.8);
+    }
+    .a2-drop__chip--mystery{
+      display:flex; align-items:center; justify-content:center;
+      background:linear-gradient(150deg,#b4122e,#7d0d20);
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.28), 0 0 0 0 rgba(229,50,43,.55);
+      font:800 1.1rem/1 var(--drop-font); color:#fff; letter-spacing:.02em;
+      animation:a2dropPulse 2.4s ease-in-out infinite;
+    }
+    .a2-drop__sweep{
+      position:absolute; inset:0; pointer-events:none;
+      background:linear-gradient(105deg,transparent 30%, rgba(255,255,255,.22) 48%, transparent 66%);
+      transform:translateX(-120%); animation:a2dropSweep 3.6s ease-in-out infinite;
+    }
+    .a2-drop__kicker{
+      display:flex; align-items:center; gap:8px; margin:0 0 9px;
+      font:700 .72rem/1 var(--drop-font); letter-spacing:.16em; text-transform:uppercase;
+      color:#ff5a68;
+    }
+    .a2-drop__dot{
+      width:8px; height:8px; border-radius:50%; background:var(--drop-accent-2);
+      box-shadow:0 0 0 0 rgba(229,50,43,.6); animation:a2dropPulse 2s ease-in-out infinite;
+    }
+    .a2-drop__title{
+      margin:0 0 8px; font-family:var(--drop-font); font-weight:700;
+      font-size:clamp(1.65rem,5.2vw,2.15rem); line-height:1.02; letter-spacing:.005em; color:#fff;
+    }
+    .a2-drop__body{ margin:0 0 16px; font-size:.98rem; line-height:1.5; color:var(--drop-muted); max-width:44ch; }
+    .a2-drop__form{ margin:0; }
+    .a2-drop__sizes{ border:0; padding:0; margin:0 0 13px; display:flex; flex-wrap:wrap; align-items:center; gap:7px; }
+    .a2-drop__sizeslabel{ padding:0; margin:0 3px 0 0; font:700 .7rem/1 var(--drop-font); letter-spacing:.12em; text-transform:uppercase; color:var(--drop-muted); }
+    .a2-drop__sizeslabel span{ font-weight:400; letter-spacing:.02em; text-transform:none; opacity:.75; }
+    .a2-drop__sizepill{ display:inline-flex; align-items:center; justify-content:center; min-width:38px; height:32px; padding:0 11px; border-radius:9px; border:1px solid var(--drop-line); background:rgba(255,255,255,.04); color:var(--drop-fg); font-size:.85rem; font-weight:600; cursor:pointer; transition:border-color .12s, background .12s, transform .08s; }
+    .a2-drop__sizepill:hover{ border-color:rgba(246,248,250,.42); }
+    .a2-drop__sizepill:active{ transform:scale(.96); }
+    .a2-drop__sizeradio:checked + .a2-drop__sizepill{ background:var(--drop-accent); border-color:var(--drop-accent); color:#fff; }
+    .a2-drop__sizeradio:focus-visible + .a2-drop__sizepill{ outline:2px solid #fff; outline-offset:2px; }
+    .a2-drop__field{ display:flex; gap:8px; flex-wrap:wrap; }
+    .a2-drop__input{
+      flex:1 1 190px; min-width:0; height:48px; padding:0 15px;
+      border-radius:11px; border:1px solid var(--drop-line);
+      background:rgba(255,255,255,.05); color:#fff; font-size:1rem; font-family:inherit;
+      transition:border-color .15s, box-shadow .15s, background .15s;
+    }
+    .a2-drop__input::placeholder{ color:rgba(246,248,250,.42); }
+    .a2-drop__input:focus{
+      outline:none; border-color:var(--drop-accent-2); background:rgba(255,255,255,.08);
+      box-shadow:0 0 0 3px rgba(229,50,43,.28);
+    }
+    .a2-drop__btn{
+      position:relative; overflow:hidden; flex:0 0 auto; height:48px; padding:0 20px;
+      border:0; border-radius:11px; cursor:pointer; white-space:nowrap;
+      display:inline-flex; align-items:center; gap:8px;
+      background:linear-gradient(160deg,var(--drop-accent-2),var(--drop-accent));
+      color:#fff; font:700 .92rem/1 var(--drop-font); letter-spacing:.06em; text-transform:uppercase;
+      box-shadow:0 10px 22px -10px rgba(180,18,46,.9);
+      transition:transform .12s ease, filter .15s ease, box-shadow .15s ease;
+    }
+    .a2-drop__btn svg{ width:15px; height:15px; transition:transform .18s ease; }
+    .a2-drop__btn:hover{ transform:translateY(-1px); filter:brightness(1.07); box-shadow:0 14px 26px -10px rgba(180,18,46,1); }
+    .a2-drop__btn:hover svg{ transform:translateX(3px); }
+    .a2-drop__btn:active{ transform:translateY(0); }
+    .a2-drop__btn:focus-visible{ outline:2px solid #fff; outline-offset:2px; }
+    .a2-drop__btn::after{
+      content:""; position:absolute; inset:0; transform:translateX(-120%);
+      background:linear-gradient(105deg,transparent 35%, rgba(255,255,255,.35) 50%, transparent 65%);
+      animation:a2dropSweep 3.6s ease-in-out infinite 1.2s;
+    }
+    .a2-drop__msg{ margin:10px 0 0; font-size:.9rem; min-height:1.1em; }
+    .a2-drop__msg[data-state="ok"]{ color:#6ee7a8; }
+    .a2-drop__msg[data-state="error"]{ color:#ff8a8a; }
+    .a2-drop__fine{ margin:11px 0 0; font-size:.76rem; color:rgba(246,248,250,.5); }
+    .a2-drop__fine svg{ width:12px; height:12px; vertical-align:-1px; margin-right:5px; opacity:.7; }
+    .a2-drop__hp{ position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
+    .a2-drop__sr{ position:absolute; width:1px; height:1px; margin:-1px; padding:0; overflow:hidden; clip:rect(0 0 0 0); border:0; }
+    @keyframes a2dropSweep{ 0%{transform:translateX(-120%);} 55%,100%{transform:translateX(120%);} }
+    @keyframes a2dropPulse{ 0%,100%{box-shadow:0 0 0 0 rgba(229,50,43,.55);} 50%{box-shadow:0 0 0 7px rgba(229,50,43,0);} }
+    @keyframes a2dropGlow{ 0%,100%{opacity:.7;} 50%{opacity:1;} }
+    @media (max-width:400px){
+      .a2-drop__input{ flex:1 1 100%; }
+      .a2-drop__btn{ flex:1 1 100%; justify-content:center; }
+    }
+    @media (prefers-reduced-motion:reduce){
+      .a2-drop__glow, .a2-drop__sweep, .a2-drop__dot, .a2-drop__chip--mystery, .a2-drop__btn::after{ animation:none; }
+    }
+  </style>
+  <div class="a2-drop" data-a2-restock>
+    <div class="a2-drop__card">
+      <span class="a2-drop__glow" aria-hidden="true"></span>
+      <div class="a2-drop__chips" aria-hidden="true">
+        <span class="a2-drop__chip" style="--c:linear-gradient(150deg,#2A2C30,#0E0F11)"></span>
+        <span class="a2-drop__chip" style="--c:linear-gradient(150deg,#C9CDD2,#33363B)"></span>
+        <span class="a2-drop__chip" style="--c:linear-gradient(150deg,#3A6076,#1A3142)"></span>
+        <span class="a2-drop__chip" style="--c:linear-gradient(150deg,#E5322B,#A01913)"></span>
+        <span class="a2-drop__chip" style="--c:linear-gradient(150deg,#A6ACB1,#6C7176)"></span>
+        <span class="a2-drop__chip a2-drop__chip--mystery">?</span>
+        <span class="a2-drop__sweep"></span>
+      </div>
+
+      <p class="a2-drop__kicker"><span class="a2-drop__dot"></span>{{ _eyebrow }}</p>
+      <h2 class="a2-drop__title">{{ _heading }}</h2>
+      <p class="a2-drop__body">{{ _body }}</p>
+
+      <form class="a2-drop__form" data-a2-klaviyo-form
+            data-a2-company="YejYTH"
+            data-a2-list="TpVuRM"
+            data-a2-event="sp_restock_notify"
+            data-a2-source="SP Restock Alert (PDP) · {{ _p.title }}"
+            data-a2-props='{"SP Restock Interest":{{ _p.title | json }}}'
+            data-a2-success="You’re on the list — we’ll be in touch when the colors drop."
+            novalidate>
+        <fieldset class="a2-drop__sizes">
+          <legend class="a2-drop__sizeslabel">Your size <span>optional</span></legend>
+          {%- for s in _sizes -%}
+            {%- assign _sid = s | handleize -%}
+            <input class="a2-drop__sr a2-drop__sizeradio" type="radio" name="restock_size" id="a2sz-{{ _p.id }}-{{ _sid }}" value="{{ s | escape }}" data-a2-prop="SP Restock Size" />
+            <label class="a2-drop__sizepill" for="a2sz-{{ _p.id }}-{{ _sid }}">{{ s }}</label>
+          {%- endfor -%}
+        </fieldset>
+        <div class="a2-drop__field">
+          <label class="a2-drop__sr" for="a2-drop-email-{{ _p.id }}">Email address</label>
+          <input class="a2-drop__input" id="a2-drop-email-{{ _p.id }}" type="email" name="email"
+                 required autocomplete="email" inputmode="email" placeholder="you@email.com" />
+          <button class="a2-drop__btn" type="submit">
+            Notify me
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+        </div>
+        <div class="a2-drop__hp" aria-hidden="true">
+          <label>Leave this field blank<input type="text" tabindex="-1" autocomplete="off" data-a2-hp /></label>
+        </div>
+        <p class="a2-drop__msg" data-a2-msg role="status" aria-live="polite"></p>
+      </form>
+      <p class="a2-drop__fine">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        First look, no spam — one note the day they drop.
+      </p>
+    </div>
+  </div>
+  <script>
+  (function(){
+    // a2-lp.js already posts this form to Klaviyo + dataLayer. Here we ADD the
+    // A2 CRM identify with the exact scoreboard source string, so restock
+    // signups are attributed as "restock_alert".
+    var wrap = document.querySelector('[data-a2-restock]');
+    if (!wrap || wrap.__a2rsInit) return;
+    wrap.__a2rsInit = true;
+    var form = wrap.querySelector('form[data-a2-klaviyo-form]');
+    if (!form) return;
+    form.addEventListener('submit', function(){
+      var hp = form.querySelector('[data-a2-hp]');
+      if (hp && hp.value) return; // honeypot: bot, skip
+      var input = form.querySelector('input[type="email"]');
+      var email = (input && input.value || '').trim().toLowerCase();
+      if (!email || email.indexOf('@') < 1) return;
+      try { if (typeof window.a2_identify === 'function') window.a2_identify(email, 'restock_alert'); } catch(e){}
+      try { if (typeof window.a2IdentifyVisitor === 'function') window.a2IdentifyVisitor(email); } catch(e){}
+      try { sessionStorage.setItem('a2_visitor_email', email); } catch(e){}
+    }, false);
+  })();
+  </script>
+{%- endif -%}
