@@ -1,0 +1,1335 @@
+{%- comment -%}
+  SP-105 PDP — REAL PRODUCT section. Renders on a product template and wires
+  to live product data: gallery from product.media, Color/Size/Wheelset from
+  the product's variants (live price + availability), real Add to Cart, and
+  price/Affirm that update on variant change. Editorial bits (hotspots,
+  education tiles, trust) stay as section settings/blocks. Shares the .sppdp
+  CSS/JS (gallery swap, accordion, sticky bar) via snippets/sppdp-assets.
+{%- endcomment -%}
+{% render 'sppdp-assets' %}
+{%- liquid
+  assign cur = product.selected_or_first_available_variant
+  assign months = section.settings.affirm_months
+  if months == 0
+    assign months = 12
+  endif
+  assign monthly = cur.price | divided_by: 100.0 | divided_by: months | round
+  assign rating_value = section.settings.rating_value
+  assign rmeta = product.metafields.reviews.rating.value
+  if rmeta != blank and rmeta.rating != blank
+    assign rating_value = rmeta.rating
+  endif
+  assign rating_count = section.settings.rating_count
+  assign rcount = product.metafields.reviews.rating_count
+  if rcount != blank and rcount != 0
+    assign rating_count = rcount
+  endif
+  assign color_pos = ''
+  assign size_pos = ''
+  for o in product.options_with_values
+    assign od = o.name | downcase
+    if od == 'color' or od == 'colour' or od == 'colorway'
+      assign color_pos = o.position
+      assign cur_color = o.selected_value
+    endif
+    if od == 'size'
+      assign size_pos = o.position
+    endif
+  endfor
+-%}
+{%- liquid
+  assign calc_bike = 'sp'
+  if product.handle contains 'rogue'
+    assign calc_bike = 'rogue'
+  endif
+-%}
+{%- capture size_calc_details -%}
+  {%- if section.settings.show_size_calc -%}
+  <section class="sppdp-fitband" id="find-your-fit" aria-label="Find your size">
+    {% render 'a2-fit-engine', model: calc_bike %}
+  </section>
+  <style>
+    .sppdp-fitband{ margin:22px 0 6px; scroll-margin-top:80px; --a2-bg:#ffffff; --a2-fg:#14181d; --a2-border:rgba(15,20,25,.14); --a2-accent:#b4122e; --a2-accent-2:#14181d; --a2-accent-fg:#ffffff; --a2-font-display:"Bahnschrift","DIN Condensed","Oswald","Arial Narrow",system-ui,sans-serif; }
+    .sppdp-fitband__head{ margin-bottom:14px; }
+    .sppdp-fitband__kicker{ display:block; text-transform:uppercase; letter-spacing:.14em; font-size:.72rem; color:#b4122e; }
+    .sppdp-fitband__title{ margin:.12em 0 .6em; font-size:clamp(1.4rem,2.6vw,2rem); }
+    .sppdp-fitband.is-flash{ animation:sppdpFitFlash 1.4s ease; }
+    @keyframes sppdpFitFlash{ 0%,100%{ box-shadow:0 0 0 0 rgba(180,18,46,0); } 25%{ box-shadow:0 0 0 4px rgba(180,18,46,.18); } }
+  </style>
+  <script>
+    (function(){
+      if(window.__a2FitJump) return; window.__a2FitJump = true;
+      document.addEventListener('click', function(e){
+        var a = e.target.closest('[data-fitjump]'); if(!a) return;
+        e.preventDefault();
+        // Primary: open the condensed fit drawer (a2-fit-engine).
+        if(window.A2Fit && typeof window.A2Fit.openDrawer === 'function'){ window.A2Fit.openDrawer(); return; }
+        // Fallback (engine not booted yet): scroll to the inline finder and flash it.
+        var band = document.getElementById('find-your-fit'); if(!band) return;
+        requestAnimationFrame(function(){ requestAnimationFrame(function(){
+          var y = window.pageYOffset + band.getBoundingClientRect().top - 88;
+          window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+          band.classList.remove('is-flash'); void band.offsetWidth; band.classList.add('is-flash');
+        }); });
+      });
+    })();
+  </script>
+  {%- endif -%}
+{%- endcapture -%}
+<div class="sppdp" id="sppdp-pdp-{{ section.id }}">
+  <div class="pdp-wrap">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">{{ section.settings.bc_home }}</a><span class="sep">/</span>
+      <a href="{{ section.settings.bc_col_url | default: '/collections/sp' }}">{{ section.settings.bc_col }}</a><span class="sep">/</span>
+      <span class="here">{{ product.title }}</span>
+    </nav>
+  </div>
+
+  <main class="pdp-wrap pdp-main">
+    <!-- DESKTOP GALLERY (from product.media) -->
+    <section class="gallery" aria-label="Product gallery">
+      <div class="gallery__rail">
+        {%- for media in product.media -%}
+          <button class="thumb{% if forloop.first %} active{% endif %}" data-thumb data-media-id="{{ media.id }}" data-color="{{ media.alt | escape }}" data-cap="{{ media.alt | default: product.title | escape }}" data-img="{{ media.preview_image | image_url: width: 1280 }}">
+            <img src="{{ media.preview_image | image_url: width: 200 }}" alt="{{ media.alt | default: product.title | escape }}" loading="lazy">
+          </button>
+        {%- endfor -%}
+        <button class="thumb-toggle" type="button" data-thumb-toggle aria-expanded="false" hidden>
+          <span data-thumb-toggle-label>Show more</span>
+          <svg class="thumb-toggle__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+      </div>
+
+      {%- assign stage_media = product.media.first -%}
+      <div class="stage">
+        {% if cur_color != blank %}<span class="stage__badge" data-stage-badge>{{ cur_color }}</span>{% endif %}
+        {% if stage_media %}<img data-stage-img src="{{ stage_media.preview_image | image_url: width: 1280 }}" alt="{{ stage_media.alt | default: product.title | escape }}">{% else %}<div class="ph" data-stage-img>{{ product.title }}</div>{% endif %}
+        {%- if section.settings.show_hotspots -%}
+          {%- assign mi = 0 -%}
+          {%- for media in product.media limit: 6 -%}
+            {%- assign mi = mi | plus: 1 -%}
+            {%- assign grp_count = 0 -%}
+            {%- for block in section.blocks -%}{% if block.type == 'hotspot' and block.settings.image_index == mi %}{% assign grp_count = grp_count | plus: 1 %}{% endif %}{%- endfor -%}
+            {%- if grp_count > 0 -%}
+              <div class="sppdp-hotspots" data-hotspots data-img-src="{{ media.preview_image | image_url: width: 1280 }}"{% unless forloop.first %} style="display:none"{% endunless %}>
+                {%- assign hn = 0 -%}
+                {%- for block in section.blocks -%}
+                  {%- if block.type == 'hotspot' and block.settings.image_index == mi -%}
+                    {%- assign hn = hn | plus: 1 -%}
+                    <span class="hotspot" style="left:{{ block.settings.x }}%;top:{{ block.settings.y }}%" {{ block.shopify_attributes }}>{{ hn }}<span class="hotspot__label">{{ block.settings.label }}</span></span>
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+      {%- if section.settings.gallery_caption != blank -%}
+      <p class="gallery__caption" data-stage-cap><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg>{{ section.settings.gallery_caption }}</p>
+      {%- endif -%}
+
+      <div class="edu-row">
+        {%- for n in (1..3) -%}
+          {%- assign k_t = 'edu_' | append: n | append: '_title' -%}
+          {%- assign et = section.settings[k_t] -%}
+          {%- if et != blank -%}
+            {%- assign k_i = 'edu_' | append: n | append: '_image' -%}
+            {%- assign k_d = 'edu_' | append: n | append: '_desc' -%}
+            {%- assign eimg = section.settings[k_i] -%}
+            <article class="edu-tile">
+              <div class="edu-tile__img">{% if eimg %}<img src="{{ eimg | image_url: width: 600 }}" alt="{{ et | escape }}" loading="lazy">{% else %}<div class="ph">{{ et }}</div>{% endif %}</div>
+              <div class="edu-tile__body">
+                <div class="edu-tile__title">{{ et }}</div>
+                <p class="edu-tile__desc">{{ section.settings[k_d] }}</p>
+              </div>
+            </article>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+      {% render 'sppdp-info-accordion', section: section, product: product %}
+    </section>
+
+    <!-- MOBILE SWIPE GALLERY -->
+    <section class="m-gallery" aria-label="Product gallery">
+      <div class="m-gallery__track" data-gallery-track>
+        {%- for media in product.media -%}
+          <div class="m-slide" data-media-id="{{ media.id }}" data-color="{{ media.alt | escape }}">
+            <img src="{{ media.preview_image | image_url: width: 900 }}" alt="{{ media.alt | default: product.title | escape }}" loading="lazy">
+            {% if media.alt != blank %}<div class="m-slide__cap">{{ media.alt }}</div>{% endif %}
+          </div>
+        {%- endfor -%}
+      </div>
+      <div class="m-gallery__dots">
+        {%- for media in product.media -%}
+          <span{% if forloop.first %} class="on"{% endif %} data-gallery-dot data-media-id="{{ media.id }}" data-color="{{ media.alt | escape }}"></span>
+        {%- endfor -%}
+      </div>
+    </section>
+
+    <!-- BUY BOX -->
+    <aside class="buybox" aria-label="Purchase options">
+      <div class="buybox__head">
+        <span class="buybox__kicker">{{ section.settings.kicker }}</span>
+        <h1 class="buybox__title">{{ product.title }}</h1>
+        <p class="buybox__subtitle">{{ section.settings.subtitle | default: product.type }}</p>
+      </div>
+
+      {%- assign sp_collection = collections[section.settings.build_collection] -%}
+      {%- if sp_collection != blank and sp_collection.products.size > 1 -%}
+      <div class="build-switch">
+        <div class="optgroup__label"><span class="lbl">{{ section.settings.build_label }}</span></div>
+        <div class="build-pills">
+          {%- assign builds = sp_collection.products | sort: 'price' -%}
+          {%- for bp in builds -%}
+            {%- assign blabel = bp.metafields.custom.siblings_color.value | default: bp.title -%}
+            {%- if bp.handle == product.handle -%}
+              <span class="build-pill is-active" aria-current="true">{{ blabel }}</span>
+            {%- else -%}
+              <a class="build-pill" href="{{ bp.url }}">{{ blabel }}</a>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+      {%- endif -%}
+
+      <div class="ratingline">
+        <span class="stars">{{ section.settings.rating_stars }}</span>
+        <span><b>{{ rating_value }}</b></span>
+        <a href="{{ section.settings.reviews_anchor | default: '#sppdp-reviews' }}">{% if rating_count != blank and rating_count != 0 %}{{ rating_count }} verified reviews{% else %}Read reviews{% endif %}</a>
+      </div>
+
+      <div class="price-block">
+        <div class="price-row">
+          <span class="price" data-price>{{ cur.price | money_without_trailing_zeros }}</span>
+          {% if cur.compare_at_price > cur.price %}<span class="price-note"><s data-compare>{{ cur.compare_at_price | money_without_trailing_zeros }}</s></span>{% endif %}
+          <span class="price-note">{{ section.settings.price_note }}</span>
+        </div>
+        {%- if section.settings.show_affirm_line -%}
+        <div class="affirm">
+          {%- comment -%} Affirm's own component renders the compliant
+            as-low-as language + logo (needs the Affirm app block / affirm.js;
+            stays empty without it). {%- endcomment -%}
+          <p class="affirm-as-low-as" data-page-type="product" data-amount="{{ cur.price }}"></p>
+          <a href="{{ section.settings.affirm_url | default: '/pages/financing-hsa-fsa' }}">Financing options →</a>
+        </div>
+        {%- endif -%}
+        {%- assign wheel_save = product.metafields.custom.wheel_upgrade.value -%}
+        {%- assign wu_url = product.metafields.custom.wheel_upgrade_url.value -%}
+        {%- assign wu_var = product.metafields.custom.wheel_upgrade_variant.value -%}
+        {%- assign wu_var2 = product.metafields.custom.wheel_upgrade_variant_2.value -%}
+        {%- assign credit_cents = 0 -%}
+        {%- if product.metafields.custom.wheel_upgrade_credit.value != blank -%}{%- assign credit_cents = product.metafields.custom.wheel_upgrade_credit.value | times: 100 -%}{%- endif -%}
+        {%- assign has_opt1 = false -%}{%- if wu_var != blank and wu_var.id -%}{%- assign has_opt1 = true -%}{%- endif -%}
+        {%- assign has_opt2 = false -%}{%- if wu_var2 != blank and wu_var2.id -%}{%- assign has_opt2 = true -%}{%- endif -%}
+        {%- if wheel_save != blank or has_opt1 or has_opt2 -%}
+        {%- if has_opt1 and has_opt2 -%}
+        <div class="wheel-upsell wheel-upsell--opts">
+          <label class="wheel-upsell__opt">
+            <input type="checkbox" data-wheel-upgrade data-wheel-net="{{ wu_var.price | minus: credit_cents }}" value="{{ wu_var.id }}">
+            <span class="wheel-upsell__txt">
+              <span class="wheel-upsell__title">Add {{ wu_var.product.title }} — <b>+{{ wu_var.price | minus: credit_cents | money_without_trailing_zeros }}</b>{% if credit_cents > 0 %} <span class="wheel-upsell__save">Save {{ credit_cents | money_without_trailing_zeros }}</span>{% endif %}</span>
+            </span>
+          </label>
+          <label class="wheel-upsell__opt">
+            <input type="checkbox" data-wheel-upgrade data-wheel-net="{{ wu_var2.price | minus: credit_cents }}" value="{{ wu_var2.id }}">
+            <span class="wheel-upsell__txt">
+              <span class="wheel-upsell__title">Add {{ wu_var2.product.title }} — <b>+{{ wu_var2.price | minus: credit_cents | money_without_trailing_zeros }}</b>{% if credit_cents > 0 %} <span class="wheel-upsell__save">Save {{ credit_cents | money_without_trailing_zeros }}</span>{% endif %}</span>
+            </span>
+          </label>
+          <span class="wheel-upsell__note">{{ section.settings.wheel_note }}</span>
+        </div>
+        {%- elsif has_opt1 -%}
+        <div class="wheel-upsell">
+          <label class="wheel-upsell__opt">
+            <input type="checkbox" data-wheel-upgrade data-wheel-net="{{ wu_var.price | minus: credit_cents }}" value="{{ wu_var.id }}">
+            <span class="wheel-upsell__txt">
+              <span class="wheel-upsell__title">Add {{ wu_var.product.title }} — <b>+{{ wu_var.price | minus: credit_cents | money_without_trailing_zeros }}</b>{% if credit_cents > 0 %} <span class="wheel-upsell__save">Save {{ credit_cents | money_without_trailing_zeros }}</span>{% endif %}</span>
+              <span class="wheel-upsell__note">{{ section.settings.wheel_note }}</span>
+            </span>
+          </label>
+        </div>
+        {%- else -%}
+        <div class="wheel-upsell">
+          <span class="wheel-upsell__ico"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="2.6"/><path d="M12 3.5v3M12 17.5v3M3.5 12h3M17.5 12h3M6.3 6.3l2.1 2.1M15.6 15.6l2.1 2.1M17.7 6.3l-2.1 2.1M8.4 15.6l-2.1 2.1"/></svg></span>
+            <span class="wheel-upsell__txt">
+              <span class="wheel-upsell__title">{{ wheel_save }}</span>
+              <span class="wheel-upsell__note">{{ section.settings.wheel_note }} <a href="{{ wu_url | default: '/collections/wheelsets-and-upgrades' }}">Shop the wheels →</a></span>
+            </span>
+        </div>
+        {%- endif -%}
+        {%- endif -%}
+      </div>
+
+      <hr class="rule">
+
+      <form method="post" action="/cart/add" data-product-form>
+        <input type="hidden" name="id" value="{{ cur.id }}" data-variant-id>
+
+        {%- for option in product.options_with_values -%}
+          {%- assign odown = option.name | downcase -%}
+          <div class="optgroup">
+            <div class="optgroup__label">
+              <span class="lbl">{{ option.name }}</span>
+              {%- if odown == 'size' -%}
+                {%- if section.settings.show_size_calc -%}
+                <a class="help-link" href="#find-your-fit" data-fitjump><svg viewBox="0 0 24 24"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M12 12v9M12 12L4 7.5M12 12l8-4.5"/></svg>{{ section.settings.size_help_label | default: 'Find your size' }}</a>
+                {%- else -%}
+                <a class="help-link" href="{{ section.settings.size_help_url | default: '#sppdp-specs' }}"><svg viewBox="0 0 24 24"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M12 12v9M12 12L4 7.5M12 12l8-4.5"/></svg>{{ section.settings.size_help_label }}</a>
+                {%- endif -%}
+              {%- elsif odown == 'color' or odown == 'colour' or odown == 'colorway' -%}
+                <span class="val"><b data-swatch-name>{{ option.selected_value }}</b></span>
+              {%- endif -%}
+            </div>
+            {%- if odown == 'color' or odown == 'colour' or odown == 'colorway' -%}
+              <div class="swatches">
+                {%- for value in option.values -%}
+                  {%- assign vd = value | downcase -%}
+                  {%- assign grad = 'linear-gradient(150deg,#6A6F75 0%,#3A3C40 100%)' -%}
+                  {%- if vd contains 'red' -%}{%- assign grad = 'linear-gradient(150deg,#E5322B 0%,#A01913 100%)' -%}
+                  {%- elsif vd contains 'silver' -%}{%- assign grad = 'linear-gradient(150deg,#C9CDD2 0%,#33363B 100%)' -%}
+                  {%- elsif vd contains 'blue' -%}{%- assign grad = 'linear-gradient(150deg,#3A6076 0%,#1A3142 100%)' -%}
+                  {%- elsif vd contains 'grey' or vd contains 'gray' -%}{%- assign grad = 'linear-gradient(150deg,#A6ACB1 0%,#6C7176 100%)' -%}
+                  {%- elsif vd contains 'black' -%}{%- assign grad = 'linear-gradient(150deg,#2A2C30 0%,#0E0F11 100%)' -%}
+                  {%- endif -%}
+                  <button type="button" class="swatch" data-opt="{{ option.position }}" data-value="{{ value | escape }}" aria-pressed="{% if value == option.selected_value %}true{% else %}false{% endif %}"><span class="swatch__chip" style="background:{{ grad }}"></span><span class="swatch__name">{{ value }}</span></button>
+                {%- endfor -%}
+              </div>
+            {%- else -%}
+              <div class="sizes">
+                {%- for value in option.values -%}
+                  <button type="button" class="size-pill" data-opt="{{ option.position }}" data-value="{{ value | escape }}" aria-pressed="{% if value == option.selected_value %}true{% else %}false{% endif %}">{{ value }}</button>
+                {%- endfor -%}
+              </div>
+              {%- if odown == 'size' -%}
+                <div class="optgroup__label"><span class="val" data-size-val>Selected: <b>{{ option.selected_value }}</b></span></div>
+              {%- endif -%}
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+
+        <div class="cta-stack" style="margin-top:6px">
+          <button type="submit" class="btn btn--primary btn-addcart" data-atc{% unless cur.available %} disabled{% endunless %}><span class="btn-label">{% if cur.available %}{{ section.settings.cta_prefix }}{{ cur.price | money_without_trailing_zeros }}{% else %}Sold out{% endif %}</span></button>
+          <div class="cta-sub">
+            <span class="demo"><svg viewBox="0 0 24 24"><path d="M3 12l2-7h14l2 7M5 12h14v5a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2z"/></svg>{{ section.settings.demo_note }}</span>
+            <a href="{{ section.settings.consult_url | default: '/pages/contact-a2-bikes' }}" data-buybox-end>{{ section.settings.consult_label }}</a>
+          </div>
+        </div>
+      </form>
+{% render 'a2-save-build', enabled: section.settings.enable_save_build, klaviyo_company: section.settings.sb_klaviyo_company, klaviyo_list: section.settings.sb_klaviyo_list %}
+
+      {%- comment -%} GovX military / first-responder verify — app block(s)
+        rendered directly beneath the Add to Cart (verify-to-unlock decision
+        point). Kept OUTSIDE the buy-box <form>: GovX renders its own controls,
+        so nesting would create a nested form. Styled as an A2 secondary/ghost
+        button via .govx-slot in the section CSS below, subordinate to the black
+        primary ATC. Add the GovX app block to each product template to show it. {%- endcomment -%}
+      {%- assign app_block_count = 0 -%}
+      {%- for b in section.blocks -%}{% if b.type == '@app' %}{% assign app_block_count = app_block_count | plus: 1 %}{% endif %}{%- endfor -%}
+      {%- if app_block_count > 0 -%}
+      <div class="govx-slot">
+        {%- for block in section.blocks -%}
+          {%- if block.type == '@app' -%}<div class="govx-app" {{ block.shopify_attributes }}>{% render block %}</div>{%- endif -%}
+        {%- endfor -%}
+      </div>
+      {%- endif -%}
+
+      {%- comment -%} SP restock / new-drop alert — renders only on products flagged custom.restock_alert; loads a2-lp assets only when shown. Kept OUTSIDE the buy-box <form> (no nested forms). {%- endcomment -%}
+      {%- if product.metafields.custom.restock_alert -%}
+        {% render 'a2-restock-alert', product: product %}
+        <script src="{{ 'a2-lp.js' | asset_url }}" defer></script>
+      {%- endif -%}
+
+      {%- assign trust_count = 0 -%}
+      {%- for b in section.blocks -%}{% if b.type == 'trust' %}{% assign trust_count = trust_count | plus: 1 %}{% endif %}{%- endfor -%}
+      {%- if trust_count > 0 -%}
+      <div class="trust">
+        {%- for b in section.blocks -%}
+          {%- if b.type != 'trust' -%}{%- continue -%}{%- endif -%}
+          <div class="trust__item" {{ b.shopify_attributes }}>
+            {% render 'sppdp-icon', icon: b.settings.icon %}
+            <div><div class="t-title">{{ b.settings.title }}</div><div class="t-sub">{{ b.settings.sub }}</div></div>
+          </div>
+        {%- endfor -%}
+      </div>
+      {%- endif -%}
+    </aside>
+  </main>
+
+  {%- if section.settings.show_size_calc -%}
+  <div class="pdp-wrap">{{ size_calc_details }}</div>
+  {%- endif -%}
+
+  {%- if section.settings.show_sticky -%}
+  <div class="sticky-buy" data-sticky-buy>
+    <div class="sticky-buy__info">
+      <div class="sticky-buy__name">{{ product.title }}{% if cur_color != blank %} · <span data-swatch-name>{{ cur_color }}</span>{% endif %}</div>
+      <div class="sticky-buy__price"><b data-price>{{ cur.price | money_without_trailing_zeros }}</b> · <span class="affirm-as-low-as" data-page-type="product" data-amount="{{ cur.price }}">pay monthly with Affirm</span></div>
+    </div>
+    <button type="button" class="btn btn--primary" data-atc{% unless cur.available %} disabled{% endunless %}><span class="btn-label">{% if cur.available %}Add to cart{% else %}Sold out{% endif %}</span></button>
+  </div>
+  {%- endif -%}
+
+  <style>
+    #sppdp-pdp-{{ section.id }} .is-unavailable{ opacity:.45; }
+    #sppdp-pdp-{{ section.id }} .size-pill.is-unavailable{ text-decoration:line-through; border-style:dashed; }
+    #sppdp-pdp-{{ section.id }} .affirm-app{ margin-top:2px; }
+    /* GovX verify slot — sits directly under the primary ATC. Rendered as an A2
+       secondary/ghost button (white fill + ink hairline), deliberately quieter
+       than the black Add-to-Cart so it never competes with the primary CTA.
+       GovX controls its own inner markup, so we scope the ghost styling to the
+       button/link it renders inside .govx-slot. */
+    #sppdp-pdp-{{ section.id }} .govx-slot{ margin-top:10px; }
+    #sppdp-pdp-{{ section.id }} .govx-slot .govx-app :is(a,button){
+      display:flex; align-items:center; justify-content:center; gap:9px;
+      width:100%; box-sizing:border-box; min-height:46px; padding:12px 16px;
+      background:var(--paper); color:var(--ink);
+      border:1.5px solid var(--ink); border-radius:10px;
+      font-family:inherit; font-size:.9rem; font-weight:600; letter-spacing:.01em;
+      line-height:1.2; text-align:center; text-decoration:none; cursor:pointer;
+      transition:background .15s ease, border-color .15s ease;
+    }
+    #sppdp-pdp-{{ section.id }} .govx-slot .govx-app :is(a,button):hover{ background:var(--paper-2); }
+    #sppdp-pdp-{{ section.id }} .govx-slot .govx-app :is(a,button) svg,
+    #sppdp-pdp-{{ section.id }} .govx-slot .govx-app :is(a,button) img{ width:18px; height:18px; flex:0 0 auto; }
+    /* Affirm's ALA template renders "…with Affirm.See if you qualify" with no
+       space before the trailing CTA (Affirm controls that text). Nudge a gap
+       in front of the trailing link/trigger so it reads "Affirm. See if…". */
+    #sppdp-pdp-{{ section.id }} .affirm-as-low-as > a:last-child,
+    #sppdp-pdp-{{ section.id }} .affirm-as-low-as > span:last-child,
+    #sppdp-pdp-{{ section.id }} .affirm-as-low-as .affirm-modal-trigger:last-child{ margin-left:.28em; }
+    /* Size calculator nested in the left/gallery column: span the FULL column
+       (the gallery is a 76px-rail + 1fr grid, so without this it collapses into
+       the 76px thumbnail track) and drop the auto-centering so it fills the
+       space beside the taller buy box. */
+    #sppdp-pdp-{{ section.id }} .gallery > .sppdp-fitband{ grid-column:1 / -1; width:100%; max-width:none; margin-left:0; margin-right:0; }
+    /* Collapsible thumbnail rail: hidden overflow thumbs + the "+N more" toggle. */
+    #sppdp-pdp-{{ section.id }} .thumb[hidden]{ display:none !important; }
+    #sppdp-pdp-{{ section.id }} .thumb-toggle{ display:flex; align-items:center; justify-content:center; gap:6px; width:100%; margin-top:2px; padding:9px 6px; border:1.5px dashed var(--line); border-radius:9px; background:var(--paper); cursor:pointer; font-family:inherit; font-size:.78rem; font-weight:600; letter-spacing:.01em; color:var(--ink); transition:border-color .15s, background .15s, color .15s; }
+    #sppdp-pdp-{{ section.id }} .thumb-toggle:hover{ border-color:var(--ink); background:var(--paper-2); }
+    #sppdp-pdp-{{ section.id }} .thumb-toggle[hidden]{ display:none !important; }
+    #sppdp-pdp-{{ section.id }} .thumb-toggle__chev{ width:15px; height:15px; flex:0 0 auto; transition:transform .2s ease; }
+    #sppdp-pdp-{{ section.id }} .thumb-toggle[aria-expanded="true"] .thumb-toggle__chev{ transform:rotate(180deg); }
+    #sppdp-pdp-{{ section.id }} .build-switch{ display:flex; flex-direction:column; gap:9px; margin-top:14px; }
+    #sppdp-pdp-{{ section.id }} .build-pills{ display:flex; gap:8px; flex-wrap:wrap; }
+    #sppdp-pdp-{{ section.id }} .build-pill{ display:inline-flex; align-items:center; min-height:42px; padding:0 14px; border:1.5px solid var(--line); border-radius:8px; font-size:.9rem; font-weight:600; color:var(--ink); text-decoration:none; transition:border-color .15s, background .15s, color .15s; }
+    #sppdp-pdp-{{ section.id }} a.build-pill:hover{ border-color:var(--ink); }
+    #sppdp-pdp-{{ section.id }} .build-pill.is-active{ background:var(--ink); border-color:var(--ink); color:#fff; }
+    #sppdp-pdp-{{ section.id }} .wheel-upsell{ display:flex; align-items:flex-start; gap:10px; margin-top:6px; padding:12px 14px; border:1px solid rgba(31,138,76,.32); background:rgba(31,138,76,.07); border-radius:10px; }
+    #sppdp-pdp-{{ section.id }} .wheel-upsell--opts{ flex-direction:column; gap:9px; }
+    #sppdp-pdp-{{ section.id }} .wheel-upsell__ico{ flex:0 0 auto; margin-top:1px; }
+    #sppdp-pdp-{{ section.id }} .wheel-upsell__ico svg{ width:20px; height:20px; stroke:#1F8A4C; fill:none; stroke-width:1.8; }
+    #sppdp-pdp-{{ section.id }} .wheel-upsell__opt{ display:flex; align-items:flex-start; gap:10px; cursor:pointer; width:100%; }
+    #sppdp-pdp-{{ section.id }} .wheel-upsell__opt input{ margin-top:3px; width:16px; height:16px; accent-color:#1F8A4C; flex:0 0 auto; }
+    #sppdp-pdp-{{ section.id }} .wheel-upsell__txt{ display:flex; flex-direction:column; gap:2px; }
+    #sppdp-pdp-{{ section.id }} .wheel-upsell__title{ font-size:.92rem; font-weight:700; color:var(--ink); letter-spacing:-0.01em; }
+    #sppdp-pdp-{{ section.id }} .wheel-upsell__save{ color:#1F8A4C; }
+    #sppdp-pdp-{{ section.id }} .wheel-upsell__note{ font-size:.8rem; color:var(--muted); line-height:1.4; }
+    #sppdp-pdp-{{ section.id }} .wheel-upsell__note a{ color:var(--accent); font-weight:600; white-space:nowrap; }
+    #sppdp-pdp-{{ section.id }} .sppdp-fitcta{ display:flex; align-items:center; gap:11px; margin:10px 0 2px; padding:11px 14px; border:1.5px solid var(--accent); border-radius:10px; background:rgba(180,18,46,.05); color:var(--ink); text-decoration:none; transition:background .15s ease; }
+    #sppdp-pdp-{{ section.id }} .sppdp-fitcta:hover{ background:rgba(180,18,46,.11); }
+    #sppdp-pdp-{{ section.id }} .sppdp-fitcta__ico{ flex:0 0 auto; }
+    #sppdp-pdp-{{ section.id }} .sppdp-fitcta__ico svg{ width:24px; height:24px; stroke:var(--accent); fill:none; stroke-width:1.7; }
+    #sppdp-pdp-{{ section.id }} .sppdp-fitcta__txt{ display:flex; flex-direction:column; line-height:1.25; }
+    #sppdp-pdp-{{ section.id }} .sppdp-fitcta__txt b{ font-size:.95rem; color:var(--ink); }
+    #sppdp-pdp-{{ section.id }} .sppdp-fitcta__txt span{ font-size:.82rem; color:var(--accent); font-weight:600; }
+  </style>
+  <script>
+  (function(){
+    var R = document.getElementById('sppdp-pdp-{{ section.id }}');
+    if(!R || R.dataset.vinit) return; R.dataset.vinit = '1';
+    var variants = {{ product.variants | json }};
+    var months = {{ months }};
+    var ctaPrefix = {{ section.settings.cta_prefix | json }};
+    var colorPos = {{ color_pos | json }}, sizePos = {{ size_pos | json }};
+    var THUMB_COLLAPSED = 5; // thumbnails shown before the "+N more" toggle
+    var railExpanded = false;
+    var form = R.querySelector('[data-product-form]');
+    // Hotspots annotate one specific image — show them only when the stage is
+    // on that image, hide them when the shopper browses to other photos.
+    var stageEl = R.querySelector('[data-stage-img]');
+    var toggleBtn = R.querySelector('[data-thumb-toggle]');
+    var toggleLabel = R.querySelector('[data-thumb-toggle-label]');
+    var hotspotGroups = R.querySelectorAll('[data-hotspots]');
+    function syncHotspots(){
+      if(!stageEl || !hotspotGroups.length) return;
+      var src = stageEl.getAttribute('src');
+      hotspotGroups.forEach(function(g){ g.style.display = (g.getAttribute('data-img-src') === src) ? '' : 'none'; });
+    }
+    if(stageEl && hotspotGroups.length && stageEl.tagName === 'IMG'){
+      new MutationObserver(syncHotspots).observe(stageEl, {attributes:true, attributeFilter:['src']});
+      syncHotspots();
+    }
+    // Which thumbnails match the selected colorway (alt text). Images tagged
+    // with more than one color (comma) or no color are shared across colors.
+    function colorThumbs(){
+      var colorVal = colorPos ? sel[colorPos] : null;
+      var out = [];
+      R.querySelectorAll('[data-thumb]').forEach(function(t){
+        var c = (t.getAttribute('data-color') || '').trim();
+        var shared = (c === '') || (c.indexOf(',') !== -1);
+        if(!colorPos || shared || c === colorVal) out.push(t);
+      });
+      return out;
+    }
+    // Show the matching thumbnails; if collapsed, only the first N, with the
+    // rest behind a "+N more" toggle. Non-matching thumbnails stay hidden.
+    function renderRail(){
+      var matches = colorThumbs();
+      var matchSet = new Set(matches);
+      R.querySelectorAll('[data-thumb]').forEach(function(t){ if(!matchSet.has(t)) t.hidden = true; });
+      var overflow = matches.length - THUMB_COLLAPSED;
+      matches.forEach(function(t, i){
+        t.hidden = (!railExpanded && i >= THUMB_COLLAPSED);
+      });
+      if(toggleBtn){
+        if(overflow > 0){
+          toggleBtn.hidden = false;
+          toggleBtn.setAttribute('aria-expanded', railExpanded ? 'true' : 'false');
+          if(toggleLabel) toggleLabel.textContent = railExpanded ? 'Show less' : ('+' + overflow + ' more');
+        } else {
+          toggleBtn.hidden = true;
+        }
+      }
+      return matches.length ? matches[0] : null;
+    }
+    function filterMobile(){
+      if(!colorPos) return;
+      var colorVal = sel[colorPos];
+      R.querySelectorAll('.m-slide[data-color], [data-gallery-dot]').forEach(function(el){
+        var c = (el.getAttribute('data-color') || '').trim();
+        var shared = (c === '') || (c.indexOf(',') !== -1);
+        el.style.display = (shared || c === colorVal) ? '' : 'none';
+      });
+    }
+    function money(c){ return '$' + (c/100).toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0}); }
+    var groups = {};
+    R.querySelectorAll('[data-opt]').forEach(function(b){ var o=b.getAttribute('data-opt'); (groups[o]=groups[o]||[]).push(b); });
+    var sel = {};
+    Object.keys(groups).forEach(function(o){
+      var on = groups[o].filter(function(b){return b.getAttribute('aria-pressed')==='true';})[0] || groups[o][0];
+      sel[o] = on.getAttribute('data-value');
+    });
+    function matches(v, ovPos, ovVal){
+      for(var k in groups){
+        var want = (k===ovPos) ? ovVal : sel[k];
+        var ov = v['option'+k];
+        if(ov!=null && String(ov)!==want) return false;
+      }
+      return true;
+    }
+    function find(){ return variants.filter(function(v){ return matches(v); })[0]; }
+    function someAvailable(pos, val){ return variants.some(function(v){ return v.available && matches(v, pos, val); }); }
+    function setAll(q, val){ R.querySelectorAll(q).forEach(function(el){ el.textContent = val; }); }
+    function wheelNet(){ var n=0; R.querySelectorAll('[data-wheel-upgrade]').forEach(function(w){ if(w.checked){ n += parseInt(w.getAttribute('data-wheel-net')||'0',10); } }); return n; }
+    function markAvailability(){
+      Object.keys(groups).forEach(function(o){
+        groups[o].forEach(function(b){ b.classList.toggle('is-unavailable', !someAvailable(o, b.getAttribute('data-value'))); });
+      });
+    }
+    function activateThumb(thumb){
+      if(!thumb) return;
+      R.querySelectorAll('[data-thumb]').forEach(function(t){ t.classList.remove('active'); });
+      thumb.classList.add('active');
+      var st = R.querySelector('[data-stage-img]');
+      if(st && st.tagName==='IMG' && thumb.getAttribute('data-img')){ st.src = thumb.getAttribute('data-img'); }
+    }
+    function update(){
+      var v = find();
+      markAvailability();
+      if(colorPos) setAll('[data-swatch-name]', sel[colorPos]);
+      if(sizePos){ var sv=R.querySelector('[data-size-val]'); if(sv) sv.innerHTML = 'Selected: <b>'+sel[sizePos]+'</b>'; }
+      var badge = R.querySelector('[data-stage-badge]'); if(badge && colorPos) badge.textContent = sel[colorPos];
+      var idIn = R.querySelector('[data-variant-id]');
+      var atcs = R.querySelectorAll('[data-atc]');
+      var wn = wheelNet();
+      if(v){
+        if(idIn) idIn.value = v.id;
+        setAll('[data-price]', money(v.price + wn));
+        /* Update Affirm's own as-low-as components (main + sticky) to the live
+           variant price and let Affirm re-render — never hardcode a "$X/mo". */
+        var alas = R.querySelectorAll('.affirm-as-low-as');
+        for(var ai=0; ai<alas.length; ai++){ alas[ai].setAttribute('data-amount', (v.price + wn)); }
+        if(window.affirm && window.affirm.ui && window.affirm.ui.refresh) window.affirm.ui.refresh();
+        if(colorPos){
+          railExpanded = false; // re-collapse when the colorway changes
+          var firstThumb = renderRail();
+          filterMobile();
+          // Prefer the variant's own featured image if its thumbnail is in the
+          // matching set; otherwise fall back to the first thumbnail for color.
+          var target = null;
+          if(v.featured_media && v.featured_media.id){
+            var cand = R.querySelector('[data-thumb][data-media-id="'+v.featured_media.id+'"]');
+            if(cand){
+              var cc = (cand.getAttribute('data-color') || '').trim();
+              var ccShared = (cc === '') || (cc.indexOf(',') !== -1);
+              if(ccShared || cc === sel[colorPos]) target = cand;
+            }
+          }
+          activateThumb(target || firstThumb);
+        } else if(v.featured_image && v.featured_image.src){
+          var st0=R.querySelector('[data-stage-img]'); if(st0 && st0.tagName==='IMG'){ st0.src = v.featured_image.src; }
+        }
+      }
+      atcs.forEach(function(b){
+        var l=b.querySelector('.btn-label');
+        if(v && v.available){ b.disabled=false; if(l) l.textContent = b.classList.contains('btn-addcart') ? (ctaPrefix + money(v.price + wn)) : 'Add to cart'; }
+        else { b.disabled=true; if(l) l.textContent = v ? 'Sold out' : 'Unavailable'; }
+      });
+    }
+    // "+N more" / "Show less" toggle.
+    if(toggleBtn){
+      toggleBtn.addEventListener('click', function(){
+        railExpanded = !railExpanded;
+        renderRail();
+      });
+    }
+    // Manual thumbnail clicks still swap the stage image.
+    R.querySelectorAll('[data-thumb]').forEach(function(t){
+      t.addEventListener('click', function(){ activateThumb(t); });
+    });
+    R.querySelectorAll('[data-opt]').forEach(function(b){
+      b.addEventListener('click', function(){
+        var o=b.getAttribute('data-opt');
+        groups[o].forEach(function(x){ x.setAttribute('aria-pressed','false'); });
+        b.setAttribute('aria-pressed','true');
+        sel[o]=b.getAttribute('data-value');
+        update();
+      });
+    });
+    var wheelOpts = R.querySelectorAll('[data-wheel-upgrade]');
+    wheelOpts.forEach(function(w){
+      w.addEventListener('change', function(){
+        if(w.checked){ wheelOpts.forEach(function(o){ if(o!==w){ o.checked=false; } }); }
+        update();
+      });
+    });
+    R.querySelectorAll('[data-atc]').forEach(function(btn){
+      btn.addEventListener('click', function(e){
+        if(btn.disabled) return;
+        var v=find(); if(!v || !v.available) return;
+        e.preventDefault();
+        var l=btn.querySelector('.btn-label'); if(l) l.textContent='Adding…';
+        var items=[{id:v.id, quantity:1}];
+        R.querySelectorAll('[data-wheel-upgrade]').forEach(function(wu){
+          if(wu.checked && wu.value){ items.push({id: parseInt(wu.value,10), quantity:1}); }
+        });
+        fetch('/cart/add.js',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({items:items})})
+          .then(function(r){ if(!r.ok) throw r; return r.json(); })
+          .then(function(){ window.location.href='/cart'; })
+          .catch(function(){ if(form){ form.submit(); } else { window.location.href='/cart'; } });
+      });
+    });
+    // Initial paint: collapse the rail to the starting color and sync stage.
+    if(colorPos){ renderRail(); filterMobile(); }
+    update();
+  })();
+  </script>
+  {%- if section.settings.show_affirm_line and section.settings.affirm_public_key != blank -%}
+  <script>
+  (function(){
+    /* Affirm promotional-messaging loader (financing widget, not analytics).
+       Guarded so it no-ops if the Affirm app block/embed already loaded it. */
+    if (window.affirm || window._affirm_config) {
+      if (window.affirm && window.affirm.ui && window.affirm.ui.refresh) window.affirm.ui.refresh();
+      return;
+    }
+    window._affirm_config = { public_api_key: {{ section.settings.affirm_public_key | json }}, script: "https://cdn1.affirm.com/js/v2/affirm.js" };
+    (function(m,g,n,d,a,e,h,c){var b=m[n]||{},k=document.createElement(e),p=document.getElementsByTagName(e)[0],l=function(a,b,c){return function(){a[b]._.push([c,arguments])}};b[d]=l(b,d,"set");var f=b[d];b[a]={};b[a]._=[];f._=[];b._=[];b[a][h]=l(b,a,h);b[c]=function(){b._.push([h,arguments])};a=0;for(c="set add save post open empty reset on off trigger ready setProduct".split(" ");a<c.length;a++)f[c[a]]=l(b,d,c[a]);a=0;for(c=["get","token","url","items"];a<c.length;a++)f[c[a]]=function(){};k.async=!0;k.src=g[e];p.parentNode.insertBefore(k,p);delete g[e];f(m[n]);m[n]=b})(window._affirm_config,{script:window._affirm_config.script},"affirm","checkout","ui","script","ready","jsReady");
+  })();
+  </script>
+  {%- endif -%}
+</div>
+{% schema %}
+{
+  "name": "SP-105 PDP · Product",
+  "tag": "section",
+  "max_blocks": 30,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Breadcrumb"
+    },
+    {
+      "type": "text",
+      "id": "bc_home",
+      "label": "Home label",
+      "default": "Home"
+    },
+    {
+      "type": "text",
+      "id": "bc_col",
+      "label": "Collection label",
+      "default": "Triathlon — SP"
+    },
+    {
+      "type": "url",
+      "id": "bc_col_url",
+      "label": "Collection link"
+    },
+    {
+      "type": "header",
+      "content": "Build switcher (groupset)"
+    },
+    {
+      "type": "text",
+      "id": "build_collection",
+      "label": "Collection of SP builds (handle)",
+      "info": "Every product in this collection becomes a switchable build pill; the current product is highlighted. Leave blank to hide.",
+      "default": "sp"
+    },
+    {
+      "type": "text",
+      "id": "build_label",
+      "label": "Switcher label",
+      "default": "Groupset"
+    },
+    {
+      "type": "header",
+      "content": "Title & rating"
+    },
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Kicker",
+      "default": "SP Triathlon · Entry build"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle (defaults to product type)",
+      "default": "Carbon triathlon & time-trial bike"
+    },
+    {
+      "type": "text",
+      "id": "rating_stars",
+      "label": "Stars",
+      "default": "★★★★★"
+    },
+    {
+      "type": "text",
+      "id": "rating_value",
+      "label": "Rating value (falls back to reviews.rating metafield)",
+      "default": "4.8"
+    },
+    {
+      "type": "text",
+      "id": "rating_count",
+      "label": "Review count (falls back to reviews.rating_count metafield)"
+    },
+    {
+      "type": "text",
+      "id": "reviews_anchor",
+      "label": "Reviews anchor",
+      "default": "#sppdp-reviews"
+    },
+    {
+      "type": "header",
+      "content": "Price & financing"
+    },
+    {
+      "type": "text",
+      "id": "price_note",
+      "label": "Price note",
+      "default": "USD · $99 flat shipping to the lower 48"
+    },
+    {
+      "type": "range",
+      "id": "affirm_months",
+      "label": "Affirm months (monthly = price ÷ months)",
+      "min": 6,
+      "max": 48,
+      "step": 6,
+      "default": 12
+    },
+    {
+      "type": "text",
+      "id": "affirm_apr",
+      "label": "Affirm APR text",
+      "default": "0% APR"
+    },
+    {
+      "type": "url",
+      "id": "affirm_url",
+      "label": "Affirm prequalify link (static line)"
+    },
+    {
+      "type": "text",
+      "id": "wheel_note",
+      "label": "Wheel-upgrade note",
+      "info": "Shown under the wheel-upgrade options. Per build, set custom.wheel_upgrade_variant (one-click wheel add) and custom.wheel_upgrade_credit (= base wheelset price minus $150); the PDP shows wheel price minus credit, with a matching Save chip. Add custom.wheel_upgrade_variant_2 for a second wheel option. Text-only builds use custom.wheel_upgrade for the callout.",
+      "default": "Discount applied automatically when your bike & wheels are in your cart."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_affirm_line",
+      "label": "Show built-in Affirm line",
+      "info": "Turn off if you add the official Affirm app block (below) so you don't show both.",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "affirm_public_key",
+      "label": "Affirm public API key",
+      "info": "Loads Affirm's as-low-as messaging for the built-in line. Leave empty if the Affirm app block/embed already loads affirm.js on this page.",
+      "default": "WSAUD4RQEGCMBW2I"
+    },
+    {
+      "type": "header",
+      "content": "Gallery — caption & hotspots",
+      "info": "Add 'Hotspot' blocks below; set each one's Photo number to place it on that gallery image. Hotspots show only when their photo is on the main stage."
+    },
+    {
+      "type": "textarea",
+      "id": "gallery_caption",
+      "label": "Stage caption",
+      "default": "Hover the numbered points to explore the frame tech."
+    },
+    {
+      "type": "header",
+      "content": "Size calculator"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_size_calc",
+      "label": "Show size calculator",
+      "default": true,
+      "info": "Now sits in the left column under the tech tiles, filling the space beside the buy box."
+    },
+    {
+      "type": "text",
+      "id": "size_calc_cta",
+      "label": "Calculator CTA",
+      "default": "Find your perfect bike size here"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_hotspots",
+      "label": "Show annotation hotspots",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Education detail tiles"
+    },
+    {
+      "type": "image_picker",
+      "id": "edu_1_image",
+      "label": "Tile 1 image"
+    },
+    {
+      "type": "text",
+      "id": "edu_1_title",
+      "label": "Tile 1 title",
+      "default": "Toray T700 carbon"
+    },
+    {
+      "type": "textarea",
+      "id": "edu_1_desc",
+      "label": "Tile 1 text",
+      "default": "Hand-laid layup — the same fiber class as superbikes costing 3× more."
+    },
+    {
+      "type": "image_picker",
+      "id": "edu_2_image",
+      "label": "Tile 2 image"
+    },
+    {
+      "type": "text",
+      "id": "edu_2_title",
+      "label": "Tile 2 title",
+      "default": "SAGS adjustable cockpit"
+    },
+    {
+      "type": "textarea",
+      "id": "edu_2_desc",
+      "label": "Tile 2 text",
+      "default": "140mm fore/aft pad range. Dial your aero fit without a new stem."
+    },
+    {
+      "type": "image_picker",
+      "id": "edu_3_image",
+      "label": "Tile 3 image"
+    },
+    {
+      "type": "text",
+      "id": "edu_3_title",
+      "label": "Tile 3 title",
+      "default": "Race-day storage"
+    },
+    {
+      "type": "textarea",
+      "id": "edu_3_desc",
+      "label": "Tile 3 text",
+      "default": "Down-tube and top-tube mounts for nutrition and tools, built in."
+    },
+    {
+      "type": "header",
+      "content": "Size help & CTA"
+    },
+    {
+      "type": "text",
+      "id": "size_help_label",
+      "label": "Find-your-size link label",
+      "default": "Find your size"
+    },
+    {
+      "type": "url",
+      "id": "size_help_url",
+      "label": "Find-your-size link"
+    },
+    {
+      "type": "text",
+      "id": "cta_prefix",
+      "label": "Add-to-cart label prefix",
+      "default": "Add to cart — "
+    },
+    {
+      "type": "text",
+      "id": "demo_note",
+      "label": "Demo note",
+      "default": "7-day home demo"
+    },
+    {
+      "type": "text",
+      "id": "consult_label",
+      "label": "Consult link label",
+      "default": "Or book a free fit consult"
+    },
+    {
+      "type": "url",
+      "id": "consult_url",
+      "label": "Consult link"
+    },
+    {
+      "type": "header",
+      "content": "Info accordion (below size calculator)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_accordion",
+      "label": "Show info accordion",
+      "default": true,
+      "info": "Collapsible rows below the size calculator (left column on desktop). Set each row's content to Rich text or Product description, add an optional button, and enable more rows (e.g. Shipping) anytime."
+    },
+    {
+      "type": "header",
+      "content": "Accordion · Row 1"
+    },
+    {
+      "type": "text",
+      "id": "acc1_heading",
+      "label": "Heading",
+      "default": "Description"
+    },
+    {
+      "type": "select",
+      "id": "acc1_content",
+      "label": "Content",
+      "options": [
+        { "value": "none", "label": "Hidden" },
+        { "value": "text", "label": "Rich text" },
+        { "value": "description", "label": "Product description" }
+      ],
+      "default": "description"
+    },
+    {
+      "type": "richtext",
+      "id": "acc1_text",
+      "label": "Rich text",
+      "default": "<p>Add details here.</p>"
+    },
+    {
+      "type": "text",
+      "id": "acc1_btn_label",
+      "label": "Button label"
+    },
+    {
+      "type": "text",
+      "id": "acc1_btn_url",
+      "label": "Button link"
+    },
+    {
+      "type": "checkbox",
+      "id": "acc1_open",
+      "label": "Open by default",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Accordion · Row 2"
+    },
+    {
+      "type": "text",
+      "id": "acc2_heading",
+      "label": "Heading",
+      "default": "Bike Size Guide & Geometry"
+    },
+    {
+      "type": "select",
+      "id": "acc2_content",
+      "label": "Content",
+      "options": [
+        { "value": "none", "label": "Hidden" },
+        { "value": "text", "label": "Rich text" },
+        { "value": "description", "label": "Product description" }
+      ],
+      "default": "text"
+    },
+    {
+      "type": "richtext",
+      "id": "acc2_text",
+      "label": "Rich text",
+      "default": "<p>See full geometry tables and find the right frame size for your body before you buy.</p>"
+    },
+    {
+      "type": "text",
+      "id": "acc2_btn_label",
+      "label": "Button label",
+      "default": "View size guide & geometry"
+    },
+    {
+      "type": "text",
+      "id": "acc2_btn_url",
+      "label": "Button link",
+      "default": "/pages/size-guide",
+      "info": "Paste a URL or path, e.g. /pages/size-guide"
+    },
+    {
+      "type": "checkbox",
+      "id": "acc2_open",
+      "label": "Open by default",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Accordion · Row 3"
+    },
+    {
+      "type": "text",
+      "id": "acc3_heading",
+      "label": "Heading"
+    },
+    {
+      "type": "select",
+      "id": "acc3_content",
+      "label": "Content",
+      "options": [
+        { "value": "none", "label": "Hidden" },
+        { "value": "text", "label": "Rich text" },
+        { "value": "description", "label": "Product description" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "richtext",
+      "id": "acc3_text",
+      "label": "Rich text",
+      "default": "<p>Add details here.</p>"
+    },
+    {
+      "type": "text",
+      "id": "acc3_btn_label",
+      "label": "Button label"
+    },
+    {
+      "type": "text",
+      "id": "acc3_btn_url",
+      "label": "Button link"
+    },
+    {
+      "type": "checkbox",
+      "id": "acc3_open",
+      "label": "Open by default",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Accordion · Row 4"
+    },
+    {
+      "type": "text",
+      "id": "acc4_heading",
+      "label": "Heading"
+    },
+    {
+      "type": "select",
+      "id": "acc4_content",
+      "label": "Content",
+      "options": [
+        { "value": "none", "label": "Hidden" },
+        { "value": "text", "label": "Rich text" },
+        { "value": "description", "label": "Product description" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "richtext",
+      "id": "acc4_text",
+      "label": "Rich text",
+      "default": "<p>Add details here.</p>"
+    },
+    {
+      "type": "text",
+      "id": "acc4_btn_label",
+      "label": "Button label"
+    },
+    {
+      "type": "text",
+      "id": "acc4_btn_url",
+      "label": "Button link"
+    },
+    {
+      "type": "checkbox",
+      "id": "acc4_open",
+      "label": "Open by default",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Accordion · Row 5"
+    },
+    {
+      "type": "text",
+      "id": "acc5_heading",
+      "label": "Heading"
+    },
+    {
+      "type": "select",
+      "id": "acc5_content",
+      "label": "Content",
+      "options": [
+        { "value": "none", "label": "Hidden" },
+        { "value": "text", "label": "Rich text" },
+        { "value": "description", "label": "Product description" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "richtext",
+      "id": "acc5_text",
+      "label": "Rich text",
+      "default": "<p>Add details here.</p>"
+    },
+    {
+      "type": "text",
+      "id": "acc5_btn_label",
+      "label": "Button label"
+    },
+    {
+      "type": "text",
+      "id": "acc5_btn_url",
+      "label": "Button link"
+    },
+    {
+      "type": "checkbox",
+      "id": "acc5_open",
+      "label": "Open by default",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Mobile"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sticky",
+      "label": "Show persistent mobile add-to-cart bar",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Save your build (Play 3)"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_save_build",
+      "label": "Show 'Save this build / email me the quote'",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "sb_klaviyo_company",
+      "label": "Klaviyo company ID",
+      "default": "YejYTH"
+    },
+    {
+      "type": "text",
+      "id": "sb_klaviyo_list",
+      "label": "Klaviyo list ID for the Saved-Build flow",
+      "info": "List the 'Saved Build' email flow listens on. Leave blank to capture to the CRM only."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "trust",
+      "name": "Trust item",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            {
+              "value": "shield-check",
+              "label": "Shield check"
+            },
+            {
+              "value": "bars",
+              "label": "Bars"
+            },
+            {
+              "value": "sliders",
+              "label": "Sliders"
+            },
+            {
+              "value": "warranty",
+              "label": "Warranty"
+            }
+          ],
+          "default": "shield-check"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Trust point"
+        },
+        {
+          "type": "textarea",
+          "id": "sub",
+          "label": "Subtext"
+        }
+      ]
+    },
+    {
+      "type": "hotspot",
+      "name": "Hotspot",
+      "settings": [
+        {
+          "type": "range",
+          "id": "image_index",
+          "label": "Photo number (which gallery image)",
+          "min": 1,
+          "max": 6,
+          "step": 1,
+          "default": 1
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Feature callout"
+        },
+        {
+          "type": "range",
+          "id": "x",
+          "label": "X position %",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 50
+        },
+        {
+          "type": "range",
+          "id": "y",
+          "label": "Y position %",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 50
+        }
+      ]
+    },
+    {
+      "type": "@app"
+    }
+  ],
+  "presets": [
+    {
+      "name": "SP-105 PDP · Product",
+      "blocks": [
+        {
+          "type": "trust",
+          "settings": {
+            "icon": "shield-check",
+            "title": "Designed by ex-Cervélo engineers",
+            "sub": "Kevin Quan, who designed the Cervélo P-Series, drew this frame."
+          }
+        },
+        {
+          "type": "trust",
+          "settings": {
+            "icon": "bars",
+            "title": "Direct-to-consumer pricing",
+            "sub": "No dealer markup. You pay for the bike, not the showroom."
+          }
+        },
+        {
+          "type": "trust",
+          "settings": {
+            "icon": "sliders",
+            "title": "Free fit support & size exchanges",
+            "sub": "Talk to a real fitter before and after you buy. Wrong size? Swap it free."
+          }
+        },
+        {
+          "type": "trust",
+          "settings": {
+            "icon": "warranty",
+            "title": "Lifetime frame warranty + crash replacement",
+            "sub": "Honored directly by us. Damage it in a crash and we replace the frame."
+          }
+        },
+        {
+          "type": "hotspot",
+          "settings": {
+            "image_index": 1,
+            "label": "Kammtail tube shapes — aero without UCI-only weirdness",
+            "x": 34,
+            "y": 58
+          }
+        },
+        {
+          "type": "hotspot",
+          "settings": {
+            "image_index": 1,
+            "label": "Fully internal cable + hose routing",
+            "x": 60,
+            "y": 40
+          }
+        },
+        {
+          "type": "hotspot",
+          "settings": {
+            "image_index": 1,
+            "label": "SAGS cockpit — 140mm of fit adjustment",
+            "x": 78,
+            "y": 30
+          }
+        },
+        {
+          "type": "hotspot",
+          "settings": {
+            "image_index": 2,
+            "label": "TRP Spyre mechanical disc — flat-mount",
+            "x": 32,
+            "y": 66
+          }
+        },
+        {
+          "type": "hotspot",
+          "settings": {
+            "image_index": 2,
+            "label": "12mm thru-axle",
+            "x": 72,
+            "y": 70
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+
