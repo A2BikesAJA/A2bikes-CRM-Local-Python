@@ -1,0 +1,87 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "custom.overlay",
+  "name": "t:groups.overlay_group.name",
+  "sections": {
+    "quick-cart": {
+      "type": "quick-cart",
+      "settings": {
+        "enable_quick_cart": true,
+        "show_product_currency": true,
+        "continue_shopping_link": "shopify://collections/frontpage",
+        "promotion_text": "Not sure where to start? Try these collections:",
+        "collection_list": [
+          "all-accessory-bundles"
+        ],
+        "collection_list_button_style": "btn--primary"
+      }
+    },
+    "popup": {
+      "type": "popup",
+      "blocks": {
+        "popup_nQjrPG": {
+          "type": "popup",
+          "settings": {
+            "delay": "timer_0",
+            "frequency": "frequency_168",
+            "show_on_exit_intent": true,
+            "disable_for_account_holders": false,
+            "show_on_specific_page": false,
+            "target_page": "",
+            "accent": "Promotion",
+            "heading": "Announce your promotion",
+            "heading_font_class": "fs-heading-2-base",
+            "subheading": "Get a free bike",
+            "text": "<p>You also get free shipping. Use code PROMO</p>",
+            "link": "",
+            "link_text": "Start shopping",
+            "dismiss_text": "No thanks",
+            "footer_text": "<p>* Optional footer note</p>",
+            "show_social_icons": false,
+            "popup_size": "large",
+            "content_alignment": "center",
+            "image": "shopify://shop_images/DSCF9200-Edit-Edit-2-5.jpg",
+            "image_position": "top",
+            "focal_point": "top",
+            "show_image_on_mobile": true,
+            "background_color": "#ffffff",
+            "text_color": "#000000",
+            "button_background_color": "#000000",
+            "button_text_color": "#ffffff",
+            "color_overlay": "#000000",
+            "overlay_opacity": 0
+          }
+        }
+      },
+      "block_order": [
+        "popup_nQjrPG"
+      ],
+      "disabled": true,
+      "settings": {}
+    },
+    "a2-exit-intent": {
+      "type": "a2-exit-intent",
+      "settings": {
+        "enable": false
+      }
+    },
+    "17677252767c255c43": {
+      "type": "_blocks",
+      "settings": {}
+    }
+  },
+  "order": [
+    "quick-cart",
+    "popup",
+    "a2-exit-intent",
+    "17677252767c255c43"
+  ]
+}
