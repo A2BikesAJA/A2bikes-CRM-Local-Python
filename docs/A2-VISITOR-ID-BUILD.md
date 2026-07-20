@@ -124,6 +124,15 @@ auto-identifies logged-in customers and re-fires from `sessionStorage`.
 | 9 | Financing prequal step | `save_build`/new | not started | — |
 
 ### Play 1 — exit-intent (this build)
+- **Staged draft theme:** `176605397156` — "A2 Visitor-ID — Exit Intent (draft,
+  do not publish)" (duplicate of the 07‑18 live theme). Preview:
+  `https://a2bikes.com/?preview_theme_id=176605397156`
+  Both files verified byte-identical via `checksumMd5`:
+  `sections/a2-exit-intent.liquid` = `e1a8b60b3d8cdb422a1b90a205b4b374`,
+  `sections/overlay-group.json` = `af383db96059a53f81cd50fdbada1f55`.
+- To preview the popup: theme editor → this draft → set **Offer amount** +
+  **Discount code**, tick **Enable**, save, then trigger exit intent (move the
+  cursor out the top of the window on desktop).
 - `shopify/sections/a2-exit-intent.liquid` — self-contained global overlay
   (own CSS+JS, does not depend on a2-lp.js). Added to `overlay-group.json`.
 - Ships **disabled by default** (`enable` setting off) and with a **blank
