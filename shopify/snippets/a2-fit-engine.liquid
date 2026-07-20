@@ -1,0 +1,715 @@
+{%- comment -%}
+  A2 Bikes — Fit Engine (shared)  ·  Phase 0 of the fit-calculator redesign
+  ---------------------------------------------------------------------------
+  ONE snippet powers the inline fit finder + the slide-in drawer, for BOTH
+  models. Recommendation-first result, branded canvas plot, and the
+  "Requested Fit Results" Klaviyo event (see KLAVIYO-EVENT-SPEC.md).
+
+  Fit MATH is unchanged from the live calcs (deploy11):
+    - Rogue = bar HX/HY model (a2-rogue-fit-calc)
+    - SP    = Pad X/Y model, Metron (105/Rival) or Si013 (Force/Red) cockpit
+             (a2-fit-calculator)
+
+  Usage (from the PDP section):
+    {% render 'a2-fit-engine', model: 'rogue' %}   (or model: 'sp')
+  Reads the current `product` for build handle, price and URL. The top-of-PDP
+  "Find your size" link opens the drawer via window.A2Fit.openDrawer().
+
+  Styling inherits the section's --a2-* tokens; extra shades are derived with
+  color-mix so the widget always matches the surrounding theme. GTM dataLayer
+  only for GA4/Meta (window.a2dl); Klaviyo is the sanctioned direct call.
+{%- endcomment -%}
+
+{%- liquid
+  assign model = model | default: 'rogue'
+  assign build_handle = ''
+  assign cockpit = ''
+  case product.handle
+    when 'sp-shimano-105n'
+      assign build_handle = '105'
+      assign cockpit = 'metron'
+    when 'sp-sram-rival-1'
+      assign build_handle = 'rival'
+      assign cockpit = 'metron'
+    when 'sp-sram-force'
+      assign build_handle = 'force'
+      assign cockpit = 'si013'
+    when 'sp-sram-red-axs'
+      assign build_handle = 'red'
+      assign cockpit = 'si013'
+    when 'rogue-shimano-105'
+      assign build_handle = '105'
+    when 'rogue-rival-axs'
+      assign build_handle = 'rival'
+    when 'rogue-sram-force-etap-axs'
+      assign build_handle = 'force'
+    when 'rogue-sram-red-axs'
+      assign build_handle = 'red'
+  endcase
+  unless build_handle != ''
+    assign build_handle = 'unknown'
+  endunless
+-%}
+<script>
+  window.A2_FIT_CTX = {
+    model: {{ model | json }},
+    build: {{ build_handle | json }},
+    cockpit: {{ cockpit | json }},
+    price: {{ product.price | money | json }},
+    url: {{ product.url | json }},
+    productTitle: {{ product.title | json }},
+    dbUrl: {{ 'a2-bike-db.json' | asset_url | json }}
+  };
+</script>
+
+{% raw %}
+<style>
+  .a2fe{
+    --fe-bg:var(--a2-bg,#ffffff);
+    --fe-ink:var(--a2-fg,#14181d);
+    --fe-accent:var(--a2-accent,#b4122e);
+    --fe-accent-fg:var(--a2-accent-fg,#ffffff);
+    --fe-border:var(--a2-border,rgba(15,20,25,.14));
+    --fe-ink-2:color-mix(in srgb, var(--fe-ink) 60%, var(--fe-bg));
+    --fe-panel:color-mix(in srgb, var(--fe-ink) 4%, var(--fe-bg));
+    --fe-panel-2:color-mix(in srgb, var(--fe-ink) 7%, var(--fe-bg));
+    --fe-border-2:color-mix(in srgb, var(--fe-ink) 22%, var(--fe-bg));
+    --fe-soft:color-mix(in srgb, var(--fe-accent) 8%, var(--fe-bg));
+    --fe-good:#1f8a4c;
+    --fe-shadow:0 1px 2px rgba(15,20,25,.06),0 8px 30px rgba(15,20,25,.08);
+    --fe-disp:var(--a2-font-display,"Bahnschrift","DIN Condensed","Oswald","Arial Narrow",system-ui,sans-serif);
+    --fe-mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    --fe-fs:#6b6be6; --fe-fm:#e8527e; --fe-fl:#f29a3c; --fe-fxl:#c3d43a;
+    color:var(--fe-ink);
+  }
+  .a2fe *,.a2fe *::before,.a2fe *::after{ box-sizing:border-box; }
+
+  .a2fe-card-shell{ border:1px solid var(--fe-border); border-radius:16px; background:var(--fe-bg); box-shadow:var(--fe-shadow); overflow:hidden; }
+  .a2fe-head{ display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; padding:16px 20px; border-bottom:1px solid var(--fe-border); background:var(--fe-panel); }
+  .a2fe-kick{ font-family:var(--fe-disp); text-transform:uppercase; letter-spacing:.14em; font-size:.72rem; color:var(--fe-accent); }
+  .a2fe-h{ font-family:var(--fe-disp); font-size:clamp(1.3rem,2.4vw,1.7rem); letter-spacing:.01em; margin:0; text-wrap:balance; }
+  .a2fe-body{ padding:clamp(16px,3vw,26px); }
+
+  .a2fe-field{ display:flex; flex-direction:column; gap:7px; }
+  .a2fe-lbl{ font-size:.82rem; font-weight:600; letter-spacing:.02em; color:var(--fe-ink-2); }
+  .a2fe-in{ font:inherit; color:var(--fe-ink); background:var(--fe-bg); border:1px solid var(--fe-border-2); border-radius:10px; padding:.62em .7em; width:120px; }
+  .a2fe-in-sm{ width:74px; }
+  .a2fe-in:focus-visible{ outline:3px solid var(--fe-accent); outline-offset:1px; }
+  .a2fe-htrow{ display:flex; align-items:center; gap:8px; }
+  .a2fe-htrow span{ color:var(--fe-ink-2); font-size:.9rem; }
+  .a2fe-pills{ display:flex; gap:9px; flex-wrap:wrap; }
+  .a2fe-pill input{ position:absolute; opacity:0; width:1px; height:1px; }
+  .a2fe-pill span{ display:inline-block; padding:.5em 1.05em; border:2px solid var(--fe-border-2); border-radius:999px; cursor:pointer; line-height:1.2; transition:.12s ease; user-select:none; }
+  .a2fe-pill input:checked + span{ border-color:var(--fe-accent); background:var(--fe-accent); color:var(--fe-accent-fg); font-weight:700; }
+  .a2fe-pill input:focus-visible + span{ outline:3px solid var(--fe-accent); outline-offset:2px; }
+
+  .a2fe-btn{ font:inherit; font-family:var(--fe-disp); text-transform:uppercase; letter-spacing:.05em; font-size:1rem; border:2px solid var(--fe-accent); background:var(--fe-accent); color:var(--fe-accent-fg); border-radius:999px; padding:.72em 1.5em; cursor:pointer; transition:filter .12s ease; }
+  .a2fe-btn:hover{ filter:brightness(1.07); }
+  .a2fe-btn:focus-visible{ outline:3px solid var(--fe-ink); outline-offset:2px; }
+  .a2fe-btn-ghost{ background:transparent; color:var(--fe-ink); border-color:var(--fe-border-2); }
+  .a2fe-btn-ghost:hover{ border-color:var(--fe-accent); color:var(--fe-accent); filter:none; }
+  .a2fe-btn-sm{ font-size:.82rem; padding:.5em 1em; }
+  .a2fe-stack{ display:flex; flex-direction:column; gap:18px; }
+  .a2fe-err{ color:var(--fe-accent); font-weight:600; font-size:.9rem; }
+  .a2fe-hide{ display:none !important; }
+
+  .a2fe-lockwrap{ position:relative; }
+  .a2fe-lockwrap.is-locked > :not(.a2fe-lockmsg){ filter:blur(6px); pointer-events:none; user-select:none; }
+  .a2fe-lockwrap:not(.is-locked) .a2fe-lockmsg{ display:none; }
+  .a2fe-lockmsg{ position:absolute; inset:0; z-index:5; display:flex; align-items:center; justify-content:center; text-align:center; font-weight:700; padding:16px; }
+
+  .a2fe-verdict{ display:flex; align-items:center; gap:clamp(14px,3vw,22px); flex-wrap:wrap; }
+  .a2fe-badge{ flex:0 0 auto; width:clamp(76px,15vw,104px); aspect-ratio:1; border-radius:16px; display:flex; align-items:center; justify-content:center; background:var(--fe-accent); color:var(--fe-accent-fg); font-family:var(--fe-disp); font-weight:700; line-height:.9; font-size:clamp(2.6rem,7vw,3.6rem); letter-spacing:.01em; box-shadow:var(--fe-shadow); }
+  .a2fe-vcopy{ flex:1 1 240px; min-width:0; }
+  .a2fe-vkick{ font-family:var(--fe-disp); text-transform:uppercase; letter-spacing:.14em; font-size:.72rem; color:var(--fe-accent); margin-bottom:3px; }
+  .a2fe-vtitle{ font-family:var(--fe-disp); font-size:clamp(1.7rem,4.2vw,2.5rem); line-height:1.02; margin:0 0 6px; text-wrap:balance; }
+  .a2fe-vsub{ color:var(--fe-ink-2); font-size:.98rem; }
+  .a2fe-vreset{ flex:0 0 auto; }
+
+  .a2fe-why{ margin:20px 0 0; font-size:1rem; line-height:1.6; max-width:66ch; }
+  .a2fe-why b{ color:var(--fe-ink); }
+  .a2fe-why-faint{ color:var(--fe-ink-2); font-size:.9rem; margin-top:8px; }
+
+  .a2fe-grid2{ display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:22px; }
+  @media (max-width:640px){ .a2fe-grid2{ grid-template-columns:1fr; } }
+  .a2fe-card{ border:1px solid var(--fe-border); border-radius:13px; background:var(--fe-panel); padding:16px 17px; }
+  .a2fe-card-h{ font-family:var(--fe-disp); text-transform:uppercase; letter-spacing:.1em; font-size:.74rem; color:var(--fe-ink-2); margin:0 0 12px; }
+  .a2fe-readout{ display:grid; grid-template-columns:auto 1fr; gap:9px 14px; font-size:.92rem; }
+  .a2fe-readout dt{ color:var(--fe-ink-2); }
+  .a2fe-readout dd{ margin:0; font-family:var(--fe-mono); font-variant-numeric:tabular-nums; text-align:right; }
+  .a2fe-readout dd b{ font-family:inherit; }
+  .a2fe-setup{ margin-top:13px; padding-top:13px; border-top:1px solid var(--fe-border); font-size:.9rem; line-height:1.5; color:var(--fe-ink-2); }
+  .a2fe-setup b{ color:var(--fe-ink); }
+
+  .a2fe-plotwrap{ position:relative; }
+  .a2fe-plot{ width:100%; height:auto; display:block; border-radius:8px; }
+  .a2fe-plotcap{ font-size:.76rem; color:var(--fe-ink-2); margin-top:8px; text-align:center; }
+
+  .a2fe-drop{ margin-top:18px; border:1px solid var(--fe-border); border-left:3px solid var(--fe-accent); border-radius:12px; padding:15px 17px; }
+  .a2fe-drop-top{ display:flex; align-items:baseline; justify-content:space-between; gap:10px; flex-wrap:wrap; }
+  .a2fe-drop-num{ font-family:var(--fe-disp); font-size:1.5rem; }
+  .a2fe-drop-viz{ position:relative; height:44px; margin:14px 0 4px; }
+  .a2fe-drop-line{ position:absolute; left:0; right:0; height:2px; background:var(--fe-border-2); top:50%; }
+  .a2fe-drop-mark{ position:absolute; top:50%; transform:translate(-50%,-50%); text-align:center; }
+  .a2fe-drop-dot{ width:14px; height:14px; border-radius:50%; margin:0 auto 3px; }
+  .a2fe-drop-mark small{ font-size:.7rem; color:var(--fe-ink-2); white-space:nowrap; }
+  .a2fe-drop p{ font-size:.86rem; color:var(--fe-ink-2); margin:9px 0 0; line-height:1.5; }
+
+  .a2fe-email{ margin-top:22px; border:1px solid var(--fe-border); border-radius:13px; background:var(--fe-panel-2); padding:17px 18px; }
+  .a2fe-email-h{ font-family:var(--fe-disp); font-size:1.15rem; margin:0 0 4px; }
+  .a2fe-email-sub{ color:var(--fe-ink-2); font-size:.9rem; margin:0 0 12px; }
+  .a2fe-email-form{ display:flex; gap:10px; flex-wrap:wrap; }
+  .a2fe-email-form .a2fe-in{ flex:1 1 220px; width:auto; }
+  .a2fe-email-done{ border:1px solid var(--fe-good); border-radius:11px; padding:15px 16px; background:color-mix(in srgb, var(--fe-good) 9%, var(--fe-bg)); }
+  .a2fe-email-done h4{ margin:0 0 6px; font-family:var(--fe-disp); }
+  .a2fe-email-done p{ margin:0; color:var(--fe-ink-2); font-size:.92rem; line-height:1.5; }
+  .a2fe-foot{ font-size:.82rem; color:var(--fe-ink-2); margin-top:16px; max-width:70ch; line-height:1.5; }
+
+  .a2fe-typeahead{ position:relative; max-width:340px; }
+  .a2fe-typeahead .a2fe-in{ width:100%; }
+  .a2fe-talist{ position:absolute; top:calc(100% + 4px); left:0; right:0; background:var(--fe-bg); border:1px solid var(--fe-border-2); border-radius:11px; box-shadow:var(--fe-shadow); z-index:6050; max-height:264px; overflow-y:auto; }
+  .a2fe-taitem{ display:block; width:100%; text-align:left; font:inherit; background:none; border:0; border-bottom:1px solid var(--fe-border); padding:10px 13px; cursor:pointer; color:var(--fe-ink); }
+  .a2fe-taitem:last-child{ border-bottom:0; }
+  .a2fe-taitem:hover,.a2fe-taitem:focus-visible{ background:var(--fe-soft); }
+  .a2fe-taitem small{ color:var(--fe-ink-2); display:block; font-size:.78rem; }
+  .a2fe-bikechip{ display:inline-flex; align-items:center; gap:9px; padding:8px 12px; margin-top:2px; border:1.5px solid var(--fe-accent); border-radius:10px; background:var(--fe-soft); font-weight:600; }
+  .a2fe-bikechip small{ color:var(--fe-ink-2); font-weight:400; }
+  .a2fe-bikechip button{ font:inherit; border:0; background:none; color:var(--fe-ink-2); cursor:pointer; font-size:1.1rem; line-height:1; padding:0 2px; }
+  .a2fe-bikechip button:hover{ color:var(--fe-accent); }
+  .a2fe-dbload{ display:flex; align-items:center; gap:10px; color:var(--fe-ink-2); font-size:.9rem; padding:4px 0; }
+  .a2fe-dbload::before{ content:""; width:16px; height:16px; border-radius:50%; flex:0 0 auto; border:2px solid var(--fe-border-2); border-top-color:var(--fe-accent); animation:a2feSpin .7s linear infinite; }
+  @keyframes a2feSpin{ to{ transform:rotate(360deg); } }
+  .a2fe-prevnote{ font-size:.82rem; color:var(--fe-ink-2); }
+  .a2fe-linkbtn{ font:inherit; font-size:inherit; border:0; background:none; color:var(--fe-accent); cursor:pointer; text-decoration:underline; text-underline-offset:3px; padding:0; }
+  .a2fe-ftok{ font-size:.85rem; color:var(--fe-good); font-weight:600; }
+
+  .a2fe-overlay{ position:fixed; inset:0; background:rgba(10,12,15,.5); opacity:0; visibility:hidden; transition:opacity .25s ease,visibility .25s ease; z-index:6000; }
+  .a2fe-overlay.a2fe-open{ opacity:1; visibility:visible; }
+  .a2fe-drawer{ position:fixed; top:0; right:0; height:100%; width:min(430px,100%); background:var(--fe-bg); box-shadow:-12px 0 40px rgba(0,0,0,.28); z-index:6001; transform:translateX(100%); transition:transform .28s cubic-bezier(.4,0,.2,1); display:flex; flex-direction:column; }
+  .a2fe-drawer.a2fe-open{ transform:none; }
+  .a2fe-drawer-head{ display:flex; align-items:center; justify-content:space-between; padding:16px 18px; border-bottom:1px solid var(--fe-border); background:var(--fe-panel); }
+  .a2fe-drawer-head b{ font-family:var(--fe-disp); text-transform:uppercase; letter-spacing:.08em; }
+  .a2fe-drawer-x{ font:inherit; border:0; background:none; color:var(--fe-ink-2); cursor:pointer; font-size:1.4rem; line-height:1; padding:4px 8px; border-radius:8px; }
+  .a2fe-drawer-x:hover{ color:var(--fe-accent); }
+  .a2fe-drawer-body{ padding:20px 18px; overflow-y:auto; }
+  .a2fe-drawer .a2fe-badge{ width:66px; font-size:2.1rem; border-radius:13px; }
+  .a2fe-drawer .a2fe-vtitle{ font-size:1.5rem; }
+  .a2fe-drawer .a2fe-btn{ width:100%; }
+
+  @media (prefers-reduced-motion:reduce){ .a2fe *{ animation:none !important; transition:none !important; } }
+  @keyframes a2fePop{ 0%{ opacity:0; transform:scale(.88) translateY(6px); } 100%{ opacity:1; transform:none; } }
+  @keyframes a2feRise{ 0%{ opacity:0; transform:translateY(10px); } 100%{ opacity:1; transform:none; } }
+  .a2fe-pop{ animation:a2fePop .45s cubic-bezier(.2,.9,.3,1.2) both; }
+  .a2fe-rise{ animation:a2feRise .4s ease both; }
+  .a2fe-rise2{ animation:a2feRise .4s ease .08s both; }
+  .a2fe-rise3{ animation:a2feRise .4s ease .16s both; }
+  @media (max-width:600px){ .a2fe-htrow label,.a2fe-lbl{ font-size:.8rem; } }
+</style>
+
+<div class="a2fe" id="a2fe-inline"><div class="a2fe-card-shell" data-a2fe-mount="inline"></div></div>
+
+<script>
+if (!window.__a2feInit) {
+  window.__a2feInit = true;
+  var CTX = window.A2_FIT_CTX || { model:"rogue", build:"unknown", cockpit:"", price:"", url:"#", productTitle:"" };
+  var A2FE_GATE = "soft"; // "soft" = blur-lock breakdown+chart until email; "off" = no gating
+
+  /* ===================== MODEL: ROGUE (bar HX/HY) ===================== */
+  var ROGUE_GEO = {
+    S:{name:"Small",reach:378,stack:521,hta:72,stockStem:90,crank:"165",bar:"40 cm",hMin:1600,hMax:1675},
+    M:{name:"Medium",reach:381,stack:535,hta:72,stockStem:90,crank:"170",bar:"42 cm",hMin:1700,hMax:1780},
+    L:{name:"Large",reach:386,stack:550,hta:73,stockStem:100,crank:"172.5",bar:"42 cm",hMin:1800,hMax:1880},
+    XL:{name:"XL",reach:390,stack:567,hta:73,stockStem:110,crank:"175",bar:"44 cm",hMin:1900,hMax:1960}
+  };
+  var ROGUE_STEMS=[70,80,90,100,110,120], ROGUE_ANGLES=[-6,6], ROGUE_SPACERS=[0,5,10,15,20,25,30,35];
+  var ROGUE_ANCHORS=[[1637.5,461.4,554.0],[1740.0,464.4,568.0],[1840.0,479.8,583.4],[1930.0,493.6,602.3]];
+  function rogueBarPos(g,sl,sa,sp){ var h=g.hta*Math.PI/180,t=(90-g.hta+sa)*Math.PI/180;
+    return { hx:g.reach-sp*Math.cos(h)+sl*Math.cos(t), hy:g.stack+sp*Math.sin(h)+sl*Math.sin(t) }; }
+  function rogueArray(){ var a=[]; for(var i=0;i<FRAMES.length;i++){ var g=ROGUE_GEO[FRAMES[i]];
+    for(var j=0;j<ROGUE_STEMS.length;j++) for(var k=0;k<ROGUE_ANGLES.length;k++) for(var m=0;m<ROGUE_SPACERS.length;m++){
+      var p=rogueBarPos(g,ROGUE_STEMS[j],ROGUE_ANGLES[k],ROGUE_SPACERS[m]);
+      a.push({frame:FRAMES[i],stemLen:ROGUE_STEMS[j],stemAngle:ROGUE_ANGLES[k],spacers:ROGUE_SPACERS[m],hx:Math.round(p.hx),hy:Math.round(p.hy),edge:(ROGUE_ANGLES[k]>0?10:0)}); } }
+    return a; }
+  function rogueTarget(height,inseam,posture){ var an=ROGUE_ANCHORS,hx,hy;
+    if(height<=an[0][0]){ var s0=[(an[1][1]-an[0][1])/(an[1][0]-an[0][0]),(an[1][2]-an[0][2])/(an[1][0]-an[0][0])]; hx=an[0][1]+(height-an[0][0])*s0[0]; hy=an[0][2]+(height-an[0][0])*s0[1]; }
+    else if(height>=an[an.length-1][0]){ var n=an.length-1,s1=[(an[n][1]-an[n-1][1])/(an[n][0]-an[n-1][0]),(an[n][2]-an[n-1][2])/(an[n][0]-an[n-1][0])]; hx=an[n][1]+(height-an[n][0])*s1[0]; hy=an[n][2]+(height-an[n][0])*s1[1]; }
+    else { for(var i=1;i<an.length;i++){ if(height<=an[i][0]){ var t=(height-an[i-1][0])/(an[i][0]-an[i-1][0]); hx=an[i-1][1]+t*(an[i][1]-an[i-1][1]); hy=an[i-1][2]+t*(an[i][2]-an[i-1][2]); break; } } }
+    var lr=inseam/height; hx-=(lr-0.47)*350; hy+=(lr-0.47)*250;
+    if(posture==="relaxed"){ hy+=12; hx-=6; } if(posture==="aggressive"){ hy-=12; hx+=6; }
+    return {hx:hx,hy:hy}; }
+  function rogueRecommend(h,i){ var o=FRAMES,idx=-1,b=false,r="in-band";
+    for(var x=0;x<o.length;x++){ var g=ROGUE_GEO[o[x]]; if(h>=g.hMin&&h<=g.hMax){ idx=x; break; } }
+    if(idx===-1){ if(h<ROGUE_GEO[o[0]].hMin)idx=0; else if(h>ROGUE_GEO[o[o.length-1]].hMax)idx=o.length-1;
+      else { for(var j=0;j<o.length-1;j++){ if(h>ROGUE_GEO[o[j]].hMax&&h<ROGUE_GEO[o[j+1]].hMin){ idx=j+1; b=true; r="boundary"; break; } } } }
+    else if(idx<o.length-1){ if(h>=ROGUE_GEO[o[idx]].hMax-20){ idx+=1; b=true; r="boundary"; } else if(i/h>=0.48){ idx+=1; b=true; r="inseam"; } }
+    return {frame:o[idx],idx:idx,between:b,reason:r,fromFrame:b&&idx>0?o[idx-1]:null}; }
+
+  /* ===================== MODEL: SP (Pad X/Y) ===================== */
+  var SP_CFG={
+    metron:{ label:"Vision Metron Alloy (105 / Rival)", sizes:{S:[450.1,552.4],M:[473.0,585.8],L:[495.0,619.8],XL:[517.1,653.7]}, stems:[[0,0,"A2 SP 78mm"],[14.4,3.2,"A2 SP 93mm"],[28.9,6.3,"A2 SP 108mm"]], pads:[-16,-8,0,8,16] },
+    si013:{ label:"Vision Si013 (Force / Red)", sizes:{S:[535.5,579.0],M:[558.5,612.2],L:[581.2,645.8],XL:[603.0,679.1]}, stems:[[0,0,"A2 SP 78mm"],[12.1,3.0,"A2 SP 93mm"],[24.2,5.9,"A2 SP 108mm"]], pads:[-64,-48,-32,-16,0,16,32,48,64] }
+  };
+  var SP_SPACERS=[0,5,10,15,20,25,30,35,40,45,50,55,60,65,70];
+  var SP_AVG_INSEAM={63:29.5,64:30,65:30.5,66:31,67:31.5,68:32,69:32.5,70:33,71:33.5,72:34,73:34.5,74:35,75:35.5,76:36,77:36.5};
+  function spAvgInseam(t){ return SP_AVG_INSEAM[Math.round(t)]||32; }
+  function spArray(cfgKey){ var cfg=SP_CFG[cfgKey],a=[],mSt=0,mPad=0,mSp=SP_SPACERS[SP_SPACERS.length-1];
+    for(var s=0;s<cfg.stems.length;s++){ if(cfg.stems[s][0]>mSt)mSt=cfg.stems[s][0]; }
+    for(var p=0;p<cfg.pads.length;p++){ if(Math.abs(cfg.pads[p])>mPad)mPad=Math.abs(cfg.pads[p]); }
+    for(var i=0;i<FRAMES.length;i++) for(var j=0;j<cfg.stems.length;j++) for(var k=0;k<SP_SPACERS.length;k++) for(var m=0;m<cfg.pads.length;m++){
+      a.push({ frame:FRAMES[i], stem:cfg.stems[j][2], pedSpacers:SP_SPACERS[k], pad:cfg.pads[m],
+        edge:18*(mSp?SP_SPACERS[k]/mSp:0)+10*(mSt?cfg.stems[j][0]/mSt:0)+8*(mPad?Math.abs(cfg.pads[m])/mPad:0),
+        hx:Math.round(cfg.sizes[FRAMES[i]][0]+cfg.stems[j][0]+cfg.pads[m]),
+        hy:Math.round(cfg.sizes[FRAMES[i]][1]+cfg.stems[j][1]+SP_SPACERS[k]) }); }
+    return a; }
+  function spTarget(height,inseam,posture){ var saddle=0.9*inseam;
+    var hx=0.29*height+(0.42-saddle/height)*500, hy=0.35*height-(0.42-saddle/height)*400;
+    if(posture==="relaxed"){ hy+=15; hx-=5; } if(posture==="aggressive"){ hy-=15; hx+=5; }
+    return {hx:hx,hy:hy}; }
+  function spRecommend(t,i){ var bands=[{f:"S",min:63,max:66},{f:"M",min:67,max:70},{f:"L",min:71,max:74},{f:"XL",min:75,max:77}];
+    var d=i-spAvgInseam(t),idx=-1,b=false,r="in-band";
+    for(var x=0;x<bands.length;x++){ if(t>=bands[x].min&&t<=bands[x].max){ idx=x; break; } }
+    if(idx===-1){ if(t<bands[0].min)idx=0; else if(t>bands[bands.length-1].max)idx=bands.length-1;
+      else { for(var j=0;j<bands.length-1;j++){ if(t>bands[j].max&&t<bands[j+1].min){ idx=j+1; b=true; r="boundary"; break; } } } }
+    else if(idx<bands.length-1){ if(t>=bands[idx].max-0.75){ idx+=1; b=true; r="boundary"; } else if(d>=1.5){ idx+=1; b=true; r="inseam"; } }
+    return {frame:bands[idx].f,idx:idx,between:b,reason:r,delta:d,fromFrame:b&&idx>0?bands[idx-1].f:null}; }
+
+  /* ===================== SHARED ===================== */
+  var FRAMES=["S","M","L","XL"], NAMES={S:"Small",M:"Medium",L:"Large",XL:"XL"};
+  var isSP=(CTX.model==="sp");
+
+  var COPY={
+    rogue:{
+      "105":{name:"Rogue 105",hook:"The one that just goes.",evergreen:"Simple, dependable, and ready when you are. The Rogue 105 is our most-ridden all-road build for a reason: Shimano&rsquo;s trusted 105 groupset is the drivetrain that never asks for attention &mdash; no batteries to charge, no apps to pair, just crisp mechanical shifts from the first cold climb to the last gravel mile."},
+      "rival":{name:"Rogue Rival AXS",hook:"Wireless, and wide open.",evergreen:"The Rogue Rival AXS cuts the cables. SRAM&rsquo;s wireless electronic shifting means you tap to shift &mdash; every time, in any weather &mdash; backed by a streamlined 2x drivetrain with a range wide enough for a steep wall and fast enough for the descent that follows."},
+      "force":{name:"Rogue Force AXS",hook:"Red performance, minus the Red price.",evergreen:"The Rogue Force AXS is the build our strongest riders keep choosing: crisp wireless AXS shifting, a lighter and more refined build, and the race-day polish of the top tier &mdash; for meaningfully less than Red. Climb stronger, descend braver, stay comfortable when the ride runs long."},
+      "red":{name:"Rogue Red AXS",hook:"The summit build.",evergreen:"The Rogue Red AXS is the lightest, sharpest, most precise all-road bike we make &mdash; SRAM&rsquo;s flagship Red AXS groupset paired with Zipp 353 NSW carbon wheels. Every gram and every watt is accounted for."}
+    },
+    sp:{
+      "105":{name:"SP 105",hook:"Your first fast.",evergreen:"The SP 105 is our most popular triathlon build and the smartest way into a real race bike. Shimano&rsquo;s trusted 105 mechanical groupset means dependable shifting you never have to think about &mdash; so you can think about your splits instead. Built on the most adjustable tri frame we make, it grows with you from your first sprint to your first 70.3."},
+      "rival":{name:"SP Rival AXS",hook:"Watts, wirelessly.",evergreen:"The SP Rival AXS steps up to SRAM&rsquo;s wireless electronic shifting &mdash; clean, fast, and made for the aero position, where reaching for a lever costs you time and comfort. Streamlined and efficient, it&rsquo;s built for big training blocks and Ironman bike legs where every watt counts. (Pre-orders ship with Zipp 303 S carbon wheels.)"},
+      "force":{name:"SP Force AXS",hook:"The pro&rsquo;s pick.",evergreen:"Our pro and age-group athletes gravitate to the SP Force AXS: near-Red performance without the Red price. Wireless AXS shifting, a lighter and more refined build, and the confidence to race fast in 70.3s and full Ironmans. (Pre-orders ship with Zipp 404 carbon wheels.)"},
+      "red":{name:"SP Red AXS",hook:"Podium spec.",evergreen:"The SP Red AXS is the pinnacle &mdash; SRAM&rsquo;s lightest, most precise Red AXS groupset on Zipp 808 Firecrest carbon wheels, wrapped on the most adjustable aero frame in triathlon. This is the build for athletes racing at the front, chasing PRs, and refusing to leave a single second on the table."}
+    }
+  };
+  function buildCopy(){ var m=COPY[CTX.model]||COPY.rogue; return m[CTX.build] || {name:CTX.productTitle||"this build",hook:"",evergreen:""}; }
+
+  function findCombinations(hx,hy,arr,allowed){
+    var c=arr, fit={userhx:hx,userhy:hy};
+    for(var i=c.length-1;i>=0;i--){ c[i].error=Math.sqrt((c[i].hx-hx)*(c[i].hx-hx)+(c[i].hy-hy)*(c[i].hy-hy)); c[i].score=c[i].error+(c[i].edge||0)+(allowed&&allowed.indexOf(c[i].frame)===-1?9999:0); }
+    fit.options=[c[0],c[1],c[2]];
+    for(var i=c.length-1;i>=0;i--){ if(c[i].score<fit.options[0].score) fit.options[0]=c[i]; }
+    for(var i=c.length-1;i>=0;i--){ if(c[i].score<fit.options[1].score&&c[i].frame!=fit.options[0].frame) fit.options[1]=c[i]; }
+    for(var i=c.length-1;i>=0;i--){ if(c[i].score<fit.options[2].score&&c[i].frame!=fit.options[0].frame&&c[i].frame!=fit.options[1].frame) fit.options[2]=c[i]; }
+    fit.options.sort(function(a,b){return a.score-b.score;});
+    return fit;
+  }
+
+  function compute(heightMM,inseamMM,posture){
+    if(heightMM<1200||heightMM>2200||inseamMM<500||inseamMM>=heightMM) return {bad:true};
+    var totalIn=heightMM/25.4, inseamIn=inseamMM/25.4;
+    var target, recInfo, arr, saddle, drop, cfgKey="";
+    if(isSP){
+      cfgKey=(CTX.cockpit==="si013")?"si013":"metron";
+      target=spTarget(heightMM,inseamMM,posture);
+      recInfo=spRecommend(totalIn,inseamIn);
+      arr=spArray(cfgKey);
+      saddle=0.9*inseamMM;
+    } else {
+      if(heightMM<1575) return {oor:"small"}; if(heightMM>1985) return {oor:"tall"};
+      target=rogueTarget(heightMM,inseamMM,posture);
+      recInfo=rogueRecommend(heightMM,inseamMM);
+      arr=rogueArray();
+      saddle=0.883*inseamMM;
+    }
+    var fit=findCombinations(target.hx,target.hy,arr,[recInfo.frame]);
+    var rec=fit.options[0];
+    if(isSP){ drop=Math.round(saddle-rec.hy); }
+    else { var sv=Math.round(saddle*Math.sin(73.5*Math.PI/180)); drop=sv-rec.hy; }
+    return { fit:fit, rec:rec, recInfo:recInfo, cfgKey:cfgKey, arr:arr, target:target,
+      frame:rec.frame, name:NAMES[rec.frame], heightMM:heightMM, inseamMM:inseamMM, totalIn:totalIn, inseamIn:inseamIn,
+      posture:posture, saddleMM:Math.round(saddle), saddleIn:Math.round(saddle/25.4*10)/10, hx:rec.hx, hy:rec.hy, drop:drop };
+  }
+
+  function posLabel(p){ return p.charAt(0).toUpperCase()+p.slice(1); }
+
+  function whyHtml(r){
+    var ft=Math.floor(r.totalIn/12), inch=Math.round(r.totalIn-ft*12); if(inch>=12){ ft++; inch-=12; }
+    if(isSP){
+      var inseamTxt=(Math.round(r.inseamIn*10)/10)+"&Prime;";
+      var h="<p class='a2fe-why'>At <b>"+ft+"&prime;"+inch+"&Prime;</b> with a <b>"+inseamTxt+"</b> inseam, the <b>"+r.name+"</b> is the frame whose stack and reach land your aerobar pads in the middle of their range &mdash; low enough to get aero, with room to fine-tune fore/aft and height instead of maxing out the stem or spacer stack.";
+      if(r.recInfo.between&&r.recInfo.reason==="boundary"){ h+=" You&rsquo;re right between the "+NAMES[r.recInfo.fromFrame]+" and the "+r.name+", so we size up: a slightly larger frame comes lower and tighter with the stem and pads, but a too-small frame can never be made big enough."; }
+      else if(r.recInfo.between&&r.recInfo.reason==="inseam"){ h+=" Your inseam is long for your height, so we size up to the "+r.name+" for the standover clearance and saddle height your legs want."; }
+      else if(r.recInfo.delta<=-1.5){ h+=" Your inseam runs a little short for your height &mdash; more torso than leg &mdash; which the "+r.name+"&rsquo;s reach suits."; }
+      else if(r.recInfo.delta>=1.5){ h+=" Your inseam is a touch long for your height, so you have plenty of standover on the "+r.name+" and will run a taller saddle."; }
+      else { h+=" Your proportions are about average for your height, so standover, saddle height and reach all land where the "+r.name+" is designed to sit."; }
+      h+="</p><p class='a2fe-why a2fe-why-faint'>Use the Position toggle for more or less aero drop &mdash; and free size exchanges if it&rsquo;s not perfect.</p>";
+      return h;
+    }
+    var h2="<p class='a2fe-why'>At <b>"+ft+"&prime;"+inch+"&Prime;</b>, the <b>"+r.name+"</b> puts the bars where your body wants them &mdash; the standover clearance you need, with room to fine-tune height using the stem and spacers instead of running out of adjustment.";
+    if(r.recInfo.between&&r.recInfo.reason==="boundary"){ h2+=" You&rsquo;re right between the "+NAMES[r.recInfo.fromFrame]+" and the "+r.name+", so we size up: a larger road frame drops easily with the stem and spacers, but a too-small one leaves you cramped and forces a long stem that dulls the steering."; }
+    else if(r.recInfo.between&&r.recInfo.reason==="inseam"){ h2+=" Your legs are long for your height, so the "+r.name+" gives you the standover and saddle height they want."; }
+    else { h2+=" Your proportions land squarely in the "+r.name+"&rsquo;s range."; }
+    h2+="</p><p class='a2fe-why a2fe-why-faint'>Use the Position toggle for a racier or more upright feel &mdash; and free size exchanges if it&rsquo;s not perfect.</p>";
+    return h2;
+  }
+  function setupLine(r){
+    if(isSP){ return "<b>Starting cockpit setup</b><br>Frame: A2 SP "+r.frame+" &middot; "+r.rec.stem+" stem &middot; "+r.rec.pedSpacers+"mm spacers &middot; armrests "+(r.rec.pad>0?"+":"")+r.rec.pad+"mm fore/aft<br>Pad stack / reach: "+r.rec.hy+" / "+r.rec.hx+"mm"; }
+    var stem=r.rec.stemLen+"mm &middot; "+(r.rec.stemAngle<0?"&minus;6&deg;":"+6&deg; (flipped up)"); if(r.rec.stemLen===ROGUE_GEO[r.frame].stockStem) stem+=" &mdash; stock length";
+    return "<b>Starting setup</b><br>Frame: Rogue "+r.name+" &middot; "+stem+" &middot; "+r.rec.spacers+"mm spacers<br>Stock cranks "+ROGUE_GEO[r.frame].crank+"mm &middot; stock bars "+ROGUE_GEO[r.frame].bar+" c-c";
+  }
+  function dropDesc(d){ if(isSP){ if(d>=160)return"a very aggressive, maximally aero position"; if(d>=120)return"an aggressive, aero position"; if(d>=70)return"a balanced position &mdash; aero but sustainable"; if(d>=30)return"a relaxed, comfort-first position"; if(d>=0)return"a very relaxed, comfort-first position"; return"an upright position &mdash; pads above the saddle"; }
+    return d>100?"a sporty, aero position":(d>60?"a balanced, sustainable position":"a relaxed, upright position"); }
+
+  function coordLabels(){ return isSP?["Pad reach (X)","Pad stack (Y)"]:["Bar reach (HX)","Bar stack (HY)"]; }
+
+  /* ---------- previous-bike path (see PREVIOUS-BIKE-SPEC.md) ---------- */
+  var FEEL_LABEL={stretched:"Too stretched",right:"Just right",upright:"Too upright"};
+  var BIKE_DB=null, BIKE_DB_STATE="idle"; // idle | loading | ready | error
+  function loadBikeDB(cb){
+    if(BIKE_DB_STATE==="ready") return cb(true);
+    if(BIKE_DB_STATE==="error") return cb(false);
+    var url=CTX.dbUrl||window.A2_FIT_DB_URL;
+    if(!url){ BIKE_DB_STATE="error"; return cb(false); }
+    BIKE_DB_STATE="loading";
+    fetch(url).then(function(res){ if(!res.ok) throw 0; return res.json(); }).then(function(j){
+      var want=isSP?["tri"]:["road","gravel"];
+      // only entries for this page's discipline, with real per-size geometry
+      BIKE_DB=(j.bikes||[]).filter(function(b){ return want.indexOf(b.type)>=0 && b.sizes && !Array.isArray(b.sizes); });
+      BIKE_DB_STATE = BIKE_DB.length ? "ready" : "error";
+      cb(BIKE_DB_STATE==="ready");
+    }).catch(function(){ BIKE_DB_STATE="error"; cb(false); });
+  }
+
+  /* Previous bike -> target point. Road: reconstruct the bars with typical-
+     setup assumptions (100mm -6deg stem, 20mm spacers). Tri: frame + per-bike
+     pad offset (default +55/+90). Feel pills nudge the target; height still
+     gates the frame (size-band rule). */
+  function computeFromBike(heightMM,entry,sizeLabel,feel){
+    var g=entry.sizes[sizeLabel];
+    if(!g||g.stack==null||g.reach==null) return {bad:true};
+    var totalIn=heightMM/25.4, hx, hy, recInfo, arr, cfgKey="";
+    if(isSP){
+      var po=entry.padOffset||{};
+      hx=g.reach+(po.x!=null?po.x:55);
+      hy=g.stack+(po.y!=null?po.y:90);
+      if(feel==="stretched"){ hx-=5; hy+=15; }
+      if(feel==="upright"){ hx+=5; hy-=15; }
+      recInfo=spRecommend(totalIn,spAvgInseam(totalIn));
+      cfgKey=(CTX.cockpit==="si013")?"si013":"metron";
+      arr=spArray(cfgKey);
+    } else {
+      if(heightMM<1575) return {oor:"small"};
+      if(heightMM>1985) return {oor:"tall"};
+      var hta=entry.hta||73, htaR=hta*Math.PI/180, th=(90-hta-6)*Math.PI/180;
+      hx=g.reach-20*Math.cos(htaR)+100*Math.cos(th);
+      hy=g.stack+20*Math.sin(htaR)+100*Math.sin(th);
+      if(feel==="stretched"){ hx-=6; hy+=12; }
+      if(feel==="upright"){ hx+=6; hy-=12; }
+      recInfo=rogueRecommend(heightMM,0.47*heightMM); // avg proportions for the gate
+      arr=rogueArray();
+    }
+    var fit=findCombinations(hx,hy,arr,[recInfo.frame]);
+    var rec=fit.options[0];
+    return {
+      target:{hx:hx,hy:hy}, fit:fit, rec:rec, recInfo:recInfo, cfgKey:cfgKey, arr:arr,
+      frame:rec.frame, name:NAMES[rec.frame], heightMM:heightMM, totalIn:totalIn, posture:"balanced",
+      noBody:true, prevBike:{brand:entry.brand,model:entry.model,years:entry.years,size:sizeLabel,feel:feel},
+      hx:rec.hx, hy:rec.hy
+    };
+  }
+
+  function prevWhyHtml(r){
+    var pb=r.prevBike, cl=coordLabels();
+    var feelTxt = pb.feel==="stretched" ? "It felt stretched, so we brought your target a touch closer and higher."
+      : pb.feel==="upright" ? "It felt too upright, so we set your target a touch longer and lower &mdash; racier."
+      : "It felt right, so we matched that position as closely as we can.";
+    var where=isSP?"aerobar pads":"bars";
+    var assume=isSP?"Assumes your old bike&rsquo;s stock cockpit and typical pad offsets"
+      :"Assumes a typical 100mm &minus;6&deg; stem with 20mm of spacers on your old bike";
+    return "<p class='a2fe-why'>Your <b>"+pb.brand+" "+pb.model+"</b> in <b>"+esc(pb.size)+"</b> put your "+where+" around <b>"
+      +Math.round(r.target.hx)+" / "+Math.round(r.target.hy)+"&nbsp;mm</b> ("+cl[0].replace(/ \(.*/,"")+" / "+cl[1].replace(/ \(.*/,"")+", from its published geometry). "
+      +feelTxt+" The <b>"+r.name+"</b> reaches that same position with adjustment room to spare &mdash; you're not starting fit from zero, you're starting from a bike you already know.</p>"
+      +"<p class='a2fe-why a2fe-why-faint'>"+assume+" &mdash; confirm with a pro fit. Free size exchanges either way.</p>";
+  }
+
+  /* ---------- branded canvas plot ---------- */
+  function drawPlot(canvas,r){
+    var cs=getComputedStyle(canvas.closest(".a2fe"));
+    var ink=cs.getPropertyValue("--fe-ink").trim(), sub=cs.getPropertyValue("--fe-ink-2").trim(), accent=cs.getPropertyValue("--fe-accent").trim(), border=cs.getPropertyValue("--fe-border-2").trim();
+    var fc={S:cs.getPropertyValue("--fe-fs").trim(),M:cs.getPropertyValue("--fe-fm").trim(),L:cs.getPropertyValue("--fe-fl").trim(),XL:cs.getPropertyValue("--fe-fxl").trim()};
+    var dpr=Math.min(window.devicePixelRatio||1,2), W=canvas.clientWidth||360, H=Math.round(W*0.72);
+    canvas.width=W*dpr; canvas.height=H*dpr; var ctx=canvas.getContext("2d"); ctx.scale(dpr,dpr); ctx.clearRect(0,0,W,H);
+    var padL=44,padR=12,padT=14,padB=34;
+    var xs=r.arr.map(function(p){return p.hx;}).concat([r.target.hx,r.hx]), ys=r.arr.map(function(p){return p.hy;}).concat([r.target.hy,r.hy]);
+    var minX=Math.min.apply(null,xs)-6,maxX=Math.max.apply(null,xs)+6,minY=Math.min.apply(null,ys)-6,maxY=Math.max.apply(null,ys)+6;
+    function X(v){return padL+(v-minX)/(maxX-minX)*(W-padL-padR);} function Y(v){return H-padB-(v-minY)/(maxY-minY)*(H-padT-padB);}
+    ctx.strokeStyle=border; ctx.globalAlpha=.5; ctx.lineWidth=1; ctx.font="10px "+cs.getPropertyValue("--fe-mono"); ctx.fillStyle=sub;
+    for(var gx=0;gx<=4;gx++){ var vx=minX+(maxX-minX)*gx/4,px=X(vx); ctx.beginPath(); ctx.moveTo(px,padT); ctx.lineTo(px,H-padB); ctx.stroke(); ctx.globalAlpha=1; ctx.textAlign="center"; ctx.fillText(Math.round(vx),px,H-padB+15); ctx.globalAlpha=.5; }
+    for(var gy=0;gy<=4;gy++){ var vy=minY+(maxY-minY)*gy/4,py=Y(vy); ctx.beginPath(); ctx.moveTo(padL,py); ctx.lineTo(W-padR,py); ctx.stroke(); ctx.globalAlpha=1; ctx.textAlign="right"; ctx.fillText(Math.round(vy),padL-6,py+3); ctx.globalAlpha=.5; }
+    ctx.globalAlpha=1; ctx.fillStyle=sub; ctx.textAlign="center"; ctx.font="600 10px "+cs.getPropertyValue("--fe-disp");
+    ctx.fillText(isSP?"PAD CENTER X (mm)":"BAR REACH HX (mm)",(padL+W-padR)/2,H-4);
+    ctx.save(); ctx.translate(11,(padT+H-padB)/2); ctx.rotate(-Math.PI/2); ctx.fillText(isSP?"PAD Y (mm)":"BAR STACK HY (mm)",0,0); ctx.restore();
+    r.arr.forEach(function(p){ var on=(p.frame===r.frame); ctx.beginPath(); ctx.arc(X(p.hx),Y(p.hy),on?2.6:1.8,0,7); ctx.fillStyle=fc[p.frame]; ctx.globalAlpha=on?.9:.28; ctx.fill(); });
+    ctx.globalAlpha=1; ctx.beginPath(); ctx.arc(X(r.target.hx),Y(r.target.hy),6,0,7); ctx.lineWidth=2.5; ctx.strokeStyle=ink; ctx.stroke();
+    ctx.beginPath(); ctx.arc(X(r.hx),Y(r.hy),6.5,0,7); ctx.fillStyle=accent; ctx.fill(); ctx.lineWidth=2; ctx.strokeStyle="#fff"; ctx.globalAlpha=.85; ctx.stroke(); ctx.globalAlpha=1;
+  }
+
+  /* ---------- markup ---------- */
+  function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+  function PANEL(compact){ var u=compact?'d':'i';
+    return (compact?'':'<div class="a2fe-head"><span class="a2fe-kick">A2 Fit Finder</span><h2 class="a2fe-h">Which '+(isSP?'SP':'Rogue')+' size am I?</h2></div>')+
+    '<div class="a2fe-body"><div data-view="input" class="a2fe-stack">'+
+      '<div class="a2fe-field"><span class="a2fe-lbl">Start with</span><div class="a2fe-pills" data-f="path">'+
+        '<label class="a2fe-pill"><input type="radio" name="a2fepath-'+u+'" value="measure" checked><span>My measurements</span></label>'+
+        '<label class="a2fe-pill"><input type="radio" name="a2fepath-'+u+'" value="prevbike"><span>A bike I&rsquo;ve owned</span></label>'+
+      '</div><div class="a2fe-ftok a2fe-hide" data-el="ftok"></div></div>'+
+      '<div data-sub="measure" class="a2fe-stack">'+
+        '<div class="a2fe-field"><span class="a2fe-lbl">Height</span><div class="a2fe-htrow"><input class="a2fe-in a2fe-in-sm" data-f="ft" type="number" inputmode="numeric" placeholder="5"> <span>ft</span><input class="a2fe-in a2fe-in-sm" data-f="in" type="number" inputmode="decimal" placeholder="10"> <span>in</span></div></div>'+
+        '<div class="a2fe-field"><span class="a2fe-lbl">Inseam</span><div class="a2fe-htrow"><input class="a2fe-in a2fe-in-sm" data-f="inseam" type="number" inputmode="decimal" placeholder="32"> <span>in</span></div></div>'+
+        '<div class="a2fe-field"><span class="a2fe-lbl">Riding position</span><div class="a2fe-pills" data-f="pos">'+
+          '<label class="a2fe-pill"><input type="radio" name="a2fepos-'+u+'" value="relaxed"><span>Relaxed</span></label>'+
+          '<label class="a2fe-pill"><input type="radio" name="a2fepos-'+u+'" value="balanced" checked><span>Balanced</span></label>'+
+          '<label class="a2fe-pill"><input type="radio" name="a2fepos-'+u+'" value="aggressive"><span>Aggressive</span></label></div></div>'+
+      '</div>'+
+      '<div data-sub="prevbike" class="a2fe-stack a2fe-hide">'+
+        '<div class="a2fe-dbload a2fe-hide" data-el="dbload">Loading bike library&hellip;</div>'+
+        '<div data-el="pbform" class="a2fe-stack a2fe-hide">'+
+          '<div class="a2fe-field"><span class="a2fe-lbl">Your previous bike</span>'+
+            '<div class="a2fe-typeahead"><input class="a2fe-in" data-f="bikeq" type="text" placeholder="Search brand or model&hellip;" autocomplete="off">'+
+            '<div class="a2fe-talist a2fe-hide" data-el="talist"></div></div>'+
+            '<div class="a2fe-bikechip a2fe-hide" data-el="bikechip"></div></div>'+
+          '<div class="a2fe-field a2fe-hide" data-el="sizefield"><span class="a2fe-lbl">Size you rode</span><div class="a2fe-pills" data-f="psize"></div></div>'+
+          '<div class="a2fe-field"><span class="a2fe-lbl">Height</span><div class="a2fe-htrow"><input class="a2fe-in a2fe-in-sm" data-f="pft" type="number" inputmode="numeric" placeholder="5"> <span>ft</span><input class="a2fe-in a2fe-in-sm" data-f="pin" type="number" inputmode="decimal" placeholder="10"> <span>in</span></div></div>'+
+          '<div class="a2fe-field"><span class="a2fe-lbl">How did it fit?</span><div class="a2fe-pills" data-f="feel">'+
+            '<label class="a2fe-pill"><input type="radio" name="a2fefeel-'+u+'" value="stretched"><span>Too stretched</span></label>'+
+            '<label class="a2fe-pill"><input type="radio" name="a2fefeel-'+u+'" value="right" checked><span>Just right</span></label>'+
+            '<label class="a2fe-pill"><input type="radio" name="a2fefeel-'+u+'" value="upright"><span>Too upright</span></label></div></div>'+
+          '<div class="a2fe-prevnote" data-el="prevnote">Don&rsquo;t see your bike? <button class="a2fe-linkbtn" data-el="nobike" type="button">Tell us anyway</button> and use your measurements.</div>'+
+        '</div>'+
+      '</div>'+
+      '<div class="a2fe-err a2fe-hide" data-el="err"></div>'+
+      '<div><button class="a2fe-btn" data-el="go" type="button">Find my fit</button></div>'+
+    '</div><div data-view="result" class="a2fe-hide"></div></div>';
+  }
+
+  function resultHtml(r,compact){
+    var cl=coordLabels();
+    var coordRows='<dt>'+cl[0]+'</dt><dd>'+r.hx+' mm</dd><dt>'+cl[1]+'</dt><dd>'+r.hy+' mm</dd>'+
+      (r.prevBike
+        ? '<dt>Previous bike</dt><dd style="font-family:inherit">'+r.prevBike.brand+' '+r.prevBike.model+' &middot; '+esc(r.prevBike.size)+'</dd><dt>It felt</dt><dd style="font-family:inherit"><b>'+FEEL_LABEL[r.prevBike.feel]+'</b></dd>'
+        : '<dt>Saddle height</dt><dd>'+r.saddleMM+' mm</dd><dt>Position</dt><dd><b>'+posLabel(r.posture)+'</b></dd>');
+    var sub=r.prevBike
+      ? 'Matched from your '+r.prevBike.brand+' '+r.prevBike.model+' ('+esc(r.prevBike.size)+').'
+      : (r.recInfo.between?'Sized up so you have room to dial it in.':'A clean match for your proportions.');
+    var verdict='<div class="a2fe-verdict a2fe-pop"><div class="a2fe-badge">'+r.frame+'</div><div class="a2fe-vcopy"><div class="a2fe-vkick">Your size</div><h3 class="a2fe-vtitle">The '+r.name+'</h3><div class="a2fe-vsub">'+sub+'</div></div><div class="a2fe-vreset"><button class="a2fe-btn a2fe-btn-ghost a2fe-btn-sm" data-el="change" type="button">'+(r.prevBike?'Change my answers':'Change my measurements')+'</button></div></div>';
+    if(compact){ return verdict+'<div class="a2fe-lockwrap" data-el="lockwrap"><div class="a2fe-lockmsg" data-el="lockmsg"><span>🔒 Enter your email to unlock your full fit &amp; setup</span></div><div class="a2fe-rise2"><div class="a2fe-card" style="margin-top:16px"><h4 class="a2fe-card-h">Your fit</h4><dl class="a2fe-readout">'+coordRows+'</dl><div class="a2fe-setup">'+setupLine(r)+'</div></div></div></div>'+emailHtml()+'<div class="a2fe-rise3" style="margin-top:14px"><button class="a2fe-btn a2fe-btn-ghost a2fe-btn-sm" data-el="full" type="button">See the full breakdown &rarr;</button></div>'; }
+    var footRogue='Built on the published Rogue geometry, with a &plusmn;6&deg; stem (70&ndash;120mm) and up to 35mm of spacers. '+(r.noBody?'':'Saddle height (0.883 &times; inseam) is a starting point &mdash; fine-tune on your first rides. ')+'Free size exchanges either way.';
+    var footSP='Built on the A2 SP fit sheets: aerobar Pad&nbsp;X/Y with three SP stems (78&thinsp;/&thinsp;93&thinsp;/&thinsp;108&nbsp;mm), up to 70&nbsp;mm of risers, and pad fore/aft adjustment. '+(r.noBody?'':'Saddle height (0.9 &times; inseam) and the drop are starting points &mdash; confirm with a pro fit. ')+'Free size exchanges either way.';
+    return verdict+'<div class="a2fe-lockwrap" data-el="lockwrap"><div class="a2fe-lockmsg" data-el="lockmsg"><span>🔒 Enter your email to unlock your full fit &amp; setup</span></div>'+(r.prevBike?prevWhyHtml(r):whyHtml(r))+
+      '<div class="a2fe-grid2 a2fe-rise2"><div class="a2fe-card"><h4 class="a2fe-card-h">Your fit &amp; setup</h4><dl class="a2fe-readout">'+coordRows+'</dl><div class="a2fe-setup">'+setupLine(r)+'</div></div>'+
+      '<div class="a2fe-card"><h4 class="a2fe-card-h">Where you land</h4><div class="a2fe-plotwrap"><canvas class="a2fe-plot" data-el="plot"></canvas></div><div class="a2fe-plotcap">Every dot is a frame + stem + spacer'+(isSP?' + pad':'')+' combo. Ring = your target &middot; red = your setup.</div></div></div>'+
+      (r.noBody?'':dropHtml(r))+'</div>'+emailHtml()+'<p class="a2fe-foot">'+(isSP?footSP:footRogue)+'</p>';
+  }
+  function dropHtml(r){
+    var label=isSP?'Saddle-to-pad drop':'Bar drop', near=isSP?'Pads':'Bars', far=isSP?'Saddle':'Saddle top';
+    return '<div class="a2fe-drop a2fe-rise2"><div class="a2fe-drop-top"><div><span class="a2fe-card-h" style="margin:0">'+label+'</span></div><div class="a2fe-drop-num">'+(isSP?'':'&asymp; ')+(r.drop>=0?r.drop:('+'+Math.abs(r.drop)))+' mm</div></div>'+
+      '<div class="a2fe-drop-viz"><div class="a2fe-drop-line"></div><div class="a2fe-drop-mark" style="left:18%"><div class="a2fe-drop-dot" style="background:var(--fe-ink)"></div><small>'+far+' '+r.saddleMM+'</small></div><div class="a2fe-drop-mark" style="left:82%"><div class="a2fe-drop-dot" style="background:var(--fe-accent)"></div><small>'+near+' '+r.hy+'</small></div></div>'+
+      '<p>Your saddle sits about <b>'+Math.abs(r.drop)+' mm '+(r.drop>=0?'above':'below')+'</b> the '+(isSP?'elbow pads':'bars')+' &mdash; '+dropDesc(r.drop)+'. Tune it with the Position toggle, spacers'+(isSP?' or pads':' or a stem flip')+' &mdash; no size change needed.</p></div>';
+  }
+  function emailHtml(){
+    return '<div class="a2fe-email a2fe-rise3"><div data-el="emailForm"><h4 class="a2fe-email-h">Send me my results</h4><p class="a2fe-email-sub">Get your fit numbers, your setup, and this build in your inbox.</p><form class="a2fe-email-form" data-el="ef"><input class="a2fe-in" data-el="emailIn" type="email" placeholder="you@email.com" aria-label="Email"><button class="a2fe-btn" type="submit">Email my fit</button></form><div class="a2fe-err a2fe-hide" data-el="emailErr"></div></div><div class="a2fe-email-done a2fe-hide" data-el="emailDone"></div></div>';
+  }
+
+  /* ---------- Klaviyo event (see KLAVIYO-EVENT-SPEC.md) ---------- */
+  function buildProps(r,email){
+    var b=buildCopy(), cl=coordLabels();
+    var coordsSummary=cl[0]+" "+r.hx+" mm &middot; "+cl[1]+" "+r.hy+" mm";
+    var setupSummary=setupLine(r).replace(/<b>[^<]*<\/b>/,"").replace(/<br\s*\/?>/g," &middot; ").replace(/<[^>]+>/g,"").replace(/^\s*&middot;\s*/,"").replace(/\s+/g," ").trim();
+    var whyText=(r.prevBike?prevWhyHtml(r):whyHtml(r)).replace(/<\/p>\s*<p[^>]*>/g," ").replace(/<[^>]+>/g,"").replace(/\s+/g," ").trim();
+    var props={
+      bike_model:isSP?"SP":"Rogue", build:b.name, build_handle:CTX.build, product_url:CTX.url, price:CTX.price, cockpit:r.cfgKey||"",
+      recommended_size:r.name, size_code:r.frame, riding_position:(r.prevBike?"":posLabel(r.posture)),
+      fit_input_method:(r.prevBike?"previous_bike":"measurements"),
+      coords_summary:coordsSummary, saddle_height_mm:(r.noBody?null:r.saddleMM), saddle_height_in:(r.noBody?null:r.saddleIn), drop_mm:(r.noBody?null:r.drop), setup_summary:setupSummary,
+      subject:"Your A2 "+b.name+" size: the "+r.name, size_headline:"You're a "+r.name+".", build_hook:b.hook, why_text:whyText, build_blurb:b.evergreen, cta_label:"Build your "+b.name+" →"
+    };
+    if(isSP){ props.pad_reach_x_mm=r.hx; props.pad_stack_y_mm=r.hy; props.pad_offset_mm=r.rec.pad; props.stem=r.rec.stem; props.spacers_mm=r.rec.pedSpacers; }
+    else { props.bar_reach_hx_mm=r.hx; props.bar_stack_hy_mm=r.hy; props.stem=r.rec.stemLen+"mm "+(r.rec.stemAngle<0?"-6":"+6"); props.spacers_mm=r.rec.spacers; }
+    if(r.prevBike){
+      props.previous_bike_brand=r.prevBike.brand;
+      props.previous_bike_model=r.prevBike.model;
+      props.previous_bike_year_range=r.prevBike.years?(r.prevBike.years[0]+"-"+r.prevBike.years[1]):"";
+      props.previous_bike_size=r.prevBike.size;
+      props.previous_bike_feel=FEEL_LABEL[r.prevBike.feel];
+    }
+    if(r.freetext){ props.previous_bike_freetext=r.freetext; }
+    return props;
+  }
+  function sendFit(r,email,scope){
+    var props=buildProps(r,email), sent=false;
+    try { if (typeof window.a2_identify === "function") window.a2_identify(email, "fit_calculator"); } catch(e){}
+    try{
+      if(window.klaviyo && typeof window.klaviyo.identify==="function"){
+        // Await identify so the event attaches to the ENTERED email, not the
+        // browser's previously-cookied Klaviyo identity (else a returning visitor's
+        // result mis-attributes to their old profile).
+        var _track=function(){ try{ window.klaviyo.track("Requested Fit Results",props); }catch(e){} };
+        try{ var _id=window.klaviyo.identify({email:email}); (_id&&typeof _id.then==="function")?_id.then(_track,_track):_track(); }catch(e){ _track(); }
+        sent=true;
+      }
+      else if(window._learnq){ window._learnq.push(["identify",{"$email":email}]); window._learnq.push(["track","Requested Fit Results",props]); sent=true; }
+    }catch(e){ /* swallow — never break the page over analytics */ }
+    if(!sent && window.console){ console.warn("[a2-fit] Klaviyo onsite object not found — event not sent. Enable Klaviyo.js on the theme.", props); }
+    if(window.a2dl){ window.a2dl("fit_results_email",{ bike_model:props.bike_model, build:props.build_handle, size:props.size_code }); }
+    var form=scope.querySelector('[data-el="emailForm"]'), done=scope.querySelector('[data-el="emailDone"]');
+    form.classList.add("a2fe-hide"); done.classList.remove("a2fe-hide");
+    var lockwrap=scope.querySelector('[data-el="lockwrap"]'); if(lockwrap) lockwrap.classList.remove("is-locked");
+    done.innerHTML='<h4>On its way to '+esc(email)+' &#10003;</h4><p>Your '+r.name+' fit and the '+esc(buildCopy().name)+' are headed to your inbox. Didn&rsquo;t get it? Check spam, or reply to any A2 email and our fit team will help.</p>';
+  }
+
+  /* ---------- panel lifecycle ---------- */
+  function initPanel(root,opts){
+    var compact=!!opts.compact;
+    root.innerHTML=PANEL(compact);
+    var inputView=root.querySelector('[data-view="input"]'), resultView=root.querySelector('[data-view="result"]');
+    var go=root.querySelector('[data-el="go"]'), err=root.querySelector('[data-el="err"]');
+    function fail(m){ err.textContent=m; err.classList.remove("a2fe-hide"); }
+    function showResult(){ inputView.classList.add("a2fe-hide"); resultView.classList.remove("a2fe-hide"); if(opts.onResult) opts.onResult(); }
+    function showInput(){ resultView.classList.add("a2fe-hide"); inputView.classList.remove("a2fe-hide"); }
+    function wireChange(){ var c=resultView.querySelector('[data-el="change"]'); if(c) c.addEventListener("click",showInput); }
+
+    /* ---- previous-bike path wiring ---- */
+    var sel={bike:null}, freetext="";
+    var subMeasure=root.querySelector('[data-sub="measure"]'), subPrev=root.querySelector('[data-sub="prevbike"]');
+    var dbload=root.querySelector('[data-el="dbload"]'), pbform=root.querySelector('[data-el="pbform"]');
+    var bikeq=root.querySelector('[data-f="bikeq"]'), talist=root.querySelector('[data-el="talist"]');
+    var bikechip=root.querySelector('[data-el="bikechip"]'), sizefield=root.querySelector('[data-el="sizefield"]');
+    function activePath(){ return (root.querySelector('[data-f="path"] input:checked')||{}).value||"measure"; }
+    function switchToMeasure(){ var m=root.querySelector('[data-f="path"] input[value="measure"]'); if(m){ m.checked=true; m.dispatchEvent(new Event("change")); } }
+    root.querySelectorAll('[data-f="path"] input').forEach(function(radio){
+      radio.addEventListener("change",function(){
+        var prev=(this.value==="prevbike");
+        subMeasure.classList.toggle("a2fe-hide",prev); subPrev.classList.toggle("a2fe-hide",!prev);
+        err.classList.add("a2fe-hide");
+        if(prev&&BIKE_DB_STATE!=="ready"){
+          dbload.classList.remove("a2fe-hide");
+          loadBikeDB(function(ok){
+            dbload.classList.add("a2fe-hide");
+            if(ok){ pbform.classList.remove("a2fe-hide"); if(bikeq) bikeq.focus(); }
+            else { fail("Our bike library isn't available right now - use your measurements instead."); switchToMeasure(); }
+          });
+        } else if(prev){ pbform.classList.remove("a2fe-hide"); }
+      });
+    });
+    function taRender(matches){
+      if(!matches.length){ talist.classList.add("a2fe-hide"); talist.innerHTML=""; return; }
+      talist.innerHTML=matches.slice(0,8).map(function(b){
+        return '<button type="button" class="a2fe-taitem" data-i="'+BIKE_DB.indexOf(b)+'">'+b.brand+' '+b.model+'<small>'+(b.years?b.years[0]+'&ndash;'+b.years[1]:'')+' &middot; '+(b.type==="gravel"?"Gravel":(b.type==="tri"?"Tri":"Road"))+'</small></button>';
+      }).join("");
+      talist.classList.remove("a2fe-hide");
+    }
+    function selectBike(b){
+      sel.bike=b; talist.classList.add("a2fe-hide"); bikeq.value="";
+      bikeq.parentNode.classList.add("a2fe-hide");
+      bikechip.classList.remove("a2fe-hide");
+      bikechip.innerHTML=b.brand+' '+b.model+' <small>'+(b.years?b.years[0]+'&ndash;'+b.years[1]:'')+'</small><button type="button" aria-label="Clear bike" data-el="clearbike">&times;</button>';
+      bikechip.querySelector('[data-el="clearbike"]').addEventListener("click",function(){
+        sel.bike=null; bikechip.classList.add("a2fe-hide"); bikeq.parentNode.classList.remove("a2fe-hide");
+        sizefield.classList.add("a2fe-hide"); bikeq.focus();
+      });
+      var u=(compact?'d':'i');
+      root.querySelector('[data-f="psize"]').innerHTML=Object.keys(b.sizes).map(function(sz){
+        return '<label class="a2fe-pill"><input type="radio" name="a2fepsize-'+u+'" value="'+esc(sz)+'"><span>'+esc(sz)+'</span></label>';
+      }).join("");
+      sizefield.classList.remove("a2fe-hide");
+      (window.dataLayer=window.dataLayer||[]).push({event:"fit_prev_bike_selected",brand:b.brand,model:b.model,build:CTX.build,bike_model:isSP?"SP":"Rogue"});
+    }
+    if(bikeq){
+      bikeq.addEventListener("input",function(){
+        var q=this.value.trim().toLowerCase();
+        if(!q||!BIKE_DB){ talist.classList.add("a2fe-hide"); return; }
+        taRender(BIKE_DB.filter(function(b){ var n=(b.brand+" "+b.model).toLowerCase();
+          return q.split(/\s+/).every(function(t){ return n.indexOf(t)>=0; }); }));
+      });
+      bikeq.addEventListener("blur",function(){ setTimeout(function(){ talist.classList.add("a2fe-hide"); },160); });
+      talist.addEventListener("mousedown",function(e){ var it=e.target.closest(".a2fe-taitem"); if(it) selectBike(BIKE_DB[+it.getAttribute("data-i")]); });
+    }
+    var nobike=root.querySelector('[data-el="nobike"]');
+    if(nobike) nobike.addEventListener("click",function(){
+      var note=root.querySelector('[data-el="prevnote"]');
+      note.innerHTML='<div class="a2fe-htrow" style="margin-top:4px"><input class="a2fe-in" data-f="ftxt" type="text" placeholder="e.g. 2017 Fuji Norcom, 55" style="width:230px"> <button class="a2fe-btn a2fe-btn-ghost a2fe-btn-sm" data-el="ftsave" type="button">Save</button></div>';
+      note.querySelector('[data-el="ftsave"]').addEventListener("click",function(){
+        freetext=(note.querySelector('[data-f="ftxt"]').value||"").trim();
+        var ftok=root.querySelector('[data-el="ftok"]');
+        if(freetext){ ftok.textContent='Saved — we’ll include “'+freetext+'” with your results.'; ftok.classList.remove("a2fe-hide"); }
+        switchToMeasure();
+      });
+    });
+
+    function finish(r){
+      if(r.bad) return fail("Those numbers look off - double-check your inputs.");
+      if(r.oor){ resultView.innerHTML='<div class="a2fe-verdict"><div class="a2fe-vcopy"><h3 class="a2fe-vtitle">Let&rsquo;s talk it through</h3><div class="a2fe-vsub">You&rsquo;re at the '+(r.oor==="small"?"small":"tall")+' end of the range &mdash; our fit team will find a setup that works. <a href="/pages/contact-a2-bikes">Talk to a fitter &rarr;</a></div></div><div class="a2fe-vreset"><button class="a2fe-btn a2fe-btn-ghost a2fe-btn-sm" data-el="change" type="button">Change my answers</button></div></div>'; showResult(); wireChange(); return; }
+      r.freetext=freetext||"";
+      resultView.innerHTML=resultHtml(r,compact); showResult(); wireResult(r);
+      (window.dataLayer=window.dataLayer||[]).push({event:"fit_calculator_result",recommended_frame:r.frame,build:CTX.build,bike_model:isSP?"SP":"Rogue",fit_input_method:(r.prevBike?"previous_bike":"measurements")});
+    }
+
+    go.addEventListener("click",function(){
+      if(activePath()==="prevbike"){
+        if(BIKE_DB_STATE!=="ready") return;
+        if(!sel.bike) return fail("Pick your previous bike — or switch to your measurements.");
+        var sz=(root.querySelector('[data-f="psize"] input:checked')||{}).value;
+        if(!sz) return fail("Pick the size you rode.");
+        var pft=parseFloat(root.querySelector('[data-f="pft"]').value), pin=parseFloat(root.querySelector('[data-f="pin"]').value);
+        if(isNaN(pft)&&isNaN(pin)) return fail("Enter your height (feet and inches).");
+        err.classList.add("a2fe-hide");
+        var hMM=((isNaN(pft)?0:pft)*12+(isNaN(pin)?0:pin))*25.4;
+        if(hMM<1200||hMM>2200) return fail("That height looks off - double-check it.");
+        var feel=(root.querySelector('[data-f="feel"] input:checked')||{}).value||"right";
+        finish(computeFromBike(hMM,sel.bike,sz,feel));
+        return;
+      }
+      var ft=parseFloat(root.querySelector('[data-f="ft"]').value), inch=parseFloat(root.querySelector('[data-f="in"]').value), inseamIn=parseFloat(root.querySelector('[data-f="inseam"]').value);
+      var pos=(root.querySelector('[data-f="pos"] input:checked')||{}).value||"balanced";
+      if(isNaN(ft)&&isNaN(inch)) return fail("Enter your height (feet and inches).");
+      if(isNaN(inseamIn)) return fail("Enter your inseam in inches.");
+      err.classList.add("a2fe-hide");
+      var heightMM=((isNaN(ft)?0:ft)*12+(isNaN(inch)?0:inch))*25.4, inseamMM=inseamIn*25.4;
+      finish(compute(heightMM,inseamMM,pos));
+    });
+    function wireResult(r){
+      wireChange();
+      if(A2FE_GATE==="soft"){ var lockwrap=resultView.querySelector('[data-el="lockwrap"]'); if(lockwrap) lockwrap.classList.add("is-locked"); }
+      var plot=resultView.querySelector('[data-el="plot"]');
+      if(plot){ requestAnimationFrame(function(){ drawPlot(plot,r); }); try{ new ResizeObserver(function(){ drawPlot(plot,r); }).observe(plot); }catch(e){} }
+      var full=resultView.querySelector('[data-el="full"]');
+      if(full) full.addEventListener("click",function(){ closeDrawer(); var el=document.getElementById("a2fe-inline"); if(el) el.scrollIntoView({behavior:"smooth"}); });
+      var ef=resultView.querySelector('[data-el="ef"]');
+      if(ef) ef.addEventListener("submit",function(e){ e.preventDefault(); var input=resultView.querySelector('[data-el="emailIn"]'), eErr=resultView.querySelector('[data-el="emailErr"]'); var email=(input.value||"").trim();
+        if(!email||email.indexOf("@")<1){ eErr.textContent="Enter a valid email address."; eErr.classList.remove("a2fe-hide"); return; } eErr.classList.add("a2fe-hide"); sendFit(r,email,resultView); });
+    }
+    return { reset:showInput };
+  }
+
+  /* ---------- drawer (injected once) ---------- */
+  var drawerEl, overlayEl;
+  function ensureDrawer(){
+    if(drawerEl) return;
+    overlayEl=document.createElement("div"); overlayEl.className="a2fe-overlay";
+    drawerEl=document.createElement("aside"); drawerEl.className="a2fe a2fe-drawer"; drawerEl.setAttribute("aria-hidden","true"); drawerEl.setAttribute("aria-label","Find your size");
+    drawerEl.innerHTML='<div class="a2fe-drawer-head"><b>Find your size</b><button class="a2fe-drawer-x" data-el="x" aria-label="Close">&times;</button></div><div class="a2fe-drawer-body" data-a2fe-mount="drawer"></div>';
+    document.body.appendChild(overlayEl); document.body.appendChild(drawerEl);
+    overlayEl.addEventListener("click",closeDrawer);
+    drawerEl.querySelector('[data-el="x"]').addEventListener("click",closeDrawer);
+    document.addEventListener("keydown",function(e){ if(e.key==="Escape") closeDrawer(); });
+  }
+  function openDrawer(){ ensureDrawer(); initPanel(drawerEl.querySelector('[data-a2fe-mount="drawer"]'),{compact:true}); overlayEl.classList.add("a2fe-open"); drawerEl.classList.add("a2fe-open"); drawerEl.setAttribute("aria-hidden","false"); var f=drawerEl.querySelector('[data-f="ft"]'); if(f) f.focus(); }
+  function closeDrawer(){ if(!drawerEl) return; overlayEl.classList.remove("a2fe-open"); drawerEl.classList.remove("a2fe-open"); drawerEl.setAttribute("aria-hidden","true"); }
+
+  /* ---------- boot ---------- */
+  var inlineMount=document.querySelector('[data-a2fe-mount="inline"]');
+  if(inlineMount) initPanel(inlineMount,{compact:false});
+  window.A2Fit={ openDrawer:openDrawer, closeDrawer:closeDrawer };
+}
+</script>
+{% endraw %}
