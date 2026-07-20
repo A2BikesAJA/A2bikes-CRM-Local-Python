@@ -118,7 +118,7 @@ auto-identifies logged-in customers and re-fires from `sessionStorage`.
 | 3 | Save-your-build on PDPs | `save_build` | **built + staged** | needs a Klaviyo "Saved Build" flow + list to actually send the quote email |
 | 4 | Email flows as identity machines | `newsletter`/`klaviyo_form` | not started | Klaviyo flow coordination |
 | 5 | Push the Octane quiz | `quiz` | not started | quiz placement prominence |
-| 6 | Back-in-stock / price-drop | `restock_alert` | not started | verify existing `snippets/a2-restock-alert.liquid` |
+| 6 | Back-in-stock (restock) | `restock_alert` | **built + staged** | set `custom.restock_alert` metafield on the SP product(s) to show it; price-drop is a separate follow-up |
 | 7 | Sign in with Shop | `checkout` | not started | — |
 | 8 | Zoho chat asks email early | `chat` | not started | — |
 | 9 | Financing prequal step | `save_build`/new | not started | — |
@@ -171,6 +171,25 @@ auto-identifies logged-in customers and re-fires from `sessionStorage`.
   so the "check your inbox" promise is fulfilled. Set `sb_klaviyo_list` to that
   list. Note `A2_FIT_CTX.price` is the base product price; the emailed quote uses
   the live `[data-price]` DOM value scraped at submit.
+
+### Play 6 — back-in-stock / restock alert (this build)
+- Refreshed the existing SP "new colorway drop / notify me" card
+  `shopify/snippets/a2-restock-alert.liquid` (rendered on SP PDPs by
+  `sections/sppdp-product.liquid` only when `product.metafields.custom.restock_alert`
+  is true; that branch also loads `a2-lp.js`). Klaviyo company `YejYTH`, list
+  `TpVuRM` ("SP Drop — Notify Me").
+- **The gap fixed:** the card captured to Klaviyo (via a2-lp.js) + dataLayer but
+  never called the CRM. Added a scoped inline script: on submit it calls
+  `window.a2_identify(email, "restock_alert")` + `a2IdentifyVisitor` and persists
+  the email. a2-lp.js still owns the Klaviyo POST. Verbatim copy verified
+  byte-identical to live before the single append.
+- Staged to draft `176605397156`; checksum verified
+  `0d5848a1850eeec51b0e25637253c124`.
+- **Owner to-do:** set the `custom.restock_alert` boolean metafield on the SP
+  product(s) you want the card to appear on (it's per-product, owner-controlled).
+- **Follow-up (separate mechanism):** price-drop alerts. Not in this card; best
+  done via Klaviyo's native price-drop / a parallel "price drop" capture card
+  wired to a new `price_drop` source. Flagged, not built.
 
 ### Play 1 — exit-intent
 - Preview (same theme): `https://a2bikes.com/?preview_theme_id=176605397156`
