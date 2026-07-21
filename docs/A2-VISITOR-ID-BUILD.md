@@ -119,7 +119,7 @@ auto-identifies logged-in customers and re-fires from `sessionStorage`.
 | 4 | Email flows as identity machines | `newsletter`/`klaviyo_form` | not started | Klaviyo flow coordination |
 | 5 | Push the Octane quiz | `quiz` | **built + staged** | Octane app embed has a BLANK quiz id — confirm the quiz destination (page vs on-site) |
 | 6 | Back-in-stock (restock) | `restock_alert` | **built + staged** | set `custom.restock_alert` metafield on the SP product(s) to show it; price-drop is a separate follow-up |
-| 7 | Sign in with Shop | `checkout` | not started | — |
+| 7 | Sign in with Shop | `account` | **theme wiring built + staged** | ENABLE Sign in with Shop in admin (Settings → Customer accounts) — owner action |
 | 8 | Zoho chat asks email early | `chat` | not started | — |
 | 9 | Financing prequal step | `save_build`/new | not started | — |
 
@@ -216,6 +216,23 @@ auto-identifies logged-in customers and re-fires from `sessionStorage`.
   the `band` style; switch to `strip` or restyle in the editor. To push on PDPs,
   drop the "A2 Quiz CTA" section onto the product template at the prominence you
   want.
+
+### Play 7 — Sign in with Shop (this build)
+- Reality: enabling "Sign in with Shop" is a **Shopify admin toggle** (Settings →
+  Customer accounts / Checkout), not theme code. The store currently uses classic
+  customer accounts (`sections/main-customer-login.liquid`, email/password); no
+  Shop sign-in button in the theme.
+- **Theme wiring shipped:** `layout/theme.liquid` auto-identified logged-in
+  customers to Klaviyo/GA4 (`a2IdentifyVisitor`) but never to the CRM. Added a
+  guarded `window.a2_identify(customer.email, "account")` in the `{% if customer %}`
+  block, so returning known customers — including Shop Pay / Sign in with Shop
+  returners once enabled — land on the scoreboard (source `account`). Idempotent
+  per person, so repeated pageviews are fine. Verbatim base preserved; checksum
+  `fdac5f26d5aeac036658a61ab591ff33`.
+- **Owner action (the actual enablement):** turn on **Sign in with Shop** in
+  Shopify admin → Settings → Customer accounts (and/or Checkout). Optional theme
+  add (not built, low value until enabled): a `<shop-login-button>` (shop-js) on
+  the login page — say the word and I'll stage it.
 
 ### Play 1 — exit-intent
 - Preview (same theme): `https://a2bikes.com/?preview_theme_id=176605397156`
