@@ -147,6 +147,7 @@
           var formData = e.detail.metaData;
           if (formData && formData.$email) {
             window.a2IdentifyVisitor(formData.$email);
+            try { if (typeof window.a2_identify === 'function') window.a2_identify(formData.$email, 'klaviyo_form'); } catch(e){}
           }
         }
       });
@@ -163,6 +164,11 @@
             var emailInput = form.querySelector('input[type="email"]');
             if (emailInput && emailInput.value) {
               window.a2IdentifyVisitor(emailInput.value);
+              // CRM scoreboard source: Shopify newsletter + contact forms both POST to
+              // /contact, so use form_type ("contact" => contact-us, else newsletter).
+              var _ft = (form.querySelector('input[name="form_type"]') || {}).value || '';
+              var _src = _ft === 'contact' ? 'contact' : 'newsletter';
+              try { if (typeof window.a2_identify === 'function') window.a2_identify(emailInput.value, _src); } catch(e){}
             }
           });
         });
