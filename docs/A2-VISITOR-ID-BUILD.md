@@ -120,7 +120,7 @@ auto-identifies logged-in customers and re-fires from `sessionStorage`.
 | 5 | Push the Octane quiz | `quiz` | **built + staged** | Octane app embed has a BLANK quiz id — confirm the quiz destination (page vs on-site) |
 | 6 | Back-in-stock (restock) | `restock_alert` | **built + staged** | set `custom.restock_alert` metafield on the SP product(s) to show it; price-drop is a separate follow-up |
 | 7 | Sign in with Shop | `account` | **theme wiring built + staged** | ENABLE Sign in with Shop in admin (Settings → Customer accounts) — owner action |
-| 8 | Zoho chat asks email early | `chat` | not started | — |
+| 8 | Zoho chat asks email early | `chat` | **theme capture built + staged** | Zoho dashboard: turn on pre-chat email field + (best) a webhook → oryguntri.com/api/identify |
 | 9 | Financing prequal step | `save_build`/new | not started | — |
 
 ### Shared staged draft theme
@@ -255,6 +255,21 @@ auto-identifies logged-in customers and re-fires from `sessionStorage`.
   cookied — the "email flows cookie the browser for ~2 years" mechanism. The
   remaining work is **Klaviyo flow coordination** (owner/Klaviyo side): make sure
   flows link back to the site so clicks re-identify returning browsers.
+
+### Play 8 — Zoho chat asks email early (this build)
+- Theme capture wired in `layout/theme.liquid`: the Zoho SalesIQ `ready` handler
+  now registers documented capture callbacks — `chat.continue`, `visitor.chat`,
+  `visitor.offlineMessage`, `visitor.feedback` — each in its own try/catch (so an
+  unsupported callback can never break the widget). On any of them it reads the
+  visitor email (callback payload, falling back to the `visitor.email()` getter)
+  and calls `a2_identify(email,"chat")` + `a2IdentifyVisitor`. Checksum
+  `fe8e22558ce07fcfc7ca0d3476fba911`; inline JS `node --check` clean.
+- **Owner actions (Zoho dashboard, external):** (1) turn on the **pre-chat form
+  email field** ("Where should we send the transcript?") so email is asked early;
+  (2) most reliable capture is a **Zoho webhook/integration → `POST
+  https://oryguntri.com/api/identify` `{email, source:"chat"}`** (server-side path
+  from the CRM contract) — the client-side hooks above are best-effort and depend
+  on which SalesIQ callbacks fire for your plan/config.
 
 ### Play 1 — exit-intent
 - Preview (same theme): `https://a2bikes.com/?preview_theme_id=176605397156`
