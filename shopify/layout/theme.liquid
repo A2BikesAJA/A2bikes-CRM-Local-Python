@@ -126,9 +126,11 @@
         } catch(e) {}
       };
 
-      // Auto-identify if Shopify customer is logged in
+      // Auto-identify if Shopify customer is logged in (incl. Sign in with Shop /
+      // Shop Pay returners): also tag the CRM scoreboard with source "account".
       {% if customer %}
         window.a2IdentifyVisitor("{{ customer.email }}");
+        try { if (typeof window.a2_identify === 'function') window.a2_identify("{{ customer.email }}", "account"); } catch(e){}
       {% endif %}
 
       // Auto-identify if email in sessionStorage from prior page
