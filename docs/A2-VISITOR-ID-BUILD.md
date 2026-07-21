@@ -116,7 +116,7 @@ auto-identifies logged-in customers and re-fires from `sessionStorage`.
 | 1 | Exit-intent capture (+ $X off) | `exit_intent` | **built + staged (disabled)** | discount **amount + code**, Klaviyo list id, final copy |
 | 2 | Email-gate Fit Calculator | `fit_calculator` | **built + staged** | none — owner confirmed geometry current; soft gate chosen |
 | 3 | Save-your-build on PDPs | `save_build` | **built + staged** | needs a Klaviyo "Saved Build" flow + list to actually send the quote email |
-| 4 | Email flows as identity machines | `newsletter`/`klaviyo_form` | not started | Klaviyo flow coordination |
+| 4 | Email flows as identity machines | `newsletter`/`klaviyo_form`/`contact` | **built + staged** | Klaviyo flow coordination (email-click cookies already captured via `_kx` in a2-lp.js) |
 | 5 | Push the Octane quiz | `quiz` | **built + staged** | Octane app embed has a BLANK quiz id — confirm the quiz destination (page vs on-site) |
 | 6 | Back-in-stock (restock) | `restock_alert` | **built + staged** | set `custom.restock_alert` metafield on the SP product(s) to show it; price-drop is a separate follow-up |
 | 7 | Sign in with Shop | `account` | **theme wiring built + staged** | ENABLE Sign in with Shop in admin (Settings → Customer accounts) — owner action |
@@ -233,6 +233,28 @@ auto-identifies logged-in customers and re-fires from `sessionStorage`.
   Shopify admin → Settings → Customer accounts (and/or Checkout). Optional theme
   add (not built, low value until enabled): a `<shop-login-button>` (shop-js) on
   the login page — say the word and I'll stage it.
+
+### Play 4 — email flows as identity machines (this build)
+- Every email-capture path reached Klaviyo/GA4 but never the CRM scoreboard.
+  Wired all of them (verbatim bases verified byte-identical before editing):
+  - `layout/theme.liquid` — the Klaviyo native-form (`klaviyoForms`) listener now
+    also calls `a2_identify(email, "klaviyo_form")`; the newsletter/contact submit
+    handler now calls `a2_identify(email, form_type=="contact" ? "contact" :
+    "newsletter")` (Shopify newsletter + contact forms both POST to /contact, so
+    `form_type` is the reliable discriminator). Checksum
+    `f8841abd504b4f6af2307b6f68af7ea0`.
+  - `assets/a2-lp.js` — the shared `data-a2-klaviyo-form` submit handler (used by
+    the reusable `a2-email-capture` component + LP forms) now calls
+    `a2_identify(email, data-a2-crm-source || "newsletter")` once the email is
+    valid, before the Klaviyo POST — so it fires even when Klaviyo keys aren't
+    set. **UTM/attribution capture untouched** (hard rule). Checksum
+    `8764e2e9798b73df08a144a2d51b8787`. Forms can set `data-a2-crm-source` for
+    precise per-form attribution; default is `newsletter`.
+- **Already in place (no build needed):** a2-lp.js captures Klaviyo click ids
+  (`_kx`) as first-touch attribution, so email clicks that land with `?_kx=` are
+  cookied — the "email flows cookie the browser for ~2 years" mechanism. The
+  remaining work is **Klaviyo flow coordination** (owner/Klaviyo side): make sure
+  flows link back to the site so clicks re-identify returning browsers.
 
 ### Play 1 — exit-intent
 - Preview (same theme): `https://a2bikes.com/?preview_theme_id=176605397156`
