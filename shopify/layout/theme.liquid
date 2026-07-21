@@ -239,7 +239,25 @@
     {{ '//cdn.shopify.com/shopifycloud/shopify-plyr/v1.0/shopify-plyr.css' | stylesheet_tag }}
     <script>
       window.$zoho = window.$zoho || {};
-      $zoho.salesiq = $zoho.salesiq || { ready: function () {} };
+      $zoho.salesiq = $zoho.salesiq || {};
+      // A2 CRM: when a visitor gives their email in chat, tag them as source "chat".
+      // Registers documented SalesIQ capture callbacks defensively (try/catch each,
+      // so an unsupported one can never break the widget). Email read from the
+      // callback payload, falling back to the visitor.email() getter.
+      $zoho.salesiq.ready = function () {
+        function a2cap(email) {
+          if (!email) return;
+          email = String(email).toLowerCase().trim();
+          if (email.indexOf("@") < 1) return;
+          try { if (typeof window.a2_identify === "function") window.a2_identify(email, "chat"); } catch (e) {}
+          try { if (typeof window.a2IdentifyVisitor === "function") window.a2IdentifyVisitor(email); } catch (e) {}
+        }
+        function a2apiEmail() { try { return $zoho.salesiq.visitor.email(); } catch (e) { return ""; } }
+        try { $zoho.salesiq.chat.continue(function (v, d) { a2cap((d && d.visitoremail) || a2apiEmail()); }); } catch (e) {}
+        try { $zoho.salesiq.visitor.chat(function (d) { a2cap((d && (d.email || d.visitoremail)) || a2apiEmail()); }); } catch (e) {}
+        try { $zoho.salesiq.visitor.offlineMessage(function (d) { a2cap((d && (d.email || d.visitoremail)) || a2apiEmail()); }); } catch (e) {}
+        try { $zoho.salesiq.visitor.feedback(function (d) { a2cap((d && (d.email || d.visitoremail)) || a2apiEmail()); }); } catch (e) {}
+      };
     </script>
     <script
       id="zsiqscript"
