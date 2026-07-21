@@ -1,0 +1,252 @@
+<!doctype html>
+
+<!--
+  ___                 ___           ___           ___
+       /  /\                     /__/\         /  /\         /  /\
+      /  /:/_                    \  \:\       /  /:/        /  /::\
+     /  /:/ /\  ___     ___       \  \:\     /  /:/        /  /:/\:\
+    /  /:/ /:/ /__/\   /  /\  ___  \  \:\   /  /:/  ___   /  /:/  \:\
+   /__/:/ /:/  \  \:\ /  /:/ /__/\  \__\:\ /__/:/  /  /\ /__/:/ \__\:\
+   \  \:\/:/    \  \:\  /:/  \  \:\ /  /:/ \  \:\ /  /:/ \  \:\ /  /:/
+    \  \::/      \  \:\/:/    \  \:\  /:/   \  \:\  /:/   \  \:\  /:/
+     \  \:\       \  \::/      \  \:\/:/     \  \:\/:/     \  \:\/:/
+      \  \:\       \__\/        \  \::/       \  \::/       \  \::/
+       \__\/                     \__\/         \__\/         \__\/
+
+  --------------------------------------------------------------------
+  #  Stiletto v5.2.2
+  #  Documentation: https://help.fluorescent.co/v/stiletto
+  #  Purchase: https://themes.shopify.com/themes/stiletto/
+  #  A product by Fluorescent: https://fluorescent.co/
+  --------------------------------------------------------------------
+-->
+
+<html
+  class="no-js"
+  lang="{{ request.locale.iso_code }}"
+  style="
+    --announcement-height: 1px;
+    --mobile-sticky-header-height: 0px;
+    --mobile-sticky-announcement-height: 0px;
+  "
+>
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    {% render 'meta-description' %}
+
+    <link rel="canonical" href="{{ canonical_url }}">
+    <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+    {%- comment -%} CWV: warm up connections to render-relevant third-party origins. {%- endcomment -%}
+    <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+    <link rel="dns-prefetch" href="https://static.klaviyo.com">
+    <link rel="dns-prefetch" href="https://cdn1.affirm.com">
+
+    {%- if settings.favicon != blank -%}
+      <link rel="shortcut icon" href="{{ settings.favicon | image_url: width: 32, height: 32 }}" type="image/png">
+    {%- endif -%}
+
+    {%- capture seo_title -%}
+      {%- if request.page_type == 'search' and search.performed == true -%}
+        {{ 'search.heading' | t: count: search.results_count }}:
+        {{ 'search.results_with_count' | t: terms: search.terms, count: search.results_count }}
+      {%- else -%}
+        {{ page_title }}
+      {%- endif -%}
+      {%- if current_tags -%}
+        {%- assign meta_tags = current_tags | join: ', ' -%}
+        &ndash; {{ 'general.meta.tags' | t: tags: meta_tags -}}
+      {%- endif -%}
+      {%- if current_page != 1 -%}
+        &ndash; {{ 'general.meta.page' | t: page: current_page }}
+      {%- endif -%}
+      {%- assign escaped_page_title = page_title | escape -%}
+      {%- unless escaped_page_title contains shop.name -%}
+        &ndash; {{ shop.name }}
+      {%- endunless -%}
+    {%- endcapture -%}
+    <title>{{ seo_title | strip }}</title>
+
+    {% render 'social-meta-tags' %}
+
+    {% render 'theme-setup' %}
+    {% render 'theme-setting-vars' %}
+    {%- render 'theme-globals' -%}
+
+    {{ content_for_header }}
+
+
+    <!-- Google Analytics 4
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-W2Q749NZM8"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-W2Q749NZM8'{% if customer %}, {
+        'user_id': '{{ customer.id }}'
+      }{% endif %});
+    </script>  -->
+
+
+    <script>
+      window.a2IdentifyVisitor = function(email) {
+        if (!email || email.indexOf("@") === -1) return;
+        email = email.toLowerCase().trim();
+
+        // 1. Klaviyo identify
+        if (window._learnq) {
+          window._learnq.push(["identify", {
+            "$email": email
+          }]);
+        }
+
+        // 2. GA4 User-ID and custom dimension
+        if (typeof gtag === 'function') {
+          gtag("set", "user_properties", {
+            "customer_email": email
+          });
+          gtag("event", "user_identified", {
+            "method": "email_capture",
+            "customer_email": email
+          });
+        }
+
+        // 3. Lucky Orange identify (no-op unless the Lucky Orange embed is enabled)
+        if (window.LO && window.LO.visitor) {
+          window.LO.visitor.identify(email, {
+            name: email.split("@")[0]
+          });
+        }
+
+        // 4. Store for later use
+        try {
+          sessionStorage.setItem("a2_visitor_email", email);
+        } catch(e) {}
+      };
+
+      // Auto-identify if Shopify customer is logged in
+      {% if customer %}
+        window.a2IdentifyVisitor("{{ customer.email }}");
+      {% endif %}
+
+      // Auto-identify if email in sessionStorage from prior page
+      try {
+        var storedEmail = sessionStorage.getItem("a2_visitor_email");
+        if (storedEmail) { window.a2IdentifyVisitor(storedEmail); }
+      } catch(e) {}
+    </script>
+
+    <script>
+      // Listen for Klaviyo form submissions (popup, embedded forms)
+      window.addEventListener('klaviyoForms', function (e) {
+        if (e.detail.type === 'submit' || e.detail.type === 'redirectedToUrl') {
+          var formData = e.detail.metaData;
+          if (formData && formData.$email) {
+            window.a2IdentifyVisitor(formData.$email);
+          }
+        }
+      });
+    </script>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        // Hook into newsletter/contact forms
+        var forms = document.querySelectorAll(
+          'form[action*="subscribe"], form.newsletter-form, form[action*="/contact"]'
+        );
+        forms.forEach(function (form) {
+          form.addEventListener('submit', function () {
+            var emailInput = form.querySelector('input[type="email"]');
+            if (emailInput && emailInput.value) {
+              window.a2IdentifyVisitor(emailInput.value);
+            }
+          });
+        });
+      });
+    </script>
+
+    <script>
+      // Listen for Octane AI quiz completions
+      window.addEventListener('message', function (event) {
+        try {
+          var data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
+          if (data && data.type === 'octane-quiz-completed' && data.email) {
+            window.a2IdentifyVisitor(data.email);
+            try { if (typeof window.a2_identify === 'function') window.a2_identify(data.email, 'quiz'); } catch(e){}
+          }
+          if (data && data.octaneai && data.octaneai.email) {
+            window.a2IdentifyVisitor(data.octaneai.email);
+            try { if (typeof window.a2_identify === 'function') window.a2_identify(data.octaneai.email, 'quiz'); } catch(e){}
+          }
+        } catch (e) {}
+      });
+    </script>
+  {%- comment -%}
+  Disabled May 2026 — A2 CRM (OrygunTri) under development.
+  Re-enable when ops/dev team confirms ready.
+  Original tag:
+  <script async defer
+      src="https://oryguntri.com/api/tracker/a2_tracker.js"
+      onerror="console.warn('A2 tracker unavailable')"></script>
+{%- endcomment -%}
+  </head>
+
+  <body class="template-{{ request.page_type | handle }}">
+
+    <div class="page">
+      {% if settings.enable_page_transitions %}
+        {% render 'page-transition-overlay' %}
+      {% endif %}
+
+      <div class="theme-editor-scroll-offset"></div>
+
+      <div class="header__space" data-header-space></div>
+
+      {% sections 'header-group' %}
+      {% sections 'overlay-group' %}
+
+      {%- if settings.enable_quick_search -%}
+        {% render 'quick-search' %}
+      {%- endif -%}
+
+      <div class="header-overlay" data-header-overlay>
+        <div class="header-overlay__inner"></div>
+      </div>
+
+      <main id="main" class="main">
+        {{ content_for_layout }}
+      </main>
+
+      {% sections 'footer-group' %}
+
+      {% render 'store-availability-drawer' %}
+      {% render 'quick-view-modal' %}
+      {% render 'modal' %}
+      {% render 'back-to-top' %}
+    </div>
+
+    {{ '//www.youtube.com/iframe_api' | script_tag }}
+    {{ '//cdn.shopify.com/shopifycloud/shopify-plyr/v1.0/shopify-plyr.css' | stylesheet_tag }}
+    <script>
+      window.$zoho = window.$zoho || {};
+      $zoho.salesiq = $zoho.salesiq || { ready: function () {} };
+    </script>
+    <script
+      id="zsiqscript"
+      src="https://salesiq.zohopublic.com/widget?wc=siq1dac5c1474961a477a196d6e8d708f423d02987807286b02d63de9453f90c112"
+      defer
+    ></script>
+  <!-- A2 CRM Silent Shopper Tracker -->
+<script src="https://oryguntri.com/api/tracker/a2_tracker.js" defer></script>
+  </body>
+  <link
+    rel="preload"
+    fetchpriority="low"
+    href="{{ 'theme-deferred.css' | asset_url }}"
+    as="style"
+    onload="this.onload=null;this.rel='stylesheet'"
+  >
+  <noscript><link rel="stylesheet" href="{{ 'theme-deferred.css' | asset_url }}"></noscript>
+</html>
