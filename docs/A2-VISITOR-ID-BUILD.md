@@ -117,7 +117,7 @@ auto-identifies logged-in customers and re-fires from `sessionStorage`.
 | 2 | Email-gate Fit Calculator | `fit_calculator` | **built + staged** | none — owner confirmed geometry current; soft gate chosen |
 | 3 | Save-your-build on PDPs | `save_build` | **built + staged** | needs a Klaviyo "Saved Build" flow + list to actually send the quote email |
 | 4 | Email flows as identity machines | `newsletter`/`klaviyo_form` | not started | Klaviyo flow coordination |
-| 5 | Push the Octane quiz | `quiz` | not started | quiz placement prominence |
+| 5 | Push the Octane quiz | `quiz` | **built + staged** | Octane app embed has a BLANK quiz id — confirm the quiz destination (page vs on-site) |
 | 6 | Back-in-stock (restock) | `restock_alert` | **built + staged** | set `custom.restock_alert` metafield on the SP product(s) to show it; price-drop is a separate follow-up |
 | 7 | Sign in with Shop | `checkout` | not started | — |
 | 8 | Zoho chat asks email early | `chat` | not started | — |
@@ -190,6 +190,32 @@ auto-identifies logged-in customers and re-fires from `sessionStorage`.
 - **Follow-up (separate mechanism):** price-drop alerts. Not in this card; best
   done via Klaviyo's native price-drop / a parallel "price drop" capture card
   wired to a new `price_drop` source. Flagged, not built.
+
+### Play 5 — push the Octane quiz (this build)
+- New section `shopify/sections/a2-quiz-cta.liquid` (self-contained; no a2-lp.js
+  dependency, so it works on homepage AND PDPs). Opens the quiz (prefers the
+  Octane on-site JS API, falls back to the quiz page URL, default
+  `/pages/a2-bikes-selector-quiz`) and pushes the `octane_quiz_open` dataLayer
+  event. In-page band/strip (owner-selectable prominence), NOT a popup. Has
+  presets so the owner can drop it on PDPs (or anywhere) via the theme editor.
+- Added to the homepage: `shopify/templates/index.json` now includes a
+  `quiz_band` (type `a2-quiz-cta`, style band) right after the `lineup` section.
+- **Measurement fix (the key part):** `layout/theme.liquid`'s
+  `octane-quiz-completed` message listener previously called only
+  `a2IdentifyVisitor`. Added a guarded `window.a2_identify(email, "quiz")` in
+  both branches so quiz completions are tagged `quiz` on the CRM scoreboard.
+- Staged to draft `176605397156`; checksums verified — section
+  `55368c717714dedc68eaa4ed2bb1091f`, `layout/theme.liquid`
+  `c0dd3041741b9d40bebf858f17510532`, `templates/index.json`
+  `b806a5ba0e15909f523a1a5f201e6641`. (Section schema initially rejected a blank
+  text default on `foot`; fixed.) Both live files verified byte-identical before
+  the surgical edits.
+- **Owner notes:** the Octane app embed is enabled but has a **blank quiz id**,
+  so the reliable destination is the quiz page — confirm `/pages/a2-bikes-selector-quiz`
+  is the intended quiz (or set the section's Quiz URL). Homepage prominence is
+  the `band` style; switch to `strip` or restyle in the editor. To push on PDPs,
+  drop the "A2 Quiz CTA" section onto the product template at the prominence you
+  want.
 
 ### Play 1 — exit-intent
 - Preview (same theme): `https://a2bikes.com/?preview_theme_id=176605397156`
