@@ -121,7 +121,34 @@ auto-identifies logged-in customers and re-fires from `sessionStorage`.
 | 6 | Back-in-stock (restock) | `restock_alert` | **built + staged** | set `custom.restock_alert` metafield on the SP product(s) to show it; price-drop is a separate follow-up |
 | 7 | Sign in with Shop | `account` | **theme wiring built + staged** | ENABLE Sign in with Shop in admin (Settings → Customer accounts) — owner action |
 | 8 | Zoho chat asks email early | `chat` | **theme capture built + staged** | Zoho dashboard: turn on pre-chat email field + (best) a webhook → oryguntri.com/api/identify |
-| 9 | Financing prequal step | `save_build`/new | not started | — |
+| 9 | Financing prequal step | (Affirm-native; no CRM source) | **already compliant in theme — no new code** | owner: enable `show_affirm_line` (built-in) OR keep the Affirm app block (not both); route copy via Affirm Merchant Care |
+
+## Build status — all 9 plays addressed
+
+Plays 1–8 are **built + staged** to the draft theme (checksums verified); Play 9
+is **already compliant in the theme** (no new code — see below). Every capture
+mechanism now calls `window.a2_identify(email, <source>)` with the correct source
+string, so each shows up on the CRM "How we identify people" scoreboard.
+
+### Consolidated owner checklist before publishing
+1. **Play 1 (exit-intent):** set discount **amount + code** + Klaviyo **list id**,
+   review copy, tick **Enable** (section is off until then).
+2. **Play 3 (save-build):** build a Klaviyo "Saved Build" flow and set
+   `sb_klaviyo_list` so the quote email actually sends.
+3. **Play 4:** coordinate Klaviyo flows (email-click `_kx` already cookied).
+4. **Play 5 (quiz):** confirm the quiz destination — the Octane app embed has a
+   **blank quiz id**; the CTA falls back to `/pages/a2-bikes-selector-quiz`.
+5. **Play 6 (restock):** set the `custom.restock_alert` metafield on the SP
+   product(s) you want the card on. (Price-drop = future follow-up.)
+6. **Play 7 (Sign in with Shop):** enable it in Shopify admin → Settings →
+   Customer accounts.
+7. **Play 8 (chat):** turn on the Zoho pre-chat email field; add a Zoho webhook →
+   `oryguntri.com/api/identify` for the most reliable capture.
+8. **Play 9 (financing):** choose built-in Affirm line vs. Affirm app block (one,
+   not both); send any new financing copy to Affirm Merchant Care for review.
+9. **Publish:** re-duplicate the current live theme, re-apply these repo files
+   (or publish this draft after re-syncing it to current live), and publish.
+   Owner publishes — never the agent.
 
 ### Shared staged draft theme
 - **Draft theme `176605397156`** — "A2 Visitor-ID — Plays 1–2 (draft, do not
@@ -270,6 +297,30 @@ auto-identifies logged-in customers and re-fires from `sessionStorage`.
   https://oryguntri.com/api/identify` `{email, source:"chat"}`** (server-side path
   from the CRM contract) — the client-side hooks above are best-effort and depend
   on which SalesIQ callbacks fire for your plan/config.
+
+### Play 9 — financing prequal (assessed; no build needed)
+- **Verified Affirm-compliant and already implemented** in `sections/sppdp-product.liquid`:
+  the buy box (and sticky bar) render Affirm's OWN `.affirm-as-low-as` component
+  (`data-page-type="product"`, `data-amount="{{ cur.price }}"`) which shows
+  "As low as $X/mo · See if you qualify" and opens Affirm's educational/prequal
+  modal carrying the TILA representative example + lender disclosures. Variant
+  changes call `affirm.ui.refresh()`; affirm.js is loaded guarded. This IS the
+  "see your monthly payment → prequal at the decision moment" mechanism.
+- **No non-compliant custom figure:** the `monthly = price ÷ months` Liquid var is
+  computed but never rendered (dead code from `affirm_months`); nothing hardcodes
+  a "$X/mo". Left as-is (harmless); could be removed in a future cleanup.
+- **Why no new code:** Affirm's policy requires using their component for payment
+  messaging (never a custom calculator), keeping the disclosures, and not implying
+  guaranteed approval. A bespoke "see your monthly payment" widget would violate
+  that. The compliant component already exists — the only work is activation.
+- **Owner actions:** (1) decide built-in line (`show_affirm_line`, default off)
+  vs. the official Affirm app block — show ONE, not both; (2) submit any new
+  financing copy/banners to **Affirm Merchant Care** for review (~5–10 business
+  days) before publishing. See the compliance notes: Affirm Compliance &
+  Guidelines; Promotional Messaging & Prequalification.
+- **CRM note:** prequal runs inside Affirm's UI, so no email reaches us — Play 9
+  has **negligible identification value** (it's a conversion play). No
+  `a2_identify` wiring is possible/appropriate here.
 
 ### Play 1 — exit-intent
 - Preview (same theme): `https://a2bikes.com/?preview_theme_id=176605397156`
