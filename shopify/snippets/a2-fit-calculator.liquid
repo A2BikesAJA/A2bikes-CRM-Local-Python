@@ -62,6 +62,12 @@
   .a2-fit-calc .a2fc-build__opt input:focus-visible + span { outline: 3px solid var(--a2-accent-2); outline-offset: 2px; }
   .a2-fit-calc #padyxdisplaybox { margin-top: 1em; }
   .a2-fit-calc__explain { margin: 0 0 1.2em; max-width: 70ch; font-size: .95rem; line-height: 1.5; opacity: .9; }
+  .a2-fit-calc details.a2fc-how { margin: 0 0 1.1em; border: 1px solid var(--a2-border); border-radius: 10px; }
+  .a2-fit-calc .a2fc-how__sum { cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 11px 13px; font-size: .9rem; color: var(--a2-fg); }
+  .a2-fit-calc .a2fc-how__sum::-webkit-details-marker { display: none; }
+  .a2-fit-calc .a2fc-how__sum::after { content: ""; width: 8px; height: 8px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(45deg); opacity: .55; transition: transform .15s ease; }
+  .a2-fit-calc details[open] .a2fc-how__sum::after { transform: rotate(-135deg); }
+  .a2-fit-calc details.a2fc-how .a2-fit-calc__explain { margin: 0; padding: 0 13px 13px; max-width: none; }
   .a2-fit-calc__drop { margin-top: .8em; padding: 12px 14px; border: 1px solid var(--a2-border); border-left: 3px solid var(--a2-accent); border-radius: 10px; font-size: .92rem; line-height: 1.45; }
   .a2-fit-calc__drop span { display: block; margin-top: 6px; font-size: .85rem; opacity: .8; }
   .a2-fit-calc .a2fc-why { margin: .2em 0 .8em; font-size: .93rem; line-height: 1.55; }
@@ -76,7 +82,26 @@
   .a2-fit-calc .a2fc-start__btn { flex: 0 0 auto; }
   .a2-fit-calc .a2fc-chart-container { position: relative; width: 100%; max-width: 880px; margin-top: 1.5em; }
   .a2-fit-calc canvas { max-width: 100%; }
-  @media (max-width: 600px) { .a2-fit-calc label { width: 90px; } }
+  @media (max-width: 600px) {
+    .a2-fit-calc label { width: 84px; }
+    .a2-fit-calc h3 { font-size: 1.05rem; }
+    .a2-fit-calc__explain { font-size: .88rem; line-height: 1.45; }
+    .a2-fit-calc .a2fc-how__sum { font-size: .85rem; padding: 10px 12px; }
+    .a2-fit-calc__intro { font-size: .9rem; margin-bottom: .7em; }
+    .a2-fit-calc .a2fc-start { padding: 13px 14px; gap: 12px; }
+    .a2-fit-calc .a2fc-start__copy b { font-size: 1.05rem; }
+    .a2-fit-calc .a2fc-start__copy span { font-size: .85rem; }
+    .a2-fit-calc .a2fc-start__btn { flex: 1 1 100%; }
+    .a2-fit-calc .fitCalc__div_fitKnown_buttons { gap: 10px; margin: .8em 0; }
+    .a2-fit-calc .fitCalc__div_fitKnown_buttons .fitCalcButton { flex: 1 1 100%; }
+    .a2-fit-calc .fitCalcButton { padding: .7em 1.1em; }
+    .a2-fit-calc .fitCalc__forms { gap: 16px; }
+    .a2-fit-calc .fitCalc__div_fit_options { gap: 12px; margin-top: 1.1em; }
+    .a2-fit-calc .fitCalc__div_fitOption { flex-basis: 100%; padding: 13px; }
+    .a2-fit-calc .a2fc-why { font-size: .88rem; line-height: 1.45; }
+    .a2-fit-calc .a2fc-setup { font-size: .85rem; }
+    .a2-fit-calc__drop { padding: 11px 12px; font-size: .88rem; }
+  }
 </style>
 
 <div class="a2-fit-calc" id="a2-fit-calc">
@@ -93,7 +118,8 @@
 
   <div id="fitfinder" style="display:none;">
     <h3>Fit Finder</h3>
-    <p class="a2-fit-calc__explain">This finds your aerobar <b>Pad X / Y</b> — where your forearms rest relative to the bottom bracket — then matches the frame, stem, spacers, and pad position that put you there. The number that sets how the bike <em>feels</em> is the <b>drop</b>: the height from the top of your saddle down to the top of the elbow pads. <b>More drop</b> is faster and more aero but a more aggressive position to hold; <b>less drop</b> (or pads level with / above the saddle) is more comfortable, trading a little aerodynamics. We aim for a balanced starting point — go to a smaller frame or fewer spacers for more drop, a larger frame or more spacers for less.</p>
+    <details class="a2fc-how"><summary class="a2fc-how__sum">How fitting works</summary>
+    <p class="a2-fit-calc__explain">This finds your aerobar <b>Pad X / Y</b> — where your forearms rest relative to the bottom bracket — then matches the frame, stem, spacers, and pad position that put you there. The number that sets how the bike <em>feels</em> is the <b>drop</b>: the height from the top of your saddle down to the top of the elbow pads. <b>More drop</b> is faster and more aero but a more aggressive position to hold; <b>less drop</b> (or pads level with / above the saddle) is more comfortable, trading a little aerodynamics. We aim for a balanced starting point — go to a smaller frame or fewer spacers for more drop, a larger frame or more spacers for less.</p></details>
     <div id="fitPath" style="display:block;">
       <div class="a2fc-build" role="radiogroup" aria-label="Your build">
         <span class="a2fc-build__title">Your build:</span>
@@ -204,9 +230,9 @@ if (!window.__a2fcInit) {
         return;
       }
       // Hard fence: the SP fits riders ~5'3"–6'5" (63"–77"). Outside that, DO
-      // NOT recommend a size — route them to the fit team instead.
+      // NOT recommend a size — route them to the fit team instead. Epsilon
+      // guards the exact boundary heights against mm round-trip error.
       var totalInGate = height / 25.4;
-      // epsilon guards the exact 5'3" / 6'5" boundaries against mm round-trip error
       if (totalInGate < 62.95 || totalInGate > 77.05) {
         var gft = Math.floor(totalInGate / 12), gin = Math.round(totalInGate - gft * 12);
         if (gin >= 12) { gft += 1; gin -= 12; }
