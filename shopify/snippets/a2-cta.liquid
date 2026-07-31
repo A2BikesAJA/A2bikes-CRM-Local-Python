@@ -1,0 +1,24 @@
+{%- comment -%}
+  A2 Bikes — reusable CTA link.
+  Params:
+    label   (string)  button text
+    href    (string)  destination (internal links get UTM re-appended by a2-lp.js)
+    style   (string)  'primary' (default) | 'secondary'
+    event   (string)  GTM dataLayer event name fired on click
+    cta_id  (string)  stable id passed to dataLayer (and used by Convert Insights)
+    id      (string)  optional DOM id (stable target for A/B tooling)
+    block   (boolean) full-width
+    target  (string)  e.g. '_blank'
+{%- endcomment -%}
+{%- liquid
+  assign _style = style | default: 'primary'
+  assign _label = label | default: 'Learn more'
+  assign _href = href | default: '#'
+-%}
+<a class="a2-cta a2-cta--{{ _style }}{% if block %} a2-cta--block{% endif %}"
+   href="{{ _href }}"
+   {% if id %}id="{{ id }}"{% endif %}
+   {% if target %}target="{{ target }}" rel="noopener"{% endif %}
+   data-a2-cta
+   {% if event %}data-a2-event="{{ event }}"{% endif %}
+   {% if cta_id %}data-a2-cta-id="{{ cta_id }}"{% endif %}>{{ _label }}</a>

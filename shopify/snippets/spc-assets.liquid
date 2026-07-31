@@ -1,0 +1,8 @@
+{%- comment -%}
+  Shared assets for the "Compare the SP" landing page sections.
+  Every spc-* section renders this once. The CSS file is cached by the
+  browser (one network fetch no matter how many sections include it) and
+  the JS guards itself so it only initialises a single time per page.
+{%- endcomment -%}
+{{ 'sp-compare.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'sp-compare.js' | asset_url }}" defer="defer"></script>

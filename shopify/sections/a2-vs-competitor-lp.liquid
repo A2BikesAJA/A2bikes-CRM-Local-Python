@@ -1,0 +1,351 @@
+{%- comment -%}
+  A2 Bikes — "SP vs Quintana Roo" comparison landing page (Page 2)
+  ----------------------------------------------------------------------------
+  Every comparison row is a schema block (label / A2 value / competitor value),
+  so marketing can correct claims without a deploy. NO competitor specs are
+  hardcoded in markup. Competitor-column defaults intentionally say "verify" so
+  nothing unverified ever ships.
+
+  Stable hooks for Convert Insights A/B testing:
+    #a2-vs-hero  #a2-vs-table  #a2-vs-cta-hero  #a2-vs-cta-final
+    .a2-vs-row   .a2-cta
+{%- endcomment -%}
+
+{{ 'a2-lp.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'a2-lp.js' | asset_url }}" defer></script>
+
+{%- liquid
+  assign default_collection = '/collections/sp'
+  assign cta_event = 'sp_qr_lp_cta_click'
+  assign email_event = 'sp_qr_lp_email_capture'
+
+  assign primary_href = section.settings.build_selector_url
+  if primary_href == blank
+    assign primary_href = default_collection
+  endif
+
+  assign rows = section.blocks | where: 'type', 'row'
+  assign reasons = section.blocks | where: 'type', 'reason'
+  assign review_blocks = section.blocks | where: 'type', 'review'
+-%}
+
+{%- if section.settings.apply_brand -%}
+  {%- style -%}
+    #shopify-section-{{ section.id }} .a2-lp {
+      {% if section.settings.brand_bg != blank %}--a2-bg: {{ section.settings.brand_bg }};{% endif %}
+      {% if section.settings.brand_fg != blank %}--a2-fg: {{ section.settings.brand_fg }};{% endif %}
+      {% if section.settings.brand_muted != blank %}--a2-muted: {{ section.settings.brand_muted }};{% endif %}
+      {% if section.settings.brand_card != blank %}--a2-card: {{ section.settings.brand_card }};{% endif %}
+      {% if section.settings.brand_border != blank %}--a2-border: {{ section.settings.brand_border }};{% endif %}
+      {% if section.settings.brand_accent != blank %}--a2-accent: {{ section.settings.brand_accent }};{% endif %}
+      {% if section.settings.brand_accent_fg != blank %}--a2-accent-fg: {{ section.settings.brand_accent_fg }};{% endif %}
+      {% if section.settings.brand_sale != blank %}--a2-sale: {{ section.settings.brand_sale }};{% endif %}
+    }
+    {%- if section.settings.heading_font != blank -%}
+      #shopify-section-{{ section.id }} .a2-lp { --a2-font-display: {{ section.settings.heading_font.family }}, {{ section.settings.heading_font.fallback_families }}; }
+      {{ section.settings.heading_font | font_face: font_display: 'swap' }}
+    {%- endif -%}
+    {%- if section.settings.body_font != blank -%}
+      #shopify-section-{{ section.id }} .a2-lp { --a2-font-body: {{ section.settings.body_font.family }}, {{ section.settings.body_font.fallback_families }}; }
+      {{ section.settings.body_font | font_face: font_display: 'swap' }}
+    {%- endif -%}
+  {%- endstyle -%}
+{%- endif -%}
+
+<section class="a2-lp a2-theme-vs" id="a2-vs-lp" aria-label="{{ section.settings.heading | escape }}">
+
+  {%- comment -%} HERO — neutral, confident {%- endcomment -%}
+  <header class="a2-hero a2-section a2-hero--plain" id="a2-vs-hero">
+    <div class="a2-wrap">
+      <div class="a2-hero__inner">
+        {%- if section.settings.eyebrow != blank -%}<p class="a2-eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
+        <h1 class="a2-h1">{{ section.settings.heading | default: 'Comparing the SP and Quintana Roo? Here is an honest breakdown.' }}</h1>
+        {%- if section.settings.subheading != blank -%}<p class="a2-lead">{{ section.settings.subheading }}</p>{%- endif -%}
+        <div class="a2-cta-row">
+          {% render 'a2-cta', label: section.settings.cta_label, href: primary_href, event: cta_event, cta_id: 'hero-primary', id: 'a2-vs-cta-hero' %}
+        </div>
+      </div>
+    </div>
+  </header>
+
+  {%- comment -%} COMPARISON TABLE — factual columns only {%- endcomment -%}
+  {%- if rows.size > 0 -%}
+    <div class="a2-section a2-wrap">
+      {%- if section.settings.table_heading != blank -%}<h2 class="a2-h2">{{ section.settings.table_heading }}</h2>{%- endif -%}
+      <div class="a2-vs-table-wrap">
+        <table class="a2-vs-table" id="a2-vs-table">
+          <caption class="a2-sr-only">{{ section.settings.a2_col_label }} compared with {{ section.settings.competitor_col_label }}</caption>
+          <thead>
+            <tr>
+              <th scope="col">{{ section.settings.spec_col_label | default: 'Spec' }}</th>
+              <th scope="col">{{ section.settings.a2_col_label | default: 'A2 SP' }}</th>
+              <th scope="col">{{ section.settings.competitor_col_label | default: 'Quintana Roo' }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {%- for b in rows -%}
+              <tr class="a2-vs-row{% if b.settings.highlight %} a2-vs-row--highlight{% endif %}" {{ b.shopify_attributes }}>
+                <th scope="row">{{ b.settings.label }}</th>
+                <td class="is-a2">{{ b.settings.a2_value }}</td>
+                <td>{{ b.settings.competitor_value }}</td>
+              </tr>
+            {%- endfor -%}
+          </tbody>
+        </table>
+      </div>
+      {%- if section.settings.table_note != blank -%}<p class="a2-fineprint" style="margin-top:12px">{{ section.settings.table_note }}</p>{%- endif -%}
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} WHAT IT ACTUALLY COSTS — the differentiator {%- endcomment -%}
+  <div class="a2-band">
+    <div class="a2-wrap a2-section">
+      {%- if section.settings.band_heading != blank -%}<h2 class="a2-h2 a2-center">{{ section.settings.band_heading }}</h2>{%- endif -%}
+      {% render 'a2-financing-band',
+         price: section.settings.financing_price,
+         price_label: section.settings.financing_price_label,
+         affirm_heading: section.settings.affirm_heading,
+         truemed_heading: section.settings.truemed_heading,
+         truemed_text: section.settings.truemed_text,
+         truemed_url: section.settings.truemed_url,
+         note: section.settings.financing_note %}
+    </div>
+  </div>
+
+  {%- comment -%} WHY RIDERS CHOOSE A2 {%- endcomment -%}
+  {%- if reasons.size > 0 -%}
+    <div class="a2-section a2-wrap">
+      {%- if section.settings.reasons_heading != blank -%}<h2 class="a2-h2 a2-center">{{ section.settings.reasons_heading }}</h2>{%- endif -%}
+      <div class="a2-proof-grid">
+        {%- for b in reasons -%}
+          <div class="a2-proof" {{ b.shopify_attributes }}>
+            {%- if b.settings.image -%}<img class="a2-proof__icon" src="{{ b.settings.image | image_url: width: 88 }}" alt="" loading="lazy" width="44" height="44" decoding="async">{%- endif -%}
+            <h3 class="a2-h3">{{ b.settings.title }}</h3>
+            {%- if b.settings.text != blank -%}<p class="a2-muted">{{ b.settings.text }}</p>{%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} REVIEWS {%- endcomment -%}
+  {%- if section.settings.reviews_embed != blank or review_blocks.size > 0 -%}
+    <div class="a2-section a2-wrap a2-reviews">
+      {%- if section.settings.reviews_heading != blank -%}<h2 class="a2-h2 a2-center">{{ section.settings.reviews_heading }}</h2>{%- endif -%}
+      {%- if section.settings.reviews_embed != blank -%}
+        {{ section.settings.reviews_embed }}
+      {%- else -%}
+        <div class="a2-reviews__grid">
+          {%- for b in review_blocks -%}
+            {%- assign r = b.settings.rating | default: 5 -%}
+            <figure class="a2-review" {{ b.shopify_attributes }}>
+              <div class="a2-review__stars" aria-label="{{ r }} out of 5 stars">{%- for i in (1..5) -%}{% if i <= r %}&#9733;{% else %}&#9734;{% endif %}{%- endfor -%}</div>
+              <blockquote class="a2-review__quote">{{ b.settings.quote }}</blockquote>
+              <figcaption class="a2-review__author">{{ b.settings.author }}{% if b.settings.detail != blank %} &middot; <span class="a2-muted">{{ b.settings.detail }}</span>{% endif %}</figcaption>
+            </figure>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} EMAIL CAPTURE — "Still comparing?" {%- endcomment -%}
+  <div class="a2-section a2-wrap">
+    {% render 'a2-email-capture',
+       heading: section.settings.email_heading,
+       text: section.settings.email_text,
+       cta_label: section.settings.email_cta_label,
+       success_text: section.settings.email_success,
+       company_id: section.settings.klaviyo_company_id,
+       list_id: section.settings.klaviyo_list_id,
+       event: email_event,
+       source: section.settings.email_source,
+       uid: section.id %}
+  </div>
+
+  {%- comment -%} FINAL CTA {%- endcomment -%}
+  <div class="a2-section a2-wrap a2-final">
+    <h2 class="a2-h2">{{ section.settings.final_heading | default: 'See the SP for yourself.' }}</h2>
+    {%- if section.settings.final_text != blank -%}<p class="a2-lead">{{ section.settings.final_text }}</p>{%- endif -%}
+    <div class="a2-cta-row">
+      {% render 'a2-cta', label: section.settings.cta_label, href: primary_href, event: cta_event, cta_id: 'final-primary', id: 'a2-vs-cta-final' %}
+    </div>
+  </div>
+
+</section>
+
+{% schema %}
+{
+  "name": "A2 Comparison LP",
+  "tag": "section",
+  "class": "a2-lp-section",
+  "settings": [
+    {
+    "type": "header",
+    "content": "Brand & color",
+    "info": "Defaults match the A2 site brand (cream / near-black / cream-yellow button, red for sale). Change any value to override; clear a field to fall back to the page's built-in palette."
+  },
+  {
+    "type": "checkbox",
+    "id": "apply_brand",
+    "label": "Apply brand styling",
+    "default": true,
+    "info": "On = use the brand colors & fonts below. Off = use the page's built-in palette and the theme's default fonts."
+  },
+  {
+    "type": "color",
+    "id": "brand_bg",
+    "label": "Page background",
+    "default": "#fcfcf9"
+  },
+  {
+    "type": "color",
+    "id": "brand_fg",
+    "label": "Text",
+    "default": "#22292d"
+  },
+  {
+    "type": "color",
+    "id": "brand_muted",
+    "label": "Muted text",
+    "default": "#5c6873"
+  },
+  {
+    "type": "color",
+    "id": "brand_card",
+    "label": "Card / surface",
+    "default": "#ffffff"
+  },
+  {
+    "type": "color",
+    "id": "brand_border",
+    "label": "Border",
+    "default": "#AAAAAA"
+  },
+  {
+    "type": "color",
+    "id": "brand_accent",
+    "label": "Accent / button",
+    "default": "#242526"
+  },
+  {
+    "type": "color",
+    "id": "brand_accent_fg",
+    "label": "Accent text (on button)",
+    "default": "#faf7c3"
+  },
+  {
+    "type": "color",
+    "id": "brand_sale",
+    "label": "Sale / urgency",
+    "default": "#d21404"
+  },
+  {
+    "type": "font_picker",
+    "id": "heading_font",
+    "label": "Heading font",
+    "default": "fraunces_n3"
+  },
+  {
+    "type": "font_picker",
+    "id": "body_font",
+    "label": "Body font",
+    "default": "instrument_sans_n4"
+  },
+
+    { "type": "header", "content": "Hero" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Honest comparison" },
+    { "type": "text", "id": "heading", "label": "Headline", "default": "Comparing the SP and Quintana Roo? Here's an honest breakdown." },
+    { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "Same race goals, two very different ways to pay for them. Here are the facts — verify everything, then decide." },
+    { "type": "text", "id": "cta_label", "label": "Primary CTA label", "default": "Build Your SP" },
+
+    { "type": "header", "content": "Routing" },
+    { "type": "url", "id": "build_selector_url", "label": "Build-selector URL", "info": "Blank falls back to /collections/sp." },
+
+    { "type": "header", "content": "Comparison table", "info": "Add 'Comparison row' blocks. Keep every value factual and verifiable." },
+    { "type": "text", "id": "table_heading", "label": "Table heading", "default": "Side by side" },
+    { "type": "text", "id": "spec_col_label", "label": "Column 1 label", "default": "Spec" },
+    { "type": "text", "id": "a2_col_label", "label": "Column 2 label (A2)", "default": "A2 SP" },
+    { "type": "text", "id": "competitor_col_label", "label": "Column 3 label (competitor)", "default": "Quintana Roo" },
+    { "type": "textarea", "id": "table_note", "label": "Table footnote", "default": "Competitor details are provided for comparison and should be verified against the manufacturer's current listings." },
+
+    { "type": "header", "content": "What it actually costs (Affirm + Truemed)" },
+    { "type": "text", "id": "band_heading", "label": "Band heading", "default": "What it actually costs" },
+    { "type": "number", "id": "financing_price", "label": "Representative price ($)", "default": 4999 },
+    { "type": "text", "id": "financing_price_label", "label": "Affirm fallback text", "default": "Spread it over easy monthly payments with Affirm." },
+    { "type": "text", "id": "affirm_heading", "label": "Affirm heading", "default": "Pay monthly" },
+    { "type": "text", "id": "truemed_heading", "label": "Truemed heading", "default": "Or buy it pre-tax" },
+    { "type": "textarea", "id": "truemed_text", "label": "Truemed text", "default": "Through Truemed, an HSA/FSA can cover an eligible bike — a real, pre-tax cost advantage many competitors' buyers never hear about." },
+    { "type": "url", "id": "truemed_url", "label": "Truemed flow URL" },
+    { "type": "textarea", "id": "financing_note", "label": "Fine print", "default": "Estimates are illustrative, not an offer of credit or tax advice. Eligibility is determined by Affirm and Truemed." },
+
+    { "type": "header", "content": "Why riders choose A2", "info": "Add 3 'Reason' blocks." },
+    { "type": "text", "id": "reasons_heading", "label": "Heading", "default": "Why riders choose A2" },
+
+    { "type": "header", "content": "Reviews / race proof" },
+    { "type": "text", "id": "reviews_heading", "label": "Heading", "default": "Real riders, real results" },
+    { "type": "html", "id": "reviews_embed", "label": "Reviews embed (Fera.ai, optional)" },
+
+    { "type": "header", "content": "Email capture (Klaviyo)" },
+    { "type": "text", "id": "email_heading", "label": "Heading", "default": "Still comparing? Get our SP spec sheet." },
+    { "type": "textarea", "id": "email_text", "label": "Text", "default": "The full SP spec sheet plus the honest cost breakdown — no pressure." },
+    { "type": "text", "id": "email_cta_label", "label": "Button label", "default": "Send the spec sheet" },
+    { "type": "text", "id": "email_success", "label": "Success message", "default": "Sent — check your inbox." },
+    { "type": "text", "id": "email_source", "label": "Klaviyo custom_source", "default": "SP vs QR LP" },
+    { "type": "text", "id": "klaviyo_company_id", "label": "Klaviyo public API key (company id)", "default": "KLAVIYO_COMPANY_ID" },
+    { "type": "text", "id": "klaviyo_list_id", "label": "Klaviyo list id", "default": "KLAVIYO_LIST_ID" },
+
+    { "type": "header", "content": "Final CTA" },
+    { "type": "text", "id": "final_heading", "label": "Heading", "default": "See the SP for yourself." },
+    { "type": "textarea", "id": "final_text", "label": "Text", "default": "Pick a groupset and see your monthly or pre-tax price." }
+  ],
+  "blocks": [
+    {
+      "type": "row",
+      "name": "Comparison row",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Spec", "default": "Price model" },
+        { "type": "text", "id": "a2_value", "label": "A2 value", "default": "Direct-to-consumer" },
+        { "type": "text", "id": "competitor_value", "label": "Competitor value", "default": "Verify on manufacturer site" },
+        { "type": "checkbox", "id": "highlight", "label": "Highlight this row (A2 advantage)", "default": false }
+      ]
+    },
+    {
+      "type": "reason",
+      "name": "Reason",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Icon (optional)" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Direct-to-consumer pricing" },
+        { "type": "textarea", "id": "text", "label": "Text", "default": "No dealer markup between you and the carbon you're paying for." }
+      ]
+    },
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        { "type": "range", "id": "rating", "label": "Rating", "min": 1, "max": 5, "step": 1, "default": 5, "unit": "/5" },
+        { "type": "textarea", "id": "quote", "label": "Quote", "default": "Cross-shopped the big brands and the SP won on value, full stop." },
+        { "type": "text", "id": "author", "label": "Author", "default": "Verified rider" },
+        { "type": "text", "id": "detail", "label": "Detail", "default": "70.3 age-grouper" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "A2 Comparison LP",
+      "blocks": [
+        { "type": "row", "settings": { "label": "Price model", "a2_value": "Direct-to-consumer (no dealer markup)", "competitor_value": "Verify on manufacturer site", "highlight": true } },
+        { "type": "row", "settings": { "label": "Monthly financing", "a2_value": "Affirm at checkout", "competitor_value": "Verify on manufacturer site", "highlight": true } },
+        { "type": "row", "settings": { "label": "HSA / FSA eligible", "a2_value": "Yes — pre-tax via Truemed", "competitor_value": "Verify on manufacturer site", "highlight": true } },
+        { "type": "row", "settings": { "label": "Groupset options", "a2_value": "Shimano 105 / Rival / Force / Red AXS", "competitor_value": "Verify on manufacturer site", "highlight": false } },
+        { "type": "row", "settings": { "label": "Warranty", "a2_value": "Verify & insert A2 warranty", "competitor_value": "Verify on manufacturer site", "highlight": false } },
+        { "type": "row", "settings": { "label": "Shipping", "a2_value": "Verify & insert A2 shipping", "competitor_value": "Verify on manufacturer site", "highlight": false } },
+        { "type": "reason", "settings": { "title": "Direct-to-consumer pricing", "text": "No dealer markup between you and the carbon you're paying for." } },
+        { "type": "reason", "settings": { "title": "Pay monthly or pre-tax", "text": "Affirm spreads the cost; Truemed lets eligible buyers use HSA/FSA dollars." } },
+        { "type": "reason", "settings": { "title": "Support that picks up", "text": "Talk to real people before and after the sale." } },
+        { "type": "review", "settings": {} }
+      ]
+    }
+  ]
+}
+{% endschema %}

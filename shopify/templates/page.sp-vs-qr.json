@@ -1,0 +1,190 @@
+{
+  "sections": {
+    "main": {
+      "type": "a2-vs-competitor-lp",
+      "blocks": {
+        "r_price": {
+          "type": "row",
+          "settings": {
+            "label": "Starting price",
+            "a2_value": "$3,115 (Shimano 105)",
+            "competitor_value": "$4,499 MSRP (Shimano 105)",
+            "highlight": true
+          }
+        },
+        "r_ladder_note": {
+          "type": "row",
+          "settings": {
+            "label": "How to read the builds",
+            "a2_value": "SP groupsets: Shimano 105 / SRAM Rival / Force / Red AXS",
+            "competitor_value": "X-PR groupsets: Shimano 105 / 105 Di2 / Ultegra Di2 / SRAM Force AXS",
+            "highlight": false
+          }
+        },
+        "r_105": {
+          "type": "row",
+          "settings": {
+            "label": "Shimano 105 (mechanical)",
+            "a2_value": "$3,115",
+            "competitor_value": "$4,499 MSRP",
+            "highlight": true
+          }
+        },
+        "r_105di2": {
+          "type": "row",
+          "settings": {
+            "label": "Shimano 105 Di2",
+            "a2_value": "Not offered on SP",
+            "competitor_value": "$5,954 MSRP",
+            "highlight": false
+          }
+        },
+        "r_ultegra": {
+          "type": "row",
+          "settings": {
+            "label": "Shimano Ultegra Di2",
+            "a2_value": "Not offered on SP",
+            "competitor_value": "$7,154 MSRP",
+            "highlight": false
+          }
+        },
+        "r_force": {
+          "type": "row",
+          "settings": {
+            "label": "SRAM Force AXS",
+            "a2_value": "$7,199",
+            "competitor_value": "$7,930 MSRP",
+            "highlight": true
+          }
+        },
+        "r_rivalred": {
+          "type": "row",
+          "settings": {
+            "label": "SRAM Rival AXS / RED AXS",
+            "a2_value": "$4,999 / $8,999",
+            "competitor_value": "Not offered on X-PR",
+            "highlight": false
+          }
+        },
+        "r_finance": {
+          "type": "row",
+          "settings": {
+            "label": "Monthly financing",
+            "a2_value": "Affirm at checkout",
+            "competitor_value": "Verify on manufacturer site",
+            "highlight": true
+          }
+        },
+        "r_hsa": {
+          "type": "row",
+          "settings": {
+            "label": "HSA / FSA eligible",
+            "a2_value": "Yes — pre-tax via Truemed",
+            "competitor_value": "Verify on manufacturer site",
+            "highlight": true
+          }
+        },
+        "r_warranty": {
+          "type": "row",
+          "settings": {
+            "label": "Warranty",
+            "a2_value": "Lifetime warranty on carbon frame defects",
+            "competitor_value": "Verify on manufacturer site",
+            "highlight": true
+          }
+        },
+        "r_ship": {
+          "type": "row",
+          "settings": {
+            "label": "Shipping",
+            "a2_value": "$99 flat to the lower 48 (AK/HI extra)",
+            "competitor_value": "Verify on manufacturer site",
+            "highlight": false
+          }
+        },
+        "why1": {
+          "type": "reason",
+          "settings": {
+            "title": "Direct-to-consumer pricing",
+            "text": "No dealer markup between you and the carbon you're paying for."
+          }
+        },
+        "why2": {
+          "type": "reason",
+          "settings": {
+            "title": "Pay monthly or pre-tax",
+            "text": "Affirm spreads the cost; Truemed lets eligible buyers use HSA/FSA dollars — a real advantage many shoppers never hear about."
+          }
+        },
+        "why3": {
+          "type": "reason",
+          "settings": {
+            "title": "Support that picks up",
+            "text": "Talk to real people before and after the sale."
+          }
+        },
+        "r_wheels": {
+          "type": "row",
+          "settings": {
+            "label": "Standard wheelset",
+            "a2_value": "Carbon standard on Rival / Force / RED; aluminum on 105",
+            "competitor_value": "Aluminum standard on all builds; carbon is a paid upgrade",
+            "highlight": true
+          }
+        },
+        "r_entry_elec": {
+          "type": "row",
+          "settings": {
+            "label": "Entry electronic shifting",
+            "a2_value": "$4,999 — SRAM Rival AXS, carbon wheels",
+            "competitor_value": "$5,954 MSRP — Shimano 105 Di2, aluminum wheels",
+            "highlight": true
+          }
+        },
+        "why_wheels": {
+          "type": "reason",
+          "settings": {
+            "title": "Carbon wheels, lower price",
+            "text": "On the SP's electronic builds (Rival AXS and up), carbon wheels come standard. Comparable X-PR builds ship aluminum, with carbon as a paid upgrade — so the SP can cost less and still roll on carbon."
+          }
+        }
+      },
+      "block_order": [
+        "r_price",
+        "r_ladder_note",
+        "r_105",
+        "r_105di2",
+        "r_ultegra",
+        "r_entry_elec",
+        "r_force",
+        "r_rivalred",
+        "r_wheels",
+        "r_finance",
+        "r_hsa",
+        "r_warranty",
+        "r_ship",
+        "why_wheels",
+        "why1",
+        "why2",
+        "why3"
+      ],
+      "settings": {
+        "heading": "Why pay more for aluminum wheels?",
+        "subheading": "The SP's Rival, Force, and RED builds ship carbon wheels standard — the X-PR ships aluminum and charges extra for carbon. And the SP still costs less: $3,115 vs $4,499 at the entry tier. Direct-to-consumer, no dealer markup. Verify every figure below.",
+        "competitor_col_label": "Quintana Roo X-PR",
+        "table_note": "X-PR prices are manufacturer MSRP and were verified 2026-06-08; confirm current pricing on quintanarootri.com before each campaign. A2 SP prices are current direct prices. Rows above the divider match the same groupset on both bikes; the “entry electronic shifting” row compares the closest electronic-shifting builds across brands (SRAM Rival AXS vs Shimano 105 Di2), which are different groupsets at a similar tier. Wheels: the SP ships carbon wheels standard on its Rival, Force, and RED builds (the 105 build ships aluminum); the X-PR ships an aluminum Vision Team 30 wheelset standard on every build, with carbon available as a paid upgrade. Rows marked “not offered” have no equivalent build.",
+        "financing_price": 3115,
+        "email_source": "SP vs QR X-PR LP",
+        "financing_price_label": "As low as a low monthly payment with Affirm — on the $3,115 Shimano 105 SP.",
+        "truemed_heading": "Or buy it pre-tax",
+        "truemed_text": "Eligible buyers can use HSA/FSA dollars through Truemed. Illustrative example: at a 30% effective tax rate, the $3,115 Shimano 105 SP could mean about $935 in pre-tax savings — an effective net of roughly $2,180. Your actual savings depend on your tax situation and Truemed eligibility.",
+        "financing_note": "Estimates are illustrative, not an offer of credit or tax advice. Eligibility is determined by Affirm and Truemed.",
+        "klaviyo_company_id": "YejYTH",
+        "klaviyo_list_id": "Riv6B2"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

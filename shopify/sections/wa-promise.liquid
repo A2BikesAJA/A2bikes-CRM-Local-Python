@@ -1,0 +1,57 @@
+{% render 'wa-assets' %}
+<div class="whya2">
+  <section class="wa-sec wa-sec--paper2">
+    <div class="wa-wrap">
+      <div class="wa-head reveal">
+        <p class="wa-eyebrow">{{ section.settings.eyebrow }}</p>
+        <h2 class="wa-h2">{{ section.settings.heading }}</h2>
+        <p class="wa-lede">{{ section.settings.lede }}</p>
+      </div>
+      <div class="wa-cards3">
+        {%- for block in section.blocks -%}
+          {%- assign dly = forloop.index0 | at_most: 3 -%}
+          <article class="wa-card reveal{% if dly > 0 %} d{{ dly }}{% endif %}" {{ block.shopify_attributes }}>
+            <div class="wa-card-head"><s>No</s> {{ block.settings.phrase }}</div>
+            <h3>{{ block.settings.title }}</h3>
+            <p>{{ block.settings.body }}</p>
+            <div class="wa-tag">{{ block.settings.tag }}</div>
+          </article>
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+</div>
+{% schema %}
+{
+  "name": "Why A2 · The promise",
+  "tag": "section",
+  "max_blocks": 6,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "The A2 promise" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "What you don't pay for" },
+    { "type": "textarea", "id": "lede", "label": "Lede", "default": "A2 sells direct. That means your money goes into the bike — not the markup, the middleman, or next year's upgrade." }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Promise card",
+      "settings": [
+        { "type": "text", "id": "phrase", "label": "Phrase after \"No\"", "default": "retail markup" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Sold direct, priced honestly" },
+        { "type": "textarea", "id": "body", "label": "Body", "default": "Big brands build dealer margin and retail markup into the price. We don't. You pay for engineering and materials — nothing else." },
+        { "type": "text", "id": "tag", "label": "Tag", "default": "Direct-to-rider" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Why A2 · The promise",
+      "blocks": [
+        { "type": "card", "settings": { "phrase": "retail markup", "title": "Sold direct, priced honestly", "body": "Big brands build dealer margin and retail markup into the price. We don't. You pay for engineering and materials — nothing else.", "tag": "Direct-to-rider" } },
+        { "type": "card", "settings": { "phrase": "dealer middleman", "title": "Ships from Oregon, set up at home", "body": "No showroom upsell. Your bike ships from our Oregon shop, ready to finish assembly at home with our step-by-step guides.", "tag": "Pacific Northwest built" } },
+        { "type": "card", "settings": { "phrase": "annual obsolescence", "title": "Lifetime warranty, free size exchanges", "body": "We don't chase yearly model cycles. Your A2 is backed by a lifetime frame warranty and free size exchanges if the fit isn't right.", "tag": "Backed for life" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

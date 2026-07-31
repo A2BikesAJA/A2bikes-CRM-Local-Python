@@ -1,0 +1,1036 @@
+{
+  "sections": {
+    "video_hero_mDeA9N": {
+      "type": "video-hero",
+      "blocks": {
+        "accent_gBakie": {
+          "type": "accent",
+          "settings": {
+            "accent": "Triathlon"
+          }
+        },
+        "heading_rECzFN": {
+          "type": "heading",
+          "settings": {
+            "title": "The SP",
+            "heading_tag": "h2",
+            "heading_font_class": "fs-heading-display-2"
+          }
+        },
+        "text_g9YdWg": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Engineered for athletes who define success by performance, not price point. The SP merges Kevin Quan's visionary design philosophy with revolutionary adjustability and wind-tunnel-validated aerodynamics. Achieve your optimal position. Sustain higher speeds. Compete without compromise. Elite performance, intelligently priced.</p>",
+            "text_font_class": "fs-body-100"
+          }
+        },
+        "play_button_xwneMY": {
+          "type": "play-button",
+          "disabled": true,
+          "settings": {
+            "video_source": "shopify",
+            "video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+            "aspect_ratio": "square",
+            "text": "Watch now",
+            "icon_style": "outline"
+          }
+        },
+        "button_p6tFip": {
+          "type": "button",
+          "disabled": true,
+          "settings": {
+            "link": "shopify://collections/sp-25",
+            "link_text": "Read more",
+            "button_style": "btn--primary"
+          }
+        }
+      },
+      "block_order": [
+        "accent_gBakie",
+        "heading_rECzFN",
+        "text_g9YdWg",
+        "play_button_xwneMY",
+        "button_p6tFip"
+      ],
+      "custom_css": [],
+      "name": "t:sections.video_hero.presets.name",
+      "settings": {
+        "image_aspect": "custom",
+        "desktop_height": 80,
+        "mobile_height": 75,
+        "video": "shopify://files/videos/SP Website Header_4.mp4",
+        "media_link": "",
+        "focal_point": "image_presentation",
+        "focal_point_mobile": "image_presentation",
+        "text_position": "center_center",
+        "text_position_mobile": "center_center",
+        "text_color": "#ffffff",
+        "button_background_color": "#ffffff",
+        "button_text_color": "#000000",
+        "color_overlay": "#000000",
+        "color_overlay_gradient": "",
+        "overlay_opacity": 40,
+        "enable_animation": true,
+        "section_padding": "section--vertical-padding-none"
+      }
+    },
+    "multi_column_cFrNe6": {
+      "type": "multi-column",
+      "blocks": {
+        "column_fUmApn": {
+          "type": "column",
+          "settings": {
+            "accent": "Fastest",
+            "heading": "Over 250mm of Adjustability",
+            "heading_tag": "h3",
+            "heading_font_class": "fs-heading-4-base",
+            "text": "",
+            "text_font_class": "fs-body-300",
+            "text_max_width": 100,
+            "link": "",
+            "link_text": "",
+            "button_style": "btn--primary"
+          }
+        },
+        "column_gyej9Y": {
+          "type": "column",
+          "settings": {
+            "accent": "Aerospace Grade",
+            "heading": "Monocoque T700 Carbon Fiber",
+            "heading_tag": "h3",
+            "heading_font_class": "fs-heading-4-base",
+            "text": "",
+            "text_font_class": "fs-body-100",
+            "text_max_width": 100,
+            "link": "",
+            "link_text": "",
+            "button_style": "btn--primary"
+          }
+        },
+        "column_CnjfFH": {
+          "type": "column",
+          "settings": {
+            "accent": "Warranty",
+            "heading": "Covered Crash Replacement",
+            "heading_tag": "h3",
+            "heading_font_class": "fs-heading-4-base",
+            "text": "",
+            "text_font_class": "fs-body-100",
+            "text_max_width": 86,
+            "link": "",
+            "link_text": "",
+            "button_style": "btn--primary"
+          }
+        }
+      },
+      "block_order": [
+        "column_fUmApn",
+        "column_gyej9Y",
+        "column_CnjfFH"
+      ],
+      "settings": {
+        "title": "",
+        "heading_tag": "h2",
+        "heading_font_class": "fs-heading-3-base",
+        "subheading": "",
+        "heading_alignment": "left",
+        "content_vertical_alignment": "center",
+        "content_background_padding": "large",
+        "columns": "3",
+        "column_spacing": 4,
+        "row_spacing": 28,
+        "column_alignment": "center",
+        "enable_slider_mobile": false,
+        "columns_mobile": "1",
+        "column_spacing_mobile": 4,
+        "row_spacing_mobile": 4,
+        "column_alignment_mobile": "center",
+        "background_behind_columns": false,
+        "background_color": "#f7f7e8",
+        "text_color": "#222425",
+        "button_background_color": "#000000",
+        "button_text_color": "#ffffff",
+        "enable_animation": true,
+        "divider_style": "none",
+        "section_padding": "section--vertical-padding-top-bottom"
+      }
+    },
+    "rich_text_c83KUd": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_jVUTJF": {
+          "type": "heading",
+          "settings": {
+            "title": "SP Build Options",
+            "heading_tag": "h2",
+            "heading_font_class": "fs-heading-1-base"
+          }
+        },
+        "text_VHLqn8": {
+          "type": "text",
+          "settings": {
+            "text": "<p>This is where you choose the groupset, color, size, and add-ons you want. If you are stuck, have any questions, or don't know where to start, you can ask us anything <a href=\"/pages/contact-a2-bikes\" title=\"Contact A2 Bikes\"><span style=\"text-decoration:underline\">here</span></a><span style=\"text-decoration:underline\">.</span></p>",
+            "text_font_class": "fs-body-75"
+          }
+        }
+      },
+      "block_order": [
+        "heading_jVUTJF",
+        "text_VHLqn8"
+      ],
+      "name": "t:sections.rich_text.presets.name",
+      "settings": {
+        "alignment": "center_center",
+        "enable_animation": true,
+        "divider_style": "none",
+        "section_padding": "section--vertical-padding-top-bottom",
+        "content_width": "custom",
+        "custom_content_width": 700
+      }
+    },
+    "a2_financing_band": {
+      "type": "a2-collection-financing-band",
+      "settings": {
+        "compact": true,
+        "affirm_logo": "shopify://shop_images/986051c-affirm-logo.png",
+        "heading": "Buy now, pay later with Affirm.",
+        "text": "<p>Choose Affirm at checkout to split your purchase into monthly payments.</p>",
+        "show_as_low_as": true,
+        "secondary_text": "<p>Prefer pre-tax dollars? Eligible riders save an average of 30% with HSA/FSA via Truemed.</p>",
+        "disclosure": "Payment options through Affirm are subject to eligibility, may not be available in all states, and are provided by these lending partners:",
+        "button_label": "Explore financing options",
+        "button_link": "",
+        "affirm_public_key": "",
+        "bg_color": "#f7f7e8",
+        "text_color": "#222425",
+        "accent_color": "#c51c26"
+      }
+    },
+    "main-collection-product-grid": {
+      "type": "main-collection-product-grid",
+      "settings": {
+        "columns_desktop": "3",
+        "columns_mobile": "2",
+        "rows": "4",
+        "show_item_count": true,
+        "show_sort": true,
+        "show_filters": true,
+        "enable_sticky_filter_bar": true,
+        "desktop_filter_location": "sidebar",
+        "collapse_filter_bar": true,
+        "enable_sticky_filter_sidebar": true,
+        "collapse_filter_groups_desktop": true,
+        "collapse_filter_groups_mobile": true,
+        "show_swatch_filters": true,
+        "show_chip_filters": true,
+        "chip_layout": "3col",
+        "pagination": "click",
+        "enable_animation": true,
+        "divider_style": "solid"
+      }
+    },
+    "rich_text_VjCnkn": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_FatPa6": {
+          "type": "heading",
+          "settings": {
+            "title": "A2's Flagship Model",
+            "heading_tag": "h2",
+            "heading_font_class": "fs-heading-2-base"
+          }
+        },
+        "text_rx4tNX": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Starting at only <strong>$3,115</strong>, </p><p><strong>The SP is over-built, not over-priced. </strong></p><p>It delivers pro-level performance without the pro-level price. Trusted at the Ironman World Championships and equally at home guiding first-time triathletes to their finish line, the SP proves that speed and value can coexist. With wind-tunnel-refined aerodynamics, infinitely adjustable geometry, and bulletproof components, it's built to help you train smarter, race faster, and achieve your goals.</p>",
+            "text_font_class": "fs-body-100"
+          }
+        }
+      },
+      "block_order": [
+        "heading_FatPa6",
+        "text_rx4tNX"
+      ],
+      "name": "t:sections.rich_text.presets.name",
+      "settings": {
+        "alignment": "center_center",
+        "enable_animation": true,
+        "divider_style": "none",
+        "section_padding": "section--vertical-padding-top-only",
+        "content_width": "custom",
+        "custom_content_width": 800
+      }
+    },
+    "custom_liquid_eTjEJL": {
+      "type": "custom-liquid",
+      "name": "t:sections.custom_liquid.presets.name",
+      "settings": {
+        "custom_liquid": "<div style=\"text-align: center; margin: 30px 0;\">\n  <button id=\"see-bikes-btn\" style=\"\n    background-color: #FCFCF9;\n    color: #000;\n    border: 1.5px solid #000;\n    padding: 14px 28px;\n    font-size: 24px;\n    font-weight: 500;\n    text-transform: capitalize;\n    cursor: pointer;\n    transition: all 0.3s ease;\n    font-family: 'Fraunces', serif;\n  \">Shop the SP Here</button>\n</div>\n\n<script>\n  document.getElementById('see-bikes-btn').addEventListener('click', function() {\n    // Common selectors for the product grid\n    const selectors = [\n      '#CollectionSection',\n      '.collection__products',\n      '.grid--collection',\n      '.grid.grid--uniform',\n      '#main-collection-products',\n      '.collection-products-wrapper',\n      '.product-grid'\n    ];\n\n    let target = null;\n\n    for (const sel of selectors) {\n      const el = document.querySelector(sel);\n      if (el) {\n        target = el;\n        break;\n      }\n    }\n\n    // Fallback: try to find a container with product items\n    if (!target) {\n      const productCards = document.querySelectorAll('.product-card, .grid__item');\n      if (productCards.length > 0) {\n        target = productCards[0].closest('section, div');\n      }\n    }\n\n    // Scroll if a target was found\n    if (target) {\n      target.scrollIntoView({ behavior: 'smooth', block: 'start' }); // scroll to top\n    }\n  });\n</script>",
+        "divider_style": "none",
+        "section_padding": "section--vertical-padding-none"
+      }
+    },
+    "17583273465feb47df": {
+      "type": "apps",
+      "blocks": {
+        "spec_compare_comparison_table_cyXUnq": {
+          "type": "shopify://apps/specs-compare/blocks/comparison-table/a9d09772-f36d-4539-a4c4-7bd785bc12c0",
+          "settings": {
+            "product": "sp-sram-rival-1",
+            "product_list": [
+              "sp-shimano-105-5-26",
+              "sp-sram-red-axs-5-26",
+              "sp-sram-force-axs-5-26",
+              "rogue-rival-axs"
+            ],
+            "fallback_to_related_products": false,
+            "exclude_sold_out_products": false,
+            "enable_show_differences_switch": true,
+            "differences_switch_mode": "highlight_differences",
+            "show_variant_selector": true,
+            "show_group_names": true,
+            "maximum_rows": 38,
+            "maximum_visible_products": 4,
+            "show_in_modal": false,
+            "modal_trigger_button_text": "",
+            "app_block_margin": 0,
+            "app_block_max_width": "full_width",
+            "app_block_custom_max_width": 800,
+            "show_product_image": true,
+            "show_product_vendor": false,
+            "show_product_price": true,
+            "show_product_rating": true,
+            "show_view_details_button": true,
+            "enable_ai_analysis": true,
+            "append_parent_target_selector": ""
+          }
+        }
+      },
+      "block_order": [
+        "spec_compare_comparison_table_cyXUnq"
+      ],
+      "custom_css": [],
+      "settings": {
+        "heading": "Which SP is right for you?",
+        "enable_animation": true,
+        "divider_style": "none",
+        "section_padding": "section--vertical-padding-top-bottom"
+      }
+    },
+    "1758045288b94edf3d": {
+      "type": "_blocks",
+      "settings": {}
+    },
+    "shoppable_image_pRWxj3": {
+      "type": "shoppable-image",
+      "blocks": {
+        "hotspot_rYnhJj": {
+          "type": "hotspot",
+          "disabled": true,
+          "settings": {
+            "product_item": "a2-sags-stem",
+            "horizontal_position": 62,
+            "vertical_position": 72
+          }
+        },
+        "hotspot_t3dneM": {
+          "type": "hotspot",
+          "disabled": true,
+          "settings": {
+            "product_item": "",
+            "horizontal_position": 75,
+            "vertical_position": 82
+          }
+        },
+        "hotspot_7knKCh": {
+          "type": "hotspot",
+          "disabled": true,
+          "settings": {
+            "product_item": "zipp-808-firecrest-tubless-disc-brake-wheelset",
+            "horizontal_position": 32,
+            "vertical_position": 56
+          }
+        }
+      },
+      "block_order": [
+        "hotspot_rYnhJj",
+        "hotspot_t3dneM",
+        "hotspot_7knKCh"
+      ],
+      "disabled": true,
+      "name": "t:sections.shoppable_image.presets.name",
+      "settings": {
+        "image": "shopify://shop_images/Buy_a_Rogue_5.png",
+        "aspect_ratio": "natural",
+        "heading": "",
+        "heading_tag": "h2",
+        "subheading": "",
+        "link": "",
+        "link_text": "",
+        "button_style": "btn--secondary",
+        "enable_animation": false,
+        "divider_style": "none",
+        "section_padding": "section--vertical-padding-none"
+      }
+    },
+    "image_hero_W8BTkP": {
+      "type": "image-hero",
+      "disabled": true,
+      "name": "t:sections.image_hero.presets.name",
+      "settings": {
+        "image_aspect": "custom",
+        "desktop_height": 85,
+        "mobile_height": 100,
+        "image": "shopify://shop_images/Buy_a_Rogue_13.png",
+        "focal_point": "image_presentation",
+        "mobile_focal_point": "image_presentation",
+        "media_link": "",
+        "text_position": "center_center",
+        "text_position_mobile": "center_center",
+        "text_color": "#ffffff",
+        "button_background_color": "#ffffff",
+        "button_text_color": "#000000",
+        "color_overlay": "#000000",
+        "color_overlay_gradient": "",
+        "overlay_opacity": 0,
+        "enable_animation": false,
+        "section_padding": "section--vertical-padding-none"
+      }
+    },
+    "grid_eTHEfy": {
+      "type": "grid",
+      "blocks": {
+        "item_Kcrfwf": {
+          "type": "item",
+          "settings": {
+            "width": "66",
+            "height": 300,
+            "mobile_height": 500,
+            "media_type": "image",
+            "image": "shopify://shop_images/Buy_a_Rogue_16.png",
+            "mobile_image": "shopify://shop_images/Untitled_design_8.png",
+            "focal_point": "image_presentation",
+            "mobile_focal_point": "image_presentation",
+            "video_focal_point": "center",
+            "mobile_video_focal_point": "center",
+            "media_fit": "contain",
+            "text_position": "center_center",
+            "accent": "",
+            "title": "",
+            "heading_tag": "h3",
+            "heading_font_class": "fs-heading-2-base",
+            "subheading": "",
+            "subheading_tag": "h4",
+            "subheading_font_class": "fs-heading-5-base",
+            "text": "",
+            "text_font_class": "fs-body-100",
+            "link": "",
+            "link_text": "",
+            "button_style": "btn--primary",
+            "background_color": "",
+            "text_color": "#ffffff",
+            "button_background_color": "#ffffff",
+            "button_text_color": "#000000",
+            "color_overlay": "#000000",
+            "color_overlay_gradient": "",
+            "overlay_opacity": 0
+          }
+        },
+        "item_YnRPRi": {
+          "type": "item",
+          "settings": {
+            "width": "33",
+            "height": 600,
+            "mobile_height": 500,
+            "media_type": "image",
+            "image": "shopify://shop_images/DSCF9219.jpg",
+            "focal_point": "image_presentation",
+            "mobile_focal_point": "image_presentation",
+            "video_focal_point": "center",
+            "mobile_video_focal_point": "center",
+            "media_fit": "contain",
+            "text_position": "center_center",
+            "accent": "",
+            "title": "",
+            "heading_tag": "h3",
+            "heading_font_class": "fs-heading-2-base",
+            "subheading": "",
+            "subheading_tag": "h4",
+            "subheading_font_class": "fs-heading-5-base",
+            "text": "",
+            "text_font_class": "fs-body-100",
+            "link": "",
+            "link_text": "",
+            "button_style": "btn--primary",
+            "background_color": "",
+            "text_color": "#ffffff",
+            "button_background_color": "#ffffff",
+            "button_text_color": "#000000",
+            "color_overlay": "#000000",
+            "color_overlay_gradient": "",
+            "overlay_opacity": 0
+          }
+        },
+        "item_reMdEz": {
+          "type": "item",
+          "disabled": true,
+          "settings": {
+            "width": "100",
+            "height": 500,
+            "mobile_height": 500,
+            "media_type": "image",
+            "focal_point": "image_presentation",
+            "mobile_focal_point": "image_presentation",
+            "video_focal_point": "center",
+            "mobile_video_focal_point": "center",
+            "media_fit": "cover",
+            "text_position": "center_center",
+            "accent": "",
+            "title": "Grid item",
+            "heading_tag": "h3",
+            "heading_font_class": "fs-heading-2-base",
+            "subheading": "<p>Perfect for lookbooks and editorial photography</p>",
+            "subheading_tag": "h4",
+            "subheading_font_class": "fs-heading-5-base",
+            "text": "",
+            "text_font_class": "fs-body-100",
+            "link": "",
+            "link_text": "",
+            "button_style": "btn--primary",
+            "background_color": "",
+            "text_color": "#ffffff",
+            "button_background_color": "#ffffff",
+            "button_text_color": "#000000",
+            "color_overlay": "#000000",
+            "color_overlay_gradient": "",
+            "overlay_opacity": 30
+          }
+        }
+      },
+      "block_order": [
+        "item_Kcrfwf",
+        "item_YnRPRi",
+        "item_reMdEz"
+      ],
+      "name": "t:sections.grid.presets.name",
+      "settings": {
+        "heading": "",
+        "heading_tag": "h2",
+        "subheading": "",
+        "content_alignment": "left",
+        "enable_animation": true,
+        "full_width": false,
+        "spacing": 24,
+        "divider_style": "none",
+        "section_padding": "section--vertical-padding-top-bottom"
+      }
+    },
+    "collapsible_row_list_cxJRxd": {
+      "type": "collapsible-row-list",
+      "blocks": {
+        "item_LcWntA": {
+          "type": "item",
+          "settings": {
+            "expand_by_default": false,
+            "icon": "none",
+            "title": "SP Size Guide",
+            "text": "<ul><li>Small: <strong>5'3\"-5'6\"</strong> or 160-167.5 cm</li><li>Medium: <strong>5'7\"-5'10\"</strong> or 170-178 cm</li><li>Large: <strong>5'11\"-6'2\"</strong> or 180-189 cm</li><li>XL: <strong>6'2\"-6'5\"</strong> or 190-196 cm</li></ul>"
+          }
+        },
+        "item_QcfQgz": {
+          "type": "item",
+          "settings": {
+            "expand_by_default": false,
+            "icon": "none",
+            "title": "SP Stack/Reach",
+            "text": "<ul><li>Small:<strong> 460/371</strong> mm</li><li>Medium: <strong>493/394</strong> mm</li><li>Large: <strong>527/416</strong> mm</li><li>XL: <strong>560/439</strong> mm</li></ul>"
+          }
+        },
+        "item_EmrdM7": {
+          "type": "item",
+          "settings": {
+            "expand_by_default": false,
+            "icon": "none",
+            "title": "SP Groupset Options",
+            "text": "<ul><li><strong>Shimano 105</strong>: Beginner, Mechanical Shifting, Mechanical Brakes</li><li><strong>SRAM Rival AXS</strong>: Intermediate, Electronic Shifting, Hydraulic Brakes</li><li><strong>SRAM Force AXS</strong>: Intermediate, Electronic Shifting, Hydraulic Brakes</li><li><strong>SRAM Red AXS</strong>: Advanced, Electronic Shifting, Hydraulic Brakes</li></ul>"
+          }
+        },
+        "item_pTCVnN": {
+          "type": "item",
+          "disabled": true,
+          "settings": {
+            "expand_by_default": false,
+            "icon": "none",
+            "title": "This is an example of a question that a customer might ask",
+            "text": "<p>This is an example of a response that you might give. It's good to be as thorough as possible in responses as that has a tendency to improve trust overall.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "item_LcWntA",
+        "item_QcfQgz",
+        "item_EmrdM7",
+        "item_pTCVnN"
+      ],
+      "name": "t:sections.collapsible_row_list.presets.name",
+      "settings": {
+        "title": "Discover the Specs",
+        "heading_tag": "h2",
+        "heading_font_class": "fs-heading-3-base",
+        "heading_alignment": "left",
+        "subheading": "",
+        "subheading_tag": "h3",
+        "subheading_font_class": "fs-heading-5-base",
+        "item_heading_font": "heading",
+        "auto_collapse_rows": false,
+        "enable_animation": true,
+        "divider_style": "none",
+        "section_padding": "section--vertical-padding-bottom-only",
+        "content_width": "custom",
+        "custom_content_width": 700
+      }
+    },
+    "grid_B6XLAy": {
+      "type": "grid",
+      "blocks": {
+        "item_gi6ynP": {
+          "type": "item",
+          "settings": {
+            "width": "50",
+            "height": 500,
+            "mobile_height": 500,
+            "media_type": "image",
+            "image": "shopify://shop_images/Instagram_Posts_12.jpg",
+            "focal_point": "image_presentation",
+            "mobile_focal_point": "image_presentation",
+            "video_focal_point": "center",
+            "mobile_video_focal_point": "center",
+            "media_fit": "cover",
+            "text_position": "center_center",
+            "accent": "",
+            "title": "Pro-Level Performance",
+            "heading_tag": "h3",
+            "heading_font_class": "fs-heading-2-base",
+            "subheading": "",
+            "subheading_tag": "h4",
+            "subheading_font_class": "fs-heading-5-base",
+            "text": "",
+            "text_font_class": "fs-body-100",
+            "link": "",
+            "link_text": "",
+            "button_style": "btn--primary",
+            "background_color": "",
+            "text_color": "#ffffff",
+            "button_background_color": "#ffffff",
+            "button_text_color": "#000000",
+            "color_overlay": "#000000",
+            "color_overlay_gradient": "",
+            "overlay_opacity": 30
+          }
+        },
+        "item_jxFJ7H": {
+          "type": "item",
+          "settings": {
+            "width": "50",
+            "height": 500,
+            "mobile_height": 500,
+            "media_type": "image",
+            "image": "shopify://shop_images/Screenshot_2024-05-14_125325.png",
+            "focal_point": "image_presentation",
+            "mobile_focal_point": "image_presentation",
+            "video_focal_point": "center",
+            "mobile_video_focal_point": "center",
+            "media_fit": "cover",
+            "text_position": "center_center",
+            "accent": "",
+            "title": "Enginnered for Speed",
+            "heading_tag": "h3",
+            "heading_font_class": "fs-heading-2-base",
+            "subheading": "",
+            "subheading_tag": "h4",
+            "subheading_font_class": "fs-heading-5-base",
+            "text": "",
+            "text_font_class": "fs-body-100",
+            "link": "",
+            "link_text": "",
+            "button_style": "btn--primary",
+            "background_color": "",
+            "text_color": "#ffffff",
+            "button_background_color": "#ffffff",
+            "button_text_color": "#000000",
+            "color_overlay": "#000000",
+            "color_overlay_gradient": "",
+            "overlay_opacity": 30
+          }
+        }
+      },
+      "block_order": [
+        "item_gi6ynP",
+        "item_jxFJ7H"
+      ],
+      "disabled": true,
+      "name": "t:sections.grid.presets.name",
+      "settings": {
+        "heading": "",
+        "heading_tag": "h2",
+        "subheading": "",
+        "content_alignment": "left",
+        "enable_animation": true,
+        "full_width": false,
+        "spacing": 24,
+        "divider_style": "none",
+        "section_padding": "section--vertical-padding-top-bottom"
+      }
+    },
+    "banner": {
+      "type": "main-collection-banner",
+      "disabled": true,
+      "settings": {
+        "show_breadcrumbs": false,
+        "show_collection_description": true,
+        "show_collection_image": true,
+        "image_aspect": "custom",
+        "desktop_height": 100,
+        "mobile_height": 100,
+        "focal_point": "center",
+        "text_position": "center_center",
+        "text_position_mobile": "center_center",
+        "text_color": "#ffffff",
+        "color_overlay": "#000000",
+        "color_overlay_gradient": "",
+        "overlay_opacity": 30,
+        "enable_animation": true,
+        "section_padding": "section--vertical-padding-bottom-only"
+      }
+    },
+    "image_with_text_xxwKyN": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_nxVwLp": {
+          "type": "heading",
+          "settings": {
+            "title": "Take a tour",
+            "heading_tag": "h2",
+            "heading_font_class": "fs-heading-display-3"
+          }
+        },
+        "subheading_UGDe66": {
+          "type": "subheading",
+          "settings": {
+            "subheading": "The SP is a one-of-a-kind, pioneer triathlon bike when it comes to aerodynamics and adjustability. See what went into engineering this bike to make it as fast as possible.",
+            "subheading_tag": "h3",
+            "subheading_font_class": "fs-heading-5-base"
+          }
+        },
+        "button_YUAkeq": {
+          "type": "button",
+          "settings": {
+            "link": "shopify://pages/about-the-sp",
+            "link_text": "Explore the SP",
+            "button_style": "btn--primary"
+          }
+        }
+      },
+      "block_order": [
+        "heading_nxVwLp",
+        "subheading_UGDe66",
+        "button_YUAkeq"
+      ],
+      "disabled": true,
+      "name": "t:sections.image_with_text.presets.name",
+      "settings": {
+        "image_position": "right",
+        "image": "shopify://shop_images/DSCF9206-Edit.jpg",
+        "aspect_ratio": "natural",
+        "focal_point": "image_presentation",
+        "image_caption": "",
+        "text_alignment": "center",
+        "show_small_image": false,
+        "image_small_aspect": "square",
+        "image_small_focal_point": "image_presentation",
+        "background_color": "",
+        "text_color": "#000000",
+        "button_background_color": "#000000",
+        "button_text_color": "#ffffff",
+        "enable_animation": true,
+        "divider_style": "none",
+        "section_padding": "section--vertical-padding-top-bottom"
+      }
+    },
+    "image_with_text_azXiUf": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_Kt67jD": {
+          "type": "heading",
+          "settings": {
+            "title": "Wind Tunnel Tested",
+            "heading_tag": "h2",
+            "heading_font_class": "fs-heading-1-base"
+          }
+        },
+        "subheading_pFKUgG": {
+          "type": "subheading",
+          "settings": {
+            "subheading": "Maximized for aerodynamic performance, the SP will help you shave those precious minutes off of race time. Whereas many disc brake bike models test as less aerodynamic than rim brakes, our new SP saved 5 watts compared to its rim brake predecessor.",
+            "subheading_tag": "h3",
+            "subheading_font_class": "fs-heading-6-base"
+          }
+        },
+        "button_BpyEWj": {
+          "type": "button",
+          "disabled": true,
+          "settings": {
+            "link": "",
+            "link_text": "Read more",
+            "button_style": "btn--primary"
+          }
+        }
+      },
+      "block_order": [
+        "heading_Kt67jD",
+        "subheading_pFKUgG",
+        "button_BpyEWj"
+      ],
+      "name": "t:sections.image_with_text.presets.name",
+      "settings": {
+        "image_position": "right",
+        "image": "shopify://shop_images/A2_Bikes_4.jpg",
+        "aspect_ratio": "natural",
+        "focal_point": "center",
+        "image_caption": "",
+        "text_alignment": "center",
+        "show_small_image": true,
+        "image_small": "shopify://shop_images/DSCF3080.jpg",
+        "image_small_aspect": "square",
+        "image_small_focal_point": "image_presentation",
+        "background_color": "#f5f5f5",
+        "text_color": "#000000",
+        "button_background_color": "#000000",
+        "button_text_color": "#ffffff",
+        "enable_animation": true,
+        "divider_style": "none",
+        "section_padding": "section--vertical-padding-top-bottom"
+      }
+    },
+    "image_with_text_split_rCzpiJ": {
+      "type": "image-with-text-split",
+      "blocks": {
+        "accent_K8UJJw": {
+          "type": "accent",
+          "settings": {
+            "accent": "Front-end Adjustability"
+          }
+        },
+        "heading_dQRijg": {
+          "type": "heading",
+          "settings": {
+            "title": "The SAG Stem",
+            "heading_tag": "h2",
+            "heading_font_class": "fs-heading-display-3"
+          }
+        },
+        "subheading_N8ULQc": {
+          "type": "subheading",
+          "settings": {
+            "subheading": "The A2 SAGS (Super Adjustable Gooseneck) gives you the flexibility to dial in your perfect fit. With our patented spacers and easy integration system, you can set it to 70mm, 90mm, or 110mm, depending on what feels best for your reach in and out of the aero bars.",
+            "subheading_tag": "h3",
+            "subheading_font_class": "fs-heading-5-base"
+          }
+        }
+      },
+      "block_order": [
+        "accent_K8UJJw",
+        "heading_dQRijg",
+        "subheading_N8ULQc"
+      ],
+      "name": "t:sections.image_with_text_split.presets.name",
+      "settings": {
+        "image_position": "right",
+        "image_mobile_position": "below-content",
+        "image_padding": "none",
+        "image": "shopify://shop_images/Untitled_design.gif",
+        "aspect_ratio": "landscape",
+        "focal_point": "image_presentation",
+        "content_alignment": "left",
+        "background_color": "#d9a49c",
+        "text_color": "#000000",
+        "button_background_color": "#000000",
+        "button_text_color": "#ffffff",
+        "enable_animation": true,
+        "section_padding": "section--vertical-padding-none"
+      }
+    },
+    "image_with_text_split_JaYAAK": {
+      "type": "image-with-text-split",
+      "blocks": {
+        "accent_aczRNg": {
+          "type": "accent",
+          "settings": {
+            "accent": "Torso and Saddle Adjustability"
+          }
+        },
+        "heading_GFTUKT": {
+          "type": "heading",
+          "settings": {
+            "title": "The A2 SASP x BiSaddle",
+            "heading_tag": "h2",
+            "heading_font_class": "fs-heading-display-3"
+          }
+        },
+        "subheading_ta9EBH": {
+          "type": "subheading",
+          "settings": {
+            "subheading": "We partnered with BiSaddle to bring you unmatched comfort and adjustability. The new Super Adjustable Seat Post (SASP) lets you slide your saddle up to 120mm and fine-tune the width with a BiSaddle to fit your body perfectly. Because your setup should feel just right.",
+            "subheading_tag": "h3",
+            "subheading_font_class": "fs-heading-5-base"
+          }
+        }
+      },
+      "block_order": [
+        "accent_aczRNg",
+        "heading_GFTUKT",
+        "subheading_ta9EBH"
+      ],
+      "name": "t:sections.image_with_text_split.presets.name",
+      "settings": {
+        "image_position": "left",
+        "image_mobile_position": "below-content",
+        "image_padding": "none",
+        "image": "shopify://shop_images/Untitled_design_1.gif",
+        "aspect_ratio": "landscape",
+        "focal_point": "image_presentation",
+        "content_alignment": "left",
+        "background_color": "#d9a49c",
+        "text_color": "#000000",
+        "button_background_color": "#000000",
+        "button_text_color": "#ffffff",
+        "enable_animation": true,
+        "section_padding": "section--vertical-padding-none"
+      }
+    },
+    "gallery_carousel_FRihCM": {
+      "type": "gallery-carousel",
+      "blocks": {
+        "image_LkRn4q": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Main_Sequence.00_00_01_12.Still002.jpg",
+            "focal_point": "image_presentation",
+            "title": "Race Day Ready",
+            "text": "<p>Seemingly unlimited accessory and upgrade possibilities, the SP can be custom-built with components of your choice.</p>"
+          }
+        },
+        "image_WGzDfw": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/DSCF3337-Edit.jpg",
+            "focal_point": "image_presentation",
+            "title": "Unlimited Customization",
+            "text": "<p>Want a component or accessory we don't have on the website? Feel free to message us, and we can see if we can get it installed on your new bike. </p>"
+          }
+        },
+        "image_F7dxgj": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/DSCF6486_f3a9564d-9e10-42bf-afb1-89b40dc3f3a8.jpg",
+            "focal_point": "image_presentation",
+            "title": "Stand Out",
+            "text": "<p>The Lava Red is a head-turning colorway that is popular among triathletes. Express yourself the way you want. </p>"
+          }
+        },
+        "image_dhz8i6": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/2022-03-18_A2_Bikes_0568_4d7795f5-c465-4699-bec4-2eb7d675d4a3.jpg",
+            "focal_point": "image_presentation",
+            "title": "Every Inch is Aerodynamic",
+            "text": "<p>Designed alongside former Cervelo engineer Kevin Quan, the newest generation of the SP is our fastest yet. Superior aerodynamics accompanied by unlimited adjustability means you're closer to your next PR.  </p>"
+          }
+        }
+      },
+      "block_order": [
+        "image_LkRn4q",
+        "image_WGzDfw",
+        "image_F7dxgj",
+        "image_dhz8i6"
+      ],
+      "name": "t:sections.gallery_carousel.presets.name",
+      "settings": {
+        "heading": "The SP Gallery",
+        "heading_tag": "h2",
+        "subheading": "",
+        "link": "",
+        "link_text": "",
+        "button_style": "btn--callout",
+        "columns": "2",
+        "mobile_columns": "1",
+        "loop_carousel": true,
+        "aspect_ratio": "landscape",
+        "image_caption_size": "fs-body-75",
+        "image_caption_style": "overlay",
+        "overlay_text_background_style": "gradient",
+        "overlay_text_color": "#ffffff",
+        "overlay_text_background": "#000000",
+        "enable_animation": true,
+        "divider_style": "none",
+        "section_padding": "section--vertical-padding-top-bottom"
+      }
+    },
+    "1757459778547f43b3": {
+      "type": "_blocks",
+      "settings": {}
+    },
+    "17810447529c1016a8": {
+      "type": "apps",
+      "blocks": {
+        "affirm_pay_over_time_messaging_collection_block_gXEfY6": {
+          "type": "shopify://apps/affirm-pay-over-time-messaging/blocks/collection-block/6dce54be-130d-4d13-9636-1e8f611b3071",
+          "settings": {
+            "logo_align": "center",
+            "font_size": 12,
+            "logo_color": "blue",
+            "logo_type": "symbol",
+            "public_api_key": "",
+            "collection_selector": "",
+            "card_selector": "",
+            "price_selector": ""
+          }
+        }
+      },
+      "block_order": [
+        "affirm_pay_over_time_messaging_collection_block_gXEfY6"
+      ],
+      "settings": {
+        "heading": "App section",
+        "enable_animation": true,
+        "divider_style": "none",
+        "section_padding": "section--vertical-padding-top-bottom"
+      }
+    }
+  },
+  "order": [
+    "video_hero_mDeA9N",
+    "multi_column_cFrNe6",
+    "rich_text_c83KUd",
+    "a2_financing_band",
+    "main-collection-product-grid",
+    "rich_text_VjCnkn",
+    "custom_liquid_eTjEJL",
+    "17583273465feb47df",
+    "1758045288b94edf3d",
+    "shoppable_image_pRWxj3",
+    "image_hero_W8BTkP",
+    "grid_eTHEfy",
+    "collapsible_row_list_cxJRxd",
+    "grid_B6XLAy",
+    "banner",
+    "image_with_text_xxwKyN",
+    "image_with_text_azXiUf",
+    "image_with_text_split_rCzpiJ",
+    "image_with_text_split_JaYAAK",
+    "gallery_carousel_FRihCM",
+    "1757459778547f43b3",
+    "17810447529c1016a8"
+  ]
+}

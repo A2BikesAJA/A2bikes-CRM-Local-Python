@@ -1,0 +1,196 @@
+{
+  "sections": {
+    "hero": {
+      "type": "wa-hero",
+      "settings": {
+        "hero_image": "shopify://shop_images/Hero_4.jpg",
+        "hero_eyebrow": "Rider Focused. Always.",
+        "hero_heading": "Pro-level triathlon bikes. Without the pro-level price.",
+        "hero_sub": "The same design pedigree as a <strong>Cervélo P-Series</strong> — drawn by the engineer who shaped it — sold direct, so you skip the retail markup.",
+        "hero_cta1_label": "See the bikes",
+        "hero_cta1_link": "shopify://collections/sp",
+        "hero_cta2_label": "Find your size in 60 seconds",
+        "hero_cta2_link": "/pages/sp-performance#a2-fit-calc"
+      }
+    },
+    "credibility": {
+      "type": "wa-credibility",
+      "blocks": {
+        "c1": {
+          "type": "proof",
+          "settings": {
+            "title": "Designed by a former Cervélo P-Series engineer",
+            "body": "A2's geometry comes from Kevin Quan — the engineer behind the Cervélo P-Series, one of the most successful triathlon bikes ever made.",
+            "show_stars": false
+          }
+        },
+        "c2": {
+          "type": "proof",
+          "settings": {
+            "title": "Trusted at the Ironman World Championships",
+            "body": "A2 bikes have been raced on the lava fields of Kona — the toughest proving ground in the sport.",
+            "show_stars": false
+          }
+        },
+        "c3": {
+          "type": "proof",
+          "settings": {
+            "title": "Best Beginner Triathlon Bike",
+            "body": "Named by Triathlete Magazine — a five-time winner of the category.",
+            "show_stars": true
+          }
+        }
+      },
+      "block_order": [
+        "c1",
+        "c2",
+        "c3"
+      ],
+      "settings": {
+        "cred_image": "shopify://shop_images/image2_1.jpg",
+        "eyebrow": "Proven, not promised",
+        "heading": "Designed by Kevin Quan. Tested at Kona."
+      }
+    },
+    "promise": {
+      "type": "wa-promise",
+      "blocks": {
+        "m1": {
+          "type": "card",
+          "settings": {
+            "phrase": "retail markup",
+            "title": "Sold direct, priced honestly",
+            "body": "Big brands build dealer margin and retail markup into the price. We don't. You pay for engineering and materials — nothing else.",
+            "tag": "Direct-to-rider"
+          }
+        },
+        "m2": {
+          "type": "card",
+          "settings": {
+            "phrase": "dealer middleman",
+            "title": "Ships from Oregon, set up at home",
+            "body": "No showroom upsell. Your bike ships from our Oregon shop, ready to finish assembly at home with our step-by-step guides.",
+            "tag": "Pacific Northwest built"
+          }
+        },
+        "m3": {
+          "type": "card",
+          "settings": {
+            "phrase": "annual obsolescence",
+            "title": "Lifetime warranty, free size exchanges",
+            "body": "We don't chase yearly model cycles. Your A2 is backed by a lifetime frame warranty and free size exchanges if the fit isn't right.",
+            "tag": "Backed for life"
+          }
+        }
+      },
+      "block_order": [
+        "m1",
+        "m2",
+        "m3"
+      ],
+      "settings": {
+        "eyebrow": "The A2 promise",
+        "heading": "What you don't pay for",
+        "lede": "A2 sells direct. That means your money goes into the bike — not the markup, the middleman, or next year's upgrade."
+      }
+    },
+    "products": {
+      "type": "wa-products",
+      "blocks": {
+        "sp": {
+          "type": "product",
+          "settings": {
+            "image": "shopify://shop_images/P1011877-Edit.png",
+            "badge": "Triathlon",
+            "name": "SP",
+            "product": "sp-shimano-105n",
+            "price": "$3,115",
+            "body": "Our triathlon and time-trial machine — superbike aerodynamics and fit, without the superbike price.",
+            "link": "/pages/sp-performance"
+          }
+        },
+        "rogue": {
+          "type": "product",
+          "settings": {
+            "image": "shopify://shop_images/P1011937-Edit.jpg",
+            "badge": "Road",
+            "name": "Rogue",
+            "product": "rogue-shimano-105",
+            "price": "$2,699",
+            "body": "One road bike for everything — light, fast and ready for any route.",
+            "link": "/pages/rogue-road"
+          }
+        }
+      },
+      "block_order": [
+        "sp",
+        "rogue"
+      ],
+      "settings": {
+        "eyebrow": "The lineup",
+        "heading": "Find your A2",
+        "lede": "Two platforms, one obsession: fast bikes that fit real riders — priced direct.",
+        "show_financing_line": true,
+        "financing_months": 36,
+        "financing_suffix": "with financing · HSA/FSA eligible"
+      }
+    },
+    "athletes": {
+      "type": "wa-athletes",
+      "blocks": {
+        "a1": {
+          "type": "athlete",
+          "settings": {
+            "quote": "This bike is a machine. It's beautiful, expertly crafted, and is seamless to build and ride. I have nothing but good to say. Rival AXS is my first electronic groupset, and I've been loving it!",
+            "name": "Kinley Bollinger",
+            "race": ""
+          }
+        },
+        "a2": {
+          "type": "athlete",
+          "settings": {
+            "quote": "Finding a ride that's fast enough to race and comfortable enough to put long hours in on is no small feat — but A2's design and customizability has it made. Suffice to say I cannot wait to see what we can do this year on the race course.",
+            "name": "Brennen Smith",
+            "race": ""
+          }
+        },
+        "a3": {
+          "type": "athlete",
+          "settings": {
+            "quote": "A2 made the process of getting a new bike so much easier, at a great price! They are so easy to contact and very responsive. I love the bike — it works great and it is very speedy (all my rides have been faster). I can't wait to race with it!",
+            "name": "Kaitlin Carew",
+            "race": ""
+          }
+        }
+      },
+      "block_order": [
+        "a1",
+        "a2",
+        "a3"
+      ],
+      "settings": {
+        "eyebrow": "Race proven",
+        "heading": "Ridden by the A2 Racing Team"
+      }
+    },
+    "capture": {
+      "type": "wa-capture",
+      "settings": {
+        "eyebrow": "Free sizing guide",
+        "heading": "Sizing a triathlon bike is harder than it should be.",
+        "sub": "Get our free guide and we'll help you dial in the right frame size, fit, and setup — before you ever click buy.",
+        "klaviyo_form_id": "WDFJLq",
+        "klaviyo_company_id": "YejYTH",
+        "trust": "No spam. Unsubscribe anytime."
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "credibility",
+    "promise",
+    "products",
+    "athletes",
+    "capture"
+  ]
+}

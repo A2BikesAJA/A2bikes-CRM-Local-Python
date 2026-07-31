@@ -1,0 +1,37 @@
+{%- comment -%}
+  A2 Bikes — email capture (Klaviyo client-side subscription via a2-lp.js).
+  Submitting posts to Klaviyo's client API and pushes the configured dataLayer
+  event. If company_id / list_id are not yet set, the UI still works in preview
+  but no profile is created (a2-lp.js logs a warning).
+  Params:
+    heading, text, cta_label, success_text
+    company_id  (string)  Klaviyo public API key (company id)
+    list_id     (string)  Klaviyo list id the guide flow listens on
+    event       (string)  dataLayer event name (e.g. 'sp_lp_email_capture')
+    source      (string)  Klaviyo custom_source label
+    uid         (string)  unique suffix for input ids (avoid collisions)
+{%- endcomment -%}
+{%- assign _uid = uid | default: section.id -%}
+<div class="a2-email" id="a2-email-{{ _uid }}">
+  <h2 class="a2-h2">{{ heading | default: 'Not ready to buy?' }}</h2>
+  {%- if text != blank -%}<p class="a2-lead">{{ text }}</p>{%- endif -%}
+  <form class="a2-email__form" data-a2-klaviyo-form
+        data-a2-company="{{ company_id }}"
+        data-a2-list="{{ list_id }}"
+        data-a2-event="{{ event | default: 'lp_email_capture' }}"
+        data-a2-source="{{ source | default: 'A2 Landing Page' | escape }}"
+        data-a2-success="{{ success_text | default: 'You are in — check your inbox.' | escape }}"
+        novalidate>
+    <label class="a2-sr-only" for="a2-email-input-{{ _uid }}">Email address</label>
+    <input id="a2-email-input-{{ _uid }}" type="email" name="email" required
+           autocomplete="email" inputmode="email" placeholder="you@email.com" />
+    {%- comment -%} Honeypot: hidden from humans, bots fill it and get a silent pass. {%- endcomment -%}
+    <div class="a2-email__hp" aria-hidden="true">
+      <label>Leave this field blank
+        <input type="text" tabindex="-1" autocomplete="off" data-a2-hp />
+      </label>
+    </div>
+    <button class="a2-cta" type="submit">{{ cta_label | default: 'Send it' }}</button>
+    <p class="a2-email__msg" data-a2-msg role="status" aria-live="polite"></p>
+  </form>
+</div>

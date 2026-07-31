@@ -1,0 +1,258 @@
+{
+  "sections": {
+    "main": {
+      "type": "a2-line-lp",
+      "blocks": {
+        "proof_aero": {
+          "type": "proof",
+          "settings": {
+            "icon": "wind",
+            "metric": "Aero-first",
+            "title": "Wind-tunnel shaped",
+            "text": "Tube profiles tuned for real-world yaw, not just a flattering spec sheet.",
+            "photo": "shopify://shop_images/sp-lp-aero-tubes.jpg"
+          }
+        },
+        "proof_weight": {
+          "type": "proof",
+          "settings": {
+            "icon": "feather",
+            "metric": "Race-light",
+            "title": "Light where it counts",
+            "text": "A stiff, responsive frame that holds speed and climbs when the course turns up.",
+            "photo": "shopify://shop_images/sp-lp-frame-light.jpg"
+          }
+        },
+        "proof_geo": {
+          "type": "proof",
+          "settings": {
+            "icon": "sliders",
+            "metric": "Fit-first",
+            "title": "Dialed geometry",
+            "text": "Aggressive when you want it, sustainable enough to run strong off the bike.",
+            "photo": "shopify://shop_images/sp-edu-stem-sags.jpg"
+          }
+        },
+        "build_105": {
+          "type": "build",
+          "settings": {
+            "product": "sp-shimano-105n",
+            "name_override": "SP \u00b7 Shimano 105",
+            "price_override": ""
+          }
+        },
+        "build_rival": {
+          "type": "build",
+          "settings": {
+            "product": "sp-sram-rival-1",
+            "name_override": "SP \u00b7 SRAM Rival AXS",
+            "price_override": ""
+          }
+        },
+        "build_force": {
+          "type": "build",
+          "settings": {
+            "product": "sp-sram-force",
+            "name_override": "SP \u00b7 SRAM Force AXS",
+            "price_override": ""
+          }
+        },
+        "build_red": {
+          "type": "build",
+          "settings": {
+            "product": "sp-sram-red-axs",
+            "name_override": "SP \u00b7 SRAM Red AXS",
+            "price_override": ""
+          }
+        },
+        "rev1": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "quote": "Beat my PR and my budget. Genuinely faster than bikes twice the price.",
+            "author": "Verified rider",
+            "detail": "70.3 age-grouper"
+          }
+        },
+        "rev2": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "quote": "Shipped fast, built perfectly, and the financing made it a no-brainer.",
+            "author": "Verified rider",
+            "detail": "Full-distance triathlete"
+          }
+        },
+        "rev3": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "quote": "Used my HSA through Truemed and saved hundreds. Wish I'd known sooner.",
+            "author": "Verified rider",
+            "detail": "First tri bike"
+          }
+        },
+        "persona_new": {
+          "type": "persona",
+          "settings": {
+            "tag": "New to triathlon",
+            "title": "Your first tri bike",
+            "text": "Your first race is on the calendar and the borrowed road bike is holding you back. You need the right bike for your race distance \u2014 without overbuying.",
+            "pick": "SP \u00b7 Shimano 105 \u2014 race-ready out of the box",
+            "upgrade": "Keep the stock wheels for season one and spend the savings on a proper fit \u2014 use the Fit Finder below so the size is right the first time.",
+            "cta_label": "See the 105 build",
+            "cta_url": "/products/sp-shimano-105n"
+          }
+        },
+        "persona_amateur": {
+          "type": "persona",
+          "settings": {
+            "tag": "A few seasons in",
+            "title": "The age-grouper",
+            "text": "You\u2019ve raced enough to know the bike leg is where your time hides, and the road-bike-with-clip-ons setup has hit its ceiling. Time for a dedicated tri bike.",
+            "pick": "SP \u00b7 Shimano 105 or SRAM Rival AXS",
+            "upgrade": "Carbon race wheels are the classic next step \u2014 add a wheelset with your bike and the discount applies automatically in the cart.",
+            "cta_label": "See the Rival build",
+            "cta_url": "/products/sp-sram-rival-1"
+          }
+        },
+        "persona_comeback": {
+          "type": "persona",
+          "settings": {
+            "tag": "Returning to the sport",
+            "title": "The comeback",
+            "text": "You raced in another phase of life and you\u2019re coming back \u2014 and yes, bikes cost more than they did ten years ago. You want something new and genuinely fast, not a museum piece.",
+            "pick": "SP \u00b7 SRAM Force AXS \u2014 electronic shifting, race-day spec",
+            "upgrade": "Make the math feel sane again: split it monthly with Affirm or use pre-tax HSA/FSA dollars through Truemed.",
+            "cta_label": "See the Force build",
+            "cta_url": "/products/sp-sram-force"
+          }
+        },
+        "gear_short": {
+          "type": "gear",
+          "settings": {
+            "tag": "Sprint & Olympic",
+            "title": "Short course: pure speed",
+            "text": "Short races are decided on raw bike speed \u2014 every watt and every transition second counts.",
+            "cta_label": "Shop race wheels",
+            "cta_url": "/collections/wheelsets-and-upgrades",
+            "item1_label": "Carbon race wheels",
+            "item1_why": "The biggest aero upgrade you can make \u2014 add a wheelset with your bike and the discount applies automatically in the cart.",
+            "item1_url": "/collections/wheelsets-and-upgrades",
+            "item2_label": "XLab Torpedo Versa 200",
+            "item2_why": "Drink without sitting up \u2014 hydration that lives between your arms.",
+            "item2_url": "/products/xlab-torpedo-versa-200",
+            "item3_label": "Look Keo Classic pedals",
+            "item3_why": "Race-ready clipless from day one.",
+            "item3_url": "/products/look-keo-classic-pedals"
+          }
+        },
+        "gear_long": {
+          "type": "gear",
+          "settings": {
+            "tag": "70.3 & full distance",
+            "title": "Long course: carry everything, lose nothing",
+            "text": "Half and full distance is a fueling contest on wheels \u2014 storage and hydration matter as much as aero.",
+            "cta_label": "Shop long-course gear",
+            "cta_url": "/collections/hydration-and-storage-accessories",
+            "item1_label": "XLab Aero TT System",
+            "item1_why": "Rear-mounted hydration that keeps you in position through hour five.",
+            "item1_url": "/products/x-lab-aero-tt-system",
+            "item2_label": "Hydration & storage",
+            "item2_why": "Top-tube and frame storage for race-day fueling, all in one place.",
+            "item2_url": "/collections/hydration-and-storage-accessories",
+            "item3_label": "Race bundles",
+            "item3_why": "Race-week setups in a single add to cart.",
+            "item3_url": "/collections/race-bundles"
+          }
+        },
+        "gear_train": {
+          "type": "gear",
+          "settings": {
+            "tag": "Training & data",
+            "title": "Train smarter between races",
+            "text": "The riders who PR are the ones who measure. Build the feedback loop.",
+            "cta_label": "Shop computers & power",
+            "cta_url": "/collections/bike-computers-and-power-meters",
+            "item1_label": "Garmin Rally power pedals",
+            "item1_why": "Train and pace your races with real power numbers.",
+            "item1_url": "/products/garmin-rally-rs100-200",
+            "item2_label": "Bike computers",
+            "item2_why": "Hammerhead Karoo and Garmin head units that turn rides into data.",
+            "item2_url": "/collections/bike-computers-and-power-meters",
+            "item3_label": "Garmin Varia radar",
+            "item3_why": "Know what's behind you on long solo training rides.",
+            "item3_url": "/products/garmin-varia-rear-bike-radar"
+          }
+        }
+      },
+      "block_order": [
+        "proof_aero",
+        "proof_weight",
+        "proof_geo",
+        "persona_new",
+        "persona_amateur",
+        "persona_comeback",
+        "build_105",
+        "build_rival",
+        "build_force",
+        "build_red",
+        "gear_short",
+        "gear_long",
+        "gear_train",
+        "rev1",
+        "rev2",
+        "rev3"
+      ],
+      "settings": {
+        "line": "sp",
+        "heading_font": "assistant_n4",
+        "body_font": "assistant_n4",
+        "eyebrow": "A2 Bikes \u00b7 SP",
+        "heading": "Podium speed. Without the podium price.",
+        "subheading": "Carbon triathlon performance engineered to win on race day and make sense on your budget.",
+        "price_from": "From about $108/mo with Affirm \u2014 or buy it pre-tax with HSA/FSA.",
+        "cta_label": "Build Your SP",
+        "hero_alt": "Two race-ready A2 SP triathlon bikes",
+        "build_selector_url": "",
+        "proof_heading": "Built to be faster",
+        "band_heading": "A new bike is more attainable than you think",
+        "financing_price": 3115,
+        "financing_price_label": "Split it into easy monthly payments with Affirm.",
+        "affirm_heading": "Ride now, pay monthly",
+        "truemed_heading": "Buy it with pre-tax HSA/FSA dollars",
+        "truemed_text": "Most triathletes don't know a bike can qualify for HSA/FSA spending through Truemed's medical-necessity pathway \u2014 an effective discount of roughly 30%.",
+        "truemed_url": "https://www.truemed.com/shop/partners/a2-bikes",
+        "financing_note": "Estimates are illustrative, not an offer of credit or tax advice. Rates and eligibility are determined by Affirm and Truemed.",
+        "builds_heading": "Four builds. Four price points.",
+        "builds_subheading": "Same race-proven frame. Choose the groupset that fits your goals and budget.",
+        "reviews_heading": "Raced. Reviewed. Repeated.",
+        "reviews_embed": "",
+        "sizing_heading": "Not sure of your size?",
+        "sizing_text": "Use the A2 Fit Finder \u2014 enter your height and inseam and we'll recommend your frame size and cockpit setup.",
+        "octane_quiz_url": "",
+        "octane_cta_label": "Find my size",
+        "show_fit_calculator": true,
+        "email_heading": "Not ready to buy? Get the SP Buyer's Guide.",
+        "email_text": "Specs, sizing and a straight-talk financing breakdown \u2014 straight to your inbox.",
+        "email_cta_label": "Send the guide",
+        "email_success": "You're in \u2014 check your inbox for the guide.",
+        "email_source": "SP Performance LP",
+        "klaviyo_company_id": "YejYTH",
+        "klaviyo_list_id": "Riv6B2",
+        "final_heading": "Ready to build yours?",
+        "final_text": "Pick your groupset and see your monthly or pre-tax price.",
+        "hero_image": "shopify://shop_images/sp-lp-hero-deck.jpg",
+        "hero_image_mobile": "shopify://shop_images/sp-lp-hero-mobile.jpg",
+        "sizing_tool": "fit_finder",
+        "personas_heading": "Which rider are you?",
+        "personas_sub": "Three kinds of athletes buy the SP. Find your build in 20 seconds.",
+        "gear_heading": "Gear up for your race",
+        "gear_sub": "The right upgrades depend on the race you're training for. Start here."
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

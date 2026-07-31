@@ -1,0 +1,62 @@
+{% render 'spc-assets' %}
+<div class="spc">
+  <section class="spc-sec spc-same">
+    <div class="spc-wrap">
+      <div class="spc-head spc-head--center spc-reveal">
+        <p class="spc-eyebrow">{{ section.settings.eyebrow }}</p>
+        <h2 class="spc-h2">{{ section.settings.heading }}</h2>
+      </div>
+      <div class="spc-same-grid">
+        {%- for block in section.blocks -%}
+          {%- assign dly = forloop.index0 | at_most: 3 -%}
+          <div class="spc-same-card spc-reveal{% if dly > 0 %} d{{ dly }}{% endif %}" {{ block.shopify_attributes }}>
+            <div class="spc-same-card__icon">{% render 'spc-icon', icon: block.settings.icon %}</div>
+            <h3>{{ block.settings.title }}</h3>
+            <p>{{ block.settings.body }}</p>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+</div>
+{% schema %}
+{
+  "name": "SP · Every SP comes with",
+  "tag": "section",
+  "max_blocks": 6,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "No matter which you pick" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Every SP comes with…" }
+  ],
+  "blocks": [
+    {
+      "type": "same_card",
+      "name": "Feature card",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icon", "options": [
+          { "value": "frame", "label": "Bike frame" },
+          { "value": "sliders", "label": "Sliders" },
+          { "value": "shield", "label": "Shield / check" },
+          { "value": "box", "label": "Box" },
+          { "value": "star", "label": "Star" },
+          { "value": "clock", "label": "Clock" },
+          { "value": "home", "label": "Home" }
+        ], "default": "frame" },
+        { "type": "text", "id": "title", "label": "Title", "default": "1,250g T700 carbon frame" },
+        { "type": "inline_richtext", "id": "body", "label": "Body (bold the key phrase)", "default": "<strong>Hand-laid Toray T700 carbon</strong> — the same material used in pro tri bikes costing $10K+. Designed by Kevin Quan, the engineer behind the Cervélo P-Series." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SP · Every SP comes with",
+      "blocks": [
+        { "type": "same_card", "settings": { "icon": "frame", "title": "1,250g T700 carbon frame", "body": "<strong>Hand-laid Toray T700 carbon</strong> — the same material used in pro tri bikes costing $10K+. Designed by Kevin Quan, the engineer behind the Cervélo P-Series." } },
+        { "type": "same_card", "settings": { "icon": "sliders", "title": "SAGS adjustable cockpit", "body": "The most adjustable triathlon cockpit available — 140mm of fore/aft range fits riders short to tall without giving up aero position. <strong>Free size exchanges</strong> if you need to swap." } },
+        { "type": "same_card", "settings": { "icon": "shield", "title": "Lifetime frame warranty", "body": "Lifetime coverage on the frame, honored <strong>directly by us</strong> — never routed through a dealer. Free crash replacement if you damage your frame in an accident." } },
+        { "type": "same_card", "settings": { "icon": "box", "title": "Ships 92% assembled", "body": "Most riders ride within the hour. <strong>The real work is the seatpost, cockpit, and brake dial-in</strong> — a video guide walks you through it. Prefer to skip it? A local shop finishes the build for $50–150." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

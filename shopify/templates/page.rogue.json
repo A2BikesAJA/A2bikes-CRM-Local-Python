@@ -1,0 +1,248 @@
+{
+  "sections": {
+    "main": {
+      "type": "a2-line-lp",
+      "blocks": {
+        "proof_versatile": {
+          "type": "proof",
+          "settings": {
+            "icon": "sliders",
+            "metric": "All-road",
+            "title": "One bike, every surface",
+            "text": "Smooth tarmac or broken back roads \u2014 clearance and geometry that don't make you choose.",
+            "photo": "shopify://shop_images/rogue-edu-wide-tire-v2.jpg"
+          }
+        },
+        "proof_ride": {
+          "type": "proof",
+          "settings": {
+            "icon": "feather",
+            "metric": "All-day",
+            "title": "Ride-quality carbon",
+            "text": "A frame tuned to stay smooth and composed when the miles add up.",
+            "photo": "shopify://shop_images/rogue-lp-frame.jpg"
+          }
+        },
+        "proof_value": {
+          "type": "proof",
+          "settings": {
+            "icon": "dollar",
+            "metric": "Direct value",
+            "title": "Priced direct",
+            "text": "Race-grade build, no dealer markup \u2014 the value that defines A2.",
+            "photo": "shopify://shop_images/rogue-lp-drivetrain.jpg"
+          }
+        },
+        "build_105": {
+          "type": "build",
+          "settings": {
+            "product": "rogue-shimano-105",
+            "name_override": "Rogue \u00b7 Shimano 105",
+            "colorway": "Matte Black"
+          }
+        },
+        "build_rival": {
+          "type": "build",
+          "settings": {
+            "product": "rogue-rival-axs",
+            "name_override": "Rogue \u00b7 SRAM Rival AXS",
+            "colorway": "Matte Black"
+          }
+        },
+        "build_force": {
+          "type": "build",
+          "settings": {
+            "product": "rogue-sram-force-etap-axs",
+            "name_override": "Rogue \u00b7 SRAM Force AXS",
+            "colorway": "Cascade Blue"
+          }
+        },
+        "build_red": {
+          "type": "build",
+          "settings": {
+            "product": "rogue-sram-red-axs",
+            "name_override": "Rogue \u00b7 SRAM Red AXS",
+            "colorway": "Cascade Blue"
+          }
+        },
+        "rev1": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "quote": "Fast enough for the group ride, capable enough for the long way home.",
+            "author": "Verified rider",
+            "detail": "All-road convert"
+          }
+        },
+        "rev2": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "quote": "The value is unreal \u2014 carbon and AXS for what others charge for alloy.",
+            "author": "Verified rider",
+            "detail": "Weekend racer"
+          }
+        },
+        "rev3": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "quote": "Financed it monthly and was riding within the week.",
+            "author": "Verified rider",
+            "detail": "New road rider"
+          }
+        },
+        "persona_new": {
+          "type": "persona",
+          "settings": {
+            "tag": "First serious bike",
+            "title": "One bike for everything",
+            "text": "You want one carbon bike for group rides, fitness, long weekends and maybe a first event \u2014 versatility, not a garage full of bikes.",
+            "pick": "Rogue \u00b7 Shimano 105",
+            "upgrade": "The stock setup covers fast group rides and rough roads \u2014 swap tires, not bikes. Use the size calculator below to nail your frame size.",
+            "cta_label": "See the 105 build",
+            "cta_url": "/products/rogue-shimano-105"
+          }
+        },
+        "persona_amateur": {
+          "type": "persona",
+          "settings": {
+            "tag": "Riding regularly",
+            "title": "The upgrader",
+            "text": "You ride every week, you\u2019ve outgrown the entry-level bike, and you want modern shifting and real speed for the money.",
+            "pick": "Rogue \u00b7 SRAM Rival AXS \u2014 wireless electronic shifting",
+            "upgrade": "Carbon wheels are the upgrade you\u2019ll feel most \u2014 the Rogue takes deep race wheels whenever you\u2019re ready.",
+            "cta_label": "See the Rival build",
+            "cta_url": "/products/rogue-rival-axs"
+          }
+        },
+        "persona_comeback": {
+          "type": "persona",
+          "settings": {
+            "tag": "Returning to the sport",
+            "title": "The comeback",
+            "text": "Back after years away \u2014 and sticker shock is real. Direct pricing gets you the upgrades you\u2019ll actually feel (electronic shifting, disc brakes, carbon) without the boutique markup.",
+            "pick": "Rogue \u00b7 SRAM Force AXS",
+            "upgrade": "Split it monthly with Affirm, or check HSA/FSA eligibility with Truemed before you assume it\u2019s out of reach.",
+            "cta_label": "See the Force build",
+            "cta_url": "/products/rogue-sram-force-etap-axs"
+          }
+        },
+        "gear_fast": {
+          "type": "gear",
+          "settings": {
+            "tag": "Fast group rides",
+            "title": "Chase the break",
+            "text": "Hold wheels on the fast ride and have something left for the sprint.",
+            "cta_label": "Shop race wheels",
+            "cta_url": "/collections/wheelsets-and-upgrades",
+            "item1_label": "Carbon race wheels",
+            "item1_why": "Deep wheels transform the Rogue on flat, fast roads.",
+            "item1_url": "/collections/wheelsets-and-upgrades",
+            "item2_label": "Look Keo Classic pedals",
+            "item2_why": "Clipless efficiency from your first group ride.",
+            "item2_url": "/products/look-keo-classic-pedals",
+            "item3_label": "Garmin 540",
+            "item3_why": "Pace your efforts and keep the ride data.",
+            "item3_url": "/products/garmin-540"
+          }
+        },
+        "gear_tri": {
+          "type": "gear",
+          "settings": {
+            "tag": "Tri-curious",
+            "title": "Make it a multisport bike",
+            "text": "One bike for the group ride and your first triathlon \u2014 that's the point of the Rogue.",
+            "cta_label": "See the Rogue aerobar add-on",
+            "cta_url": "/products/vision-metron-4d-m-a-s-aerobar-add-on-for-rogue",
+            "item1_label": "Vision Metron 4D aerobar add-on",
+            "item1_why": "The clip-on aero position, purpose-fit for the Rogue.",
+            "item1_url": "/products/vision-metron-4d-m-a-s-aerobar-add-on-for-rogue",
+            "item2_label": "XLab Torpedo Versa 200",
+            "item2_why": "Front hydration for your aero position.",
+            "item2_url": "/products/xlab-torpedo-versa-200",
+            "item3_label": "Tri accessory bundles",
+            "item3_why": "Race-day storage and hydration in one bundle.",
+            "item3_url": "/collections/tri-bike-accessory-bundles"
+          }
+        },
+        "gear_long": {
+          "type": "gear",
+          "settings": {
+            "tag": "Long days & commuting",
+            "title": "All-day comfort and safety",
+            "text": "Centuries, sunrise miles and the daily ride to work \u2014 set the Rogue up to disappear under you.",
+            "cta_label": "Shop the Ride Safe bundle",
+            "cta_url": "/products/ride-safe-bundle",
+            "item1_label": "Garmin Varia radar",
+            "item1_why": "See traffic coming before you hear it.",
+            "item1_url": "/products/garmin-varia-rear-bike-radar",
+            "item2_label": "Bottles & cages",
+            "item2_why": "XLab cages and A2 Purist bottles for long unsupported days.",
+            "item2_url": "/collections/hydration-and-storage-accessories",
+            "item3_label": "Ride Safe bundle",
+            "item3_why": "Lights, radar and visibility in one kit.",
+            "item3_url": "/products/ride-safe-bundle"
+          }
+        }
+      },
+      "block_order": [
+        "proof_versatile",
+        "proof_ride",
+        "proof_value",
+        "persona_new",
+        "persona_amateur",
+        "persona_comeback",
+        "build_105",
+        "build_rival",
+        "build_force",
+        "build_red",
+        "gear_fast",
+        "gear_tri",
+        "gear_long",
+        "rev1",
+        "rev2",
+        "rev3"
+      ],
+      "settings": {
+        "line": "rogue",
+        "eyebrow": "A2 Bikes \u00b7 Rogue",
+        "heading": "One bike for every road you can find.",
+        "subheading": "The Rogue all-road: carbon versatility for tarmac and back roads \u2014 built for value-conscious riders who refuse to ride slow.",
+        "price_from": "From about $94/mo with Affirm \u2014 or buy it pre-tax with HSA/FSA.",
+        "cta_label": "Build Your Rogue",
+        "hero_alt": "A2 Rogue all-road bike on an open road",
+        "proof_heading": "Built to go anywhere",
+        "band_heading": "A carbon all-road bike, made attainable",
+        "financing_price": 2699,
+        "financing_price_label": "Split it into easy monthly payments with Affirm.",
+        "builds_heading": "Four builds. Four price points.",
+        "builds_subheading": "Same versatile Rogue frame. Choose the groupset that fits your riding and budget.",
+        "reviews_heading": "Loved on every surface",
+        "sizing_heading": "Not sure of your size?",
+        "sizing_text": "Enter your height and inseam \u2014 we'll recommend your Rogue frame size from the real geometry chart, plus a saddle-height starting point for your first ride.",
+        "email_heading": "Not ready to buy? Get the Rogue guide.",
+        "email_text": "Specs, sizing and a straight-talk financing breakdown \u2014 straight to your inbox.",
+        "email_cta_label": "Send the Rogue guide",
+        "email_success": "You're in \u2014 check your inbox for the Rogue guide.",
+        "email_source": "Rogue LP",
+        "final_heading": "Ready to build your Rogue?",
+        "final_text": "Pick your groupset and see your monthly or pre-tax price.",
+        "truemed_url": "https://www.truemed.com/shop/partners/a2-bikes",
+        "klaviyo_company_id": "YejYTH",
+        "klaviyo_list_id": "Riv6B2",
+        "hero_image": "shopify://shop_images/rogue-lp-hero-road.jpg",
+        "hero_image_mobile": "shopify://shop_images/rogue-lp-hero-mobile.jpg",
+        "sizing_tool": "rogue_fit",
+        "personas_heading": "Which rider are you?",
+        "personas_sub": "Three kinds of riders buy the Rogue. Find your build in 20 seconds.",
+        "show_fit_calculator": true,
+        "gear_heading": "Build it for how you ride",
+        "gear_sub": "One frame, three directions. Point your Rogue at the riding you actually do."
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

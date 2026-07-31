@@ -1,0 +1,473 @@
+{%- comment -%}
+  A2 Bikes — Rogue Fit Calculator (road fit), SP Fit Finder architecture.
+  Same model as snippets/a2-fit-calculator.liquid: a target fit point and a
+  nearest-combination search over every frame x stem x flip x spacer combo,
+  three options on three different frames, Chart.js scatter of the envelopes.
+
+  The Rogue's fit point is the HANDLEBAR position HX/HY (bottom bracket to
+  bar-clamp center, horizontal/vertical) — the road analog of the SP's Pad
+  X/Y. Geometry is the published Rogue All-Road Geometry Guide (page
+  152362090660): stack/reach + head angle 72° (S/M) / 73° (L/XL); stock
+  stems 90/90/100/110 mm and cranks 165/170/172.5/175 mm by size.
+
+  ±6° stem with 70–120 mm swaps; up to 35 mm of spacers under the stem
+  (owner-confirmed June 12). Stock bar widths 400/420/420/440 mm c-c by
+  size (owner-confirmed June 12, not in the geometry guide). The
+  height/inseam path estimates the target by interpolating between
+  per-size anchor points derived from the published size bands (stock
+  stem, mid spacer stack), nudged by leg ratio and riding-posture choice.
+  Saddle height = 0.883 x inseam (LeMond), labeled a starting point.
+  Pushes `rogue_fit_result` to the dataLayer (GTM only — hard rule).
+{%- endcomment -%}
+
+{% raw %}
+<style>
+  .a2-rfc { margin-top: 8px; }
+  .a2-rfc h3 { font-family: var(--a2-font-display); margin: 0 0 .4em; }
+  .a2-rfc__intro { margin-bottom: 1em; }
+  .a2-rfc .a2rfcButton { background: var(--a2-accent); color: var(--a2-accent-fg); font-family: var(--a2-font-display); text-transform: uppercase; letter-spacing: .04em; padding: .8em 1.4em; border: 2px solid var(--a2-accent); border-radius: 999px; cursor: pointer; transition: filter .12s ease; }
+  .a2-rfc .a2rfcButton:hover { filter: brightness(1.06); }
+  .a2-rfc .a2rfcButton:focus-visible { outline: 3px solid var(--a2-accent-2); outline-offset: 2px; }
+  .a2-rfc__paths { display: flex; flex-wrap: wrap; gap: 14px; margin: 1em 0; }
+  .a2-rfc__paths .a2rfcButton[aria-pressed="false"] { background: transparent; color: var(--a2-fg); border-color: var(--a2-border); }
+  .a2-rfc__forms { display: flex; flex-wrap: wrap; gap: 24px; }
+  .a2-rfc__form { display: flex; flex-direction: column; gap: 12px; }
+  .a2-rfc__row { display: flex; align-items: center; gap: 10px; }
+  .a2-rfc__row label { width: 120px; flex: 0 0 auto; }
+  .a2-rfc input { width: 120px; padding: .55em .7em; border-radius: 9px; border: 1px solid var(--a2-border); background: var(--a2-bg); color: var(--a2-fg); font-size: 1rem; }
+  .a2-rfc input.a2rfc-short { width: 70px; }
+  .a2-rfc input:focus-visible { outline: 3px solid var(--a2-accent-2); outline-offset: 2px; }
+  .a2-rfc__pills { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }
+  .a2-rfc__pills-title { font-weight: 700; margin-right: 2px; }
+  .a2-rfc label.a2-rfc__opt { width: auto; cursor: pointer; }
+  .a2-rfc__opt input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .a2-rfc__opt span { display: inline-block; padding: .5em 1.1em; border: 2px solid var(--a2-border); border-radius: 999px; line-height: 1.2; white-space: nowrap; transition: border-color .12s ease, background .12s ease; }
+  .a2-rfc__opt input:checked + span { border-color: var(--a2-accent); background: var(--a2-accent); color: var(--a2-accent-fg); font-weight: 700; }
+  .a2-rfc__opt input:focus-visible + span { outline: 3px solid var(--a2-accent-2); outline-offset: 2px; }
+  .a2-rfc__options { display: flex; flex-wrap: wrap; gap: 20px; margin-top: 1.5em; }
+  .a2-rfc__option { flex: 1 1 220px; border: 1px solid var(--a2-border); border-radius: 12px; padding: 16px; }
+  .a2-rfc__option:empty,
+  .a2-rfc__option:has(> p:empty) { display: none; }
+  .a2-rfc__display { margin-top: 1em; }
+  .a2-rfc__explain { margin: 0 0 1.1em; max-width: 70ch; font-size: .95rem; line-height: 1.5; opacity: .9; }
+  .a2-rfc__drop { margin-top: .8em; padding: 12px 14px; border: 1px solid var(--a2-border); border-left: 3px solid var(--a2-accent); border-radius: 10px; font-size: .92rem; line-height: 1.45; }
+  .a2-rfc__drop span { display: block; margin-top: 6px; font-size: .85rem; opacity: .8; }
+  .a2-rfc .a2rfc-why { margin: .2em 0 .8em; font-size: .93rem; line-height: 1.55; }
+  .a2-rfc .a2rfc-why--exch { opacity: .72; font-size: .85rem; }
+  .a2-rfc .a2rfc-start { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; padding: 18px 20px; border: 2px solid var(--a2-accent); border-radius: 14px; background: var(--a2-bg); background: color-mix(in srgb, var(--a2-accent) 7%, var(--a2-bg)); }
+  .a2-rfc .a2rfc-start__ico svg { width: 34px; height: 34px; stroke: var(--a2-accent); fill: none; stroke-width: 1.7; display: block; }
+  .a2-rfc .a2rfc-start__copy { display: flex; flex-direction: column; gap: 2px; flex: 1 1 220px; }
+  .a2-rfc .a2rfc-start__copy b { font-family: var(--a2-font-display); font-size: 1.18rem; line-height: 1.1; }
+  .a2-rfc .a2rfc-start__copy span { font-size: .88rem; opacity: .8; line-height: 1.4; }
+  .a2-rfc .a2rfc-start__btn { flex: 0 0 auto; }
+  .a2-rfc .a2-rfc__option h3 { margin: 0 0 .5em; }
+  .a2-rfc .a2rfc-setup { font-size: .9rem; line-height: 1.55; padding-top: 8px; border-top: 1px solid var(--a2-border); opacity: .9; }
+  .a2-rfc__note { font-size: .85rem; opacity: .75; margin-top: 14px; max-width: 760px; }
+  .a2-rfc__chart-container { position: relative; width: 100%; max-width: 880px; margin-top: 1.5em; }
+  .a2-rfc canvas { max-width: 100%; }
+  @media (max-width: 600px) { .a2-rfc__row label { width: 90px; } }
+</style>
+
+<div class="a2-rfc" id="a2-rogue-fit">
+  <div id="a2rfcToggleBox" style="display:block;">
+    <div class="a2rfc-start">
+      <span class="a2rfc-start__ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="7" width="19" height="10" rx="2"/><path d="M6.5 7v3M10 7v4M13.5 7v3M17 7v4"/></svg></span>
+      <div class="a2rfc-start__copy">
+        <b>Find your size</b>
+        <span>Answer two quick measurements &mdash; we&rsquo;ll recommend your exact Rogue size and explain why.</span>
+      </div>
+      <button class="a2rfcButton a2rfc-start__btn" type="button" onclick="a2rfcToggle()">Find my size</button>
+    </div>
+  </div>
+
+  <div id="a2rfcFinder" style="display:none;">
+    <h3>Rogue Fit Calculator</h3>
+    <p class="a2-rfc__explain">This finds your handlebar position &mdash; bar reach (HX) and bar stack (HY) relative to the bottom bracket &mdash; then matches the frame, stem, and spacers that get you there. On a road bike the feel comes from your <b>bar drop</b>: how far the saddle sits above the bars. <b>More drop</b> is racier and more aero but asks more of your back and flexibility; <b>less drop</b> (or bars level with the saddle) is a more upright, all-day endurance position. The Rogue goes either way with a stem or spacer change &mdash; we aim for a sporty-but-sustainable starting point.</p>
+    <p class="a2-rfc__intro">Do you already know your handlebar position (HX / HY) from a bike fit?</p>
+    <div class="a2-rfc__paths">
+      <button class="a2rfcButton" type="button" onclick="a2rfcBegin(false)">No &mdash; use my measurements</button>
+      <button class="a2rfcButton" type="button" onclick="a2rfcBegin(true)">Yes &mdash; I know HX / HY</button>
+    </div>
+
+    <div class="a2-rfc__forms">
+      <div id="a2rfcKnown" style="display:none;">
+        <form class="a2-rfc__form" onsubmit="return false;">
+          <div class="a2-rfc__row"><label for="a2rfc_hy">Bar stack (HY)</label><input type="number" inputmode="numeric" id="a2rfc_hy" placeholder="575"> mm</div>
+          <div class="a2-rfc__row"><label for="a2rfc_hx">Bar reach (HX)</label><input type="number" inputmode="numeric" id="a2rfc_hx" placeholder="470"> mm</div>
+          <button class="a2rfcButton" type="button" onclick="a2rfcGo(true)">Find fit</button>
+        </form>
+      </div>
+      <div id="a2rfcMeasure" style="display:none;">
+        <form class="a2-rfc__form" onsubmit="return false;">
+          <div class="a2-rfc__pills" role="radiogroup" aria-label="Units">
+            <span class="a2-rfc__pills-title">Units:</span>
+            <label class="a2-rfc__opt"><input type="radio" name="a2rfcUnits" value="in" checked onchange="a2rfcUnits()"><span>inches</span></label>
+            <label class="a2-rfc__opt"><input type="radio" name="a2rfcUnits" value="cm" onchange="a2rfcUnits()"><span>cm</span></label>
+          </div>
+          <div class="a2-rfc__row" id="a2rfcHeightImperial">
+            <label for="a2rfc_h_ft">Height</label>
+            <input type="number" step="1" inputmode="numeric" id="a2rfc_h_ft" class="a2rfc-short" placeholder="5"> <span>ft</span>
+            <input type="number" step="any" inputmode="decimal" id="a2rfc_h_in" class="a2rfc-short" placeholder="10"> <span>in</span>
+          </div>
+          <div class="a2-rfc__row" id="a2rfcHeightMetric" style="display:none;">
+            <label for="a2rfc_h_cm">Height</label>
+            <input type="number" step="any" inputmode="decimal" id="a2rfc_h_cm" placeholder="178"> <span>cm</span>
+          </div>
+          <div class="a2-rfc__row"><label for="a2rfc_inseam">Inseam</label><input type="number" step="any" inputmode="decimal" id="a2rfc_inseam" placeholder="32"> <span class="a2rfcUnit">in</span></div>
+          <div class="a2-rfc__pills" role="radiogroup" aria-label="Riding position">
+            <span class="a2-rfc__pills-title">Position:</span>
+            <label class="a2-rfc__opt"><input type="radio" name="a2rfcPosture" value="relaxed"><span>Relaxed</span></label>
+            <label class="a2-rfc__opt"><input type="radio" name="a2rfcPosture" value="balanced" checked><span>Balanced</span></label>
+            <label class="a2-rfc__opt"><input type="radio" name="a2rfcPosture" value="aggressive"><span>Aggressive</span></label>
+          </div>
+          <button class="a2rfcButton" type="button" onclick="a2rfcGo(false)">Find fit</button>
+        </form>
+      </div>
+      <div class="a2-rfc__display" id="a2rfcDisplay"></div>
+    </div>
+
+    <div class="a2-rfc__options">
+      <div class="a2-rfc__option"><p id="a2rfcOp1"></p></div>
+      <div class="a2-rfc__option"><p id="a2rfcOp2"></p></div>
+      <div class="a2-rfc__option"><p id="a2rfcOp3"></p></div>
+    </div>
+
+    <p class="a2-rfc__note" id="a2rfcNote" style="display:none;">Built on the published Rogue geometry, with a &plusmn;6&deg; stem (70&ndash;120&nbsp;mm swaps) and up to 35&nbsp;mm of spacers under the stem. Stock by size: stems 90&thinsp;/&thinsp;90&thinsp;/&thinsp;100&thinsp;/&thinsp;110&nbsp;mm, cranks 165&thinsp;/&thinsp;170&thinsp;/&thinsp;172.5&thinsp;/&thinsp;175&nbsp;mm, handlebars 40&thinsp;/&thinsp;42&thinsp;/&thinsp;42&thinsp;/&thinsp;44&nbsp;cm center-to-center. If your shoulders run wide or narrow for your height, ask us about a bar-width swap. Saddle height (0.883&nbsp;&times;&nbsp;inseam) is a starting point &mdash; fine-tune on your first rides. Free size exchanges either way.</p>
+
+    <div id="a2rfcChartBox"><div class="a2-rfc__chart-container"><canvas id="a2rfcChart"></canvas></div></div>
+  </div>
+</div>
+
+<script>
+if (!window.__a2rfcInit) {
+  window.__a2rfcInit = true;
+
+  // Rogue All-Road Geometry Guide (page 152362090660), mm and degrees.
+  // bar = stock width c-c (owner-confirmed June 12); crank = stock.
+  var A2_ROGUE = {
+    S:  { name: "Small",  reach: 378, stack: 521, hta: 72, stockStem: 90,  crank: "165",   bar: "40 cm", hMin: 1600, hMax: 1675 },
+    M:  { name: "Medium", reach: 381, stack: 535, hta: 72, stockStem: 90,  crank: "170",   bar: "42 cm", hMin: 1700, hMax: 1780 },
+    L:  { name: "Large",  reach: 386, stack: 550, hta: 73, stockStem: 100, crank: "172.5", bar: "42 cm", hMin: 1800, hMax: 1880 },
+    XL: { name: "XL",     reach: 390, stack: 567, hta: 73, stockStem: 110, crank: "175",   bar: "44 cm", hMin: 1900, hMax: 1960 }
+  };
+  var frame_key = ["S", "M", "L", "XL"];
+  var stem_lengths = [70, 80, 90, 100, 110, 120];
+  var stem_angles = [-6, 6];
+  var spacer_steps = [0, 5, 10, 15, 20, 25, 30, 35];
+  var fit_array = [];
+
+  // Height -> target (HX, HY) anchors: each size's stock-stem bar position at
+  // a 15mm spacer stack, pinned to the midpoint of its published height band.
+  // Piecewise-linear between anchors, end slopes extended to the band edges.
+  var a2rfcAnchors = [
+    [1637.5, 461.4, 554.0],
+    [1740.0, 464.4, 568.0],
+    [1840.0, 479.8, 583.4],
+    [1930.0, 493.6, 602.3]
+  ];
+
+  function a2rfcBarPos(g, stemLen, stemAngle, spacers) {
+    var htaRad = g.hta * Math.PI / 180;
+    var theta = (90 - g.hta + stemAngle) * Math.PI / 180;
+    return {
+      hx: g.reach - spacers * Math.cos(htaRad) + stemLen * Math.cos(theta),
+      hy: g.stack + spacers * Math.sin(htaRad) + stemLen * Math.sin(theta)
+    };
+  }
+
+  function buildFitArray() {
+    var arr = [];
+    for (var i = 0; i < frame_key.length; i++) {
+      var g = A2_ROGUE[frame_key[i]];
+      for (var j = 0; j < stem_lengths.length; j++) {
+        for (var a = 0; a < stem_angles.length; a++) {
+          for (var k = 0; k < spacer_steps.length; k++) {
+            var p = a2rfcBarPos(g, stem_lengths[j], stem_angles[a], spacer_steps[k]);
+            arr.push({
+              frame: frame_key[i],
+              stemLen: stem_lengths[j],
+              stemAngle: stem_angles[a],
+              spacers: spacer_steps[k],
+              hx: Math.round(p.hx),
+              hy: Math.round(p.hy)
+            });
+          }
+        }
+      }
+    }
+    return arr;
+  }
+
+  function a2rfcTargetFromBody(height, inseam, posture) {
+    var an = a2rfcAnchors, hx, hy;
+    if (height <= an[0][0]) {
+      var s0 = [(an[1][1] - an[0][1]) / (an[1][0] - an[0][0]), (an[1][2] - an[0][2]) / (an[1][0] - an[0][0])];
+      hx = an[0][1] + (height - an[0][0]) * s0[0];
+      hy = an[0][2] + (height - an[0][0]) * s0[1];
+    } else if (height >= an[an.length - 1][0]) {
+      var n = an.length - 1;
+      var s1 = [(an[n][1] - an[n - 1][1]) / (an[n][0] - an[n - 1][0]), (an[n][2] - an[n - 1][2]) / (an[n][0] - an[n - 1][0])];
+      hx = an[n][1] + (height - an[n][0]) * s1[0];
+      hy = an[n][2] + (height - an[n][0]) * s1[1];
+    } else {
+      for (var i = 1; i < an.length; i++) {
+        if (height <= an[i][0]) {
+          var t = (height - an[i - 1][0]) / (an[i][0] - an[i - 1][0]);
+          hx = an[i - 1][1] + t * (an[i][1] - an[i - 1][1]);
+          hy = an[i - 1][2] + t * (an[i][2] - an[i - 1][2]);
+          break;
+        }
+      }
+    }
+    // Long legs for your height = shorter torso (less reach) + higher saddle
+    // (higher bar); 0.47 is the average inseam/height ratio.
+    var legRatio = inseam / height;
+    hx -= (legRatio - 0.47) * 350;
+    hy += (legRatio - 0.47) * 250;
+    if (posture === "relaxed") { hy += 12; hx -= 6; }
+    if (posture === "aggressive") { hy -= 12; hx += 6; }
+    return { hx: hx, hy: hy };
+  }
+
+  function a2rfcGo(fitKnown) {
+    var target, recInfo = null, heightMM = 0, inseamMM = 0;
+    if (fitKnown) {
+      if (document.getElementById("a2rfc_hx").value == "" || document.getElementById("a2rfc_hy").value == "") {
+        document.getElementById("a2rfcOp1").innerHTML = "Please enter your HX and HY.";
+        return;
+      } else if (/\D/.test(document.getElementById("a2rfc_hx").value) || /\D/.test(document.getElementById("a2rfc_hy").value)) {
+        document.getElementById("a2rfcOp1").innerHTML = "Please only enter whole numbers for HX / HY.";
+        return;
+      }
+      target = {
+        hx: Number(document.getElementById("a2rfc_hx").value),
+        hy: Number(document.getElementById("a2rfc_hy").value)
+      };
+      document.getElementById("a2rfcDisplay").innerHTML =
+        "<h4>Bar stack (HY): " + Math.round(target.hy) + "mm<br>Bar reach (HX): " + Math.round(target.hx) + "mm</h4>";
+    } else {
+      var unitEl = document.querySelector('input[name="a2rfcUnits"]:checked');
+      var unit = unitEl ? unitEl.value : "in";
+      var height, inseam;
+      var iRaw = parseFloat(document.getElementById("a2rfc_inseam").value);
+      if (unit === "in") {
+        var hFt = parseFloat(document.getElementById("a2rfc_h_ft").value);
+        var hIn = parseFloat(document.getElementById("a2rfc_h_in").value);
+        if (isNaN(hFt) && isNaN(hIn)) { document.getElementById("a2rfcOp1").innerHTML = "Please enter your height (feet and inches)."; return; }
+        height = ((isNaN(hFt) ? 0 : hFt) * 12 + (isNaN(hIn) ? 0 : hIn)) * 25.4;
+        inseam = iRaw * 25.4;
+      } else {
+        var hCm = parseFloat(document.getElementById("a2rfc_h_cm").value);
+        if (isNaN(hCm)) { document.getElementById("a2rfcOp1").innerHTML = "Please enter your height in centimeters."; return; }
+        height = hCm * 10;
+        inseam = iRaw * 10;
+      }
+      if (isNaN(iRaw)) {
+        document.getElementById("a2rfcOp1").innerHTML = "Please enter your inseam.";
+        return;
+      }
+      if (height < 1200 || height > 2200 || inseam < 500 || inseam > 1200 || inseam >= height) {
+        document.getElementById("a2rfcOp1").innerHTML = "Those numbers look off &mdash; double-check your height and inseam (" + (unit === "in" ? "in inches" : "in centimeters") + ").";
+        return;
+      }
+      if (height < 1575) {
+        document.getElementById("a2rfcOp1").innerHTML = "You're at the small end of the Rogue's range &mdash; <a href=\"/pages/contact-a2-bikes\">talk to our fit team</a> and we'll find a setup that works.";
+        return;
+      }
+      if (height > 1985) {
+        document.getElementById("a2rfcOp1").innerHTML = "You're at the tall end of the Rogue's range &mdash; <a href=\"/pages/contact-a2-bikes\">talk to our fit team</a> and we'll find a setup that works.";
+        return;
+      }
+      var postureEl = document.querySelector('input[name="a2rfcPosture"]:checked');
+      target = a2rfcTargetFromBody(height, inseam, postureEl ? postureEl.value : "balanced");
+      heightMM = height; inseamMM = inseam;
+      recInfo = a2rfcRecommendFrame(height, inseam);
+      var saddle = 0.883 * inseam;
+      document.getElementById("a2rfcDisplay").innerHTML =
+        "<h4>Estimated bar stack (HY): " + Math.round(target.hy) + "mm<br>Estimated bar reach (HX): " + Math.round(target.hx) + "mm<br>" +
+        "Saddle height starting point: " + Math.round(saddle) + "mm (" + Math.round(saddle / 25.4 * 10) / 10 + "″)</h4>" +
+        "<div class=\"a2-rfc__drop\"><b>How aggressive is this?</b> Use the Position toggle above &mdash; <b>Relaxed</b> raises the bars (more upright, all-day comfort), <b>Aggressive</b> lowers them (racier and more aero). On the road, less bar drop trades a little aerodynamics for a lot more comfort. Fine-tune with spacers or a stem flip, and confirm with a pro fit.</div>";
+    }
+
+    fit_array = buildFitArray();
+    var fit = findCombinations(target.hx, target.hy, fit_array, recInfo ? [recInfo.frame] : null);
+
+    var rec = fit.options[0], recFrame = rec.frame;
+    if (!recInfo) {
+      // Expert HX/HY path: no height to gate on. Bias UP on a near-tie with a
+      // larger frame (owner rule: size up when between).
+      for (var oi = 1; oi < fit.options.length; oi++) {
+        var alt = fit.options[oi];
+        if (frame_key.indexOf(alt.frame) > frame_key.indexOf(rec.frame) && (alt.error - rec.error) <= 12) { rec = alt; recFrame = alt.frame; }
+      }
+    }
+    var names = { S: "Small", M: "Medium", L: "Large", XL: "XL" };
+
+    document.getElementById("a2rfcOp1").innerHTML =
+      "<h3>Your size: the " + (names[recFrame] || recFrame) + "</h3>" + a2rfcExplain(recInfo, recFrame, heightMM) + stringCombination(rec);
+    document.getElementById("a2rfcOp2").innerHTML = "";
+    document.getElementById("a2rfcOp3").innerHTML = "";
+    document.getElementById("a2rfcNote").style.display = "block";
+
+    showChart(fit, rec);
+    if (window.a2dl) { window.a2dl("rogue_fit_result", { recommended_frame: recFrame }); }
+  }
+
+  // ONE recommended frame from height + inseam, sized UP when between sizes.
+  // Rogue height bands (mm) live on A2_ROGUE (hMin/hMax). Callers handle the
+  // out-of-range (< 1575 / > 1985) "talk to our fit team" cases first.
+  function a2rfcRecommendFrame(heightMM, inseamMM) {
+    var order = ["S", "M", "L", "XL"];
+    var idx = -1, between = false, reason = "in-band";
+    for (var i = 0; i < order.length; i++) {
+      var g = A2_ROGUE[order[i]];
+      if (heightMM >= g.hMin && heightMM <= g.hMax) { idx = i; break; }
+    }
+    if (idx === -1) {
+      if (heightMM < A2_ROGUE[order[0]].hMin) { idx = 0; }
+      else if (heightMM > A2_ROGUE[order[order.length - 1]].hMax) { idx = order.length - 1; }
+      else {
+        for (var j = 0; j < order.length - 1; j++) {
+          if (heightMM > A2_ROGUE[order[j]].hMax && heightMM < A2_ROGUE[order[j + 1]].hMin) { idx = j + 1; between = true; reason = "boundary"; break; }
+        }
+      }
+    } else if (idx < order.length - 1) {
+      if (heightMM >= A2_ROGUE[order[idx]].hMax - 20) { idx += 1; between = true; reason = "boundary"; }
+      else if (inseamMM / heightMM >= 0.48) { idx += 1; between = true; reason = "inseam"; }
+    }
+    return { frame: order[idx], idx: idx, between: between, reason: reason,
+             fromFrame: between && idx > 0 ? order[idx - 1] : null };
+  }
+
+  // Stock fitter-style explanation, road-framed; adapts to size + why we sized up.
+  function a2rfcExplain(recInfo, frame, heightMM) {
+    var names = { S: "Small", M: "Medium", L: "Large", XL: "XL" };
+    var name = names[frame] || frame;
+    if (!recInfo) {
+      return "<p class=\"a2rfc-why\">Matched to the bar position you entered: the <b>" + name + "</b> places it in the middle of its range, leaving room to fine-tune with the stem and spacers. Between two sizes we go with the larger &mdash; it's easier to bring a bigger frame lower than to stretch a small one.</p>";
+    }
+    var totalIn = heightMM / 25.4;
+    var ft = Math.floor(totalIn / 12), inch = Math.round(totalIn - ft * 12);
+    if (inch >= 12) { ft += 1; inch -= 12; }
+    var html = "<p class=\"a2rfc-why\">At <b>" + ft + "&prime;" + inch + "&Prime;</b>, the <b>" + name + "</b> is the frame whose stack and reach put the bars where your body wants them &mdash; with the standover clearance you need and room to fine-tune height with the stem and spacers instead of running out of adjustment.";
+    if (recInfo.between && recInfo.reason === "boundary") {
+      html += " You're right between the " + (names[recInfo.fromFrame] || recInfo.fromFrame) + " and the " + name + ", so we size up: a slightly larger road frame is easily brought lower with the stem and spacers, but a too-small frame leaves you cramped and forces a long stem that dulls the steering.";
+    } else if (recInfo.between && recInfo.reason === "inseam") {
+      html += " Your legs are long for your height, so the " + name + " gives you the standover clearance and saddle height they want.";
+    } else {
+      html += " Your proportions land squarely in the " + name + "'s range.";
+    }
+    html += "</p><p class=\"a2rfc-why a2rfc-why--exch\">Use the Position toggle for a racier or more upright feel &mdash; and free size exchanges if it's not perfect.</p>";
+    return html;
+  }
+
+  function findCombinations(hx, hy, fit_data, allowed) {
+    var combinations = fit_data;
+    var fit = { userhx: hx, userhy: hy };
+    // score = true distance + a flipped-stem penalty (a fallback, not a first
+    // pick); frames outside the allowed set are pushed to the bottom.
+    for (var i = combinations.length - 1; i >= 0; i--) {
+      combinations[i].error = ((combinations[i].hx - hx) ** 2 + (combinations[i].hy - hy) ** 2) ** 0.5;
+      combinations[i].score = combinations[i].error +
+        (combinations[i].stemAngle > 0 ? 10 : 0) +
+        (allowed && allowed.indexOf(combinations[i].frame) === -1 ? 9999 : 0);
+    }
+    fit.options = [combinations[0], combinations[1], combinations[2]];
+    for (var i = combinations.length - 1; i >= 0; i--) {
+      if (combinations[i].score < fit.options[0].score) { fit.options[0] = combinations[i]; }
+    }
+    for (var i = combinations.length - 1; i >= 0; i--) {
+      if (combinations[i].score < fit.options[1].score && combinations[i].frame != fit.options[0].frame) { fit.options[1] = combinations[i]; }
+    }
+    for (var i = combinations.length - 1; i >= 0; i--) {
+      if (combinations[i].score < fit.options[2].score && combinations[i].frame != fit.options[0].frame && combinations[i].frame != fit.options[1].frame) { fit.options[2] = combinations[i]; }
+    }
+    fit.options.sort(function (a, b) { return a.score - b.score; });
+    return fit;
+  }
+
+  function stringCombination(c) {
+    var g = A2_ROGUE[c.frame];
+    var stem = c.stemLen + "mm · " + (c.stemAngle < 0 ? "−6°" : "+6° (flipped up)");
+    if (c.stemLen === g.stockStem) { stem += " — stock length"; }
+    return "<div class=\"a2rfc-setup\"><b>Starting setup</b><br>" +
+      "Frame: Rogue " + g.name + " &middot; " + stem + " &middot; " + c.spacers + "mm spacers<br>" +
+      "Stock cranks " + g.crank + "mm &middot; stock bars " + g.bar + " c-c<br>" +
+      "Bar position (HX / HY): " + c.hx + " / " + c.hy + "mm</div>";
+  }
+
+  function a2rfcBegin(fitKnown) {
+    document.getElementById("a2rfcKnown").style.display = fitKnown ? "block" : "none";
+    document.getElementById("a2rfcMeasure").style.display = fitKnown ? "none" : "block";
+    var btns = document.querySelectorAll(".a2-rfc__paths .a2rfcButton");
+    if (btns.length === 2) {
+      btns[0].setAttribute("aria-pressed", fitKnown ? "false" : "true");
+      btns[1].setAttribute("aria-pressed", fitKnown ? "true" : "false");
+    }
+  }
+
+  function a2rfcToggle() {
+    var t = document.getElementById("a2rfcToggleBox"), f = document.getElementById("a2rfcFinder");
+    t.style.display = (t.style.display == "block") ? "none" : "block";
+    f.style.display = (f.style.display == "block") ? "none" : "block";
+  }
+
+  function a2rfcUnits() {
+    var unitEl = document.querySelector('input[name="a2rfcUnits"]:checked');
+    var isIn = !unitEl || unitEl.value === "in";
+    document.getElementById("a2rfcHeightImperial").style.display = isIn ? "flex" : "none";
+    document.getElementById("a2rfcHeightMetric").style.display = isIn ? "none" : "flex";
+    document.querySelectorAll(".a2rfcUnit").forEach(function (el) { el.textContent = isIn ? "in" : "cm"; });
+    document.getElementById("a2rfc_inseam").placeholder = isIn ? "32" : "81";
+  }
+
+  // Lazy-load Chart.js only when a result is first computed (keeps the LP light).
+  function a2rfcEnsureChart(cb) {
+    if (window.Chart) { cb(); return; }
+    if (window.__a2rfcChartCbs) { window.__a2rfcChartCbs.push(cb); return; }
+    window.__a2rfcChartCbs = [cb];
+    var s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js';
+    s.async = true;
+    s.onload = function () { (window.__a2rfcChartCbs || []).forEach(function (f) { f(); }); window.__a2rfcChartCbs = []; };
+    document.head.appendChild(s);
+  }
+
+  function showChart(fit, rec) {
+    a2rfcEnsureChart(function () {
+      var colors = { frame_s: "#5b5be0", frame_m: "#e8527e", frame_l: "#f29a3c", frame_xl: "#cbe23c" };
+      var fit_points = { S: [], M: [], L: [], XL: [] };
+      for (var i = fit_array.length - 1; i >= 0; i--) {
+        if (fit_points[fit_array[i].frame]) { fit_points[fit_array[i].frame].push({ x: fit_array[i].hx, y: fit_array[i].hy }); }
+      }
+      var ctx = document.getElementById("a2rfcChart").getContext("2d");
+      new Chart(ctx, {
+        type: "scatter",
+        data: { datasets: [
+          { pointRadius: 7, pointBackgroundColor: "#111", backgroundColor: "#111", label: "Your fit point", showLine: false, data: [{ x: fit.userhx, y: fit.userhy }] },
+          { pointRadius: 6, pointBackgroundColor: "#1F8A4C", backgroundColor: "#1F8A4C", label: "Your " + rec.frame + " setup", showLine: false, data: [{ x: rec.hx, y: rec.hy }] },
+          { pointRadius: 2, pointBackgroundColor: colors.frame_s, backgroundColor: colors.frame_s, label: "Size S", showLine: false, data: fit_points["S"] },
+          { pointRadius: 2, pointBackgroundColor: colors.frame_m, backgroundColor: colors.frame_m, label: "Size M", showLine: false, data: fit_points["M"] },
+          { pointRadius: 2, pointBackgroundColor: colors.frame_l, backgroundColor: colors.frame_l, label: "Size L", showLine: false, data: fit_points["L"] },
+          { pointRadius: 2, pointBackgroundColor: colors.frame_xl, backgroundColor: colors.frame_xl, label: "Size XL", showLine: false, data: fit_points["XL"] }
+        ]},
+        options: {
+          legend: { display: true, position: "right" },
+          title: { display: true, text: "Handlebar Fit Plot" },
+          scales: {
+            xAxes: [{ type: "linear", position: "bottom", scaleLabel: { display: true, labelString: "Bar Reach HX [mm]" } }],
+            yAxes: [{ scaleLabel: { display: true, labelString: "Bar Stack HY [mm]" } }]
+          },
+          tooltips: { callbacks: { label: function (t, d) { var l = String(d.datasets[t.datasetIndex].label); return l + ": (" + t.xLabel + ", " + t.yLabel + ")"; } } }
+        }
+      });
+    });
+  }
+
+  window.a2rfcToggle = a2rfcToggle;
+  window.a2rfcBegin = a2rfcBegin;
+  window.a2rfcGo = a2rfcGo;
+  window.a2rfcUnits = a2rfcUnits;
+}
+</script>
+{% endraw %}

@@ -1,0 +1,79 @@
+{% render 'wa-assets' %}
+<div class="whya2">
+  <section class="wa-hero wa-sec--dark">
+    {%- if section.settings.hero_image -%}
+      <picture>
+        {%- if section.settings.hero_image_mobile -%}
+          <source
+            media="(max-width: 749px)"
+            srcset="{{ section.settings.hero_image_mobile | image_url: width: 750 }} 750w, {{ section.settings.hero_image_mobile | image_url: width: 1080 }} 1080w"
+            sizes="100vw"
+          >
+        {%- endif -%}
+        {{ section.settings.hero_image | image_url: width: 2400 | image_tag: class: 'wa-hero-img', loading: 'eager', fetchpriority: 'high', widths: '600,900,1200,1600,2000,2400', sizes: '100vw', alt: section.settings.hero_image.alt }}
+      </picture>
+    {%- else -%}
+      <div class="wa-hero-img wa-ph" data-label="Hero image — set in theme editor (use an action / riding shot)"></div>
+    {%- endif -%}
+    <div class="wa-hero-scrim"></div>
+    <div class="wa-wrap wa-hero-inner">
+      <p class="wa-eyebrow reveal">{{ section.settings.hero_eyebrow }}</p>
+      <h1 class="wa-display reveal d1">{{ section.settings.hero_heading }}</h1>
+      <p class="wa-hero-sub reveal d2">{{ section.settings.hero_sub }}</p>
+      <div class="wa-hero-cta reveal d3">
+        <a class="wa-btn wa-btn--primary" href="{{ section.settings.hero_cta1_link | default: '/collections/sp' }}">{{ section.settings.hero_cta1_label }} →</a>
+        {%- if section.settings.hero_cta2_modal -%}
+          <button type="button" class="wa-btn wa-btn--ghost-light" data-wa-fit-open>{{ section.settings.hero_cta2_label }}</button>
+        {%- else -%}
+          <a class="wa-btn wa-btn--ghost-light" href="{{ section.settings.hero_cta2_link | default: '#wa-capture' }}">{{ section.settings.hero_cta2_label }}</a>
+        {%- endif -%}
+      </div>
+    </div>
+    <div class="wa-scrollcue" aria-hidden="true">Scroll</div>
+  </section>
+</div>
+{%- if section.settings.hero_cta2_modal -%}
+  <dialog class="wa-fitmodal" id="wa-fitmodal">
+    <button class="wa-fitmodal__close" type="button" data-wa-fit-close aria-label="Close">&times;</button>
+    <div class="wa-fitmodal__body">
+      {% render 'a2-size-calc' %}
+    </div>
+  </dialog>
+  <script>
+    (function () {
+      var dlg = document.getElementById('wa-fitmodal');
+      if (!dlg || !dlg.showModal) return;
+      document.querySelectorAll('[data-wa-fit-open]').forEach(function (a) {
+        a.addEventListener('click', function (e) {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          dlg.showModal();
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({ event: 'fit_calculator_open', cta_id: 'home-hero-fit' });
+        });
+      });
+      /* Close only via the X or Esc — iOS fires phantom backdrop clicks when
+         a <select> picker inside the dialog dismisses, so no backdrop-close. */
+      dlg.querySelector('[data-wa-fit-close]').addEventListener('click', function () { dlg.close(); });
+    })();
+  </script>
+{%- endif -%}
+{% schema %}
+{
+  "name": "Why A2 · Hero",
+  "tag": "section",
+  "settings": [
+    { "type": "image_picker", "id": "hero_image", "label": "Hero image (use an action / riding shot, not a studio photo)" },
+    { "type": "image_picker", "id": "hero_image_mobile", "label": "Hero image — mobile", "info": "Portrait crop shown under 750px. Leave blank to reuse the desktop image." },
+    { "type": "text", "id": "hero_eyebrow", "label": "Eyebrow", "default": "Rider Focused. Always." },
+    { "type": "text", "id": "hero_heading", "label": "Heading", "default": "Pro-level triathlon bikes. Without the pro-level price." },
+    { "type": "inline_richtext", "id": "hero_sub", "label": "Subhead", "default": "The same design pedigree as a <b>Cervélo P-Series</b> — drawn by the engineer who shaped it — sold direct, so you skip the retail markup." },
+    { "type": "text", "id": "hero_cta1_label", "label": "Primary button label", "default": "See the bikes" },
+    { "type": "url", "id": "hero_cta1_link", "label": "Primary button link (defaults to /collections/sp)" },
+    { "type": "text", "id": "hero_cta2_label", "label": "Secondary button label", "default": "Get our sizing guide" },
+    { "type": "text", "id": "hero_cta2_link", "label": "Secondary button link", "info": "E.g. /pages/sp-performance#a2-fit-calc — leave blank to scroll to the email form." },
+    { "type": "checkbox", "id": "hero_cta2_modal", "label": "Open Fit Finder in a pop-up", "default": false, "info": "CTA 2 opens the A2 Fit Finder dialog instead of navigating. The link above stays as the no-JS fallback." }
+  ],
+  "presets": [{ "name": "Why A2 · Hero" }]
+}
+{% endschema %}

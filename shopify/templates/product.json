@@ -1,0 +1,656 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product--default",
+      "blocks": {
+        "product_header": {
+          "type": "product_header",
+          "settings": {
+            "show_divider": false,
+            "show_vendor": false,
+            "show_sku": false,
+            "show_discount": true,
+            "discount_format": "percent_off",
+            "show_product_rating": true,
+            "show_sale_badge": true,
+            "show_custom_badges": false
+          }
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "variant_popup_option": "Sizing",
+            "variant_popup_icon": "measuring-tape",
+            "variant_popup_text": "Size guide",
+            "variant_popup_page": "size-guide",
+            "swatch_size": "large",
+            "chip_layout": "3col"
+          }
+        },
+        "inventory-counter": {
+          "type": "inventory-counter",
+          "disabled": true,
+          "settings": {
+            "label": "",
+            "inventory_max": "40",
+            "low_inventory_threshold": "8",
+            "show_status_bar": true,
+            "show_untracked_quantity": false
+          }
+        },
+        "quantity_selector": {
+          "type": "quantity_selector",
+          "disabled": true,
+          "settings": {
+            "show_labels": true
+          }
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": false,
+            "enable_sticky_atc_bar_desktop": true,
+            "enable_sticky_atc_bar_mobile": true,
+            "divider_width": "border--thick"
+          }
+        },
+        "govx_id_exclusive_discounts_govx_id_button_MdbiAN": {
+          "type": "shopify://apps/govx-id-exclusive-discounts/blocks/govx-id-button/2b41cbab-a2d3-48ab-85b4-09f16dcc4bf0",
+          "settings": {
+            "cta_layout": "full",
+            "cta_prompt": "Discount available for Military"
+          }
+        },
+        "text_9D7jHb": {
+          "type": "text",
+          "settings": {
+            "text_font_class": "fs-body-100",
+            "text": "<p>Save an average of 30% with Truemed. <a href=\"https://a2bikes.com/pages/pay-with-truemed\" title=\"https://a2bikes.com/pages/pay-with-truemed\">Click here to learn more! </a></p>",
+            "column_placement": "right"
+          }
+        },
+        "product_callouts": {
+          "type": "product_callouts",
+          "settings": {
+            "title": "",
+            "title_tag": "h3",
+            "add_box": true,
+            "add_dividers": true,
+            "icon_1": "none",
+            "text_1": "",
+            "icon_2": "measuring-tape",
+            "text_2": "<p>Free Returns</p>",
+            "icon_3": "measuring-tape",
+            "text_3": "",
+            "icon_4": "padlock",
+            "text_4": "<p>Secure Payment</p>",
+            "icon_5": "moving-truck",
+            "text_5": "<p>Fast 3-Day Shipping</p>",
+            "icon_6": "chat",
+            "text_6": "<p>Need help? <a href=\"/pages/contact\">Contact us</a></p>",
+            "display_as_collapsible_row": false,
+            "expand_by_default": false
+          }
+        },
+        "description": {
+          "type": "description",
+          "settings": {
+            "title": "Description",
+            "title_tag": "h3",
+            "text_font_class": "fs-body-100",
+            "column_placement": "left",
+            "display_as_collapsible_row": true,
+            "expand_by_default": true
+          }
+        },
+        "featured_products": {
+          "type": "featured_products",
+          "disabled": true,
+          "settings": {
+            "heading": "Customers also search for",
+            "heading_tag": "h3",
+            "column_placement": "left",
+            "max_products": 3,
+            "product_source": "custom-product-list",
+            "product_list": [
+              "sp-shimano-105n",
+              "sp-sram-force",
+              "sp-sram-red-axs",
+              "sp-sram-rival-1"
+            ],
+            "enable_swiper_mobile": true,
+            "display_as_collapsible_row": true,
+            "expand_by_default": true
+          }
+        },
+        "share": {
+          "type": "share",
+          "disabled": true,
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "product_header",
+        "variant_picker",
+        "inventory-counter",
+        "quantity_selector",
+        "buy_buttons",
+        "govx_id_exclusive_discounts_govx_id_button_MdbiAN",
+        "text_9D7jHb",
+        "product_callouts",
+        "description",
+        "featured_products",
+        "share"
+      ],
+      "settings": {
+        "enable_sticky_product_details": true,
+        "show_breadcrumbs": false,
+        "show_navigation_buttons": true,
+        "show_featured_media_first": true,
+        "gallery_style": "thumbnails",
+        "gallery_style_mobile": "carousel",
+        "gallery_size": "xlarge",
+        "gallery_overflow": "never",
+        "enable_video_looping": true,
+        "enable_product_lightbox": true,
+        "image_aspect_ratio": "natural",
+        "enable_multiple_variant_media": true,
+        "enable_mobile_carousel_looping": true,
+        "show_mobile_carousel_images_full_width": true,
+        "hide_mobile_carousel_dots": false,
+        "enable_gift_card_recipient": false,
+        "enable_animation": true
+      }
+    },
+    "product_tabs": {
+      "type": "product-tabs",
+      "blocks": {
+        "product_description_B47rUG": {
+          "type": "product_description",
+          "settings": {
+            "tab_heading": "Description",
+            "heading": "Get to know your A2",
+            "heading_font_class": "fs-heading-3-base",
+            "heading_tag": "h2",
+            "text_font_class": "fs-body-100",
+            "content_width": "custom",
+            "text_max_width": 800
+          }
+        },
+        "one_column_HEFTMe": {
+          "type": "one_column",
+          "disabled": true,
+          "settings": {
+            "tab_heading": "Spec Guide",
+            "heading_column_1": "SP Force AXS Spec Guide",
+            "heading_font_class_column_1": "fs-heading-4-base",
+            "heading_tag_column_1": "h2",
+            "text_column_1": "",
+            "page_for_content_column_1": "{{ product.metafields.custom.component_guide_page.value }}",
+            "custom_liquid_column_1": "",
+            "text_font_class_column_1": "fs-body-100",
+            "content_width": "custom",
+            "text_max_width": 800,
+            "image_width_column_1": 100,
+            "image_position_column_1": "above_text"
+          }
+        },
+        "one_column_MaCYwH": {
+          "type": "one_column",
+          "settings": {
+            "tab_heading": "Lifetime Warranty",
+            "heading_column_1": "",
+            "heading_font_class_column_1": "fs-heading-4-base",
+            "heading_tag_column_1": "h2",
+            "text_column_1": "<p>When you ride an A2, you can ride with confidence. That's because your A2 is backed by our lifetime warranty. From your first race to your biggest achievement, we stand behind every A2 frame, for life. <span style=\"text-decoration:underline\">Read more here.</span></p>",
+            "page_for_content_column_1": "",
+            "custom_liquid_column_1": "",
+            "text_font_class_column_1": "fs-body-100",
+            "content_width": "custom",
+            "text_max_width": 800,
+            "image_width_column_1": 100,
+            "image_position_column_1": "above_text"
+          }
+        },
+        "one_column_GxEEqD": {
+          "type": "one_column",
+          "settings": {
+            "tab_heading": "Crash Replacement Policy",
+            "heading_column_1": "",
+            "heading_font_class_column_1": "fs-heading-4-base",
+            "heading_tag_column_1": "h2",
+            "text_column_1": "<p>We understand that crashes happen, and it can already be a lot as it is. That is why we create the <span style=\"text-decoration:underline\">A2 Crash Replacement Policy</span>, which states any A2 frame directly purchased from A2, in the event of a crash, will be fully replaced by us, no additional cost. </p>",
+            "page_for_content_column_1": "",
+            "custom_liquid_column_1": "",
+            "text_font_class_column_1": "fs-body-100",
+            "content_width": "custom",
+            "text_max_width": 800,
+            "image_width_column_1": 100,
+            "image_position_column_1": "above_text"
+          }
+        },
+        "two_column_tab_QmTHWe": {
+          "type": "two_column_tab",
+          "settings": {
+            "tab_heading": "Shipping & Returns",
+            "content_vertical_alignment": "top",
+            "column_spacing": 48,
+            "heading_column_1": "Standard shipping",
+            "heading_font_class_column_1": "fs-heading-4-base",
+            "heading_tag_column_1": "h3",
+            "text_column_1": "<p>Standard ground shipping usually takes between 3 and 5 business days and is $99 flat to the lower 48. <br/></p>",
+            "page_for_content_column_1": "",
+            "custom_liquid_column_1": "",
+            "text_font_class_column_1": "fs-body-100",
+            "image_width_column_1": 100,
+            "image_position_column_1": "above_text",
+            "heading_column_2": "Free Easy Returns",
+            "heading_font_class_column_2": "fs-heading-4-base",
+            "heading_tag_column_2": "h3",
+            "text_column_2": "<p>Buying a bike shouldn't be a stressful experience. That's why we work with you during the purchasing process to ensure you get the perfect bike to fit your needs. If you need to exchange or return your bike, contact our customer service team within 30 days of purchase if you need to exchange your bike. A2 is happy to provide <strong>free size exchanges on all bikes that we produce.</strong></p>",
+            "page_for_content_column_2": "",
+            "custom_liquid_column_2": "",
+            "text_font_class_column_2": "fs-body-100",
+            "image_width_column_2": 100,
+            "image_position_column_2": "above_text"
+          }
+        }
+      },
+      "block_order": [
+        "product_description_B47rUG",
+        "one_column_HEFTMe",
+        "one_column_MaCYwH",
+        "one_column_GxEEqD",
+        "two_column_tab_QmTHWe"
+      ],
+      "settings": {
+        "tab_alignment": "left",
+        "tab_spacing": 40,
+        "font_choice": "ff-heading",
+        "tab_font_size": "fs-body-150",
+        "background_color": "",
+        "text_color": "#000000",
+        "enable_animation": true,
+        "section_padding": "section--vertical-padding-bottom-only"
+      }
+    },
+    "image_with_text_tFAAPA": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_pMfej9": {
+          "type": "heading",
+          "settings": {
+            "title": "Wind Tunnel Tested",
+            "heading_tag": "h2",
+            "heading_font_class": "fs-heading-1-base"
+          }
+        },
+        "subheading_DywHY6": {
+          "type": "subheading",
+          "settings": {
+            "subheading": "Maximized for aerodynamic performance, the SP will help you shave those precious minutes off of race time. Whereas many disc brake bike models test as less aerodynamic than rim brakes, our new SP saved 5 watts compared to its rim brake predecessor",
+            "subheading_tag": "h3",
+            "subheading_font_class": "fs-heading-6-base"
+          }
+        },
+        "button_3Ah6P4": {
+          "type": "button",
+          "disabled": true,
+          "settings": {
+            "link": "",
+            "link_text": "Read more",
+            "button_style": "btn--primary"
+          }
+        }
+      },
+      "block_order": [
+        "heading_pMfej9",
+        "subheading_DywHY6",
+        "button_3Ah6P4"
+      ],
+      "disabled": true,
+      "name": "t:sections.image_with_text.presets.name",
+      "settings": {
+        "image_position": "right",
+        "image": "shopify://shop_images/A2_Bikes_4.jpg",
+        "aspect_ratio": "natural",
+        "focal_point": "center",
+        "image_caption": "",
+        "text_alignment": "center",
+        "show_small_image": true,
+        "image_small": "shopify://shop_images/DSCF3080.jpg",
+        "image_small_aspect": "square",
+        "image_small_focal_point": "image_presentation",
+        "background_color": "#f5f5f5",
+        "text_color": "#000000",
+        "button_background_color": "#000000",
+        "button_text_color": "#ffffff",
+        "enable_animation": true,
+        "divider_style": "none",
+        "section_padding": "section--vertical-padding-top-bottom"
+      }
+    },
+    "grid_UGttYW": {
+      "type": "grid",
+      "blocks": {
+        "item_H3bUiV": {
+          "type": "item",
+          "settings": {
+            "width": "50",
+            "height": 500,
+            "mobile_height": 500,
+            "media_type": "image",
+            "image": "shopify://shop_images/DSCF3337-Edit.jpg",
+            "focal_point": "image_presentation",
+            "mobile_focal_point": "image_presentation",
+            "video_focal_point": "center",
+            "mobile_video_focal_point": "center",
+            "media_fit": "cover",
+            "text_position": "center_center",
+            "accent": "",
+            "title": "",
+            "heading_tag": "h3",
+            "heading_font_class": "fs-heading-2-base",
+            "subheading": "",
+            "subheading_tag": "h4",
+            "subheading_font_class": "fs-heading-5-base",
+            "text": "",
+            "text_font_class": "fs-body-100",
+            "link": "",
+            "link_text": "",
+            "button_style": "btn--primary",
+            "background_color": "",
+            "text_color": "#ffffff",
+            "button_background_color": "#ffffff",
+            "button_text_color": "#000000",
+            "color_overlay": "#000000",
+            "color_overlay_gradient": "",
+            "overlay_opacity": 0
+          }
+        },
+        "item_cfVKyQ": {
+          "type": "item",
+          "settings": {
+            "width": "50",
+            "height": 500,
+            "mobile_height": 500,
+            "media_type": "image",
+            "image": "shopify://shop_images/DSCF9160.jpg",
+            "focal_point": "image_presentation",
+            "mobile_focal_point": "image_presentation",
+            "video_focal_point": "center",
+            "mobile_video_focal_point": "center",
+            "media_fit": "cover",
+            "text_position": "center_center",
+            "accent": "",
+            "title": "",
+            "heading_tag": "h3",
+            "heading_font_class": "fs-heading-2-base",
+            "subheading": "",
+            "subheading_tag": "h4",
+            "subheading_font_class": "fs-heading-5-base",
+            "text": "",
+            "text_font_class": "fs-body-100",
+            "link": "",
+            "link_text": "",
+            "button_style": "btn--primary",
+            "background_color": "",
+            "text_color": "#ffffff",
+            "button_background_color": "#ffffff",
+            "button_text_color": "#000000",
+            "color_overlay": "#000000",
+            "color_overlay_gradient": "",
+            "overlay_opacity": 0
+          }
+        },
+        "item_JJrfJP": {
+          "type": "item",
+          "settings": {
+            "width": "100",
+            "height": 520,
+            "mobile_height": 500,
+            "media_type": "image",
+            "image": "shopify://shop_images/DSCF9200-Edit-Edit-2.jpg",
+            "focal_point": "image_presentation",
+            "mobile_focal_point": "image_presentation",
+            "video_focal_point": "center",
+            "mobile_video_focal_point": "center",
+            "media_fit": "cover",
+            "text_position": "center_center",
+            "accent": "",
+            "title": "",
+            "heading_tag": "h3",
+            "heading_font_class": "fs-heading-2-base",
+            "subheading": "",
+            "subheading_tag": "h4",
+            "subheading_font_class": "fs-heading-5-base",
+            "text": "",
+            "text_font_class": "fs-body-100",
+            "link": "",
+            "link_text": "",
+            "button_style": "btn--primary",
+            "background_color": "",
+            "text_color": "#ffffff",
+            "button_background_color": "#ffffff",
+            "button_text_color": "#000000",
+            "color_overlay": "#000000",
+            "color_overlay_gradient": "",
+            "overlay_opacity": 0
+          }
+        }
+      },
+      "block_order": [
+        "item_H3bUiV",
+        "item_cfVKyQ",
+        "item_JJrfJP"
+      ],
+      "name": "t:sections.grid.presets.name",
+      "settings": {
+        "heading": "",
+        "heading_tag": "h2",
+        "subheading": "",
+        "content_alignment": "left",
+        "enable_animation": true,
+        "full_width": false,
+        "spacing": 24,
+        "divider_style": "none",
+        "section_padding": "section--vertical-padding-top-bottom"
+      }
+    },
+    "image_with_text_split_drV9Lz": {
+      "type": "image-with-text-split",
+      "blocks": {
+        "accent_fEtX3A": {
+          "type": "accent",
+          "settings": {
+            "accent": "Bike Assembly"
+          }
+        },
+        "heading_bVdVnq": {
+          "type": "heading",
+          "settings": {
+            "title": "Arrives 92% Built",
+            "heading_tag": "h2",
+            "heading_font_class": "fs-heading-display-3"
+          }
+        },
+        "subheading_JLLtUA": {
+          "type": "subheading",
+          "settings": {
+            "subheading": "Your bike shows up 92% assembled, complete with the tools and step-by-step instructions—no mechanical know-how required.",
+            "subheading_tag": "h3",
+            "subheading_font_class": "fs-heading-5-base"
+          }
+        },
+        "button_XtKi3n": {
+          "type": "button",
+          "settings": {
+            "link": "shopify://pages/sp-and-rogue-out-of-box-installation",
+            "link_text": "Let's Build!",
+            "button_style": "btn--primary"
+          }
+        }
+      },
+      "block_order": [
+        "accent_fEtX3A",
+        "heading_bVdVnq",
+        "subheading_JLLtUA",
+        "button_XtKi3n"
+      ],
+      "name": "t:sections.image_with_text_split.presets.name",
+      "settings": {
+        "image_position": "right",
+        "image_mobile_position": "above-content",
+        "image_padding": "none",
+        "image": "shopify://shop_images/Instagram_Posts_13.png",
+        "aspect_ratio": "landscape",
+        "focal_point": "image_presentation",
+        "content_alignment": "left",
+        "background_color": "#e2e2e2",
+        "text_color": "#000000",
+        "button_background_color": "#000000",
+        "button_text_color": "#ffffff",
+        "enable_animation": true,
+        "section_padding": "section--vertical-padding-top-bottom"
+      }
+    },
+    "gallery_carousel_fePLai": {
+      "type": "gallery-carousel",
+      "blocks": {
+        "image_fcRTDT": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/15.png",
+            "focal_point": "image_presentation",
+            "title": "SP 105",
+            "text": "<p>Simple, dependable, and built for performance. The SP 105 is our most popular triathlon build, equipped with Shimano’s trusted 105 mechanical groupset. Perfect for first-time triathletes and racers chasing new PRs, it delivers reliability and speed without breaking the bank.</p>"
+          }
+        },
+        "image_H4DEnB": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/16.png",
+            "focal_point": "image_presentation",
+            "title": "SP Rival AXS",
+            "text": "<p>A step up from the 105, the SP Rival AXS boasts precise, electronic shifting from SRAM. Streamlined and efficient, the SP Rival AXS wants to take on tough training blocks and tackle Ironman bike legs. </p>"
+          }
+        },
+        "image_E67RDw": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/14.png",
+            "focal_point": "image_presentation",
+            "title": "SP Force AXS",
+            "text": "<p>Many of our pro and AG triathletes tend to love the SP Force AXS because of its incredibly high performance, without completely breaking the bank on SRAM's Red AXS. This build is a great blend of effective and premium, and is one of our most popular choices for those who are looking to race fast in 70.3s and full Ironmans. </p>"
+          }
+        },
+        "image_NLXyQf": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/17.png",
+            "focal_point": "image_presentation",
+            "title": "SP Red AXS",
+            "text": "<p>The SP Red AXS is the pinnacle of speed, performance, and excellence. SRAM's Red AXS groupset is its lightest, most meticulous components, this build is for those who want to race at a high level, break their PRs, and compete. Comes with Zipp's 808 Firecrest carbon wheels. </p>"
+          }
+        }
+      },
+      "block_order": [
+        "image_fcRTDT",
+        "image_H4DEnB",
+        "image_E67RDw",
+        "image_NLXyQf"
+      ],
+      "name": "t:sections.gallery_carousel.presets.name",
+      "settings": {
+        "heading": "Compare Our Triathlon Builds",
+        "heading_tag": "h2",
+        "subheading": "<p>The SP is built for performance, comfort, and adjustability. See how each build stacks up so you can choose the setup that fits your goals and helps you race faster, longer, and more comfortably.</p>",
+        "link": "shopify://collections/sp",
+        "link_text": "Explore Other SP's",
+        "button_style": "btn--secondary",
+        "columns": "2",
+        "mobile_columns": "2",
+        "loop_carousel": true,
+        "aspect_ratio": "natural",
+        "image_caption_size": "fs-body-75",
+        "image_caption_style": "beneath",
+        "overlay_text_background_style": "gradient",
+        "overlay_text_color": "#fcfcf9",
+        "overlay_text_background": "#22292d",
+        "enable_animation": true,
+        "divider_style": "solid",
+        "section_padding": "section--vertical-padding-top-bottom"
+      }
+    },
+    "rich_text_frr8DC": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_Y8ctgq": {
+          "type": "heading",
+          "settings": {
+            "title": "Lifetime Warranty",
+            "heading_tag": "h2",
+            "heading_font_class": "fs-heading-2-base"
+          }
+        },
+        "text_NwnHtb": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Yep, you heard that right. When you ride an A2, you can ride with confidence. That's because your A2 is backed by our lifetime warranty. From your first race to your biggest achievement, we stand behind every A2 frame, for life.</p>",
+            "text_font_class": "fs-body-100"
+          }
+        },
+        "button_3BYgQE": {
+          "type": "button",
+          "settings": {
+            "link": "shopify://pages/warranty",
+            "link_text": "Read more",
+            "button_style": "btn--primary"
+          }
+        }
+      },
+      "block_order": [
+        "heading_Y8ctgq",
+        "text_NwnHtb",
+        "button_3BYgQE"
+      ],
+      "name": "t:sections.rich_text.presets.name",
+      "settings": {
+        "alignment": "center_center",
+        "enable_animation": true,
+        "divider_style": "none",
+        "section_padding": "section--vertical-padding-top-bottom",
+        "content_width": "custom",
+        "custom_content_width": 700
+      }
+    },
+    "1773271854aec6f7d2": {
+      "type": "apps",
+      "blocks": {
+        "klaviyo_reviews_product_reviews_GFELdX": {
+          "type": "shopify://apps/klaviyo-reviews/blocks/product-reviews/db20e365-d984-4ac4-9655-e1588d951ca9",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "klaviyo_reviews_product_reviews_GFELdX"
+      ],
+      "settings": {
+        "heading": "App section",
+        "enable_animation": true,
+        "divider_style": "none",
+        "section_padding": "section--vertical-padding-top-bottom"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "product_tabs",
+    "image_with_text_tFAAPA",
+    "grid_UGttYW",
+    "image_with_text_split_drV9Lz",
+    "gallery_carousel_fePLai",
+    "rich_text_frr8DC",
+    "1773271854aec6f7d2"
+  ]
+}

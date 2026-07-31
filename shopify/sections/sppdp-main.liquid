@@ -1,0 +1,332 @@
+{%- comment -%} SP-105 PDP — breadcrumb + gallery (education asset) + sticky buy box + mobile add-to-cart bar. Price/Affirm pull live from the linked product (all_products[handle]) with manual fallbacks. {%- endcomment -%}
+{% render 'sppdp-assets' %}
+{%- liquid
+  assign phandle = section.settings.product_handle
+  assign prod = all_products[phandle]
+  assign price_display = section.settings.price
+  assign affirm_display = section.settings.affirm_value
+  assign months = section.settings.affirm_months
+  if months == 0
+    assign months = 12
+  endif
+  if prod.id
+    assign price_display = prod.price | money_without_trailing_zeros
+    assign monthly = prod.price | divided_by: 100.0 | divided_by: months | round
+    assign affirm_display = monthly | prepend: '$'
+  endif
+  assign title = section.settings.title
+  assign stage_block = null
+  for b in section.blocks
+    if b.type == 'media' and stage_block == null
+      assign stage_block = b
+    endif
+  endfor
+  assign stage_badge = section.settings.stage_badge
+  if stage_badge == blank
+    assign stage_badge = section.settings.swatch_1_name
+  endif
+-%}
+<div class="sppdp">
+  <div class="pdp-wrap">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">{{ section.settings.bc_home }}</a><span class="sep">/</span>
+      <a href="{{ section.settings.bc_col_url | default: '/collections/sp' }}">{{ section.settings.bc_col }}</a><span class="sep">/</span>
+      <span class="here">{{ title }}</span>
+    </nav>
+  </div>
+
+  <main class="pdp-wrap pdp-main">
+    <!-- DESKTOP GALLERY -->
+    <section class="gallery" aria-label="Product gallery">
+      <div class="gallery__rail">
+        {%- assign mi = 0 -%}
+        {%- for b in section.blocks -%}
+          {%- if b.type != 'media' -%}{%- continue -%}{%- endif -%}
+          <button class="thumb{% if mi == 0 %} active{% endif %}" data-thumb data-cap="{{ b.settings.caption | escape }}"{% if b.settings.image %} data-img="{{ b.settings.image | image_url: width: 1280 }}"{% endif %} {{ b.shopify_attributes }}>
+            {% if b.settings.image %}<img src="{{ b.settings.image | image_url: width: 200 }}" alt="{{ b.settings.caption | escape }}" loading="lazy">{% else %}<div class="ph">{{ b.settings.tag | default: 'Image' }}</div>{% endif %}
+            {% if b.settings.tag != blank %}<span class="thumb__tag">{{ b.settings.tag }}</span>{% endif %}
+          </button>
+          {%- assign mi = mi | plus: 1 -%}
+        {%- endfor -%}
+      </div>
+
+      <div class="stage">
+        {% if stage_badge != blank %}<span class="stage__badge">{{ stage_badge }}</span>{% endif %}
+        {% if stage_block.settings.image %}<img data-stage-img src="{{ stage_block.settings.image | image_url: width: 1280 }}" alt="{{ stage_block.settings.caption | escape }}">{% else %}<div class="ph" data-stage-img>{{ stage_block.settings.caption | default: 'Main product image' }}</div>{% endif %}
+        {%- if section.settings.show_hotspots -%}
+          {%- for n in (1..3) -%}
+            {%- assign k_lbl = 'hotspot_' | append: n | append: '_label' -%}
+            {%- assign k_x = 'hotspot_' | append: n | append: '_x' -%}
+            {%- assign k_y = 'hotspot_' | append: n | append: '_y' -%}
+            {%- assign lbl = section.settings[k_lbl] -%}
+            {%- if lbl != blank -%}
+              <span class="hotspot" style="left:{{ section.settings[k_x] }}%;top:{{ section.settings[k_y] }}%">{{ n }}<span class="hotspot__label">{{ lbl }}</span></span>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+      <p class="gallery__caption" data-stage-cap><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg>{{ stage_block.settings.caption | default: section.settings.gallery_caption }}</p>
+
+      <div class="edu-row">
+        {%- for n in (1..3) -%}
+          {%- assign k_t = 'edu_' | append: n | append: '_title' -%}
+          {%- assign k_i = 'edu_' | append: n | append: '_image' -%}
+          {%- assign k_d = 'edu_' | append: n | append: '_desc' -%}
+          {%- assign et = section.settings[k_t] -%}
+          {%- if et != blank -%}
+            {%- assign eimg = section.settings[k_i] -%}
+            <article class="edu-tile">
+              <div class="edu-tile__img">{% if eimg %}<img src="{{ eimg | image_url: width: 600 }}" alt="{{ et | escape }}" loading="lazy">{% else %}<div class="ph">{{ et }}</div>{% endif %}</div>
+              <div class="edu-tile__body">
+                <div class="edu-tile__title">{{ et }}</div>
+                <p class="edu-tile__desc">{{ section.settings[k_d] }}</p>
+              </div>
+            </article>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </section>
+
+    <!-- MOBILE SWIPE GALLERY -->
+    <section class="m-gallery" aria-label="Product gallery">
+      <div class="m-gallery__track" data-gallery-track>
+        {%- for b in section.blocks -%}
+          {%- if b.type != 'media' -%}{%- continue -%}{%- endif -%}
+          <div class="m-slide">
+            {% if b.settings.tag != blank %}<span class="m-slide__tag">{{ b.settings.tag }}</span>{% endif %}
+            {% if b.settings.image %}<img src="{{ b.settings.image | image_url: width: 900 }}" alt="{{ b.settings.caption | escape }}" loading="lazy">{% else %}<div class="ph">{{ b.settings.caption | default: 'Image' }}</div>{% endif %}
+            {% if b.settings.caption != blank %}<div class="m-slide__cap">{{ b.settings.caption }}</div>{% endif %}
+          </div>
+        {%- endfor -%}
+      </div>
+      <div class="m-gallery__dots">
+        {%- assign mi = 0 -%}
+        {%- for b in section.blocks -%}
+          {%- if b.type != 'media' -%}{%- continue -%}{%- endif -%}
+          <span{% if mi == 0 %} class="on"{% endif %} data-gallery-dot></span>
+          {%- assign mi = mi | plus: 1 -%}
+        {%- endfor -%}
+      </div>
+    </section>
+
+    <!-- BUY BOX -->
+    <aside class="buybox" aria-label="Purchase options">
+      <div class="buybox__head">
+        <span class="buybox__kicker">{{ section.settings.kicker }}</span>
+        <h1 class="buybox__title">{{ title }}</h1>
+        <p class="buybox__subtitle">{{ section.settings.subtitle }}</p>
+      </div>
+
+      <div class="ratingline">
+        <span class="stars">{{ section.settings.rating_stars }}</span>
+        <span><b>{{ section.settings.rating_value }}</b></span>
+        <a href="{{ section.settings.reviews_anchor | default: '#sppdp-reviews' }}">{{ section.settings.rating_count }} verified reviews</a>
+      </div>
+
+      <div class="price-block">
+        <div class="price-row">
+          <span class="price">{{ price_display }}</span>
+          <span class="price-note">{{ section.settings.price_note }}</span>
+        </div>
+        <div class="affirm">
+          <span class="affirm__logo">affirm</span>
+          <span>As low as <b>{{ affirm_display }}/mo</b> at {{ section.settings.affirm_apr }}</span>
+          <a href="{{ section.settings.affirm_url | default: '/pages/affirm' }}">Prequalify →</a>
+        </div>
+      </div>
+
+      <hr class="rule">
+
+      <div class="optgroup">
+        <div class="optgroup__label">
+          <span class="lbl">Colorway</span>
+          <span class="val"><b data-swatch-name>{{ section.settings.swatch_1_name }}</b></span>
+        </div>
+        <div class="swatches">
+          {%- for n in (1..3) -%}
+            {%- assign k_n = 'swatch_' | append: n | append: '_name' -%}
+            {%- assign sn = section.settings[k_n] -%}
+            {%- if sn != blank -%}
+              {%- assign k_c1 = 'swatch_' | append: n | append: '_c1' -%}
+              {%- assign k_c2 = 'swatch_' | append: n | append: '_c2' -%}
+              <button class="swatch" data-swatch="{{ sn | escape }}" aria-pressed="{% if n == 1 %}true{% else %}false{% endif %}"><span class="swatch__chip" style="background:linear-gradient(150deg, {{ section.settings[k_c1] }} 0%, {{ section.settings[k_c2] }} 100%)"></span><span class="swatch__name">{{ sn }}</span></button>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+
+      <div class="optgroup">
+        <div class="optgroup__label">
+          <span class="lbl">Size</span>
+          <a class="help-link" href="{{ section.settings.size_help_url | default: '#sppdp-specs' }}"><svg viewBox="0 0 24 24"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M12 12v9M12 12L4 7.5M12 12l8-4.5"/></svg>{{ section.settings.size_help_label }}</a>
+        </div>
+        <div class="sizes">
+          {%- assign sizes = section.settings.sizes_csv | split: ',' -%}
+          {%- assign soldout = section.settings.soldout_csv | downcase -%}
+          {%- assign selsize = section.settings.size_selected | strip -%}
+          {%- for s in sizes -%}
+            {%- assign sv = s | strip -%}
+            {%- assign sl = sv | downcase -%}
+            {%- if sv == blank -%}{%- continue -%}{%- endif -%}
+            {%- if soldout != blank and soldout contains sl -%}
+              <button class="size-pill" data-size="{{ sv | escape }}" aria-pressed="false" disabled>{{ sv }}</button>
+            {%- else -%}
+              <button class="size-pill" data-size="{{ sv | escape }}" data-fits="{{ section.settings.size_helper | escape }}" aria-pressed="{% if sv == selsize %}true{% else %}false{% endif %}">{{ sv }}</button>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+        <div class="optgroup__label"><span class="val" data-size-val>Selected: <b>{{ selsize }}</b> · {{ section.settings.size_helper }}</span></div>
+      </div>
+
+      <hr class="rule">
+
+      <div class="cta-stack">
+        <button class="btn btn--primary btn-addcart" data-addcart><span class="btn-label">{{ section.settings.cta_prefix }}{{ price_display }}</span></button>
+        <div class="cta-sub">
+          <span class="demo"><svg viewBox="0 0 24 24"><path d="M3 12l2-7h14l2 7M5 12h14v5a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2z"/></svg>{{ section.settings.demo_note }}</span>
+          <a href="{{ section.settings.consult_url | default: '#' }}" data-buybox-end>{{ section.settings.consult_label }}</a>
+        </div>
+      </div>
+
+      {%- assign trust_count = 0 -%}
+      {%- for b in section.blocks -%}{% if b.type == 'trust' %}{% assign trust_count = trust_count | plus: 1 %}{% endif %}{%- endfor -%}
+      {%- if trust_count > 0 -%}
+      <div class="trust">
+        {%- for b in section.blocks -%}
+          {%- if b.type != 'trust' -%}{%- continue -%}{%- endif -%}
+          <div class="trust__item" {{ b.shopify_attributes }}>
+            {% render 'sppdp-icon', icon: b.settings.icon %}
+            <div><div class="t-title">{{ b.settings.title }}</div><div class="t-sub">{{ b.settings.sub }}</div></div>
+          </div>
+        {%- endfor -%}
+      </div>
+      {%- endif -%}
+    </aside>
+  </main>
+
+  {%- if section.settings.show_sticky -%}
+  <div class="sticky-buy" data-sticky-buy>
+    <div class="sticky-buy__info">
+      <div class="sticky-buy__name">{{ title }} · <span data-swatch-name>{{ section.settings.swatch_1_name }}</span></div>
+      <div class="sticky-buy__price"><b>{{ price_display }}</b> · {{ affirm_display }}/mo</div>
+    </div>
+    <button class="btn btn--primary" data-addcart><span class="btn-label">Add to cart</span></button>
+  </div>
+  {%- endif -%}
+</div>
+{% schema %}
+{
+  "name": "SP-105 PDP · Main",
+  "tag": "section",
+  "max_blocks": 20,
+  "settings": [
+    { "type": "text", "id": "product_handle", "label": "Product handle (Price + Affirm pull from this product's live price)", "info": "Find it in the product URL: /products/<handle>. Leave blank to use the fallback price.", "default": "sp-shimano-105" },
+    { "type": "header", "content": "Breadcrumb" },
+    { "type": "text", "id": "bc_home", "label": "Home label", "default": "Home" },
+    { "type": "text", "id": "bc_col", "label": "Collection label", "default": "Triathlon — SP" },
+    { "type": "url", "id": "bc_col_url", "label": "Collection link" },
+    { "type": "header", "content": "Title & rating" },
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "SP Triathlon · Entry build" },
+    { "type": "text", "id": "title", "label": "Title", "default": "SP — Shimano 105" },
+    { "type": "text", "id": "subtitle", "label": "Subtitle", "default": "Carbon triathlon & time-trial bike" },
+    { "type": "text", "id": "rating_stars", "label": "Stars", "default": "★★★★★" },
+    { "type": "text", "id": "rating_value", "label": "Rating value", "default": "4.8" },
+    { "type": "text", "id": "rating_count", "label": "Review count", "default": "96" },
+    { "type": "text", "id": "reviews_anchor", "label": "Reviews anchor", "default": "#sppdp-reviews" },
+    { "type": "header", "content": "Price & financing" },
+    { "type": "text", "id": "price", "label": "Price (fallback if no product linked)", "default": "$3,270" },
+    { "type": "text", "id": "price_note", "label": "Price note", "default": "USD · $99 flat shipping to the lower 48" },
+    { "type": "text", "id": "affirm_value", "label": "Affirm monthly (fallback)", "default": "$273" },
+    { "type": "range", "id": "affirm_months", "label": "Affirm months (monthly = price ÷ months)", "min": 6, "max": 48, "step": 6, "default": 12 },
+    { "type": "text", "id": "affirm_apr", "label": "Affirm APR text", "default": "0% APR" },
+    { "type": "url", "id": "affirm_url", "label": "Affirm prequalify link" },
+    { "type": "header", "content": "Gallery — stage & hotspots" },
+    { "type": "text", "id": "stage_badge", "label": "Stage badge (defaults to first colorway)" },
+    { "type": "textarea", "id": "gallery_caption", "label": "Stage caption (used if first image has no caption)", "default": "Drive-side profile — Oswego Blue, size M. Hover the numbered points to explore the frame tech." },
+    { "type": "checkbox", "id": "show_hotspots", "label": "Show annotation hotspots", "default": true },
+    { "type": "text", "id": "hotspot_1_label", "label": "Hotspot 1 label", "default": "Kammtail tube shapes — aero without UCI-only weirdness" },
+    { "type": "range", "id": "hotspot_1_x", "label": "Hotspot 1 — X %", "min": 0, "max": 100, "step": 1, "default": 34 },
+    { "type": "range", "id": "hotspot_1_y", "label": "Hotspot 1 — Y %", "min": 0, "max": 100, "step": 1, "default": 58 },
+    { "type": "text", "id": "hotspot_2_label", "label": "Hotspot 2 label", "default": "Fully internal cable + hose routing" },
+    { "type": "range", "id": "hotspot_2_x", "label": "Hotspot 2 — X %", "min": 0, "max": 100, "step": 1, "default": 60 },
+    { "type": "range", "id": "hotspot_2_y", "label": "Hotspot 2 — Y %", "min": 0, "max": 100, "step": 1, "default": 40 },
+    { "type": "text", "id": "hotspot_3_label", "label": "Hotspot 3 label", "default": "SAGS cockpit — 140mm of fit adjustment" },
+    { "type": "range", "id": "hotspot_3_x", "label": "Hotspot 3 — X %", "min": 0, "max": 100, "step": 1, "default": 78 },
+    { "type": "range", "id": "hotspot_3_y", "label": "Hotspot 3 — Y %", "min": 0, "max": 100, "step": 1, "default": 30 },
+    { "type": "header", "content": "Education detail tiles" },
+    { "type": "image_picker", "id": "edu_1_image", "label": "Tile 1 image" },
+    { "type": "text", "id": "edu_1_title", "label": "Tile 1 title", "default": "Toray T700 carbon" },
+    { "type": "textarea", "id": "edu_1_desc", "label": "Tile 1 text", "default": "Hand-laid layup — the same fiber class as superbikes costing 3× more." },
+    { "type": "image_picker", "id": "edu_2_image", "label": "Tile 2 image" },
+    { "type": "text", "id": "edu_2_title", "label": "Tile 2 title", "default": "SAGS adjustable cockpit" },
+    { "type": "textarea", "id": "edu_2_desc", "label": "Tile 2 text", "default": "140mm fore/aft pad range. Dial your aero fit without a new stem." },
+    { "type": "image_picker", "id": "edu_3_image", "label": "Tile 3 image" },
+    { "type": "text", "id": "edu_3_title", "label": "Tile 3 title", "default": "Race-day storage" },
+    { "type": "textarea", "id": "edu_3_desc", "label": "Tile 3 text", "default": "Down-tube and top-tube mounts for nutrition and tools, built in." },
+    { "type": "header", "content": "Colorways (map to variant options in production)" },
+    { "type": "text", "id": "swatch_1_name", "label": "Colorway 1 name", "default": "Oswego Blue" },
+    { "type": "color", "id": "swatch_1_c1", "label": "Colorway 1 — gradient start", "default": "#3A6076" },
+    { "type": "color", "id": "swatch_1_c2", "label": "Colorway 1 — gradient end", "default": "#1A3142" },
+    { "type": "text", "id": "swatch_2_name", "label": "Colorway 2 name", "default": "Summit Grey" },
+    { "type": "color", "id": "swatch_2_c1", "label": "Colorway 2 — gradient start", "default": "#A6ACB1" },
+    { "type": "color", "id": "swatch_2_c2", "label": "Colorway 2 — gradient end", "default": "#6C7176" },
+    { "type": "text", "id": "swatch_3_name", "label": "Colorway 3 name", "default": "Matte Black" },
+    { "type": "color", "id": "swatch_3_c1", "label": "Colorway 3 — gradient start", "default": "#2A2C30" },
+    { "type": "color", "id": "swatch_3_c2", "label": "Colorway 3 — gradient end", "default": "#0E0F11" },
+    { "type": "header", "content": "Sizes (map to variant availability in production)" },
+    { "type": "text", "id": "sizes_csv", "label": "Sizes (comma-separated)", "default": "XS, S, M, L, XL" },
+    { "type": "text", "id": "size_selected", "label": "Selected size", "default": "M" },
+    { "type": "text", "id": "soldout_csv", "label": "Sold-out sizes (comma-separated)" },
+    { "type": "text", "id": "size_helper", "label": "Size helper line", "default": "fits ~5'7\"–5'10\". Free size exchanges." },
+    { "type": "text", "id": "size_help_label", "label": "Find-your-size link label", "default": "Find your size" },
+    { "type": "url", "id": "size_help_url", "label": "Find-your-size link" },
+    { "type": "header", "content": "Call to action" },
+    { "type": "text", "id": "cta_prefix", "label": "Add-to-cart label prefix", "default": "Add to cart — " },
+    { "type": "text", "id": "demo_note", "label": "Demo note", "default": "7-day home demo" },
+    { "type": "text", "id": "consult_label", "label": "Consult link label", "default": "Or book a free fit consult" },
+    { "type": "url", "id": "consult_url", "label": "Consult link" },
+    { "type": "header", "content": "Mobile" },
+    { "type": "checkbox", "id": "show_sticky", "label": "Show persistent mobile add-to-cart bar", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "media",
+      "name": "Gallery image",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "tag", "label": "Tag (e.g. Detail)" },
+        { "type": "text", "id": "caption", "label": "Caption" }
+      ]
+    },
+    {
+      "type": "trust",
+      "name": "Trust item",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icon", "options": [
+          { "value": "shield-check", "label": "Shield check" },
+          { "value": "bars", "label": "Bars" },
+          { "value": "sliders", "label": "Sliders" },
+          { "value": "warranty", "label": "Warranty" }
+        ], "default": "shield-check" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Trust point" },
+        { "type": "textarea", "id": "sub", "label": "Subtext" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SP-105 PDP · Main",
+      "blocks": [
+        { "type": "media", "settings": { "tag": "", "caption": "Drive-side profile — Oswego Blue, size M" } },
+        { "type": "media", "settings": { "tag": "Detail", "caption": "Front 3/4 — kammtail head tube & fork crown" } },
+        { "type": "media", "settings": { "tag": "Detail", "caption": "SAGS aerobar cockpit — pad & extension adjustment" } },
+        { "type": "media", "settings": { "tag": "Detail", "caption": "Rear triangle — internal routing & flat-mount disc" } },
+        { "type": "trust", "settings": { "icon": "shield-check", "title": "Designed by ex-Cervélo engineers", "sub": "Kevin Quan, who designed the Cervélo P-Series, drew this frame." } },
+        { "type": "trust", "settings": { "icon": "bars", "title": "Direct-to-consumer pricing", "sub": "No dealer markup. You pay for the bike, not the showroom." } },
+        { "type": "trust", "settings": { "icon": "sliders", "title": "Free fit support & size exchanges", "sub": "Talk to a real fitter before and after you buy. Wrong size? Swap it free." } },
+        { "type": "trust", "settings": { "icon": "warranty", "title": "Lifetime frame warranty + crash replacement", "sub": "Honored directly by us. Damage it in a crash and we replace the frame." } }
+      ]
+    }
+  ]
+}
+{% endschema %}
