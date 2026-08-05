@@ -129,8 +129,8 @@
       // Auto-identify if Shopify customer is logged in (incl. Sign in with Shop /
       // Shop Pay returners): also tag the CRM scoreboard with source "account".
       {% if customer %}
-        window.a2IdentifyVisitor("{{ customer.email }}");
-        try { if (typeof window.a2_identify === 'function') window.a2_identify("{{ customer.email }}", "account"); } catch(e){}
+        window.a2IdentifyVisitor({{ customer.email | json }});
+        try { if (typeof window.a2_identify === 'function') window.a2_identify({{ customer.email | json }}, "account"); } catch(e){}
       {% endif %}
 
       // Auto-identify if email in sessionStorage from prior page
@@ -163,12 +163,14 @@
           form.addEventListener('submit', function () {
             var emailInput = form.querySelector('input[type="email"]');
             if (emailInput && emailInput.value) {
-              window.a2IdentifyVisitor(emailInput.value);
+              // Normalize once (lowercase + trim) so CRM/Klaviyo don't get case variants.
+              var _email = emailInput.value.toLowerCase().trim();
+              window.a2IdentifyVisitor(_email);
               // CRM scoreboard source: Shopify newsletter + contact forms both POST to
               // /contact, so use form_type ("contact" => contact-us, else newsletter).
               var _ft = (form.querySelector('input[name="form_type"]') || {}).value || '';
               var _src = _ft === 'contact' ? 'contact' : 'newsletter';
-              try { if (typeof window.a2_identify === 'function') window.a2_identify(emailInput.value, _src); } catch(e){}
+              try { if (typeof window.a2_identify === 'function') window.a2_identify(_email, _src); } catch(e){}
             }
           });
         });
@@ -192,12 +194,9 @@
       });
     </script>
   {%- comment -%}
-  Disabled May 2026 — A2 CRM (OrygunTri) under development.
-  Re-enable when ops/dev team confirms ready.
-  Original tag:
-  <script async defer
-      src="https://oryguntri.com/api/tracker/a2_tracker.js"
-      onerror="console.warn('A2 tracker unavailable')"></script>
+  A2 CRM (OrygunTri) tracker is now ACTIVE — it is loaded near the end of
+  <body> (see "A2 CRM Silent Shopper Tracker" below). It defines the capture
+  contract window.a2_identify(email, source) used by the hooks above.
 {%- endcomment -%}
   </head>
 
@@ -265,7 +264,7 @@
       defer
     ></script>
   <!-- A2 CRM Silent Shopper Tracker -->
-<script src="https://oryguntri.com/api/tracker/a2_tracker.js" defer></script>
+<script src="https://oryguntri.com/api/tracker/a2_tracker.js" defer onerror="console.warn('A2 tracker unavailable')"></script>
   </body>
   <link
     rel="preload"

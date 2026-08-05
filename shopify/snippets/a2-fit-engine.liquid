@@ -685,7 +685,7 @@ if (!window.__a2feInit) {
       var full=resultView.querySelector('[data-el="full"]');
       if(full) full.addEventListener("click",function(){ closeDrawer(); var el=document.getElementById("a2fe-inline"); if(el) el.scrollIntoView({behavior:"smooth"}); });
       var ef=resultView.querySelector('[data-el="ef"]');
-      if(ef) ef.addEventListener("submit",function(e){ e.preventDefault(); var input=resultView.querySelector('[data-el="emailIn"]'), eErr=resultView.querySelector('[data-el="emailErr"]'); var email=(input.value||"").trim();
+      if(ef) ef.addEventListener("submit",function(e){ e.preventDefault(); var input=resultView.querySelector('[data-el="emailIn"]'), eErr=resultView.querySelector('[data-el="emailErr"]'); var email=(input.value||"").trim().toLowerCase();
         if(!email||email.indexOf("@")<1){ eErr.textContent="Enter a valid email address."; eErr.classList.remove("a2fe-hide"); return; } eErr.classList.add("a2fe-hide"); sendFit(r,email,resultView); });
     }
     return { reset:showInput };

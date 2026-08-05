@@ -155,8 +155,8 @@
     if (hp && hp.value) { emailMsg(form, "ok", form.getAttribute("data-a2-success") || "Thanks!"); return; }
 
     var input = form.querySelector('input[type="email"]');
-    var email = (input && input.value || "").trim();
-    if (!email || email.indexOf("@") === -1) {
+    var email = (input && input.value || "").trim().toLowerCase();
+    if (!email || email.indexOf("@") < 1) {
       emailMsg(form, "error", "Please enter a valid email address.");
       return;
     }
