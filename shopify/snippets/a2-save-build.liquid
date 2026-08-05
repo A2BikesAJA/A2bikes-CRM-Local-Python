@@ -1,0 +1,209 @@
+{%- comment -%}
+  A2 Bikes — Play 3: "Save your build / email me this quote" (bike PDPs).
+  ---------------------------------------------------------------------------
+  Car-configurator move: the shopper emails their configured build + price to
+  themselves, which identifies them on every device they open it on.
+
+  Self-contained (a2-lp.js is NOT loaded on the PDP). Reads the live build from
+  window.A2_FIT_CTX (set by a2-fit-engine, always present on the bike PDP) plus
+  the live DOM: [data-price] (current price), the active .build-pill, and the
+  selected option buttons ([data-opt][aria-pressed="true"]).
+
+  Identity wiring:
+    - window.a2_identify(email, "save_build")   -> CRM scoreboard (mandatory)
+    - window.a2IdentifyVisitor(email)           -> existing Klaviyo/GA4 helper
+    - Klaviyo client subscription (custom_source "save_build") with the build in
+      profile properties, so a "Saved Build" flow can email the quote.
+    - dataLayer event "save_build_email_capture"
+
+  Params (all optional; passed from sppdp-product settings):
+    enabled        (bool)   render only when true
+    klaviyo_company(string) default "YejYTH"
+    klaviyo_list   (string) list the Saved-Build flow listens on (blank = CRM only)
+    button_label / heading / subtext / cta_label / success_text  (strings)
+{%- endcomment -%}
+
+{%- if enabled -%}
+{%- assign _kco = klaviyo_company | default: 'YejYTH' -%}
+<div class="a2sb" id="a2sb-{{ product.id }}"
+     data-a2sb
+     data-company="{{ _kco | escape }}"
+     data-list="{{ klaviyo_list | escape }}"
+     {% if customer %}data-logged-in="1"{% endif %}>
+  <button type="button" class="a2sb__open" data-a2sb-open aria-expanded="false" aria-controls="a2sb-panel-{{ product.id }}">
+    <svg viewBox="0 0 24 24" aria-hidden="true" width="18" height="18"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M4 4h12l4 4v12a0 0 0 0 1 0 0H4z M8 4v5h7 M8 20v-7h9"/></svg>
+    <span>{{ button_label | default: 'Save this build / email me the quote' }}</span>
+  </button>
+
+  <div class="a2sb__panel" id="a2sb-panel-{{ product.id }}" data-a2sb-panel hidden>
+    <div data-a2sb-step="capture">
+      <p class="a2sb__h">{{ heading | default: 'Email yourself this build' }}</p>
+      <p class="a2sb__sub">{{ subtext | default: 'We’ll send your spec + price so you can pick up on any device.' }}</p>
+      <p class="a2sb__quote" data-a2sb-quote></p>
+      <form class="a2sb__form" data-a2sb-form novalidate>
+        <label class="a2sb__sr" for="a2sb-email-{{ product.id }}">Email address</label>
+        <input id="a2sb-email-{{ product.id }}" class="a2sb__in" type="email" name="email" required
+               autocomplete="email" inputmode="email" placeholder="you@email.com">
+        <div class="a2sb__hp" aria-hidden="true"><label>Leave blank<input type="text" tabindex="-1" autocomplete="off" data-a2sb-hp></label></div>
+        <button class="a2sb__send" type="submit">{{ cta_label | default: 'Email my build' }}</button>
+        <p class="a2sb__msg" data-a2sb-msg role="status" aria-live="polite"></p>
+      </form>
+    </div>
+    <div data-a2sb-step="done" hidden>
+      <p class="a2sb__h">{{ success_text | default: 'Saved — check your inbox for your build and price.' }}</p>
+    </div>
+  </div>
+</div>
+
+{%- style -%}
+  #a2sb-{{ product.id }}.a2sb{margin-top:10px;}
+  #a2sb-{{ product.id }} .a2sb__open{display:inline-flex;align-items:center;gap:8px;width:100%;justify-content:center;
+    padding:12px 16px;font-size:14px;font-weight:600;cursor:pointer;background:transparent;
+    border:1px solid currentColor;border-radius:10px;color:inherit;opacity:.9;}
+  #a2sb-{{ product.id }} .a2sb__open:hover{opacity:1;}
+  #a2sb-{{ product.id }} .a2sb__open svg{flex:0 0 auto;}
+  #a2sb-{{ product.id }} .a2sb__panel{margin-top:10px;padding:14px;border:1px solid rgba(0,0,0,.14);border-radius:10px;}
+  #a2sb-{{ product.id }} .a2sb__h{margin:0 0 4px;font-size:15px;font-weight:700;}
+  #a2sb-{{ product.id }} .a2sb__sub{margin:0 0 8px;font-size:13px;opacity:.8;line-height:1.4;}
+  #a2sb-{{ product.id }} .a2sb__quote{margin:0 0 10px;font-size:12.5px;opacity:.85;line-height:1.45;}
+  #a2sb-{{ product.id }} .a2sb__quote:empty{display:none;}
+  #a2sb-{{ product.id }} .a2sb__form{display:flex;flex-direction:column;gap:8px;}
+  #a2sb-{{ product.id }} .a2sb__in{width:100%;padding:12px 14px;font-size:16px;border:1px solid rgba(0,0,0,.25);
+    border-radius:8px;background:#fff;color:#111;box-sizing:border-box;}
+  #a2sb-{{ product.id }} .a2sb__send{width:100%;padding:12px 16px;font-size:15px;font-weight:700;border:0;
+    border-radius:8px;cursor:pointer;background:#111;color:#fff;}
+  #a2sb-{{ product.id }} .a2sb__send:hover{opacity:.92;}
+  #a2sb-{{ product.id }} .a2sb__msg{margin:2px 0 0;font-size:13px;min-height:1em;}
+  #a2sb-{{ product.id }} .a2sb__msg[data-state="error"]{color:#c0392b;}
+  #a2sb-{{ product.id }} .a2sb__hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;}
+  #a2sb-{{ product.id }} .a2sb__sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);}
+{%- endstyle -%}
+
+<script>
+(function(){
+  var root = document.getElementById("a2sb-{{ product.id }}");
+  if (!root || root.__a2sbInit) return;
+  root.__a2sbInit = true;
+
+  var openBtn = root.querySelector("[data-a2sb-open]");
+  var panel   = root.querySelector("[data-a2sb-panel]");
+  var form    = root.querySelector("[data-a2sb-form]");
+  var msgBox  = root.querySelector("[data-a2sb-msg]");
+  var quoteEl = root.querySelector("[data-a2sb-quote]");
+  var stepCap = root.querySelector('[data-a2sb-step="capture"]');
+  var stepDone= root.querySelector('[data-a2sb-step="done"]');
+
+  function ctx(){ return window.A2_FIT_CTX || {}; }
+
+  // Build a human-readable summary of the CURRENT configuration from live DOM.
+  function currentBuild(){
+    var c = ctx();
+    var out = { title: c.productTitle || document.title, url: c.url || location.pathname,
+                model: c.model || "", build: c.build || "" };
+    // Active build pill (groupset).
+    var pill = document.querySelector(".build-pill.is-active");
+    out.buildLabel = pill ? (pill.textContent || "").trim() : "";
+    // Selected variant options (Color / Size / Wheelset).
+    var opts = [];
+    document.querySelectorAll('[data-opt][aria-pressed="true"]').forEach(function(b){
+      var v = b.getAttribute("data-value"); if (v) opts.push(v);
+    });
+    out.options = opts;
+    // Live price from the buy box.
+    var priceEl = document.querySelector("[data-price]");
+    out.price = priceEl ? (priceEl.textContent || "").trim() : (c.price || "");
+    // Selected variant id (if present).
+    var vid = document.querySelector("[data-variant-id]");
+    out.variantId = vid ? vid.value : "";
+    return out;
+  }
+
+  function quoteText(b){
+    var bits = [];
+    if (b.title) bits.push(b.title);
+    if (b.buildLabel) bits.push(b.buildLabel);
+    if (b.options && b.options.length) bits.push(b.options.join(" · "));
+    if (b.price) bits.push(b.price);
+    return bits.join("  ·  ");
+  }
+
+  function pushDL(evt, extra){
+    if (typeof window.a2dl === "function") { window.a2dl(evt, extra || {}); return; }
+    window.dataLayer = window.dataLayer || [];
+    var p = { event: evt }; if (extra) Object.keys(extra).forEach(function(k){ p[k]=extra[k]; });
+    window.dataLayer.push(p);
+  }
+
+  openBtn.addEventListener("click", function(){
+    var open = !panel.hidden;
+    if (open) { panel.hidden = true; openBtn.setAttribute("aria-expanded","false"); return; }
+    panel.hidden = false;
+    openBtn.setAttribute("aria-expanded","true");
+    if (quoteEl) quoteEl.textContent = quoteText(currentBuild());
+    pushDL("save_build_open", { source: "save_build" });
+    var input = form && form.querySelector('input[type="email"]');
+    if (input) input.focus();
+  });
+
+  function setMsg(state, text){ if (msgBox){ msgBox.setAttribute("data-state", state); msgBox.textContent = text; } }
+
+  function subscribeKlaviyo(email, b){
+    var company = root.getAttribute("data-company"), list = root.getAttribute("data-list");
+    if (!company || !list) return; // CRM identify still fires without this
+    var body = { data: { type: "subscription", attributes: {
+      custom_source: "save_build",
+      profile: { data: { type: "profile", attributes: { email: email, properties: {
+        a2_capture_source: "save_build",
+        bike_model: b.model, build: b.build, build_label: b.buildLabel,
+        selected_options: (b.options||[]).join(", "), price: b.price,
+        variant_id: b.variantId, product_title: b.title, product_url: b.url
+      } } } }
+    }, relationships: { list: { data: { type: "list", id: list } } } } };
+    try {
+      fetch("https://a.klaviyo.com/client/subscriptions/?company_id=" + encodeURIComponent(company), {
+        method: "POST", headers: { "Content-Type": "application/json", revision: "2024-10-15" },
+        body: JSON.stringify(body)
+      }).catch(function(){});
+    } catch(e){}
+    // Also fire a Klaviyo event the flow can trigger on, if Klaviyo is on-page.
+    try {
+      if (window.klaviyo && typeof window.klaviyo.track === "function") {
+        var _t = function(){ try { window.klaviyo.track("Saved Build", {
+          bike_model: b.model, build: b.build, build_label: b.buildLabel,
+          selected_options: (b.options||[]).join(", "), price: b.price, url: b.url, product_title: b.title
+        }); } catch(e){} };
+        var id = window.klaviyo.identify({ email: email });
+        (id && typeof id.then === "function") ? id.then(_t, _t) : _t();
+      } else if (window._learnq) {
+        window._learnq.push(["identify", { "$email": email }]);
+        window._learnq.push(["track", "Saved Build", { bike_model: b.model, build: b.build, price: b.price, url: b.url }]);
+      }
+    } catch(e){}
+  }
+
+  function identify(email, b){
+    try { if (typeof window.a2_identify === "function") window.a2_identify(email, "save_build"); } catch(e){}
+    try { if (typeof window.a2IdentifyVisitor === "function") window.a2IdentifyVisitor(email); } catch(e){}
+    try { sessionStorage.setItem("a2_visitor_email", email); } catch(e){}
+    subscribeKlaviyo(email, b);
+  }
+
+  form.addEventListener("submit", function(e){
+    e.preventDefault();
+    var hp = form.querySelector("[data-a2sb-hp]");
+    if (hp && hp.value) { showDone(); return; } // silent bot pass
+    var input = form.querySelector('input[type="email"]');
+    var email = (input && input.value || "").trim().toLowerCase();
+    if (!email || email.indexOf("@") < 1) { setMsg("error", "Please enter a valid email address."); return; }
+    setMsg("ok", "Sending…");
+    var b = currentBuild();
+    identify(email, b);
+    pushDL("save_build_email_capture", { source: "save_build", bike_model: b.model,
+      build: b.build, price: b.price, email_domain: email.split("@")[1] || null });
+    showDone();
+  });
+
+  function showDone(){ if (stepCap) stepCap.hidden = true; if (stepDone) stepDone.hidden = false; }
+})();
+</script>
+{%- endif -%}

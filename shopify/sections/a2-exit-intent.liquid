@@ -1,0 +1,431 @@
+{%- comment -%}
+  A2 Bikes — Play 1: Exit-intent email capture with a bike-sized offer.
+  ---------------------------------------------------------------------------
+  Global overlay (mount in overlay-group so it renders on every page). On exit
+  intent it offers "Save your build + $X off your first bike" in exchange for an
+  email, then reveals the discount code.
+
+  Identity wiring (the whole point):
+    - window.a2_identify(email, "exit_intent")   -> CRM scoreboard (mandatory)
+    - window.a2IdentifyVisitor(email)            -> existing Klaviyo/GA4 helper
+    - Klaviyo client subscription (custom_source "exit_intent") if keys are set
+    - dataLayer event "exit_intent_email_capture" (GTM owns GA4/Meta)
+
+  Safety rails:
+    - Ships DISABLED (settings.enable off) and with a BLANK offer amount/code.
+      It cannot show until the owner sets the figures AND enables it.
+    - All offer figures + Klaviyo ids live in settings, never hardcoded.
+    - Self-contained: does not depend on a2-lp.js being on the page.
+{%- endcomment -%}
+
+{%- liquid
+  assign en = section.settings.enable
+  assign amount = section.settings.offer_amount | strip
+  assign code = section.settings.discount_code | strip
+  assign company = section.settings.klaviyo_company_id | strip
+  assign list_id = section.settings.klaviyo_list_id | strip
+-%}
+
+{%- if en and amount != blank -%}
+<div
+  id="a2ei-{{ section.id }}"
+  class="a2ei"
+  data-a2ei
+  data-freq-days="{{ section.settings.frequency_days }}"
+  data-mobile-trigger="{{ section.settings.mobile_trigger }}"
+  data-mobile-delay="{{ section.settings.mobile_delay_seconds }}"
+  data-exclude-accounts="{% if section.settings.hide_for_accounts %}1{% else %}0{% endif %}"
+  data-code="{{ code | escape }}"
+  data-company="{{ company | escape }}"
+  data-list="{{ list_id | escape }}"
+  data-source="exit_intent"
+  {% if customer %}data-logged-in="1"{% endif %}
+  hidden
+>
+  <div class="a2ei__overlay" data-a2ei-dismiss></div>
+  <div class="a2ei__dialog" role="dialog" aria-modal="true"
+       aria-labelledby="a2ei-title-{{ section.id }}" tabindex="-1">
+    <button type="button" class="a2ei__close" data-a2ei-dismiss aria-label="Close">&times;</button>
+
+    {%- if section.settings.image != blank -%}
+      <div class="a2ei__media">
+        {{ section.settings.image | image_url: width: 900 | image_tag:
+           loading: 'lazy', widths: '360,600,900', alt: section.settings.heading | escape }}
+      </div>
+    {%- endif -%}
+
+    <div class="a2ei__body">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="a2ei__eyebrow">{{ section.settings.eyebrow }}</p>
+      {%- endif -%}
+
+      {%- comment -%} ---- Capture state ---- {%- endcomment -%}
+      <div data-a2ei-step="capture">
+        <h2 class="a2ei__title" id="a2ei-title-{{ section.id }}">
+          {{ section.settings.heading | replace: '[amount]', amount }}
+        </h2>
+        {%- if section.settings.subheading != blank -%}
+          <p class="a2ei__sub">{{ section.settings.subheading | replace: '[amount]', amount }}</p>
+        {%- endif -%}
+
+        <form class="a2ei__form" data-a2ei-form novalidate>
+          <label class="a2ei__sronly" for="a2ei-email-{{ section.id }}">Email address</label>
+          <input id="a2ei-email-{{ section.id }}" class="a2ei__input" type="email" name="email"
+                 required autocomplete="email" inputmode="email"
+                 placeholder="{{ section.settings.placeholder | default: 'you@email.com' | escape }}">
+          {%- comment -%} Honeypot: bots fill it, humans don't. {%- endcomment -%}
+          <div class="a2ei__hp" aria-hidden="true">
+            <label>Leave blank<input type="text" tabindex="-1" autocomplete="off" data-a2ei-hp></label>
+          </div>
+          <button class="a2ei__cta" type="submit">
+            {{ section.settings.cta_label | default: 'Email my build & unlock my discount' | replace: '[amount]', amount }}
+          </button>
+          <p class="a2ei__msg" data-a2ei-msg role="status" aria-live="polite"></p>
+        </form>
+
+        <button type="button" class="a2ei__decline" data-a2ei-dismiss>
+          {{ section.settings.dismiss_text | default: 'No thanks, I’ll pay full price' }}
+        </button>
+      </div>
+
+      {%- comment -%} ---- Success state ---- {%- endcomment -%}
+      <div data-a2ei-step="success" hidden>
+        <h2 class="a2ei__title">{{ section.settings.success_heading | default: 'You’re in — here’s your code' | replace: '[amount]', amount }}</h2>
+        <p class="a2ei__sub">{{ section.settings.success_text | default: 'Use this code at checkout for [amount] off your first bike.' | replace: '[amount]', amount }}</p>
+        {%- if code != blank -%}
+          <div class="a2ei__code">
+            <span data-a2ei-code>{{ code }}</span>
+            <button type="button" class="a2ei__copy" data-a2ei-copy aria-label="Copy code">Copy</button>
+          </div>
+        {%- endif -%}
+        {%- if section.settings.success_cta_url != blank -%}
+          <a class="a2ei__cta a2ei__cta--link" href="{{ section.settings.success_cta_url }}">
+            {{ section.settings.success_cta_label | default: 'Keep building' }}
+          </a>
+        {%- endif -%}
+      </div>
+
+      {%- if section.settings.disclaimer != blank -%}
+        <p class="a2ei__fine">{{ section.settings.disclaimer }}</p>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{%- style -%}
+  #a2ei-{{ section.id }}.a2ei{position:fixed;inset:0;z-index:2147483000;display:none;}
+  #a2ei-{{ section.id }}.a2ei.is-open{display:block;}
+  #a2ei-{{ section.id }} .a2ei__overlay{position:absolute;inset:0;background:rgba(0,0,0,.62);}
+  #a2ei-{{ section.id }} .a2ei__dialog{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    width:min(560px,calc(100vw - 32px));max-height:calc(100vh - 32px);overflow:auto;
+    background:{{ section.settings.bg_color }};color:{{ section.settings.text_color }};
+    border-radius:14px;box-shadow:0 24px 70px rgba(0,0,0,.35);}
+  #a2ei-{{ section.id }} .a2ei__close{position:absolute;top:8px;right:12px;background:none;border:0;
+    font-size:30px;line-height:1;color:inherit;opacity:.6;cursor:pointer;z-index:2;}
+  #a2ei-{{ section.id }} .a2ei__close:hover{opacity:1;}
+  #a2ei-{{ section.id }} .a2ei__media img{display:block;width:100%;height:auto;border-radius:14px 14px 0 0;}
+  #a2ei-{{ section.id }} .a2ei__body{padding:28px 28px 24px;}
+  #a2ei-{{ section.id }} .a2ei__eyebrow{margin:0 0 6px;font-size:12px;letter-spacing:.12em;
+    text-transform:uppercase;opacity:.7;font-weight:700;}
+  #a2ei-{{ section.id }} .a2ei__title{margin:0 0 8px;font-size:26px;line-height:1.15;font-weight:800;}
+  #a2ei-{{ section.id }} .a2ei__sub{margin:0 0 18px;font-size:16px;line-height:1.45;opacity:.9;}
+  #a2ei-{{ section.id }} .a2ei__form{display:flex;flex-direction:column;gap:10px;}
+  #a2ei-{{ section.id }} .a2ei__input{width:100%;padding:14px 16px;font-size:16px;border-radius:10px;
+    border:1px solid rgba(0,0,0,.25);background:#fff;color:#111;box-sizing:border-box;}
+  #a2ei-{{ section.id }} .a2ei__cta{width:100%;padding:15px 18px;font-size:16px;font-weight:700;
+    border:0;border-radius:10px;cursor:pointer;background:{{ section.settings.button_bg }};
+    color:{{ section.settings.button_text }};text-align:center;text-decoration:none;display:block;box-sizing:border-box;}
+  #a2ei-{{ section.id }} .a2ei__cta:hover{opacity:.92;}
+  #a2ei-{{ section.id }} .a2ei__cta--link{margin-top:14px;}
+  #a2ei-{{ section.id }} .a2ei__decline{display:block;margin:14px auto 0;background:none;border:0;
+    font-size:13px;text-decoration:underline;opacity:.65;color:inherit;cursor:pointer;}
+  #a2ei-{{ section.id }} .a2ei__decline:hover{opacity:1;}
+  #a2ei-{{ section.id }} .a2ei__msg{margin:4px 0 0;font-size:14px;min-height:1em;}
+  #a2ei-{{ section.id }} .a2ei__msg[data-state="error"]{color:#c0392b;}
+  #a2ei-{{ section.id }} .a2ei__msg[data-state="ok"]{color:#1e7e34;}
+  #a2ei-{{ section.id }} .a2ei__code{display:flex;align-items:center;gap:12px;margin:6px 0 4px;
+    padding:14px 16px;border:2px dashed rgba(0,0,0,.3);border-radius:10px;
+    font-size:22px;font-weight:800;letter-spacing:.06em;justify-content:space-between;}
+  #a2ei-{{ section.id }} .a2ei__copy{border:0;border-radius:8px;padding:8px 14px;font-size:13px;
+    font-weight:700;cursor:pointer;background:{{ section.settings.button_bg }};color:{{ section.settings.button_text }};}
+  #a2ei-{{ section.id }} .a2ei__fine{margin:16px 0 0;font-size:11px;line-height:1.4;opacity:.6;}
+  #a2ei-{{ section.id }} .a2ei__hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;}
+  #a2ei-{{ section.id }} .a2ei__sronly{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);}
+  @media (max-width:600px){
+    #a2ei-{{ section.id }} .a2ei__dialog{width:100vw;max-width:100vw;left:0;top:auto;bottom:0;
+      transform:none;border-radius:16px 16px 0 0;max-height:92vh;}
+    #a2ei-{{ section.id }} .a2ei__media img{border-radius:16px 16px 0 0;}
+    #a2ei-{{ section.id }} .a2ei__title{font-size:22px;}
+    #a2ei-{{ section.id }} .a2ei__body{padding:22px 20px 20px;}
+  }
+  @media (prefers-reduced-motion:no-preference){
+    #a2ei-{{ section.id }}.is-open .a2ei__dialog{animation:a2eiIn .22s ease-out;}
+    @keyframes a2eiIn{from{opacity:0;transform:translate(-50%,-46%);}to{opacity:1;transform:translate(-50%,-50%);}}
+  }
+{%- endstyle -%}
+
+<script>
+(function(){
+  var root = document.getElementById("a2ei-{{ section.id }}");
+  if (!root || root.__a2eiInit) return;
+  root.__a2eiInit = true;
+
+  // In the theme editor, let the merchant preview without trigger/frequency logic.
+  var isEditor = window.Shopify && Shopify.designMode;
+
+  var freqDays = parseInt(root.getAttribute("data-freq-days"), 10) || 7;
+  var STORE_KEY = "a2ei_last_shown";
+  var dialog   = root.querySelector(".a2ei__dialog");
+  var form     = root.querySelector("[data-a2ei-form]");
+  var msgBox   = root.querySelector("[data-a2ei-msg]");
+  var stepCap  = root.querySelector('[data-a2ei-step="capture"]');
+  var stepOk   = root.querySelector('[data-a2ei-step="success"]');
+  var lastFocus = null;
+  var shownThisPage = false;
+
+  function alreadyIdentified(){
+    try { if (sessionStorage.getItem("a2_visitor_email")) return true; } catch(e){}
+    if (root.getAttribute("data-logged-in") === "1" &&
+        root.getAttribute("data-exclude-accounts") === "1") return true;
+    return false;
+  }
+  function recentlyShown(){
+    if (isEditor) return false;
+    try {
+      var t = parseInt(localStorage.getItem(STORE_KEY), 10);
+      if (!t) return false;
+      return (Date.now() - t) < freqDays * 864e5;
+    } catch(e){ return false; }
+  }
+  function markShown(){ try { localStorage.setItem(STORE_KEY, String(Date.now())); } catch(e){} }
+
+  function onCheckoutOrCart(){
+    var p = location.pathname;
+    return /\/(checkouts|cart)(\/|$)/.test(p);
+  }
+
+  function pushDL(evt, extra){
+    var payload = { event: evt };
+    if (extra) Object.keys(extra).forEach(function(k){ payload[k] = extra[k]; });
+    if (typeof window.a2dl === "function") { window.a2dl(evt, extra || {}); return; }
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push(payload);
+  }
+
+  function open(){
+    if (root.classList.contains("is-open")) return;
+    lastFocus = document.activeElement;
+    root.hidden = false;
+    root.classList.add("is-open");
+    markShown();
+    shownThisPage = true;
+    pushDL("exit_intent_shown", { source: "exit_intent" });
+    if (dialog) dialog.focus();
+    document.addEventListener("keydown", onKey);
+  }
+  function close(){
+    root.classList.remove("is-open");
+    root.hidden = true;
+    document.removeEventListener("keydown", onKey);
+    if (lastFocus && lastFocus.focus) { try { lastFocus.focus(); } catch(e){} }
+  }
+  function onKey(e){
+    if (e.key === "Escape") close();
+  }
+
+  function canShow(){
+    if (isEditor) return true;
+    return !shownThisPage && !alreadyIdentified() && !recentlyShown() && !onCheckoutOrCart();
+  }
+  function maybeOpen(){ if (canShow()) open(); }
+
+  /* ---- Triggers ---- */
+  // Desktop: pointer leaves through the top of the viewport.
+  document.addEventListener("mouseout", function(e){
+    if (e.clientY <= 0 && !e.relatedTarget && !e.toElement) maybeOpen();
+  });
+
+  // Mobile: no real exit intent. Configurable fallback.
+  var mTrigger = root.getAttribute("data-mobile-trigger") || "scroll_up";
+  var isTouch = matchMedia("(max-width: 600px), (pointer: coarse)").matches;
+  if (isTouch && !isEditor) {
+    if (mTrigger === "timer") {
+      var delay = (parseInt(root.getAttribute("data-mobile-delay"), 10) || 25) * 1000;
+      setTimeout(maybeOpen, delay);
+    } else if (mTrigger === "scroll_up") {
+      // Fire on a decisive upward scroll after the user has gone deep — a
+      // common proxy for "heading for the back button / address bar".
+      var lastY = window.pageYOffset, deepReached = false;
+      window.addEventListener("scroll", function(){
+        var y = window.pageYOffset;
+        var docH = document.documentElement.scrollHeight - window.innerHeight;
+        if (docH > 0 && y / docH > 0.5) deepReached = true;
+        if (deepReached && lastY - y > 90) maybeOpen();
+        lastY = y;
+      }, { passive: true });
+    }
+  }
+
+  /* ---- Dismiss wiring ---- */
+  root.querySelectorAll("[data-a2ei-dismiss]").forEach(function(el){
+    el.addEventListener("click", function(e){ e.preventDefault(); close(); });
+  });
+
+  /* ---- Copy code ---- */
+  var copyBtn = root.querySelector("[data-a2ei-copy]");
+  if (copyBtn) {
+    copyBtn.addEventListener("click", function(){
+      var code = root.getAttribute("data-code") || "";
+      if (navigator.clipboard && code) {
+        navigator.clipboard.writeText(code).then(function(){
+          copyBtn.textContent = "Copied";
+          setTimeout(function(){ copyBtn.textContent = "Copy"; }, 2000);
+        }).catch(function(){});
+      }
+    });
+  }
+
+  /* ---- Submit ---- */
+  function setMsg(state, text){
+    if (!msgBox) return;
+    msgBox.setAttribute("data-state", state);
+    msgBox.textContent = text;
+  }
+
+  function subscribeKlaviyo(email){
+    var company = root.getAttribute("data-company");
+    var list = root.getAttribute("data-list");
+    if (!company || !list) return; // not configured yet — CRM identify still fired
+    var body = {
+      data: {
+        type: "subscription",
+        attributes: {
+          custom_source: "exit_intent",
+          profile: { data: { type: "profile", attributes: { email: email,
+            properties: { a2_capture_source: "exit_intent" } } } }
+        },
+        relationships: { list: { data: { type: "list", id: list } } }
+      }
+    };
+    try {
+      fetch("https://a.klaviyo.com/client/subscriptions/?company_id=" + encodeURIComponent(company), {
+        method: "POST",
+        headers: { "Content-Type": "application/json", revision: "2024-10-15" },
+        body: JSON.stringify(body)
+      }).catch(function(){});
+    } catch(e){}
+  }
+
+  function identify(email){
+    // 1. CRM scoreboard — mandatory, exact source string.
+    try { if (typeof window.a2_identify === "function") window.a2_identify(email, "exit_intent"); } catch(e){}
+    // 2. Existing Klaviyo/GA4 helper (theme.liquid), if present.
+    try { if (typeof window.a2IdentifyVisitor === "function") window.a2IdentifyVisitor(email); } catch(e){}
+    // 3. Persist so later pages auto-identify.
+    try { sessionStorage.setItem("a2_visitor_email", email); } catch(e){}
+    // 4. Direct Klaviyo subscription (feeds the $X-off email flow).
+    subscribeKlaviyo(email);
+  }
+
+  if (form) {
+    form.addEventListener("submit", function(e){
+      e.preventDefault();
+      var hp = form.querySelector("[data-a2ei-hp]");
+      if (hp && hp.value) { showSuccess(); return; } // silent bot pass
+      var input = form.querySelector('input[type="email"]');
+      var email = (input && input.value || "").trim().toLowerCase();
+      if (!email || email.indexOf("@") < 1) { setMsg("error", "Please enter a valid email address."); return; }
+      setMsg("ok", "Unlocking…");
+      identify(email);
+      pushDL("exit_intent_email_capture", { source: "exit_intent", email_domain: email.split("@")[1] || null });
+      showSuccess();
+    });
+  }
+
+  function showSuccess(){
+    if (stepCap) stepCap.hidden = true;
+    if (stepOk) stepOk.hidden = false;
+  }
+})();
+</script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "A2 Exit-Intent Offer",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Launch"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable",
+      "label": "Enable exit-intent popup",
+      "default": false,
+      "info": "Keep OFF until the discount amount + code are confirmed with the owner. The popup will not render while this is off."
+    },
+    {
+      "type": "text",
+      "id": "offer_amount",
+      "label": "Offer amount (OWNER DECISION)",
+      "info": "e.g. \"$100\". The popup will not render until this is set. Used wherever [amount] appears in the copy below."
+    },
+    {
+      "type": "text",
+      "id": "discount_code",
+      "label": "Discount code (OWNER DECISION)",
+      "info": "The real code shown on success. Create it in Shopify Admin › Discounts first."
+    },
+    {
+      "type": "header",
+      "content": "Copy"
+    },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Before you go" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Save your build + get [amount] off your first bike" },
+    { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "We’ll email your configuration so you can pick up right where you left off — and take [amount] off when you’re ready." },
+    { "type": "text", "id": "placeholder", "label": "Input placeholder", "default": "you@email.com" },
+    { "type": "text", "id": "cta_label", "label": "Button label", "default": "Email my build & unlock [amount] off" },
+    { "type": "text", "id": "dismiss_text", "label": "Decline link", "default": "No thanks, I’ll pay full price" },
+    { "type": "text", "id": "success_heading", "label": "Success heading", "default": "You’re in — here’s your code" },
+    { "type": "textarea", "id": "success_text", "label": "Success text", "default": "Use this code at checkout for [amount] off your first bike. We’ve emailed it to you too." },
+    { "type": "text", "id": "success_cta_label", "label": "Success button label", "default": "Keep building" },
+    { "type": "url", "id": "success_cta_url", "label": "Success button link" },
+    { "type": "textarea", "id": "disclaimer", "label": "Fine print", "default": "One use per customer. Valid on your first bike. Terms apply." },
+    {
+      "type": "header",
+      "content": "Klaviyo (feeds the offer email flow)"
+    },
+    { "type": "text", "id": "klaviyo_company_id", "label": "Klaviyo company ID", "default": "YejYTH" },
+    { "type": "text", "id": "klaviyo_list_id", "label": "Klaviyo list ID (OWNER DECISION)", "info": "List that the exit-intent / $X-off flow listens on. Leave blank to capture to the CRM only." },
+    {
+      "type": "header",
+      "content": "Trigger & frequency"
+    },
+    { "type": "range", "id": "frequency_days", "label": "Don’t show again for (days)", "min": 1, "max": 60, "step": 1, "default": 7 },
+    {
+      "type": "select",
+      "id": "mobile_trigger",
+      "label": "Mobile trigger",
+      "options": [
+        { "value": "scroll_up", "label": "Fast scroll-up after scrolling deep" },
+        { "value": "timer", "label": "After a delay" },
+        { "value": "off", "label": "Off (desktop only)" }
+      ],
+      "default": "scroll_up"
+    },
+    { "type": "range", "id": "mobile_delay_seconds", "label": "Mobile delay (seconds)", "min": 5, "max": 120, "step": 5, "default": 25, "info": "Only used when Mobile trigger = After a delay." },
+    { "type": "checkbox", "id": "hide_for_accounts", "label": "Hide for logged-in customers", "default": true },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    { "type": "image_picker", "id": "image", "label": "Image (optional)" },
+    { "type": "color", "id": "bg_color", "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#111111" },
+    { "type": "color", "id": "button_bg", "label": "Button background", "default": "#111111" },
+    { "type": "color", "id": "button_text", "label": "Button text", "default": "#ffffff" }
+  ]
+}
+{% endschema %}

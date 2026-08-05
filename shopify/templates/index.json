@@ -1,0 +1,455 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "hero": {
+      "type": "wa-hero",
+      "settings": {
+        "hero_image": "shopify://shop_images/Screenshot_2025-04-08_at_11.56.13_AM.png",
+        "hero_image_mobile": "shopify://shop_images/Slow_Motion.00_02_17_19.Still001_1_6.jpg",
+        "hero_eyebrow": "Rider Focused. Always.",
+        "hero_heading": "Pro-level bikes. Without the pro-level price.",
+        "hero_sub": "Designed by one of the sport's most respected triathlon-bike engineers — sold direct from Oregon, so you skip the retail markup.",
+        "hero_cta1_label": "Shop the SP",
+        "hero_cta1_link": "shopify://products/sp-sram-rival-1",
+        "hero_cta2_label": "Find your bike in 60 seconds",
+        "hero_cta2_link": "/pages/a2-bikes-selector-quiz",
+        "hero_cta2_modal": false
+      }
+    },
+    "trust_ticker": {
+      "type": "scrolling-content",
+      "blocks": {
+        "text-1": {
+          "type": "text",
+          "settings": {
+            "text": "Flexible Sizing",
+            "link": "/pages/sp-performance#a2-fit-calc"
+          }
+        },
+        "text_ykKpRV": {
+          "type": "text",
+          "settings": {
+            "text": "Crash Replacement Program",
+            "link": "/pages/crash-replacement-policy"
+          }
+        },
+        "text-2": {
+          "type": "text",
+          "settings": {
+            "text": "Perfect Fit Promise",
+            "link": "/pages/sp-performance#a2-fit-calc"
+          }
+        },
+        "text-3": {
+          "type": "text",
+          "settings": {
+            "text": "Free 30-Day Returns",
+            "link": "/pages/a2-promise"
+          }
+        },
+        "text_6C6q47": {
+          "type": "text",
+          "settings": {
+            "text": "Fast, Reliable Shipping",
+            "link": ""
+          }
+        },
+        "text_3hf7kx": {
+          "type": "text",
+          "settings": {
+            "text": "Lifetime Warranty",
+            "link": "/pages/warranty"
+          }
+        }
+      },
+      "block_order": [
+        "text-1",
+        "text_ykKpRV",
+        "text-2",
+        "text-3",
+        "text_6C6q47",
+        "text_3hf7kx"
+      ],
+      "settings": {
+        "font_choice": "ff-heading",
+        "text_font_class": "fs-body-300",
+        "duration": 10,
+        "direction": "reverse",
+        "gap": 100,
+        "padding_top": 22,
+        "padding_bottom": 22,
+        "borders": "top-bottom",
+        "background_color": "#242526",
+        "text_color": "#faf7c3",
+        "border_color": "#242526",
+        "enable_animation": true,
+        "divider_style": "none",
+        "section_padding": "section--vertical-padding-bottom-only"
+      }
+    },
+    "credibility": {
+      "type": "wa-credibility",
+      "blocks": {
+        "c1": {
+          "type": "proof",
+          "settings": {
+            "title": "Designed by engineer Kevin Quan",
+            "body": "A2's geometry comes from Kevin Quan, a designer behind some of the most successful triathlon bikes ever made.",
+            "show_stars": false
+          }
+        },
+        "c2": {
+          "type": "proof",
+          "settings": {
+            "title": "Trusted at the Ironman World Championships",
+            "body": "A2 bikes have been raced on the lava fields of Kona — the toughest proving ground in the sport.",
+            "show_stars": false
+          }
+        },
+        "c3": {
+          "type": "proof",
+          "settings": {
+            "title": "Best Beginner Triathlon Bike",
+            "body": "Named by Triathlete Magazine — a five-time winner of the category.",
+            "show_stars": true
+          }
+        }
+      },
+      "block_order": [
+        "c1",
+        "c2",
+        "c3"
+      ],
+      "settings": {
+        "cred_image": "shopify://shop_images/image2_1.jpg",
+        "eyebrow": "Proven, not promised",
+        "heading": "Designed by Kevin Quan. Tested at Kona."
+      }
+    },
+    "lineup": {
+      "type": "wa-products",
+      "blocks": {
+        "sp": {
+          "type": "product",
+          "settings": {
+            "image": "shopify://shop_images/DSCF9203-Edit.jpg",
+            "badge": "Triathlon",
+            "name": "SP",
+            "product": "sp-shimano-105n",
+            "price": "$3,115",
+            "body": "Our triathlon and time-trial machine — superbike aerodynamics and fit, without the superbike price.",
+            "link": "/pages/sp-performance"
+          }
+        },
+        "rogue": {
+          "type": "product",
+          "settings": {
+            "image": "shopify://shop_images/P1011937-Edit.jpg",
+            "badge": "Road",
+            "name": "Rogue",
+            "product": "rogue-shimano-105",
+            "price": "$2,699",
+            "body": "One road bike for everything — light, fast and ready for any route.",
+            "link": "/pages/rogue-road"
+          }
+        }
+      },
+      "block_order": [
+        "sp",
+        "rogue"
+      ],
+      "settings": {
+        "eyebrow": "The lineup",
+        "heading": "Find your A2",
+        "lede": "Two platforms, one obsession: fast bikes that fit real riders — priced direct.",
+        "show_financing_line": true,
+        "affirm_public_key": "WSAUD4RQEGCMBW2I",
+        "financing_suffix": "Also HSA/FSA eligible"
+      }
+    },
+    "quiz_band": {
+      "type": "a2-quiz-cta",
+      "settings": {
+        "enable": true,
+        "style": "band"
+      }
+    },
+    "financing_band": {
+      "type": "a2-collection-financing-band",
+      "settings": {
+        "compact": false,
+        "affirm_logo": "shopify://shop_images/986051c-affirm-logo.png",
+        "heading": "Buy now, pay later with Affirm.",
+        "text": "<p>Choose Affirm at checkout to split your purchase into monthly payments.</p>",
+        "show_as_low_as": true,
+        "secondary_text": "<p>Prefer pre-tax dollars? Eligible riders save an average of 30% with HSA/FSA via Truemed.</p>",
+        "disclosure": "Payment options through Affirm are subject to eligibility, may not be available in all states, and are provided by these lending partners:",
+        "button_label": "Explore financing options",
+        "button_link": "",
+        "affirm_public_key": "",
+        "bg_color": "#f7f7e8",
+        "text_color": "#222425",
+        "accent_color": "#c51c26"
+      }
+    },
+    "quote": {
+      "type": "quote",
+      "blocks": {
+        "quote-1": {
+          "type": "quote",
+          "settings": {
+            "logo": "shopify://shop_images/Esquire_logo.png",
+            "quote": "<p>\"This bike is fast. Like, freakishly fast. Like, Sonic-on-performance-enhancing-drugs fast. It also looks cool as hell.\" - Esquire Magazine</p>",
+            "title": "",
+            "quote_tag": "h4",
+            "font_size": "small"
+          }
+        },
+        "quote-2": {
+          "type": "quote",
+          "settings": {
+            "logo": "shopify://shop_images/Triathlete_logo_650x185_eb6de153-efa7-4e68-8b18-a73c600dcf1a.png",
+            "quote": "<p>\"A2 did a great job of offering four sizes with a fairly wide range of reach, made even more adaptable with intentional adjustability. In particular, the front-end of the new SP1.X series has a stem that allows for more flexibility than the last version, and the seatpost head has a huge range of fore/aft adjustability, allowing for a very steep or shallow effective seat angles and potential fit setups.\" - Triathlete Magazine</p>",
+            "title": "",
+            "quote_tag": "h5",
+            "font_size": "small"
+          }
+        }
+      },
+      "block_order": [
+        "quote-1",
+        "quote-2"
+      ],
+      "settings": {
+        "autoplay_enabled": true,
+        "autoplay_delay": 5,
+        "pagination_style": "logos",
+        "font_choice": "heading",
+        "enable_animation": true,
+        "divider_style": "none",
+        "section_padding": "section--vertical-padding-top-bottom"
+      }
+    },
+    "image_hero-1": {
+      "type": "image-hero",
+      "blocks": {
+        "accent": {
+          "type": "accent",
+          "disabled": true,
+          "settings": {
+            "accent": "NEW"
+          }
+        },
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "title": "Adjustability = Speed",
+            "heading_tag": "h2",
+            "heading_font_class": "fs-heading-display-1"
+          }
+        },
+        "text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>It doesn't matter how aero your bike is, if you aren't comfortable enough to hold your aero position, you'll be slower. The SP is the most adjustable Tri Bike in the world, to get you comfortable, and get you fast.</p>",
+            "text_font_class": "fs-body-100"
+          }
+        }
+      },
+      "block_order": [
+        "accent",
+        "heading",
+        "text"
+      ],
+      "settings": {
+        "image_aspect": "custom",
+        "desktop_height": 90,
+        "mobile_height": 100,
+        "image": "shopify://shop_images/2022-03-18_A2_Bikes_0568_4d7795f5-c465-4699-bec4-2eb7d675d4a3.jpg",
+        "focal_point": "image_presentation",
+        "mobile_focal_point": "image_presentation",
+        "media_link": "/pages/sp-performance",
+        "text_position": "center_flex-start",
+        "text_position_mobile": "center_center",
+        "text_color": "#ffffff",
+        "button_background_color": "#ffffff",
+        "button_text_color": "#000000",
+        "color_overlay": "#000000",
+        "color_overlay_gradient": "linear-gradient(180deg, rgba(0, 0, 0, 1), rgba(9, 9, 9, 0.52) 49%, rgba(0, 0, 0, 0.35) 100%)",
+        "overlay_opacity": 61,
+        "enable_animation": true,
+        "section_padding": "section--vertical-padding-none"
+      }
+    },
+    "promise": {
+      "type": "wa-promise",
+      "blocks": {
+        "m1": {
+          "type": "card",
+          "settings": {
+            "phrase": "retail markup",
+            "title": "Sold direct, priced honestly",
+            "body": "Big brands build dealer margin and retail markup into the price. We don't. You pay for engineering and materials — nothing else.",
+            "tag": "Direct-to-rider"
+          }
+        },
+        "m2": {
+          "type": "card",
+          "settings": {
+            "phrase": "dealer middleman",
+            "title": "Ships from Oregon, set up at home",
+            "body": "No showroom upsell. Your bike ships from our Oregon shop, ready to finish assembly at home with our step-by-step guides.",
+            "tag": "Pacific Northwest built"
+          }
+        },
+        "m3": {
+          "type": "card",
+          "settings": {
+            "phrase": "annual obsolescence",
+            "title": "Lifetime warranty, free size exchanges",
+            "body": "We don't chase yearly model cycles. Your A2 is backed by a lifetime frame warranty and free size exchanges if the fit isn't right.",
+            "tag": "Backed for life"
+          }
+        }
+      },
+      "block_order": [
+        "m1",
+        "m2",
+        "m3"
+      ],
+      "settings": {
+        "eyebrow": "The A2 promise",
+        "heading": "What you don't pay for",
+        "lede": "A2 sells direct. That means your money goes into the bike — not the markup, the middleman, or next year's upgrade."
+      }
+    },
+    "support": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_n7mW4a": {
+          "type": "heading",
+          "settings": {
+            "title": "A2 Support",
+            "heading_tag": "h2",
+            "heading_font_class": "fs-heading-display-3"
+          }
+        },
+        "subheading_MDJyGq": {
+          "type": "subheading",
+          "settings": {
+            "subheading": "At A2, we take pride in unmatched customer service. As triathletes and cyclists ourselves, we’re here to help you reach your goals. Whether you web chat, email, or text us, you’ll hear back within hours. From pre-purchase questions to post-ride support, we’ve always got your back.",
+            "subheading_tag": "h2",
+            "subheading_font_class": "fs-heading-6-base"
+          }
+        },
+        "button_bdhmwH": {
+          "type": "button",
+          "settings": {
+            "link": "shopify://pages/a2-promise",
+            "link_text": "Read More About Our Promise",
+            "button_style": "btn--primary"
+          }
+        }
+      },
+      "block_order": [
+        "heading_n7mW4a",
+        "subheading_MDJyGq",
+        "button_bdhmwH"
+      ],
+      "name": "t:sections.image_with_text.presets.name",
+      "settings": {
+        "image_position": "right",
+        "image": "shopify://shop_images/DSCF3143.jpg",
+        "aspect_ratio": "square",
+        "focal_point": "image_presentation",
+        "image_caption": "",
+        "text_alignment": "center",
+        "show_small_image": false,
+        "image_small_aspect": "square",
+        "image_small_focal_point": "image_presentation",
+        "background_color": "",
+        "text_color": "#000000",
+        "button_background_color": "#000000",
+        "button_text_color": "#ffffff",
+        "enable_animation": true,
+        "divider_style": "none",
+        "section_padding": "section--vertical-padding-top-bottom"
+      }
+    },
+    "news": {
+      "type": "blog-posts",
+      "blocks": {
+        "article-1": {
+          "type": "article",
+          "settings": {
+            "article": ""
+          }
+        },
+        "article-2": {
+          "type": "article",
+          "settings": {
+            "article": ""
+          }
+        }
+      },
+      "block_order": [
+        "article-1",
+        "article-2"
+      ],
+      "settings": {
+        "heading": "A2 Bikes in the News",
+        "heading_tag": "h2",
+        "subheading": "",
+        "link": "",
+        "link_text": "View all posts",
+        "button_style": "btn--callout",
+        "display_type": "all",
+        "blog": "news",
+        "max_articles": 2,
+        "show_tags": true,
+        "show_author": false,
+        "show_date": true,
+        "show_excerpt": true,
+        "show_featured_image": true,
+        "aspect_ratio": "square",
+        "enable_animation": true,
+        "divider_style": "solid",
+        "section_padding": "section--vertical-padding-top-bottom"
+      }
+    },
+    "capture": {
+      "type": "wa-capture",
+      "disabled": true,
+      "settings": {
+        "eyebrow": "Free sizing guide",
+        "heading": "Sizing a triathlon bike is harder than it should be.",
+        "sub": "Get our free guide and we'll help you dial in the right frame size, fit, and setup — before you ever click buy.",
+        "klaviyo_form_id": "WDFJLq",
+        "klaviyo_company_id": "YejYTH",
+        "trust": "No spam. Unsubscribe anytime."
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "trust_ticker",
+    "credibility",
+    "lineup",
+    "quiz_band",
+    "financing_band",
+    "quote",
+    "image_hero-1",
+    "promise",
+    "support",
+    "news",
+    "capture"
+  ]
+}

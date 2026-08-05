@@ -1,0 +1,110 @@
+{%- comment -%}
+  A2 Bikes — Play 5: Octane quiz entry point (self-contained).
+  ---------------------------------------------------------------------------
+  A placeable "take the quiz" band. Opens the Octane AI quiz — prefers the
+  on-site JS API (window.octaneai.open / window.__octane.openQuiz) if present,
+  otherwise navigates to the quiz page URL. Pushes the `octane_quiz_open`
+  dataLayer event (GTM owns GA4/Meta). Self-contained: does NOT depend on
+  a2-lp.js, so it works on the homepage AND on PDPs (where a2-lp.js isn't loaded).
+
+  Identity note: the quiz IDENTIFIES the visitor on COMPLETION (Octane -> Klaviyo
+  -> the theme's octane-quiz-completed listener, which is wired to
+  window.a2_identify(email,"quiz")). This section only drives OPENS; the
+  `quiz` scoreboard source comes from the completion wiring in layout/theme.liquid.
+
+  Owner decision: prominence. `style` = "band" (full bleed, hero-ish) or
+  "strip" (compact). Copy + quiz URL are settings.
+{%- endcomment -%}
+
+{%- if section.settings.enable -%}
+{%- assign _url = section.settings.quiz_url | default: '/pages/a2-bikes-selector-quiz' -%}
+<div class="a2qz a2qz--{{ section.settings.style }}" id="a2qz-{{ section.id }}"
+     style="--a2qz-bg:{{ section.settings.bg_color }};--a2qz-fg:{{ section.settings.text_color }};--a2qz-btn:{{ section.settings.button_bg }};--a2qz-btntext:{{ section.settings.button_text }};">
+  <div class="a2qz__inner">
+    {%- if section.settings.eyebrow != blank -%}<p class="a2qz__eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
+    <h2 class="a2qz__title">{{ section.settings.heading | default: 'Not sure which A2 is yours?' }}</h2>
+    {%- if section.settings.subtext != blank -%}<p class="a2qz__sub">{{ section.settings.subtext }}</p>{%- endif -%}
+    <button type="button" class="a2qz__btn" data-a2qz-open
+            data-quiz-url="{{ _url | escape }}"
+            data-source="{{ section.settings.source_label | default: 'quiz' | escape }}">
+      {{ section.settings.cta_label | default: 'Take the 60-second quiz' }}
+    </button>
+    {%- if section.settings.foot != blank -%}<p class="a2qz__foot">{{ section.settings.foot }}</p>{%- endif -%}
+  </div>
+</div>
+
+{%- style -%}
+  #a2qz-{{ section.id }}.a2qz{background:var(--a2qz-bg);color:var(--a2qz-fg);}
+  #a2qz-{{ section.id }} .a2qz__inner{max-width:820px;margin:0 auto;padding:clamp(28px,5vw,56px) 20px;text-align:center;}
+  #a2qz-{{ section.id }}.a2qz--strip .a2qz__inner{padding:20px;display:flex;gap:16px;align-items:center;justify-content:center;flex-wrap:wrap;text-align:left;}
+  #a2qz-{{ section.id }} .a2qz__eyebrow{margin:0 0 8px;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;opacity:.7;}
+  #a2qz-{{ section.id }} .a2qz__title{margin:0 0 10px;font-size:clamp(1.5rem,3.4vw,2.1rem);line-height:1.1;font-weight:800;}
+  #a2qz-{{ section.id }}.a2qz--strip .a2qz__title{margin:0;font-size:clamp(1.15rem,2.4vw,1.5rem);}
+  #a2qz-{{ section.id }} .a2qz__sub{margin:0 0 20px;font-size:1rem;line-height:1.5;opacity:.9;max-width:52ch;margin-left:auto;margin-right:auto;}
+  #a2qz-{{ section.id }}.a2qz--strip .a2qz__sub{display:none;}
+  #a2qz-{{ section.id }} .a2qz__btn{display:inline-block;padding:15px 28px;font-size:1rem;font-weight:700;cursor:pointer;
+    border:0;border-radius:10px;background:var(--a2qz-btn);color:var(--a2qz-btntext);text-decoration:none;}
+  #a2qz-{{ section.id }} .a2qz__btn:hover{opacity:.92;}
+  #a2qz-{{ section.id }}.a2qz--strip .a2qz__inner > *{flex:0 0 auto;}
+  #a2qz-{{ section.id }} .a2qz__foot{margin:12px 0 0;font-size:.8rem;opacity:.6;}
+{%- endstyle -%}
+
+<script>
+(function(){
+  var root = document.getElementById("a2qz-{{ section.id }}");
+  if (!root || root.__a2qzInit) return;
+  root.__a2qzInit = true;
+  var btn = root.querySelector("[data-a2qz-open]");
+  if (!btn) return;
+  btn.addEventListener("click", function(e){
+    e.preventDefault();
+    var url = btn.getAttribute("data-quiz-url");
+    var src = btn.getAttribute("data-source") || "quiz";
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ event: "octane_quiz_open", source: src });
+    try {
+      if (window.octaneai && typeof window.octaneai.open === "function") { window.octaneai.open(); return; }
+      if (window.__octane && typeof window.__octane.openQuiz === "function") { window.__octane.openQuiz(); return; }
+    } catch(err){}
+    if (url) { window.location.href = url; }
+  });
+})();
+</script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "A2 Quiz CTA",
+  "tag": "section",
+  "class": "a2-quiz-cta-section",
+  "settings": [
+    { "type": "checkbox", "id": "enable", "label": "Enable", "default": true },
+    {
+      "type": "select",
+      "id": "style",
+      "label": "Prominence",
+      "options": [
+        { "value": "band", "label": "Band (large, centered)" },
+        { "value": "strip", "label": "Strip (compact row)" }
+      ],
+      "default": "band",
+      "info": "OWNER DECISION: how prominent the quiz push should be."
+    },
+    { "type": "url", "id": "quiz_url", "label": "Quiz URL", "info": "Where the quiz lives. Defaults to /pages/a2-bikes-selector-quiz. Used as a fallback if the Octane on-site API isn’t available." },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Bike finder" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Not sure which A2 is yours?" },
+    { "type": "textarea", "id": "subtext", "label": "Subtext", "default": "Answer a few quick questions and we’ll match you to the right model, build, and size." },
+    { "type": "text", "id": "cta_label", "label": "Button label", "default": "Take the 60-second quiz" },
+    { "type": "text", "id": "foot", "label": "Fine print" },
+    { "type": "text", "id": "source_label", "label": "dataLayer source label", "default": "quiz", "info": "Passed as `source` on the octane_quiz_open event (analytics only)." },
+    { "type": "header", "content": "Style" },
+    { "type": "color", "id": "bg_color", "label": "Background", "default": "#12161b" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#f6f8fa" },
+    { "type": "color", "id": "button_bg", "label": "Button background", "default": "#b4122e" },
+    { "type": "color", "id": "button_text", "label": "Button text", "default": "#ffffff" }
+  ],
+  "presets": [
+    { "name": "A2 Quiz CTA" }
+  ]
+}
+{% endschema %}
